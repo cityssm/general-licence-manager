@@ -1,0 +1,80 @@
+<%- include('_header'); -%>
+
+<div class="columns is-variable is-4-mobile is-4-tablet is-block-print" id="is-site-layout">
+
+  <div class="column is-block-print">
+    <nav class="breadcrumb">
+      <ul>
+        <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+        <li class="is-active"><a href="#" aria-current="page">
+          <span class="icon is-small"><i class="fas fa-certificate" aria-hidden="true"></i></span>
+          <span>Licences</span>
+        </a></li>
+      </ul>
+    </nav>
+
+    <h1 class="title is-1">
+      Find a Licence
+    </h1>
+
+    <% if (user.userProperties.canUpdate) { %>
+      <div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
+        <a class="button is-circle is-primary has-tooltip-left" data-tooltip="Create a New Licence" href="<%= urlPrefix %>/licences/new">
+          <i class="fas fa-plus" aria-hidden="true"></i>
+          <span class="sr-only">Create a New Licence</span>
+        </a>
+      </div>
+    <% } %>
+
+    <div class="box">
+      <form id="form--filters">
+        <input id="filter--limit" name="limit" type="hidden" value="50" />
+        <input id="filter--offset" name="offset" type="hidden" value="0" />
+        <div class="columns">
+
+          <div class="column">
+            <div class="field">
+              <label class="label" for="filter--licenceTypeKey">Licence Type</label>
+              <div class="control has-icons-left">
+                <div class="select is-fullwidth">
+                  <select id="filter--licenceTypeKey" name="licenceTypeKey">
+                    <option value="">(All Types)</option>
+                  </select>
+                </div>
+                <span class="icon is-small is-left">
+                  <i class="fas fa-filter" aria-hidden="true"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label" for="filter--licenceStatus">Status</label>
+              <div class="control has-icons-left">
+                <div class="select is-fullwidth">
+                  <select id="filter--licenceStatus" name="licenceStatus">
+                    <option value="">(All Statuses)</option>
+                    <option value="active">Active</option>
+                    <option value="past">Past</option>
+                  </select>
+                </div>
+                <span class="icon is-small is-left">
+                  <i class="fas fa-filter" aria-hidden="true"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+    <div class="is-block-print" id="container--searchResults" data-external-licence-number-label="<%= configFunctions.getProperty("licences.externalLicenceNumber.fieldLabel") %>"></div>
+  </div>
+</div>
+
+<%- include('_footerA'); -%>
+
+<script src="<%= urlPrefix %>/javascripts/licence-search.min.js"></script>
+
+<%- include('_footerB'); -%>

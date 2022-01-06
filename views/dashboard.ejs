@@ -1,0 +1,111 @@
+<%- include('_header'); -%>
+
+<div class="level">
+  <div class="level-left has-flex-shrink-1">
+    <h1 class="title is-1">
+      <%= configFunctions.getProperty("application.applicationName") %>
+    </h1>
+  </div>
+</div>
+
+<div class="columns">
+  <div class="column">
+    <div class="card">
+      <div class="card-content">
+        <div class="media">
+          <div class="media-left">
+            <i class="fas fa-3x fa-fw fa-certificate" aria-hidden="true"></i>
+          </div>
+          <div class="media-content has-text-black">
+            <h2 class="title is-4 is-marginless">
+              <a href="<%= urlPrefix %>/licences">Licences</a>
+            </h2>
+            <p>View and maintain licences.</p>
+          </div>
+        </div>
+      </div>
+      <% if (user.userProperties.canUpdate) { %>
+        <div class="card-footer">
+          <a class="card-footer-item" href="<%= urlPrefix %>/licences/new">
+            <span class="icon">
+              <i class="fas fa-plus" aria-hidden="true"></i>
+            </span>
+            <span>Create a New Licence</span>
+          </a>
+        </div>
+      <% } %>
+    </div>
+  </div>
+  <div class="column">
+    <div class="card">
+      <div class="card-content">
+        <div class="media">
+          <div class="media-left">
+            <i class="fas fa-3x fa-fw fa-file" aria-hidden="true"></i>
+          </div>
+          <div class="media-content has-text-black">
+            <h2 class="title is-4 is-marginless">
+              <a href="<%= urlPrefix %>/reports">Report Library</a>
+            </h2>
+            <p>Produce reports and export data.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="columns">
+
+  <div class="column">
+    <div class="card">
+      <div class="card-content">
+        <div class="media">
+          <div class="media-left">
+            <i class="fas fa-3x fa-fw fa-question-circle" aria-hidden="true"></i>
+          </div>
+          <div class="media-content has-text-black">
+            <h2 class="title is-4 is-marginless">
+              <a href="https://cityssm.github.io/general-licence-manager/" target="_blank" rel="noopener noreferrer">Help Documentation</a>
+            </h2>
+            <p>Instructions on how to use this application.</p>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <a class="card-footer-item has-tooltip-bottom" data-tooltip="Latest Updates, Issue Tracker, Say Hello" href="https://github.com/cityssm/general-licence-manager" target="_blank" rel="noreferrer">
+          <span class="icon">
+            <i class="fab fa-github" aria-hidden="true"></i>
+          </span>
+          GitHub
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% if (user.userProperties.isAdmin) { %>
+  <h2 class="title is-3">Administrator Tools</h2>
+
+  <div class="columns">
+    <div class="column">
+      <div class="card">
+        <div class="card-content">
+          <div class="media">
+            <div class="media-left">
+              <i class="fas fa-3x fa-fw fa-cogs" aria-hidden="true"></i>
+            </div>
+            <div class="media-content has-text-black">
+              <h2 class="title is-4 is-marginless">
+                <a href="<%= urlPrefix %>/admin/licenceCategories">Licence Categories</a>
+              </h2>
+              <p>Add new licence types.  Maintain existing licence types.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% } %>
+
+<%- include('_footerA'); -%>
+<%- include('_footerB'); -%>

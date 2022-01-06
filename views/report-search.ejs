@@ -1,0 +1,81 @@
+<%- include('_header'); -%>
+
+<nav class="breadcrumb">
+  <ul>
+    <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+    <li class="is-active"><a href="#" aria-current="page">
+      <span class="icon is-small"><i class="fas fa-file" aria-hidden="true"></i></span>
+      <span>Reports</span>
+    </a></li>
+  </ul>
+</nav>
+
+<h1 class="title is-1">
+  Licence Reports
+</h1>
+
+<div class="columns">
+  <div class="column">
+    <div class="panel">
+      <h2 class="panel-heading">Licences</h2>
+      <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/licences-formatted" download>
+        <div class="has-text-centered my-2 ml-2 mr-3">
+          <span class="icon has-text-info">
+            <i class="fas fa-2x fa-file" aria-hidden="true"></i>
+          </span><br />
+          <span class="tag is-info">CSV</span>
+        </div>
+        <div>
+          <h3 class="title is-5 is-marginless">Full Licence List</h3>
+          <p>
+            All active licences.
+          </p>
+        </div>
+      </a>
+      <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/licences-notIssued" download>
+        <div class="has-text-centered my-2 ml-2 mr-3">
+          <span class="icon has-text-info">
+            <i class="fas fa-2x fa-file" aria-hidden="true"></i>
+          </span><br />
+          <span class="tag is-info">CSV</span>
+        </div>
+        <div>
+          <h3 class="title is-5 is-marginless">Licences Not Issued</h3>
+          <p>
+            All licences in the system that have not been issued.
+          </p>
+        </div>
+      </a>
+    </div>
+  </div>
+  <div class="column">
+    <div class="panel">
+      <h2 class="panel-heading">Table Exports</h2>
+      <div class="panel-block">
+        <div class="message is-info">
+          <p class="message-body is-size-7">
+            Note that table exports are full, unfiltered, and unformatted exports.
+            They may contain deleted records that have not been fully purged.
+          </p>
+        </div>
+      </div>
+      <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/licences-all" download>
+        <div class="has-text-centered my-2 ml-2 mr-3">
+          <span class="icon has-text-info">
+            <i class="fas fa-2x fa-table" aria-hidden="true"></i>
+          </span><br />
+          <span class="tag is-info">CSV</span>
+        </div>
+        <div>
+          <h3 class="title is-5 is-marginless">Full Licences Table</h3>
+          <p>
+            All the data from the Licences table unfiltered.
+          </p>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<%- include('_footerA'); -%>
+<%- include('_footerB'); -%>

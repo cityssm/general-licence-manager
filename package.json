@@ -1,0 +1,81 @@
+{
+  "name": "general-licence-manager",
+  "version": "1.0.0-dev",
+  "type": "module",
+  "description": "A tool for managing the licences issued by municipalities.",
+  "exports": "./app.js",
+  "engines": {
+    "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
+  },
+  "scripts": {
+    "build": "npx genversion --es6 --semi version.js",
+    "start": "cross-env NODE_ENV=production node ./bin/www",
+    "dev": "cross-env NODE_ENV=dev DEBUG=general-licence-manager:* nodemon ./bin/www",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cityssm/general-licence-manager.git"
+  },
+  "author": "The Corporation of the City of Sault Ste. Marie",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cityssm/general-licence-manager/issues"
+  },
+  "homepage": "https://github.com/cityssm/general-licence-manager#readme",
+  "private": true,
+  "dependencies": {
+    "@cityssm/bulma-js": "^0.3.1",
+    "@cityssm/bulma-webapp-js": "^1.5.0",
+    "@cityssm/date-diff": "^2.2.3",
+    "@cityssm/expressjs-server-js": "^2.3.1",
+    "@fortawesome/fontawesome-free": "^5.15.4",
+    "activedirectory2": "^2.1.0",
+    "better-sqlite3": "^7.4.6",
+    "compression": "^1.7.4",
+    "cookie-parser": "^1.4.6",
+    "cross-env": "^7.0.3",
+    "csurf": "^1.11.0",
+    "debug": "^4.3.3",
+    "ejs": "^3.1.6",
+    "exit-hook": "^3.0.0",
+    "express": "^4.17.2",
+    "express-rate-limit": "^6.0.4",
+    "express-session": "^1.17.2",
+    "http-errors": "^2.0.0",
+    "pdf-puppeteer": "^1.1.10",
+    "session-file-store": "^1.5.0"
+  },
+  "devDependencies": {
+    "@cityssm/bulma-webapp-css": "^0.10.0",
+    "@types/activedirectory2": "^1.2.3",
+    "@types/better-sqlite3": "^7.4.2",
+    "@types/compression": "^1.7.2",
+    "@types/cookie-parser": "^1.4.2",
+    "@types/csurf": "^1.11.2",
+    "@types/debug": "^4.1.7",
+    "@types/ejs": "^3.1.0",
+    "@types/express": "^4.17.13",
+    "@types/express-session": "^1.17.4",
+    "@types/gulp": "^4.0.9",
+    "@types/gulp-changed": "^0.0.34",
+    "@types/gulp-minify": "^3.1.1",
+    "@types/http-errors": "^1.8.1",
+    "@types/mocha": "^9.0.0",
+    "@types/node-windows": "^0.1.2",
+    "@types/puppeteer": "^5.4.4",
+    "@types/session-file-store": "^1.2.2",
+    "@typescript-eslint/eslint-plugin": "^5.9.0",
+    "@typescript-eslint/parser": "^5.9.0",
+    "eslint": "^7.32.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "eslint-plugin-unicorn": "^40.0.0",
+    "gulp": "^4.0.2",
+    "gulp-changed": "^4.0.3",
+    "gulp-minify": "^3.1.0",
+    "nodemon": "^2.0.15",
+    "puppeteer": "^13.0.1"
+  }
+}

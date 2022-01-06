@@ -3,12 +3,11 @@ import type { RequestHandler } from "express";
 import { getLicenceCategories } from "../../helpers/licencesDB/getLicenceCategories.js";
 
 
-export const handler: RequestHandler = (_request, response) => {
+export const handler: RequestHandler = async (_request, response) => {
 
   const licenceCategories = getLicenceCategories();
 
-  response.render("admin-licenceCategories", {
-    headTitle: "Licence Categories",
+  response.json({
     licenceCategories
   });
 };

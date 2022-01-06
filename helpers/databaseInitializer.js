@@ -18,10 +18,10 @@ export const initLicencesDB = () => {
         licencesDB.prepare("create table if not exists LicenceCategories (" +
             "licenceCategoryKey varchar(20) primary key," +
             " licenceCategory varchar(100) not null," +
-            " bylawNumber varchar(20)," +
-            " licenceLengthYears smallint not null default 0," +
+            " bylawNumber varchar(20) default ''," +
+            " licenceLengthYears smallint not null default 1," +
             " licenceLengthMonths smallint default 0," +
-            " licenceLengthDays smallint not null default 1," +
+            " licenceLengthDays smallint not null default 0," +
             " printEJS varchar(50) not null default 'default'," +
             recordColumns +
             ") without rowid").run();

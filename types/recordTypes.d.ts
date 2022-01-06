@@ -55,6 +55,48 @@ export interface LicenceTransaction extends Record {
     transactionAmount: number;
     transactionNote: string;
 }
+export interface LicenceCategory extends Record {
+    licenceCategoryKey: string;
+    licenceCategory: string;
+    bylawNumber: string;
+    licenceLengthYears: number;
+    licenceLengthMonths: number;
+    licenceLengthDays: number;
+    printEJS?: string;
+    licenceCategoryApprovals?: LicenceCategoryApproval[];
+    licenceCategoryFees?: LicenceCategoryFee[];
+    licenceCategoryFields?: LicenceCategoryField[];
+}
+export interface LicenceCategoryApproval extends Record {
+    licenceApprovalKey: string;
+    licenceCategoryKey?: string;
+    licenceApproval: string;
+    licenceApprovalDescription: string;
+    isRequiredForNew: boolean;
+    isRequiredForRenewal: boolean;
+    orderNumber?: number;
+}
+export interface LicenceCategoryFee extends Record {
+    licenceCategoryKey?: string;
+    effectiveStartDate: number;
+    effectiveStartDateString?: string;
+    effectiveEndDate: number;
+    effectiveEndDateString?: string;
+    licenceFee: number;
+    renewalFee: number;
+    replacementFee: number;
+}
+export interface LicenceCategoryField extends Record {
+    licenceFieldKey: string;
+    licenceCategoryKey?: string;
+    licenceField: string;
+    licenceFieldDescription: string;
+    isRequired: boolean;
+    minimumLength: number;
+    maximumLength: number;
+    pattern: string;
+    orderNumber?: number;
+}
 export interface User {
     userName: string;
     userProperties?: UserProperties;

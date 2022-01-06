@@ -1,0 +1,26 @@
+<div class="modal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <h3 class="modal-card-title">Add a New Licence Category</h3>
+      <button class="delete is-close-modal-button" aria-label="close" type="button"></button>
+    </header>
+    <section class="modal-card-body">
+      <form id="form--licenceCategoryAdd">
+        <div class="field">
+          <label class="label" for="licenceCategoryAdd--licenceCategory">New Licence Category</label>
+          <div class="control">
+            <input class="input" id="licenceCategoryAdd--licenceCategory" name="licenceCategory" type="text" maxlength="100" required />
+          </div>
+        </div>
+      </form>
+    </section>
+    <footer class="modal-card-foot is-justify-content-right">
+      <button class="button is-success" type="submit" form="form--licenceCategoryAdd">
+        <span class="icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
+        <span>Add New Category</span>
+      </button>
+      <button class="button is-close-modal-button" type="button">Cancel</button>
+    </footer>
+  </div>
+</div>

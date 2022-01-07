@@ -89,6 +89,8 @@ export interface LicenceCategory extends Record {
   licenceCategoryApprovals?: LicenceCategoryApproval[];
   licenceCategoryFees?: LicenceCategoryFee[];
   licenceCategoryFields?: LicenceCategoryField[];
+
+  hasEffectiveFee?: boolean;
 }
 
 export interface LicenceCategoryApproval extends Record {

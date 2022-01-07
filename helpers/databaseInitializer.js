@@ -22,7 +22,7 @@ export const initLicencesDB = () => {
             " licenceLengthYears smallint not null default 1," +
             " licenceLengthMonths smallint default 0," +
             " licenceLengthDays smallint not null default 0," +
-            " printEJS varchar(50) not null default 'default'," +
+            " printEJS varchar(50) not null default ''," +
             recordColumns +
             ") without rowid").run();
         licencesDB.prepare("create table if not exists LicenceCategoryFees (" +

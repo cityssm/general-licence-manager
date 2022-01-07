@@ -1,0 +1,45 @@
+<div class="modal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <h3 class="modal-card-title">Update Licence Category</h3>
+      <button class="delete is-close-modal-button" aria-label="close" type="button"></button>
+    </header>
+    <section class="modal-card-body">
+      <form id="form--licenceCategoryEdit">
+        <input id="licenceCategoryEdit--licenceCategoryKey" name="licenceCategoryKey" type="hidden" value="" />
+        <div class="field">
+          <label class="label" for="licenceCategoryEdit--licenceCategory">Licence Category</label>
+          <div class="control">
+            <input class="input" id="licenceCategoryEdit--licenceCategory" name="licenceCategory" type="text" maxlength="100" required />
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label class="label" for="licenceCategoryEdit--bylawNumber">Bylaw Number</label>
+              <div class="control">
+                <input class="input" id="licenceCategoryEdit--bylawNumber" name="bylawNumber" type="text" maxlength="20" />
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label" for="licenceCategoryEdit--printEJS">Print File</label>
+              <div class="control is-expanded">
+                <div class="select is-fullwidth">
+                  <select id="licenceCategoryEdit--printEJS" name="printEJS">
+                    <option value="">(None Selected)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </section>
+    <footer class="modal-card-foot is-justify-content-right">
+      <button class="button is-close-modal-button" type="button">Close</button>
+    </footer>
+  </div>
+</div>

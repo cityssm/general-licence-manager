@@ -13,6 +13,7 @@ const recordColumns = " recordCreate_userName varchar(30) not null," +
   " recordDelete_userName varchar(30)," +
   " recordDelete_timeMillis integer";
 
+
 export const initLicencesDB = (): boolean => {
 
   const licencesDB = sqlite(databasePath);
@@ -38,7 +39,7 @@ export const initLicencesDB = (): boolean => {
       " licenceLengthMonths smallint default 0," +
       " licenceLengthDays smallint not null default 0," +
 
-      " printEJS varchar(50) not null default 'default'," +
+      " printEJS varchar(50) not null default ''," +
 
       recordColumns +
       ") without rowid").run();

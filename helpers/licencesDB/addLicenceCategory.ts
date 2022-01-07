@@ -3,8 +3,6 @@ import { licencesDB as databasePath } from "../../data/databasePaths.js";
 
 import { getUnusedLicenceCategoryKey } from "./getUnusedKey.js";
 
-import type * as recordTypes from "../../types/recordTypes";
-
 import type * as expressSession from "express-session";
 
 interface AddLicenceCategoryForm {
@@ -18,6 +16,8 @@ export const addLicenceCategory =
 
     const database = sqlite(databasePath);
 
+    const rightNowMillis = Date.now();
+
     database
       .prepare("insert into LicenceCategories" +
         "(licenceCategoryKey, licenceCategory," +
@@ -27,9 +27,9 @@ export const addLicenceCategory =
       .run(licenceCategoryKey,
         licenceCategoryForm.licenceCategory,
         requestSession.user.userName,
-        Date.now(),
+        rightNowMillis,
         requestSession.user.userName,
-        Date.now());
+        rightNowMillis);
 
     database.close();
 

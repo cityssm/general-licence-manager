@@ -36,11 +36,180 @@ Object.defineProperty(exports, "__esModule", { value: true });
         licenceCategoriesContainerElement.innerHTML = "";
         licenceCategoriesContainerElement.append(panelElement);
     };
+    const getLicenceCategories = () => {
+        licenceCategoriesContainerElement.innerHTML = "<p class=\"has-text-centered has-text-grey-lighter\">" +
+            "<i class=\"fas fa-3x fa-circle-notch fa-spin\" aria-hidden=\"true\"></i><br />" +
+            "<em>Loading licence categories...</em>" +
+            "</p>";
+        cityssm.postJSON(urlPrefix + "/admin/doGetLicenceCategories", {}, (responseJSON) => {
+            licenceCategories = responseJSON.licenceCategories;
+            renderLicenceCategories();
+        });
+    };
+    let doRefreshOnClose = false;
+    let editModalElement;
+    let licenceCategoryFields;
+    const openEditLicenceCategoryFieldModal = (licenceFieldKey) => {
+        let editLicenceCategoryFieldModalCloseFunction;
+        const updateLicenceCategoryFieldSubmitFunction = (formEvent) => {
+            formEvent.preventDefault();
+            cityssm.postJSON(urlPrefix + "/admin/doUpdateLicenceCategoryField", formEvent.currentTarget, (responseJSON) => {
+                if (responseJSON.success) {
+                    licenceCategoryFields = responseJSON.licenceCategoryFields;
+                    editLicenceCategoryFieldModalCloseFunction();
+                    renderLicenceCategoryFields();
+                }
+            });
+        };
+        const licenceCategoryField = licenceCategoryFields.find((possibleField) => {
+            return possibleField.licenceFieldKey === licenceFieldKey;
+        });
+        cityssm.openHtmlModal("licenceCategoryField-edit", {
+            onshow: (modalElement) => {
+                modalElement.querySelector("#licenceCategoryFieldEdit--licenceFieldKey").value = licenceFieldKey;
+                modalElement.querySelector("#licenceCategoryFieldEdit--licenceField").value = licenceCategoryField.licenceField;
+                modalElement.querySelector("#licenceCategoryFieldEdit--licenceFieldDescription").value = licenceCategoryField.licenceFieldDescription;
+                if (licenceCategoryField.isRequired) {
+                    modalElement.querySelector("#licenceCategoryFieldEdit--isRequired").checked = true;
+                }
+                const minimumLengthElement = modalElement.querySelector("#licenceCategoryFieldEdit--minimumLength");
+                const maximumLengthElement = modalElement.querySelector("#licenceCategoryFieldEdit--maximumLength");
+                minimumLengthElement.value = licenceCategoryField.minimumLength.toString();
+                minimumLengthElement.addEventListener("keyup", () => {
+                    maximumLengthElement.min = minimumLengthElement.value;
+                });
+                maximumLengthElement.value = licenceCategoryField.maximumLength.toString();
+                maximumLengthElement.min = licenceCategoryField.minimumLength.toString();
+                modalElement.querySelector("#licenceCategoryFieldEdit--pattern").value = licenceCategoryField.pattern;
+            },
+            onshown: (modalElement, closeModalFunction) => {
+                editLicenceCategoryFieldModalCloseFunction = closeModalFunction;
+                modalElement.querySelector("#form--licenceCategoryFieldEdit")
+                    .addEventListener("submit", updateLicenceCategoryFieldSubmitFunction);
+            }
+        });
+    };
+    const openEditLicenceCategoryFieldModalByClick = (clickEvent) => {
+        clickEvent.preventDefault();
+        const licenceFieldKey = clickEvent.currentTarget.dataset.licenceFieldKey;
+        openEditLicenceCategoryFieldModal(licenceFieldKey);
+    };
+    const renderLicenceCategoryFields = () => {
+        const fieldsContainerElement = editModalElement.querySelector("#container--licenceCategoryFields");
+        if (licenceCategoryFields.length === 0) {
+            fieldsContainerElement.innerHTML = "<div class=\"message is-info\">" +
+                "<p class=\"message-body\">There are no additional fields captured with this licence.</p>" +
+                "</div>";
+        }
+        else {
+            const fieldsPanelElement = document.createElement("div");
+            fieldsPanelElement.className = "panel";
+            for (const categoryField of licenceCategoryFields) {
+                const panelBlockElement = document.createElement("a");
+                panelBlockElement.className = "panel-block is-block";
+                panelBlockElement.dataset.licenceFieldKey = categoryField.licenceFieldKey;
+                panelBlockElement.innerHTML = "<h4>" + cityssm.escapeHTML(categoryField.licenceField) + "</h4>" +
+                    "<p class=\"is-size-7\">" + cityssm.escapeHTML(categoryField.licenceFieldDescription) + "</p>";
+                panelBlockElement.addEventListener("click", openEditLicenceCategoryFieldModalByClick);
+                fieldsPanelElement.append(panelBlockElement);
+            }
+            fieldsContainerElement.innerHTML = "";
+            fieldsContainerElement.append(fieldsPanelElement);
+        }
+    };
+    let licenceCategoryApprovals;
+    const openEditLicenceCategoryApprovalModal = (licenceApprovalKey) => {
+    };
+    const renderLicenceCategoryApprovals = () => {
+    };
+    let licenceCategoryFees;
+    const renderLicenceCategoryFees = () => {
+    };
     const openEditLicenceCategoryModal = (licenceCategoryKey) => {
+        const updateLicenceCategorySubmitFunction = (formEvent) => {
+            formEvent.preventDefault();
+            const formElement = formEvent.currentTarget;
+            cityssm.postJSON(urlPrefix + "/admin/doUpdateLicenceCategory", formElement, (responseJSON) => {
+                if (responseJSON.success) {
+                    bulmaJS.alert({
+                        message: "Licence Category updated successfully.",
+                        contextualColorName: "success"
+                    });
+                    doRefreshOnClose = true;
+                }
+                else {
+                    bulmaJS.alert({
+                        title: "Error Updating Licence Category",
+                        message: responseJSON.errorMessage,
+                        contextualColorName: "danger"
+                    });
+                }
+            });
+        };
+        const addLicenceCategoryFieldSubmitFunction = (formEvent) => {
+            formEvent.preventDefault();
+            const formElement = formEvent.currentTarget;
+            cityssm.postJSON(urlPrefix + "/admin/doAddLicenceCategoryField", formElement, (responseJSON) => {
+                if (responseJSON.success) {
+                    doRefreshOnClose = true;
+                    formElement.reset();
+                    licenceCategoryFields = responseJSON.licenceCategoryFields;
+                    renderLicenceCategoryFields();
+                    openEditLicenceCategoryFieldModal(responseJSON.licenceFieldKey);
+                }
+            });
+        };
+        const addLicenceCategoryApprovalSubmitFunction = (formEvent) => {
+            formEvent.preventDefault();
+            const formElement = formEvent.currentTarget;
+            cityssm.postJSON(urlPrefix + "/admin/doAddLicenceCategoryApproval", formElement, (responseJSON) => {
+                if (responseJSON.success) {
+                    doRefreshOnClose = true;
+                    formElement.reset();
+                    licenceCategoryApprovals = responseJSON.licenceCategoryApprovals;
+                    renderLicenceCategoryApprovals();
+                    openEditLicenceCategoryApprovalModal(responseJSON.licenceApprovalKey);
+                }
+            });
+        };
+        const renderEditLicenceCategory = (responseJSON) => {
+            if (!responseJSON.success) {
+                bulmaJS.alert({
+                    message: "Error loading Licence Category.",
+                    contextualColorName: "danger"
+                });
+                doRefreshOnClose = true;
+                return;
+            }
+            const licenceCategory = responseJSON.licenceCategory;
+            editModalElement.querySelector("#licenceCategoryEdit--licenceCategory").value = licenceCategory.licenceCategory;
+            editModalElement.querySelector("#licenceCategoryEdit--bylawNumber").value = licenceCategory.bylawNumber;
+            const printEJSElement = editModalElement.querySelector("#licenceCategoryEdit--printEJS");
+            if (!printEJSElement.querySelector("option[value='" + licenceCategory.printEJS + "']")) {
+                const optionElement = document.createElement("option");
+                optionElement.value = licenceCategory.printEJS;
+                optionElement.textContent = licenceCategory.printEJS + " (Missing)";
+                printEJSElement.append(optionElement);
+            }
+            printEJSElement.value = licenceCategory.printEJS;
+            editModalElement.querySelector("#licenceCategoryEdit--licenceLengthYears").value = licenceCategory.licenceLengthYears.toString();
+            editModalElement.querySelector("#licenceCategoryEdit--licenceLengthMonths").value = licenceCategory.licenceLengthMonths.toString();
+            editModalElement.querySelector("#licenceCategoryEdit--licenceLengthDays").value = licenceCategory.licenceLengthDays.toString();
+            licenceCategoryFields = licenceCategory.licenceCategoryFields;
+            renderLicenceCategoryFields();
+            licenceCategoryApprovals = licenceCategory.licenceCategoryApprovals;
+            renderLicenceCategoryApprovals();
+            licenceCategoryFees = licenceCategory.licenceCategoryFees;
+            renderLicenceCategoryFees();
+        };
+        doRefreshOnClose = false;
         cityssm.openHtmlModal("licenceCategory-edit", {
             onshow: (modalElement) => {
+                editModalElement = modalElement;
                 modalElement.querySelector("#licenceCategoryEdit--licenceCategoryKey").value = licenceCategoryKey;
-                const printEJSElement = document.querySelector("#licenceCategoryEdit--printEJS");
+                modalElement.querySelector("#licenceCategoryFieldAdd--licenceCategoryKey").value = licenceCategoryKey;
+                modalElement.querySelector("#licenceCategoryApprovalAdd--licenceCategoryKey").value = licenceCategoryKey;
+                const printEJSElement = modalElement.querySelector("#licenceCategoryEdit--printEJS");
                 for (const printEJS of exports.printEJSList) {
                     const optionElement = document.createElement("option");
                     optionElement.value = printEJS;
@@ -49,21 +218,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 cityssm.postJSON(urlPrefix + "/admin/doGetLicenceCategory", {
                     licenceCategoryKey
-                }, (responseJSON) => {
-                    if (!responseJSON.success) {
-                        bulmaJS.alert({
-                            message: "Error loading Licence Category.",
-                            contextualColorName: "danger"
-                        });
-                        return;
-                    }
-                    const licenceCategory = responseJSON.licenceCategory;
-                    modalElement.querySelector("#licenceCategoryEdit--licenceCategory").value = licenceCategory.licenceCategory;
-                    modalElement.querySelector("#licenceCategoryEdit--bylawNumber").value = licenceCategory.bylawNumber;
-                });
+                }, renderEditLicenceCategory);
             },
-            onshown: (modalElement, closeModalFunction) => {
+            onshown: (modalElement) => {
+                modalElement.querySelector("#form--licenceCategoryEdit")
+                    .addEventListener("submit", updateLicenceCategorySubmitFunction);
+                modalElement.querySelector("#form--licenceCategoryFieldAdd")
+                    .addEventListener("submit", addLicenceCategoryFieldSubmitFunction);
+                modalElement.querySelector("#form--licenceCategoryApprovalAdd")
+                    .addEventListener("submit", addLicenceCategoryApprovalSubmitFunction);
                 bulmaJS.toggleHtmlClipped();
+            },
+            onhidden: () => {
+                if (doRefreshOnClose) {
+                    getLicenceCategories();
+                }
             },
             onremoved: () => {
                 bulmaJS.toggleHtmlClipped();

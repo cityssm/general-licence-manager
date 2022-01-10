@@ -1,1 +1,3 @@
 export declare const getUnusedLicenceCategoryKey: (licenceCategory: string) => string;
+export declare const getUnusedLicenceFieldKey: (licenceCategoryKey: string, licenceField: string) => string;
+export declare const getUnusedLicenceApprovalKey: (licenceCategoryKey: string, licenceApproval: string) => string;

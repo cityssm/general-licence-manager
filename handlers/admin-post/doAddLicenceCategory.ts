@@ -6,9 +6,7 @@ import { getLicenceCategories } from "../../helpers/licencesDB/getLicenceCategor
 
 export const handler: RequestHandler = async (request, response) => {
 
-  const licenceCategoryKey = addLicenceCategory({
-    licenceCategory: request.body.licenceCategory
-  }, request.session);
+  const licenceCategoryKey = addLicenceCategory(request.body, request.session);
 
   const licenceCategories = getLicenceCategories();
 

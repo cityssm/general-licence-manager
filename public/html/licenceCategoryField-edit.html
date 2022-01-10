@@ -1,0 +1,60 @@
+<div class="modal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <h2 class="modal-card-title">Update Licence Field</h2>
+      <button class="delete is-close-modal-button" aria-label="close" type="button"></button>
+    </header>
+    <section class="modal-card-body">
+      <form id="form--licenceCategoryFieldEdit">
+        <input id="licenceCategoryFieldEdit--licenceFieldKey" name="licenceFieldKey" type="hidden" />
+        <div class="field">
+          <label class="label" for="licenceCategoryFieldEdit--licenceField">Field Name</label>
+          <div class="control">
+            <input class="input" id="licenceCategoryFieldEdit--licenceField" name="licenceField" type="text" maxlength="100" required />
+          </div>
+        </div>
+        <div class="field">
+          <label class="label" for="licenceCategoryFieldEdit--licenceFieldDescription">Field Description</label>
+          <div class="control">
+            <textarea class="textarea" id="licenceCategoryFieldEdit--licenceFieldDescription" name="licenceFieldDescription"></textarea>
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column">
+            <div class="facheck">
+              <input id="licenceCategoryFieldEdit--isRequired" name="isRequired" type="checkbox" />
+              <label class="has-text-weight-bold" for="licenceCategoryFieldEdit--isRequired">Required</label>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label" for="licenceCategoryFieldEdit--minimumLength">Minimum Length</label>
+              <div class="control">
+                <input class="input" id="licenceCategoryFieldEdit--minimumLength" name="minimumLength" type="number" min="1" max="30000" step="1" required onwheel="return false" />
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label" for="licenceCategoryFieldEdit--maximumLength">Maximum Length</label>
+              <div class="control">
+                <input class="input" id="licenceCategoryFieldEdit--maximumLength" name="maximumLength" type="number" min="1" max="30000" step="1" required onwheel="return false" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label" for="licenceCategoryFieldEdit--pattern">Pattern</label>
+          <div class="control">
+            <input class="input" id="licenceCategoryFieldEdit--pattern" name="pattern" type="text" maxlength="100" />
+          </div>
+        </div>
+      </form>
+    </section>
+    <footer class="modal-card-foot is-justify-content-right">
+      <button class="button is-success" type="submit" form="form--licenceCategoryFieldEdit">Update Field</button>
+      <button class="button is-close-modal-button" type="button">Close</button>
+    </footer>
+  </div>
+</div>

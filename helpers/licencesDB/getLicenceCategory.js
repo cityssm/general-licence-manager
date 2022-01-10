@@ -1,5 +1,6 @@
 import sqlite from "better-sqlite3";
 import { licencesDB as databasePath } from "../../data/databasePaths.js";
+import { getLicenceCategoryFields } from "./getLicenceCategoryFields.js";
 import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
 export const getLicenceCategory = (licenceCategoryKey, options) => {
     const database = sqlite(databasePath, {
@@ -41,14 +42,7 @@ export const getLicenceCategory = (licenceCategoryKey, options) => {
                 .all(parameters);
     }
     if (licenceCategory && options.includeFields) {
-        licenceCategory.licenceCategoryFields =
-            database.prepare("select licenceFieldKey, licenceField, licenceFieldDescription," +
-                " isRequired, minimumLength, maximumLength, pattern" +
-                " from LicenceCategoryFields" +
-                " where recordDelete_timeMillis is null" +
-                " and licenceCategoryKey = ?" +
-                " order by orderNumber, licenceField")
-                .all(licenceCategoryKey);
+        licenceCategory.licenceCategoryFields = getLicenceCategoryFields(licenceCategoryKey);
     }
     database.close();
     return licenceCategory;

@@ -45,3 +45,23 @@ export const getUnusedLicenceCategoryKey = (licenceCategory) => {
     database.close();
     return licenceCategoryKey;
 };
+export const getUnusedLicenceFieldKey = (licenceCategoryKey, licenceField) => {
+    const database = sqlite(databasePath, {
+        readonly: true
+    });
+    const licenceFieldKey = getUnusedKey(database, licenceCategoryKey + " " + licenceField, 50, "select licenceFieldKey" +
+        " from LicenceCategoryFields" +
+        " where licenceFieldKey = ?");
+    database.close();
+    return licenceFieldKey;
+};
+export const getUnusedLicenceApprovalKey = (licenceCategoryKey, licenceApproval) => {
+    const database = sqlite(databasePath, {
+        readonly: true
+    });
+    const licenceApprovalKey = getUnusedKey(database, licenceCategoryKey + " " + licenceApproval, 50, "select licenceApprovalKey" +
+        " from LicenceCategoryApprovals" +
+        " where licenceApprovalKey = ?");
+    database.close();
+    return licenceApprovalKey;
+};

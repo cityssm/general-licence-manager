@@ -40,11 +40,11 @@ export const initLicencesDB = () => {
             "licenceFieldKey varchar(50) not null primary key," +
             " licenceCategoryKey varchar(20) not null," +
             " licenceField varchar(100) not null," +
-            " licenceFieldDescription text," +
+            " licenceFieldDescription text not null default ''," +
             " isRequired bit not null default 0," +
             " minimumLength smallint not null default 1," +
             " maximumLength smallint not null default 100," +
-            " pattern varchar(100)," +
+            " pattern varchar(100) not null default ''," +
             " orderNumber smallint not null default 0," +
             recordColumns + "," +
             " foreign key (licenceCategoryKey) references LicenceCategories (licenceCategoryKey)" +

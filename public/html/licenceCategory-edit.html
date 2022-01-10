@@ -1,43 +1,123 @@
 <div class="modal">
   <div class="modal-background"></div>
-  <div class="modal-card">
+  <div class="modal-card" style="width:1200px;max-width:100vw">
     <header class="modal-card-head">
-      <h3 class="modal-card-title">Update Licence Category</h3>
+      <h2 class="modal-card-title">Update Licence Category</h2>
       <button class="delete is-close-modal-button" aria-label="close" type="button"></button>
     </header>
-    <section class="modal-card-body">
-      <form id="form--licenceCategoryEdit">
-        <input id="licenceCategoryEdit--licenceCategoryKey" name="licenceCategoryKey" type="hidden" value="" />
-        <div class="field">
-          <label class="label" for="licenceCategoryEdit--licenceCategory">Licence Category</label>
-          <div class="control">
-            <input class="input" id="licenceCategoryEdit--licenceCategory" name="licenceCategory" type="text" maxlength="100" required />
-          </div>
-        </div>
-        <div class="columns">
-          <div class="column">
+    <div class="modal-card-body">
+      <div class="columns">
+        <div class="column">
+          <form id="form--licenceCategoryEdit">
+            <input id="licenceCategoryEdit--licenceCategoryKey" name="licenceCategoryKey" type="hidden" value="" />
             <div class="field">
-              <label class="label" for="licenceCategoryEdit--bylawNumber">Bylaw Number</label>
+              <label class="label" for="licenceCategoryEdit--licenceCategory">Licence Category</label>
               <div class="control">
-                <input class="input" id="licenceCategoryEdit--bylawNumber" name="bylawNumber" type="text" maxlength="20" />
+                <input class="input" id="licenceCategoryEdit--licenceCategory" name="licenceCategory" type="text" maxlength="100" required />
               </div>
             </div>
-          </div>
-          <div class="column">
-            <div class="field">
-              <label class="label" for="licenceCategoryEdit--printEJS">Print File</label>
-              <div class="control is-expanded">
-                <div class="select is-fullwidth">
-                  <select id="licenceCategoryEdit--printEJS" name="printEJS">
-                    <option value="">(None Selected)</option>
-                  </select>
+            <div class="columns">
+              <div class="column">
+                <div class="field">
+                  <label class="label" for="licenceCategoryEdit--bylawNumber">Bylaw Number</label>
+                  <div class="control">
+                    <input class="input" id="licenceCategoryEdit--bylawNumber" name="bylawNumber" type="text" maxlength="20" />
+                  </div>
+                </div>
+              </div>
+              <div class="column">
+                <div class="field">
+                  <label class="label" for="licenceCategoryEdit--printEJS">Print File</label>
+                  <div class="control is-expanded">
+                    <div class="select is-fullwidth">
+                      <select id="licenceCategoryEdit--printEJS" name="printEJS">
+                        <option value="">(None Selected)</option>
+                      </select>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+            <label class="label" for="licenceCategoryEdit--licenceLengthYears">Licence Length</label>
+            <div class="columns">
+              <div class="column">
+                <div class="field has-addons">
+                  <div class="control">
+                    <input class="input has-text-right" id="licenceCategoryEdit--licenceLengthYears" name="licenceLengthYears" type="number" min="0" max="10" step="1" onwheel="return false" required />
+                  </div>
+                  <div class="control">
+                    <span class="button is-static">year(s)</span>
+                  </div>
+                </div>
+              </div>
+              <div class="column">
+                <div class="field has-addons">
+                  <div class="control">
+                    <input class="input has-text-right" id="licenceCategoryEdit--licenceLengthMonths" name="licenceLengthMonths" type="number" min="0" max="36" step="1" onwheel="return false" required />
+                  </div>
+                  <div class="control">
+                    <span class="button is-static">month(s)</span>
+                  </div>
+                </div>
+              </div>
+              <div class="column">
+                <div class="field has-addons">
+                  <div class="control">
+                    <input class="input has-text-right" id="licenceCategoryEdit--licenceLengthDays" name="licenceLengthDays" type="number" min="0" max="1000" step="1" onwheel="return false" required />
+                  </div>
+                  <div class="control">
+                    <span class="button is-static">day(s)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="has-text-right">
+              <button class="button is-success" type="submit">Update Main Details</button>
+            </div>
+          </form>
         </div>
-      </form>
-    </section>
+        <div class="column">
+          <section>
+            <h3 class="title is-5">Additional Fields</h3>
+            <form id="form--licenceCategoryFieldAdd">
+              <input id="licenceCategoryFieldAdd--licenceCategoryKey" name="licenceCategoryKey" type="hidden" value="" />
+              <div class="field has-addons">
+                <div class="control">
+                  <label class="button is-static" for="licenceCategoryFieldAdd--licenceField">New Field Name</label>
+                </div>
+                <div class="control is-expanded">
+                  <input class="input" id="licenceCategoryFieldAdd--licenceField" name="licenceField" type="text" maxlength="100" required />
+                </div>
+                <div class="control">
+                  <button class="button is-success" type="submit">Add</button>
+                </div>
+              </div>
+            </form>
+            <div class="my-4" id="container--licenceCategoryFields"></div>
+          </section>
+          <section>
+            <h3 class="title is-5">Approvals</h3>
+            <form id="form--licenceCategoryApprovalAdd">
+              <input id="licenceCategoryApprovalAdd--licenceCategoryKey" name="licenceCategoryKey" type="hidden" value="" />
+              <div class="field has-addons">
+                <div class="control">
+                  <label class="button is-static" for="licenceCategoryApprovalAdd--licenceApproval">New Approval</label>
+                </div>
+                <div class="control is-expanded">
+                  <input class="input" id="licenceCategoryApprovalAdd--licenceApproval" name="licenceApproval" type="text" maxlength="100" required />
+                </div>
+                <div class="control">
+                  <button class="button is-success" type="submit">Add</button>
+                </div>
+              </div>
+            </form>
+          </section>
+          <section class="mt-4">
+            <h3 class="title is-5">Fees</h3>
+          </section>
+        </div>
+      </div>
+    </div>
     <footer class="modal-card-foot is-justify-content-right">
       <button class="button is-close-modal-button" type="button">Close</button>
     </footer>

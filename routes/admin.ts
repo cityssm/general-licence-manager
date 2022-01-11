@@ -14,6 +14,11 @@ import handler_doUpdateLicenceCategoryField from "../handlers/admin-post/doUpdat
 import handler_doMoveLicenceCategoryField from "../handlers/admin-post/doMoveLicenceCategoryField.js";
 import handler_doDeleteLicenceCategoryField from "../handlers/admin-post/doDeleteLicenceCategoryField.js";
 
+import handler_doAddLicenceCategoryApproval from "../handlers/admin-post/doAddLicenceCategoryApproval.js";
+import handler_doUpdateLicenceCategoryApproval from "../handlers/admin-post/doUpdateLicenceCategoryApproval.js";
+import handler_doMoveLicenceCategoryApproval from "../handlers/admin-post/doMoveLicenceCategoryApproval.js";
+import handler_doDeleteLicenceCategoryApproval from "../handlers/admin-post/doDeleteLicenceCategoryApproval.js";
+
 
 export const router = Router();
 
@@ -58,5 +63,22 @@ router.post("/doDeleteLicenceCategoryField",
   permissionHandlers.adminPostHandler,
   handler_doDeleteLicenceCategoryField);
 
+// Licence Category Approval
+
+router.post("/doAddLicenceCategoryApproval",
+  permissionHandlers.adminPostHandler,
+  handler_doAddLicenceCategoryApproval);
+
+router.post("/doUpdateLicenceCategoryApproval",
+  permissionHandlers.adminPostHandler,
+  handler_doUpdateLicenceCategoryApproval);
+
+router.post("/doMoveLicenceCategoryApproval",
+  permissionHandlers.adminPostHandler,
+  handler_doMoveLicenceCategoryApproval);
+
+router.post("/doDeleteLicenceCategoryApproval",
+  permissionHandlers.adminPostHandler,
+  handler_doDeleteLicenceCategoryApproval);
 
 export default router;

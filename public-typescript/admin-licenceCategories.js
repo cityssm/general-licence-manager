@@ -188,8 +188,135 @@ Object.defineProperty(exports, "__esModule", { value: true });
     };
     let licenceCategoryApprovals;
     const openEditLicenceCategoryApprovalModal = (licenceApprovalKey) => {
+        let editLicenceCategoryApprovalModalCloseFunction;
+        const updateLicenceCategoryApprovalSubmitFunction = (formEvent) => {
+            formEvent.preventDefault();
+            cityssm.postJSON(urlPrefix + "/admin/doUpdateLicenceCategoryApproval", formEvent.currentTarget, (responseJSON) => {
+                if (responseJSON.success) {
+                    licenceCategoryApprovals = responseJSON.licenceCategoryApprovals;
+                    editLicenceCategoryApprovalModalCloseFunction();
+                    renderLicenceCategoryApprovals();
+                }
+            });
+        };
+        const deleteLicenceCategoryApprovalFunction = () => {
+            cityssm.postJSON(urlPrefix + "/admin/doDeleteLicenceCategoryApproval", {
+                licenceApprovalKey
+            }, (responseJSON) => {
+                if (responseJSON.success) {
+                    licenceCategoryApprovals = responseJSON.licenceCategoryApprovals;
+                    renderLicenceCategoryApprovals();
+                    editLicenceCategoryApprovalModalCloseFunction();
+                }
+            });
+        };
+        const confirmDeleteLicenceCategoryApprovalFunction = (clickEvent) => {
+            clickEvent.preventDefault();
+            bulmaJS.confirm({
+                title: "Delete Licence Approval",
+                message: "Are you sure you want to delete this licence approval?",
+                contextualColorName: "warning",
+                okButton: {
+                    text: "Yes, Delete It",
+                    callbackFunction: deleteLicenceCategoryApprovalFunction
+                }
+            });
+        };
+        const licenceCategoryApproval = licenceCategoryApprovals.find((possibleField) => {
+            return possibleField.licenceApprovalKey === licenceApprovalKey;
+        });
+        cityssm.openHtmlModal("licenceCategoryApproval-edit", {
+            onshow: (modalElement) => {
+                modalElement.querySelector("#licenceCategoryApprovalEdit--licenceApprovalKey").value = licenceApprovalKey;
+                modalElement.querySelector("#licenceCategoryApprovalEdit--licenceApproval").value = licenceCategoryApproval.licenceApproval;
+                modalElement.querySelector("#licenceCategoryApprovalEdit--licenceApprovalDescription").value = licenceCategoryApproval.licenceApprovalDescription;
+                if (licenceCategoryApproval.isRequiredForNew) {
+                    modalElement.querySelector("#licenceCategoryApprovalEdit--isRequiredForNew").checked = true;
+                }
+                if (licenceCategoryApproval.isRequiredForRenewal) {
+                    modalElement.querySelector("#licenceCategoryApprovalEdit--isRequiredForRenewal").checked = true;
+                }
+            },
+            onshown: (modalElement, closeModalFunction) => {
+                editLicenceCategoryApprovalModalCloseFunction = closeModalFunction;
+                modalElement.querySelector("#form--licenceCategoryApprovalEdit")
+                    .addEventListener("submit", updateLicenceCategoryApprovalSubmitFunction);
+                modalElement.querySelector(".is-delete-button")
+                    .addEventListener("click", confirmDeleteLicenceCategoryApprovalFunction);
+                bulmaJS.init(modalElement);
+            }
+        });
+    };
+    const openEditLicenceCategoryApprovalModalByClick = (clickEvent) => {
+        clickEvent.preventDefault();
+        const licenceApprovalKey = clickEvent.currentTarget.dataset.licenceApprovalKey;
+        openEditLicenceCategoryApprovalModal(licenceApprovalKey);
+    };
+    const licenceCategoryApproval_dragDataPrefix = "licenceApprovalKey:";
+    const licenceCategoryApproval_dragstart = (dragEvent) => {
+        dragEvent.dataTransfer.dropEffect = "move";
+        const data = licenceCategoryApproval_dragDataPrefix + dragEvent.target.dataset.licenceApprovalKey;
+        dragEvent.dataTransfer.setData("text/plain", data);
+    };
+    const licenceCategoryApproval_dragover = (dragEvent) => {
+        if (dragEvent.dataTransfer.getData("text/plain").startsWith(licenceCategoryApproval_dragDataPrefix)) {
+            const licenceApprovalKey_drag = dragEvent.dataTransfer.getData("text/plain").slice(licenceCategoryApproval_dragDataPrefix.length);
+            const licenceApprovalKey_drop = dragEvent.currentTarget.dataset.licenceApprovalKey;
+            if (licenceApprovalKey_drag !== licenceApprovalKey_drop) {
+                dragEvent.preventDefault();
+                dragEvent.dataTransfer.dropEffect = "move";
+            }
+        }
+    };
+    const licenceCategoryApproval_drop = (dragEvent) => {
+        dragEvent.preventDefault();
+        const licenceApprovalKey_from = dragEvent.dataTransfer.getData("text/plain").slice(licenceCategoryApproval_dragDataPrefix.length);
+        const licenceApprovalKey_to = dragEvent.currentTarget.dataset.licenceApprovalKey;
+        cityssm.postJSON(urlPrefix + "/admin/doMoveLicenceCategoryApproval", {
+            licenceApprovalKey_from,
+            licenceApprovalKey_to
+        }, (responseJSON) => {
+            licenceCategoryApprovals = responseJSON.licenceCategoryApprovals;
+            renderLicenceCategoryApprovals();
+        });
     };
     const renderLicenceCategoryApprovals = () => {
+        const approvalsContainerElement = editModalElement.querySelector("#container--licenceCategoryApprovals");
+        if (licenceCategoryApprovals.length === 0) {
+            approvalsContainerElement.innerHTML = "<div class=\"message is-info\">" +
+                "<p class=\"message-body\">There are no approvals associated with this licence.</p>" +
+                "</div>";
+        }
+        else {
+            const approvalsPanelElement = document.createElement("div");
+            approvalsPanelElement.className = "panel";
+            for (const categoryApproval of licenceCategoryApprovals) {
+                const panelBlockElement = document.createElement("a");
+                panelBlockElement.className = "panel-block is-block";
+                panelBlockElement.draggable = true;
+                panelBlockElement.dataset.licenceApprovalKey = categoryApproval.licenceApprovalKey;
+                panelBlockElement.innerHTML = "<div class=\"columns is-mobile\">" +
+                    ("<div class=\"column\">" +
+                        "<h4>" + cityssm.escapeHTML(categoryApproval.licenceApproval) + "</h4>" +
+                        "<p class=\"is-size-7\">" + cityssm.escapeHTML(categoryApproval.licenceApprovalDescription) + "</p>" +
+                        "</div>") +
+                    (categoryApproval.isRequiredForNew || categoryApproval.isRequiredForRenewal
+                        ? "<div class=\"column is-narrow\">" +
+                            "<i class=\"fas fa-asterisk\" aria-hidden=\"true\"</i>" +
+                            "</div>"
+                        : "") +
+                    "</div>";
+                panelBlockElement.addEventListener("click", openEditLicenceCategoryApprovalModalByClick);
+                if (licenceCategoryApprovals.length > 1) {
+                    panelBlockElement.addEventListener("dragstart", licenceCategoryApproval_dragstart);
+                    panelBlockElement.addEventListener("dragover", licenceCategoryApproval_dragover);
+                    panelBlockElement.addEventListener("drop", licenceCategoryApproval_drop);
+                }
+                approvalsPanelElement.append(panelBlockElement);
+            }
+            approvalsContainerElement.innerHTML = "";
+            approvalsContainerElement.append(approvalsPanelElement);
+        }
     };
     let licenceCategoryFees;
     const renderLicenceCategoryFees = () => {

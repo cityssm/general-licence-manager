@@ -2,6 +2,7 @@ import sqlite from "better-sqlite3";
 import { licencesDB as databasePath } from "../../data/databasePaths.js";
 
 import { getLicenceCategoryFields } from "./getLicenceCategoryFields.js";
+import { getLicenceCategoryApprovals } from "./getLicenceCategoryApprovals.js";
 
 import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
 
@@ -29,13 +30,7 @@ export const getLicenceCategory = (licenceCategoryKey: string, options: {
   if (licenceCategory && options.includeApprovals) {
 
     licenceCategory.licenceCategoryApprovals =
-      database.prepare("select licenceApprovalKey, licenceApproval, licenceApprovalDescription," +
-        " isRequiredForNew, isRequiredForRenewal" +
-        " from LicenceCategoryApprovals" +
-        " where recordDelete_timeMillis is null" +
-        " and licenceCategoryKey = ?" +
-        " order by orderNumber, licenceApproval")
-        .all(licenceCategoryKey);
+      getLicenceCategoryApprovals(licenceCategoryKey, database);
   }
 
   if (licenceCategory && options.includeFees) {
@@ -62,7 +57,8 @@ export const getLicenceCategory = (licenceCategoryKey: string, options: {
   }
 
   if (licenceCategory && options.includeFields) {
-    licenceCategory.licenceCategoryFields = getLicenceCategoryFields(licenceCategoryKey);
+    licenceCategory.licenceCategoryFields =
+      getLicenceCategoryFields(licenceCategoryKey, database);
   }
 
   database.close();

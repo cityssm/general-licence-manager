@@ -53,7 +53,7 @@ export const initLicencesDB = () => {
             "licenceApprovalKey varchar(80) not null primary key," +
             " licenceCategoryKey varchar(50) not null," +
             " licenceApproval varchar(100) not null," +
-            " licenceApprovalDescription text," +
+            " licenceApprovalDescription text not null default ''," +
             " isRequiredForNew bit not null default 1," +
             " isRequiredForRenewal bit not null default 1," +
             " orderNumber smallint not null default 0," +

@@ -1,0 +1,54 @@
+<div class="modal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <h2 class="modal-card-title">Update Licence Approval</h2>
+      <button class="delete is-close-modal-button" aria-label="close" type="button"></button>
+    </header>
+    <section class="modal-card-body">
+      <form id="form--licenceCategoryApprovalEdit">
+        <input id="licenceCategoryApprovalEdit--licenceApprovalKey" name="licenceApprovalKey" type="hidden" />
+        <div class="field">
+          <label class="label" for="licenceCategoryApprovalEdit--licenceApproval">Approval</label>
+          <div class="control">
+            <input class="input" id="licenceCategoryApprovalEdit--licenceApproval" name="licenceApproval" type="text" maxlength="100" required />
+          </div>
+        </div>
+        <div class="field">
+          <label class="label" for="licenceCategoryApprovalEdit--licenceApprovalDescription">Approval Description</label>
+          <div class="control">
+            <textarea class="textarea" id="licenceCategoryApprovalEdit--licenceApprovalDescription" name="licenceApprovalDescription"></textarea>
+          </div>
+        </div>
+        <div class="facheck">
+          <input id="licenceCategoryApprovalEdit--isRequiredForNew" name="isRequiredForNew" type="checkbox" />
+          <label class="has-text-weight-bold" for="licenceCategoryApprovalEdit--isRequiredForNew">Required for New Licences</label>
+        </div>
+        <div class="facheck">
+          <input id="licenceCategoryApprovalEdit--isRequiredForRenewal" name="isRequiredForRenewal" type="checkbox" />
+          <label class="has-text-weight-bold" for="licenceCategoryApprovalEdit--isRequiredForRenewal">Required for Renewals</label>
+        </div>
+      </form>
+    </section>
+    <footer class="modal-card-foot is-justify-content-right">
+      <button class="button is-success" type="submit" form="form--licenceCategoryApprovalEdit">Update Approval</button>
+      <div class="dropdown is-right is-up">
+        <div class="dropdown-trigger">
+          <button class="button" type="button">
+            <span>More</span>
+            <span class="icon is-small"><i class="fas fa-angle-down" aria-hidden="true"></i></span>
+          </button>
+        </div>
+        <div class="dropdown-menu">
+          <div class="dropdown-content">
+            <a class="dropdown-item is-delete-button" href="#">
+              <span class="icon is-small"><i class="fas fa-trash has-text-danger" aria-hidden="true"></i></span>
+              <span>Delete Approval</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <button class="button ml-2 is-close-modal-button" type="button">Close</button>
+    </footer>
+  </div>
+</div>

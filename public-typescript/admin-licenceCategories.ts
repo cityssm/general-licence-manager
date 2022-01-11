@@ -98,6 +98,7 @@ declare const bulmaJS: BulmaJS;
             licenceCategoryFields = responseJSON.licenceCategoryFields;
             editLicenceCategoryFieldModalCloseFunction();
             renderLicenceCategoryFields();
+            doRefreshOnClose = true;
           }
         });
     };
@@ -113,6 +114,7 @@ declare const bulmaJS: BulmaJS;
             licenceCategoryFields = responseJSON.licenceCategoryFields;
             renderLicenceCategoryFields();
             editLicenceCategoryFieldModalCloseFunction();
+            doRefreshOnClose = true;
           }
         });
     };
@@ -219,6 +221,7 @@ declare const bulmaJS: BulmaJS;
       (responseJSON: { licenceCategoryFields: recordTypes.LicenceCategoryField[] }) => {
         licenceCategoryFields = responseJSON.licenceCategoryFields;
         renderLicenceCategoryFields();
+        doRefreshOnClose = true;
       });
   };
 
@@ -289,6 +292,7 @@ declare const bulmaJS: BulmaJS;
             licenceCategoryApprovals = responseJSON.licenceCategoryApprovals;
             editLicenceCategoryApprovalModalCloseFunction();
             renderLicenceCategoryApprovals();
+            doRefreshOnClose = true;
           }
         });
     };
@@ -304,6 +308,7 @@ declare const bulmaJS: BulmaJS;
             licenceCategoryApprovals = responseJSON.licenceCategoryApprovals;
             renderLicenceCategoryApprovals();
             editLicenceCategoryApprovalModalCloseFunction();
+            doRefreshOnClose = true;
           }
         });
     };
@@ -401,6 +406,7 @@ declare const bulmaJS: BulmaJS;
       (responseJSON: { licenceCategoryApprovals: recordTypes.LicenceCategoryApproval[] }) => {
         licenceCategoryApprovals = responseJSON.licenceCategoryApprovals;
         renderLicenceCategoryApprovals();
+        doRefreshOnClose = true;
       });
   };
 
@@ -463,6 +469,41 @@ declare const bulmaJS: BulmaJS;
   // Main Details
 
   const openEditLicenceCategoryModal = (licenceCategoryKey: string) => {
+
+    let categoryCloseModalFunction: () => void;
+
+    const deleteLicenceCategoryFunction = () => {
+
+      cityssm.postJSON(urlPrefix + "/admin/doDeleteLicenceCategory", {
+        licenceCategoryKey
+      },
+        (responseJSON: { success: boolean; licenceCategories: recordTypes.LicenceCategory[]; }) => {
+          if (responseJSON.success) {
+
+            doRefreshOnClose = false;
+            licenceCategories = responseJSON.licenceCategories;
+
+            categoryCloseModalFunction();
+
+            renderLicenceCategories();
+          }
+        });
+    };
+
+    const deleteLicenceCategoryConfirmFunction = (clickEvent: Event) => {
+
+      clickEvent.preventDefault();
+
+      bulmaJS.confirm({
+        title: "Delete Licence Category",
+        message: "Are you sure you want to delete this category?",
+        contextualColorName: "warning",
+        okButton: {
+          text: "Yes, Delete It",
+          callbackFunction: deleteLicenceCategoryFunction
+        }
+      });
+    };
 
     const updateLicenceCategorySubmitFunction = (formEvent: SubmitEvent) => {
 
@@ -609,7 +650,9 @@ declare const bulmaJS: BulmaJS;
         },
           renderEditLicenceCategory);
       },
-      onshown: (modalElement) => {
+      onshown: (modalElement, closeModalFunction) => {
+
+        categoryCloseModalFunction = closeModalFunction;
 
         modalElement.querySelector("#form--licenceCategoryEdit")
           .addEventListener("submit", updateLicenceCategorySubmitFunction);
@@ -620,7 +663,11 @@ declare const bulmaJS: BulmaJS;
         modalElement.querySelector("#form--licenceCategoryApprovalAdd")
           .addEventListener("submit", addLicenceCategoryApprovalSubmitFunction);
 
+        modalElement.querySelector(".is-delete-button")
+          .addEventListener("click", deleteLicenceCategoryConfirmFunction);
+
         bulmaJS.toggleHtmlClipped();
+        bulmaJS.init();
       },
       onhidden: () => {
         if (doRefreshOnClose) {

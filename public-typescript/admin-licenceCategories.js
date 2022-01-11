@@ -58,6 +58,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     licenceCategoryFields = responseJSON.licenceCategoryFields;
                     editLicenceCategoryFieldModalCloseFunction();
                     renderLicenceCategoryFields();
+                    doRefreshOnClose = true;
                 }
             });
         };
@@ -69,6 +70,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     licenceCategoryFields = responseJSON.licenceCategoryFields;
                     renderLicenceCategoryFields();
                     editLicenceCategoryFieldModalCloseFunction();
+                    doRefreshOnClose = true;
                 }
             });
         };
@@ -146,6 +148,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }, (responseJSON) => {
             licenceCategoryFields = responseJSON.licenceCategoryFields;
             renderLicenceCategoryFields();
+            doRefreshOnClose = true;
         });
     };
     const renderLicenceCategoryFields = () => {
@@ -196,6 +199,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     licenceCategoryApprovals = responseJSON.licenceCategoryApprovals;
                     editLicenceCategoryApprovalModalCloseFunction();
                     renderLicenceCategoryApprovals();
+                    doRefreshOnClose = true;
                 }
             });
         };
@@ -207,6 +211,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     licenceCategoryApprovals = responseJSON.licenceCategoryApprovals;
                     renderLicenceCategoryApprovals();
                     editLicenceCategoryApprovalModalCloseFunction();
+                    doRefreshOnClose = true;
                 }
             });
         };
@@ -278,6 +283,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }, (responseJSON) => {
             licenceCategoryApprovals = responseJSON.licenceCategoryApprovals;
             renderLicenceCategoryApprovals();
+            doRefreshOnClose = true;
         });
     };
     const renderLicenceCategoryApprovals = () => {
@@ -322,6 +328,31 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const renderLicenceCategoryFees = () => {
     };
     const openEditLicenceCategoryModal = (licenceCategoryKey) => {
+        let categoryCloseModalFunction;
+        const deleteLicenceCategoryFunction = () => {
+            cityssm.postJSON(urlPrefix + "/admin/doDeleteLicenceCategory", {
+                licenceCategoryKey
+            }, (responseJSON) => {
+                if (responseJSON.success) {
+                    doRefreshOnClose = false;
+                    licenceCategories = responseJSON.licenceCategories;
+                    categoryCloseModalFunction();
+                    renderLicenceCategories();
+                }
+            });
+        };
+        const deleteLicenceCategoryConfirmFunction = (clickEvent) => {
+            clickEvent.preventDefault();
+            bulmaJS.confirm({
+                title: "Delete Licence Category",
+                message: "Are you sure you want to delete this category?",
+                contextualColorName: "warning",
+                okButton: {
+                    text: "Yes, Delete It",
+                    callbackFunction: deleteLicenceCategoryFunction
+                }
+            });
+        };
         const updateLicenceCategorySubmitFunction = (formEvent) => {
             formEvent.preventDefault();
             const formElement = formEvent.currentTarget;
@@ -416,14 +447,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     licenceCategoryKey
                 }, renderEditLicenceCategory);
             },
-            onshown: (modalElement) => {
+            onshown: (modalElement, closeModalFunction) => {
+                categoryCloseModalFunction = closeModalFunction;
                 modalElement.querySelector("#form--licenceCategoryEdit")
                     .addEventListener("submit", updateLicenceCategorySubmitFunction);
                 modalElement.querySelector("#form--licenceCategoryFieldAdd")
                     .addEventListener("submit", addLicenceCategoryFieldSubmitFunction);
                 modalElement.querySelector("#form--licenceCategoryApprovalAdd")
                     .addEventListener("submit", addLicenceCategoryApprovalSubmitFunction);
+                modalElement.querySelector(".is-delete-button")
+                    .addEventListener("click", deleteLicenceCategoryConfirmFunction);
                 bulmaJS.toggleHtmlClipped();
+                bulmaJS.init();
             },
             onhidden: () => {
                 if (doRefreshOnClose) {

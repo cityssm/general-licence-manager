@@ -8,6 +8,7 @@ import handler_doGetLicenceCategories from "../handlers/admin-post/doGetLicenceC
 import handler_doGetLicenceCategory from "../handlers/admin-post/doGetLicenceCategory.js";
 import handler_doAddLicenceCategory from "../handlers/admin-post/doAddLicenceCategory.js";
 import handler_doUpdateLicenceCategory from "../handlers/admin-post/doUpdateLicenceCategory.js";
+import handler_doDeleteLicenceCategory from "../handlers/admin-post/doDeleteLicenceCategory.js";
 
 import handler_doAddLicenceCategoryField from "../handlers/admin-post/doAddLicenceCategoryField.js";
 import handler_doUpdateLicenceCategoryField from "../handlers/admin-post/doUpdateLicenceCategoryField.js";
@@ -44,6 +45,10 @@ router.post("/doAddLicenceCategory",
 router.post("/doUpdateLicenceCategory",
   permissionHandlers.adminPostHandler,
   handler_doUpdateLicenceCategory);
+
+router.post("/doDeleteLicenceCategory",
+  permissionHandlers.adminPostHandler,
+  handler_doDeleteLicenceCategory);
 
 // Licence Category Field
 

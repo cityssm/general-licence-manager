@@ -63,7 +63,8 @@ export const getUnusedLicenceCategoryKey = (licenceCategory: string): string => 
   });
 
   const licenceCategoryKey = getUnusedKey(database,
-    licenceCategory, 20,
+    licenceCategory,
+    50,
     "select licenceCategoryKey" +
     " from LicenceCategories" +
     " where licenceCategoryKey = ?");
@@ -82,7 +83,7 @@ export const getUnusedLicenceFieldKey = (licenceCategoryKey: string, licenceFiel
 
   const licenceFieldKey = getUnusedKey(database,
     licenceCategoryKey + " " + licenceField,
-    50,
+    80,
     "select licenceFieldKey" +
     " from LicenceCategoryFields" +
     " where licenceFieldKey = ?");
@@ -101,7 +102,7 @@ export const getUnusedLicenceApprovalKey = (licenceCategoryKey: string, licenceA
 
   const licenceApprovalKey = getUnusedKey(database,
     licenceCategoryKey + " " + licenceApproval,
-    50,
+    80,
     "select licenceApprovalKey" +
     " from LicenceCategoryApprovals" +
     " where licenceApprovalKey = ?");

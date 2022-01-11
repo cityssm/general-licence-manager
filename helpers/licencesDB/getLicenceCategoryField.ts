@@ -4,11 +4,18 @@ import { licencesDB as databasePath } from "../../data/databasePaths.js";
 import type * as recordTypes from "../../types/recordTypes";
 
 
-export const getLicenceCategoryField = (licenceFieldKey: string) => {
+export const getLicenceCategoryField = (licenceFieldKey: string, database?: sqlite.Database) => {
 
-  const database = sqlite(databasePath, {
-    readonly: true
-  });
+  let doCloseDatabase = false;
+
+  if (!database) {
+
+    database = sqlite(databasePath, {
+      readonly: true
+    });
+
+    doCloseDatabase = true;
+  }
 
   const licenceCategoryField: recordTypes.LicenceCategoryField =
     database.prepare("select licenceFieldKey, licenceCategoryKey," +
@@ -19,7 +26,9 @@ export const getLicenceCategoryField = (licenceFieldKey: string) => {
       " and licenceFieldKey = ?")
       .get(licenceFieldKey);
 
-  database.close();
+  if (doCloseDatabase) {
+    database.close();
+  }
 
   return licenceCategoryField;
 };

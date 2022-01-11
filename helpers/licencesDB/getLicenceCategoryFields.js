@@ -9,7 +9,7 @@ export const getLicenceCategoryFields = (licenceCategoryKey, database) => {
         doCloseDatabase = true;
     }
     const licenceCategoryFields = database.prepare("select licenceFieldKey, licenceField, licenceFieldDescription," +
-        " isRequired, minimumLength, maximumLength, pattern" +
+        " isRequired, minimumLength, maximumLength, pattern, orderNumber" +
         " from LicenceCategoryFields" +
         " where recordDelete_timeMillis is null" +
         " and licenceCategoryKey = ?" +

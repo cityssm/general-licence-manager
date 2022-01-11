@@ -31,7 +31,7 @@ export const initLicencesDB = (): boolean => {
      */
 
     licencesDB.prepare("create table if not exists LicenceCategories (" +
-      "licenceCategoryKey varchar(20) primary key," +
+      "licenceCategoryKey varchar(50) primary key," +
       " licenceCategory varchar(100) not null," +
       " bylawNumber varchar(20) default ''," +
 
@@ -45,7 +45,7 @@ export const initLicencesDB = (): boolean => {
       ") without rowid").run();
 
     licencesDB.prepare("create table if not exists LicenceCategoryFees (" +
-      "licenceCategoryKey varchar(20) not null," +
+      "licenceCategoryKey varchar(50) not null," +
       " effectiveStartDate integer not null," +
       " effectiveEndDate integer," +
       " licenceFee decimal(10, 2) not null default 0," +
@@ -57,11 +57,11 @@ export const initLicencesDB = (): boolean => {
       ") without rowid").run();
 
     licencesDB.prepare("create table if not exists LicenceCategoryFields (" +
-      "licenceFieldKey varchar(50) not null primary key," +
-      " licenceCategoryKey varchar(20) not null," +
+      "licenceFieldKey varchar(80) not null primary key," +
+      " licenceCategoryKey varchar(50) not null," +
       " licenceField varchar(100) not null," +
       " licenceFieldDescription text not null default ''," +
-      " isRequired bit not null default 0," +
+      " isRequired bit not null default 1," +
       " minimumLength smallint not null default 1," +
       " maximumLength smallint not null default 100," +
       " pattern varchar(100) not null default ''," +
@@ -71,12 +71,12 @@ export const initLicencesDB = (): boolean => {
       ") without rowid").run();
 
     licencesDB.prepare("create table if not exists LicenceCategoryApprovals (" +
-      "licenceApprovalKey varchar(50) not null primary key," +
-      " licenceCategoryKey varchar(20) not null," +
+      "licenceApprovalKey varchar(80) not null primary key," +
+      " licenceCategoryKey varchar(50) not null," +
       " licenceApproval varchar(100) not null," +
       " licenceApprovalDescription text," +
-      " isRequiredForNew bit not null default 0," +
-      " isRequiredForRenewal bit not null default 0," +
+      " isRequiredForNew bit not null default 1," +
+      " isRequiredForRenewal bit not null default 1," +
       " orderNumber smallint not null default 0," +
       recordColumns + "," +
       " foreign key (licenceCategoryKey) references LicenceCategories (licenceCategoryKey)" +
@@ -88,7 +88,7 @@ export const initLicencesDB = (): boolean => {
 
     licencesDB.prepare("create table if not exists Licences (" +
       "licenceId integer primary key autoincrement," +
-      " licenceCategoryKey varchar(20) not null," +
+      " licenceCategoryKey varchar(50) not null," +
       " licenceNumber varchar(20)," +
 
       " licenseeName varchar(100) not null," +
@@ -113,7 +113,7 @@ export const initLicencesDB = (): boolean => {
 
     licencesDB.prepare("create table if not exists LicenceFields (" +
       "licenceId integer not null," +
-      " licenceFieldKey varchar(50) not null," +
+      " licenceFieldKey varchar(80) not null," +
       " licenceFieldValue text," +
       " primary key (licenceId, licenceFieldKey)" +
       " foreign key (licenceId) references Licences (licenceId)" +
@@ -121,7 +121,7 @@ export const initLicencesDB = (): boolean => {
 
     licencesDB.prepare("create table if not exists LicenceApprovals (" +
       "licenceId integer not null," +
-      " licenceApprovalKey varchar(50) not null," +
+      " licenceApprovalKey varchar(80) not null," +
       " primary key (licenceId, licenceApprovalKey)" +
       " foreign key (licenceId) references Licences (licenceId)" +
       ") without rowid").run();

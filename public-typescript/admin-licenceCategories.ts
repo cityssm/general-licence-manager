@@ -102,6 +102,37 @@ declare const bulmaJS: BulmaJS;
         });
     };
 
+    const deleteLicenceCategoryFieldFunction = () => {
+
+      cityssm.postJSON(urlPrefix + "/admin/doDeleteLicenceCategoryField", {
+        licenceFieldKey
+      },
+        (responseJSON: { success: true; licenceCategoryFields: recordTypes.LicenceCategoryField[]; }) => {
+
+          if (responseJSON.success) {
+            licenceCategoryFields = responseJSON.licenceCategoryFields;
+            renderLicenceCategoryFields();
+            editLicenceCategoryFieldModalCloseFunction();
+          }
+        });
+    };
+
+    const confirmDeleteLicenceCategoryFieldFunction = (clickEvent: Event) => {
+
+      clickEvent.preventDefault();
+
+
+      bulmaJS.confirm({
+        title: "Delete Licence Field",
+        message: "Are you sure you want to delete this licence field?",
+        contextualColorName: "warning",
+        okButton: {
+          text: "Yes, Delete It",
+          callbackFunction: deleteLicenceCategoryFieldFunction
+        }
+      });
+    };
+
     const licenceCategoryField = licenceCategoryFields.find((possibleField) => {
       return possibleField.licenceFieldKey === licenceFieldKey;
     });
@@ -136,7 +167,12 @@ declare const bulmaJS: BulmaJS;
         editLicenceCategoryFieldModalCloseFunction = closeModalFunction;
 
         modalElement.querySelector("#form--licenceCategoryFieldEdit")
-          .addEventListener("submit", updateLicenceCategoryFieldSubmitFunction)
+          .addEventListener("submit", updateLicenceCategoryFieldSubmitFunction);
+
+        modalElement.querySelector(".is-delete-button")
+          .addEventListener("click", confirmDeleteLicenceCategoryFieldFunction);
+
+        bulmaJS.init(modalElement);
       }
     });
   };
@@ -146,6 +182,45 @@ declare const bulmaJS: BulmaJS;
 
     const licenceFieldKey = (clickEvent.currentTarget as HTMLElement).dataset.licenceFieldKey;
     openEditLicenceCategoryFieldModal(licenceFieldKey);
+  };
+
+  const licenceCategoryField_dragDataPrefix = "licenceFieldKey:";
+
+  const licenceCategoryField_dragstart = (dragEvent: DragEvent) => {
+    dragEvent.dataTransfer.dropEffect = "move";
+    const data = licenceCategoryField_dragDataPrefix + (dragEvent.target as HTMLElement).dataset.licenceFieldKey;
+    dragEvent.dataTransfer.setData("text/plain", data);
+  };
+
+  const licenceCategoryField_dragover = (dragEvent: DragEvent) => {
+
+    if (dragEvent.dataTransfer.getData("text/plain").startsWith(licenceCategoryField_dragDataPrefix)) {
+
+      const licenceFieldKey_drag = dragEvent.dataTransfer.getData("text/plain").slice(licenceCategoryField_dragDataPrefix.length);
+      const licenceFieldKey_drop = (dragEvent.currentTarget as HTMLElement).dataset.licenceFieldKey;
+
+      if (licenceFieldKey_drag !== licenceFieldKey_drop) {
+        dragEvent.preventDefault();
+        dragEvent.dataTransfer.dropEffect = "move";
+      }
+    }
+  };
+
+  const licenceCategoryField_drop = (dragEvent: DragEvent) => {
+
+    dragEvent.preventDefault();
+
+    const licenceFieldKey_from = dragEvent.dataTransfer.getData("text/plain").slice(licenceCategoryField_dragDataPrefix.length);
+    const licenceFieldKey_to = (dragEvent.currentTarget as HTMLElement).dataset.licenceFieldKey;
+
+    cityssm.postJSON(urlPrefix + "/admin/doMoveLicenceCategoryField", {
+      licenceFieldKey_from,
+      licenceFieldKey_to
+    },
+      (responseJSON: { licenceCategoryFields: recordTypes.LicenceCategoryField[] }) => {
+        licenceCategoryFields = responseJSON.licenceCategoryFields;
+        renderLicenceCategoryFields();
+      });
   };
 
   const renderLicenceCategoryFields = () => {
@@ -165,12 +240,28 @@ declare const bulmaJS: BulmaJS;
 
         const panelBlockElement = document.createElement("a");
         panelBlockElement.className = "panel-block is-block";
+        panelBlockElement.draggable = true;
         panelBlockElement.dataset.licenceFieldKey = categoryField.licenceFieldKey;
 
-        panelBlockElement.innerHTML = "<h4>" + cityssm.escapeHTML(categoryField.licenceField) + "</h4>" +
-          "<p class=\"is-size-7\">" + cityssm.escapeHTML(categoryField.licenceFieldDescription) + "</p>";
+        panelBlockElement.innerHTML = "<div class=\"columns is-mobile\">" +
+          ("<div class=\"column\">" +
+            "<h4>" + cityssm.escapeHTML(categoryField.licenceField) + "</h4>" +
+            "<p class=\"is-size-7\">" + cityssm.escapeHTML(categoryField.licenceFieldDescription) + "</p>" +
+            "</div>") +
+          (categoryField.isRequired
+            ? "<div class=\"column is-narrow\">" +
+            "<i class=\"fas fa-asterisk\" aria-hidden=\"true\"</i>" +
+            "</div>"
+            : "") +
+          "</div>";
 
         panelBlockElement.addEventListener("click", openEditLicenceCategoryFieldModalByClick);
+
+        if (licenceCategoryFields.length > 1) {
+          panelBlockElement.addEventListener("dragstart", licenceCategoryField_dragstart);
+          panelBlockElement.addEventListener("dragover", licenceCategoryField_dragover);
+          panelBlockElement.addEventListener("drop", licenceCategoryField_drop);
+        }
 
         fieldsPanelElement.append(panelBlockElement);
       }

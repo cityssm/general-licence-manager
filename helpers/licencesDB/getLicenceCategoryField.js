@@ -1,9 +1,13 @@
 import sqlite from "better-sqlite3";
 import { licencesDB as databasePath } from "../../data/databasePaths.js";
-export const getLicenceCategoryField = (licenceFieldKey) => {
-    const database = sqlite(databasePath, {
-        readonly: true
-    });
+export const getLicenceCategoryField = (licenceFieldKey, database) => {
+    let doCloseDatabase = false;
+    if (!database) {
+        database = sqlite(databasePath, {
+            readonly: true
+        });
+        doCloseDatabase = true;
+    }
     const licenceCategoryField = database.prepare("select licenceFieldKey, licenceCategoryKey," +
         " licenceField, licenceFieldDescription," +
         " isRequired, minimumLength, maximumLength, pattern" +
@@ -11,7 +15,9 @@ export const getLicenceCategoryField = (licenceFieldKey) => {
         " where recordDelete_timeMillis is null" +
         " and licenceFieldKey = ?")
         .get(licenceFieldKey);
-    database.close();
+    if (doCloseDatabase) {
+        database.close();
+    }
     return licenceCategoryField;
 };
 export default getLicenceCategoryField;

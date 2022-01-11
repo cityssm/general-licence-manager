@@ -19,7 +19,7 @@ export const getLicenceCategoryFields = (licenceCategoryKey: string, database?: 
 
   const licenceCategoryFields: recordTypes.LicenceCategoryField[] =
     database.prepare("select licenceFieldKey, licenceField, licenceFieldDescription," +
-      " isRequired, minimumLength, maximumLength, pattern" +
+      " isRequired, minimumLength, maximumLength, pattern, orderNumber" +
       " from LicenceCategoryFields" +
       " where recordDelete_timeMillis is null" +
       " and licenceCategoryKey = ?" +

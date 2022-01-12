@@ -9,6 +9,7 @@ export declare function getProperty(propertyName: "users.canUpdate"): string[];
 export declare function getProperty(propertyName: "users.isAdmin"): string[];
 export declare function getProperty(propertyName: "defaults.licenseeCity"): string;
 export declare function getProperty(propertyName: "defaults.licenseeProvince"): string;
+export declare function getProperty(propertyName: "defaults.licenceNumberFunction"): configTypes.LicenceNumberFunction;
 export declare function getProperty(propertyName: "reverseProxy.disableCompression"): boolean;
 export declare function getProperty(propertyName: "reverseProxy.disableEtag"): boolean;
 export declare function getProperty(propertyName: "reverseProxy.urlPrefix"): string;

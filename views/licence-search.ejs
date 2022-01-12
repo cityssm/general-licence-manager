@@ -34,11 +34,16 @@
 
           <div class="column">
             <div class="field">
-              <label class="label" for="filter--licenceTypeKey">Licence Type</label>
+              <label class="label" for="filter--licenceCategoryKey">Licence Category</label>
               <div class="control has-icons-left">
                 <div class="select is-fullwidth">
-                  <select id="filter--licenceTypeKey" name="licenceTypeKey">
-                    <option value="">(All Types)</option>
+                  <select id="filter--licenceCategoryKey" name="licenceCategoryKey">
+                    <option value="">(All Categories)</option>
+                    <% for (const licenceCategory of licenceCategories) { %>
+                      <option value="<%= licenceCategory.licenceCategoryKey %>">
+                        <%= licenceCategory.licenceCategory %>
+                      </option>
+                    <% } %>
                   </select>
                 </div>
                 <span class="icon is-small is-left">
@@ -69,7 +74,7 @@
       </form>
     </div>
 
-    <div class="is-block-print" id="container--searchResults" data-external-licence-number-label="<%= configFunctions.getProperty("licences.externalLicenceNumber.fieldLabel") %>"></div>
+    <div class="is-block-print" id="container--searchResults"></div>
   </div>
 </div>
 

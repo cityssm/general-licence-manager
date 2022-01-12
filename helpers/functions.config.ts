@@ -27,6 +27,7 @@ configFallbackValues.set("users.canLogin", ["administrator"]);
 configFallbackValues.set("users.canUpdate", []);
 configFallbackValues.set("users.isAdmin", ["administrator"]);
 
+configFallbackValues.set("defaults.licenceNumberFunction", "year-fourDigits");
 configFallbackValues.set("defaults.licenseeCity", "");
 configFallbackValues.set("defaults.licenseeProvince", "ON");
 
@@ -48,6 +49,7 @@ export function getProperty(propertyName: "users.isAdmin"): string[];
 
 export function getProperty(propertyName: "defaults.licenseeCity"): string;
 export function getProperty(propertyName: "defaults.licenseeProvince"): string;
+export function getProperty(propertyName: "defaults.licenceNumberFunction"): configTypes.LicenceNumberFunction;
 
 export function getProperty(propertyName: "reverseProxy.disableCompression"): boolean;
 export function getProperty(propertyName: "reverseProxy.disableEtag"): boolean;

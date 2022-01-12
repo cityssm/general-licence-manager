@@ -13,6 +13,7 @@ configFallbackValues.set("session.doKeepAlive", false);
 configFallbackValues.set("users.canLogin", ["administrator"]);
 configFallbackValues.set("users.canUpdate", []);
 configFallbackValues.set("users.isAdmin", ["administrator"]);
+configFallbackValues.set("defaults.licenceNumberFunction", "year-fourDigits");
 configFallbackValues.set("defaults.licenseeCity", "");
 configFallbackValues.set("defaults.licenseeProvince", "ON");
 export function getProperty(propertyName) {

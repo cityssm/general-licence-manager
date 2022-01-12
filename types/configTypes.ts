@@ -39,6 +39,9 @@ export interface ConfigActiveDirectory {
 }
 
 interface ConfigDefaults {
+  licenceNumberFunction: LicenceNumberFunction;
   licenseeCity: string;
   licenseeProvince: string;
 }
+
+export type LicenceNumberFunction = "year-fourDigits";

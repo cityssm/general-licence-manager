@@ -3,8 +3,7 @@ import { licencesDB as databasePath } from "../../data/databasePaths.js";
 
 import { getLicenceCategoryFields } from "./getLicenceCategoryFields.js";
 import { getLicenceCategoryApprovals } from "./getLicenceCategoryApprovals.js";
-
-import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
+import { getLicenceCategoryFees } from "./getLicenceCategoryFees.js";
 
 import type * as recordTypes from "../../types/recordTypes";
 
@@ -35,25 +34,8 @@ export const getLicenceCategory = (licenceCategoryKey: string, options: {
 
   if (licenceCategory && options.includeFees) {
 
-    const parameters: unknown[] = [licenceCategoryKey];
-
-    if (options.includeFees === "current") {
-      const currentDate = dateTimeFunctions.dateToInteger(new Date());
-      parameters.push(currentDate, currentDate);
-    }
-
     licenceCategory.licenceCategoryFees =
-      database.prepare("select effectiveStartDate, effectiveEndDate," +
-        " licenceFee, renewalFee, replacementFee" +
-        " from LicenceCategoryFees" +
-        " where recordDelete_timeMillis is null" +
-        " and licenceCategoryKey = ?" +
-        (options.includeFees === "current"
-          ? " and effectiveStartDate <= ?" +
-          " (and effectiveEndDate is null or effectiveEndDate >= ?)"
-          : "") +
-        " order by effectiveStartDate desc")
-        .all(parameters);
+      getLicenceCategoryFees(licenceCategoryKey, options.includeFees, database);
   }
 
   if (licenceCategory && options.includeFields) {

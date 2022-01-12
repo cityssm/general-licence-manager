@@ -45,16 +45,16 @@ export const initLicencesDB = (): boolean => {
       ") without rowid").run();
 
     licencesDB.prepare("create table if not exists LicenceCategoryFees (" +
-      "licenceCategoryKey varchar(50) not null," +
-      " effectiveStartDate integer not null," +
+      "licenceFeeId integer primary key autoincrement," +
+      " licenceCategoryKey varchar(50) not null," +
+      " effectiveStartDate integer," +
       " effectiveEndDate integer," +
       " licenceFee decimal(10, 2) not null default 0," +
       " renewalFee decimal(10, 2)," +
       " replacementFee decimal(10, 2)," +
       recordColumns + "," +
-      " primary key (licenceCategoryKey, effectiveStartDate)," +
       " foreign key (licenceCategoryKey) references LicenceCategories (licenceCategoryKey)" +
-      ") without rowid").run();
+      ")").run();
 
     licencesDB.prepare("create table if not exists LicenceCategoryFields (" +
       "licenceFieldKey varchar(80) not null primary key," +

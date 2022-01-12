@@ -26,8 +26,6 @@ export const handler: RequestHandler = async (request, response) => {
       success: false
     });
   }
-
-
 };
 
 

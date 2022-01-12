@@ -78,14 +78,15 @@ export interface LicenceCategoryApproval extends Record {
     orderNumber?: number;
 }
 export interface LicenceCategoryFee extends Record {
+    licenceFeeId?: number;
     licenceCategoryKey?: string;
-    effectiveStartDate: number;
+    effectiveStartDate?: number;
     effectiveStartDateString?: string;
-    effectiveEndDate: number;
+    effectiveEndDate?: number;
     effectiveEndDateString?: string;
     licenceFee: number;
-    renewalFee: number;
-    replacementFee: number;
+    renewalFee?: number;
+    replacementFee?: number;
 }
 export interface LicenceCategoryField extends Record {
     licenceFieldKey: string;

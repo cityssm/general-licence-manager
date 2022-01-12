@@ -5,7 +5,6 @@ export const getLicenceCategories = () => {
     const currentDate = dateTimeFunctions.dateToInteger(new Date());
     const sql = "select c.licenceCategoryKey, c.licenceCategory, c.bylawNumber, c.printEJS," +
         " c.licenceLengthYears, c.licenceLengthMonths, c.licenceLengthDays," +
-        " c.recordUpdate_timeMillis," +
         " ifnull(f.hasEffectiveFee, 0) as hasEffectiveFee" +
         " from LicenceCategories c" +
         (" left join (" +

@@ -242,7 +242,6 @@ declare const bulmaJS: BulmaJS;
 
         const panelBlockElement = document.createElement("a");
         panelBlockElement.className = "panel-block is-block";
-        panelBlockElement.draggable = true;
         panelBlockElement.dataset.licenceFieldKey = categoryField.licenceFieldKey;
 
         panelBlockElement.innerHTML = "<div class=\"columns is-mobile\">" +
@@ -260,6 +259,7 @@ declare const bulmaJS: BulmaJS;
         panelBlockElement.addEventListener("click", openEditLicenceCategoryFieldModalByClick);
 
         if (licenceCategoryFields.length > 1) {
+          panelBlockElement.draggable = true;
           panelBlockElement.addEventListener("dragstart", licenceCategoryField_dragstart);
           panelBlockElement.addEventListener("dragover", licenceCategoryField_dragover);
           panelBlockElement.addEventListener("drop", licenceCategoryField_drop);
@@ -427,7 +427,6 @@ declare const bulmaJS: BulmaJS;
 
         const panelBlockElement = document.createElement("a");
         panelBlockElement.className = "panel-block is-block";
-        panelBlockElement.draggable = true;
         panelBlockElement.dataset.licenceApprovalKey = categoryApproval.licenceApprovalKey;
 
         panelBlockElement.innerHTML = "<div class=\"columns is-mobile\">" +
@@ -445,6 +444,7 @@ declare const bulmaJS: BulmaJS;
         panelBlockElement.addEventListener("click", openEditLicenceCategoryApprovalModalByClick);
 
         if (licenceCategoryApprovals.length > 1) {
+          panelBlockElement.draggable = true;
           panelBlockElement.addEventListener("dragstart", licenceCategoryApproval_dragstart);
           panelBlockElement.addEventListener("dragover", licenceCategoryApproval_dragover);
           panelBlockElement.addEventListener("drop", licenceCategoryApproval_drop);
@@ -462,8 +462,167 @@ declare const bulmaJS: BulmaJS;
 
   let licenceCategoryFees: recordTypes.LicenceCategoryFee[];
 
+  const openEditLicenceCategoryFeeModal = (licenceFeeId: number) => {
+
+    let editLicenceCategoryFeeModalCloseFunction: () => void;
+
+    const updateLicenceCategoryFeeSubmitFunction = (formEvent: SubmitEvent) => {
+
+      formEvent.preventDefault();
+
+      cityssm.postJSON(urlPrefix + "/admin/doUpdateLicenceCategoryFee",
+        formEvent.currentTarget,
+        (responseJSON: { success: boolean; licenceCategoryFees?: recordTypes.LicenceCategoryFee[] }) => {
+          if (responseJSON.success) {
+            doRefreshOnClose = true;
+
+            licenceCategoryFees = responseJSON.licenceCategoryFees;
+            renderLicenceCategoryFees();
+
+            editLicenceCategoryFeeModalCloseFunction();
+          }
+        });
+    };
+
+    const deleteLicenceCategoryFeeFunction = () => {
+
+      cityssm.postJSON(urlPrefix + "/admin/doDeleteLicenceCategoryFee", {
+        licenceFeeId
+      },
+        (responseJSON: { success: boolean; licenceCategoryFees?: recordTypes.LicenceCategoryFee[] }) => {
+          if (responseJSON.success) {
+            licenceCategoryFees = responseJSON.licenceCategoryFees;
+            renderLicenceCategoryFees();
+
+            doRefreshOnClose = true;
+
+            editLicenceCategoryFeeModalCloseFunction();
+          }
+        });
+    };
+
+    const confirmDeleteLicenceCategoryFeeFunction = (clickEvent: Event) => {
+
+      clickEvent.preventDefault();
+
+      bulmaJS.confirm({
+        title: "Delete Licence Fee",
+        message: "Are you sure you want to delete this fee record?",
+        contextualColorName: "warning",
+        okButton: {
+          text: "Yes, Delete It",
+          callbackFunction: deleteLicenceCategoryFeeFunction
+        }
+      });
+    };
+
+    const licenceCategoryFee = licenceCategoryFees.find((possibleField) => {
+      return possibleField.licenceFeeId === licenceFeeId;
+    });
+
+    cityssm.openHtmlModal("licenceCategoryFee-edit", {
+
+      onshow: (modalElement) => {
+
+        (modalElement.querySelector("#licenceCategoryFeeEdit--licenceFeeId") as HTMLInputElement).value = licenceCategoryFee.licenceFeeId.toString();
+        (modalElement.querySelector("#licenceCategoryFeeEdit--effectiveStartDateString") as HTMLInputElement).value = licenceCategoryFee.effectiveStartDateString;
+        (modalElement.querySelector("#licenceCategoryFeeEdit--effectiveEndDateString") as HTMLInputElement).value = licenceCategoryFee.effectiveEndDateString;
+
+        (modalElement.querySelector("#licenceCategoryFeeEdit--licenceFee") as HTMLInputElement).value = licenceCategoryFee.licenceFee.toFixed(2);
+
+        if (licenceCategoryFee.renewalFee) {
+          (modalElement.querySelector("#licenceCategoryFeeEdit--renewalFee") as HTMLInputElement).value = licenceCategoryFee.renewalFee.toFixed(2);
+        }
+
+        if (licenceCategoryFee.replacementFee) {
+          (modalElement.querySelector("#licenceCategoryFeeEdit--replacementFee") as HTMLInputElement).value = licenceCategoryFee.replacementFee.toFixed(2);
+        }
+
+      },
+      onshown: (modalElement, closeModalFunction) => {
+
+        editLicenceCategoryFeeModalCloseFunction = closeModalFunction;
+
+        modalElement.querySelector("#form--licenceCategoryFeeEdit")
+          .addEventListener("submit", updateLicenceCategoryFeeSubmitFunction);
+
+        modalElement.querySelector(".is-delete-button")
+          .addEventListener("click", confirmDeleteLicenceCategoryFeeFunction);
+
+        bulmaJS.init(modalElement);
+      }
+    });
+  };
+
+  const openEditLicenceCategoryFeeModalByClick = (clickEvent: Event) => {
+    clickEvent.preventDefault();
+
+    const licenceFeeId = (clickEvent.currentTarget as HTMLElement).dataset.licenceFeeId;
+    openEditLicenceCategoryFeeModal(Number.parseInt(licenceFeeId, 10));
+  };
+
   const renderLicenceCategoryFees = () => {
 
+    const feesContainerElement = editModalElement.querySelector("#container--licenceCategoryFees") as HTMLElement;
+
+    if (licenceCategoryFees.length === 0) {
+      feesContainerElement.innerHTML = "<div class=\"message is-warning\">" +
+        "<p class=\"message-body\">There are no fees associated with this licence.</p>" +
+        "</div>";
+    } else {
+
+      const feesPanelElement = document.createElement("div");
+      feesPanelElement.className = "panel";
+
+      const currentDateString = cityssm.dateToString(new Date());
+
+      for (const categoryFee of licenceCategoryFees) {
+
+        const panelBlockElement = document.createElement("a");
+        panelBlockElement.className = "panel-block is-block";
+        panelBlockElement.dataset.licenceFeeId = categoryFee.licenceFeeId.toString();
+
+        let isEffective = false;
+        let effectiveHTML: string;
+
+        if (!categoryFee.effectiveStartDate) {
+          effectiveHTML = "<span class=\"has-text-danger\">No Effective Date</span>";
+
+        } else {
+          effectiveHTML = "From " + categoryFee.effectiveStartDateString +
+            (categoryFee.effectiveEndDate
+              ? " to " + categoryFee.effectiveEndDateString
+              : "");
+
+          if (categoryFee.effectiveStartDateString <= currentDateString &&
+            (!categoryFee.effectiveEndDate || categoryFee.effectiveEndDateString >= currentDateString)) {
+
+            isEffective = true;
+          }
+        }
+
+        panelBlockElement.innerHTML = "<div class=\"columns is-mobile\">" +
+          ("<div class=\"column\">" +
+            "<h4>" + effectiveHTML + "</h4>" +
+            "<p class=\"is-size-7\">" +
+            "$" + categoryFee.licenceFee.toFixed(2) + " fee" +
+            "</p>" +
+            "</div>") +
+          (isEffective
+            ? "<div class=\"column is-narrow\">" +
+            "<i class=\"fas fa-asterisk\" aria-hidden=\"true\"</i>" +
+            "</div>"
+            : "") +
+          "</div>";
+
+        panelBlockElement.addEventListener("click", openEditLicenceCategoryFeeModalByClick);
+
+        feesPanelElement.append(panelBlockElement);
+      }
+
+      feesContainerElement.innerHTML = "";
+      feesContainerElement.append(feesPanelElement);
+    }
   };
 
   // Main Details
@@ -581,6 +740,25 @@ declare const bulmaJS: BulmaJS;
         });
     };
 
+    const addLicenceCategoryFeeFunction = (clickEvent: Event) => {
+
+      clickEvent.preventDefault();
+
+      cityssm.postJSON(urlPrefix + "/admin/doAddLicenceCategoryFee", {
+        licenceCategoryKey
+      },
+        (responseJSON: { success: boolean; licenceFeeId?: number; licenceCategoryFees?: recordTypes.LicenceCategoryFee[]; }) => {
+          if (responseJSON.success) {
+            doRefreshOnClose = true;
+
+            licenceCategoryFees = responseJSON.licenceCategoryFees;
+            renderLicenceCategoryFees();
+
+            openEditLicenceCategoryFeeModal(responseJSON.licenceFeeId);
+          }
+        });
+    };
+
     const renderEditLicenceCategory = (responseJSON: { success?: boolean; licenceCategory?: recordTypes.LicenceCategory }) => {
 
       if (!responseJSON.success) {
@@ -662,6 +840,9 @@ declare const bulmaJS: BulmaJS;
 
         modalElement.querySelector("#form--licenceCategoryApprovalAdd")
           .addEventListener("submit", addLicenceCategoryApprovalSubmitFunction);
+
+        modalElement.querySelector(".is-add-fee-button")
+          .addEventListener("click", addLicenceCategoryFeeFunction);
 
         modalElement.querySelector(".is-delete-button")
           .addEventListener("click", deleteLicenceCategoryConfirmFunction);

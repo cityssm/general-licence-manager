@@ -83,13 +83,13 @@
               <input id="licenceCategoryFieldAdd--licenceCategoryKey" name="licenceCategoryKey" type="hidden" value="" />
               <div class="field has-addons">
                 <div class="control">
-                  <label class="button is-static" for="licenceCategoryFieldAdd--licenceField">New Field Name</label>
+                  <label class="button is-small is-static" for="licenceCategoryFieldAdd--licenceField">New Field Name</label>
                 </div>
                 <div class="control is-expanded">
-                  <input class="input" id="licenceCategoryFieldAdd--licenceField" name="licenceField" type="text" maxlength="100" required />
+                  <input class="input is-small" id="licenceCategoryFieldAdd--licenceField" name="licenceField" type="text" maxlength="100" required />
                 </div>
                 <div class="control">
-                  <button class="button is-success" type="submit">Add</button>
+                  <button class="button is-small is-success" type="submit">Add</button>
                 </div>
               </div>
             </form>
@@ -101,20 +101,28 @@
               <input id="licenceCategoryApprovalAdd--licenceCategoryKey" name="licenceCategoryKey" type="hidden" value="" />
               <div class="field has-addons">
                 <div class="control">
-                  <label class="button is-static" for="licenceCategoryApprovalAdd--licenceApproval">New Approval</label>
+                  <label class="button is-small is-static" for="licenceCategoryApprovalAdd--licenceApproval">New Approval</label>
                 </div>
                 <div class="control is-expanded">
-                  <input class="input" id="licenceCategoryApprovalAdd--licenceApproval" name="licenceApproval" type="text" maxlength="100" required />
+                  <input class="input is-small" id="licenceCategoryApprovalAdd--licenceApproval" name="licenceApproval" type="text" maxlength="100" required />
                 </div>
                 <div class="control">
-                  <button class="button is-success" type="submit">Add</button>
+                  <button class="button is-small is-success" type="submit">Add</button>
                 </div>
               </div>
             </form>
             <div class="my-4" id="container--licenceCategoryApprovals"></div>
           </section>
           <section class="mt-4">
-            <h3 class="title is-5">Fees</h3>
+            <div class="columns">
+              <div class="column">
+                <h3 class="title is-5">Fees</h3>
+              </div>
+              <div class="column is-narrow has-text-right">
+                <button class="button is-small is-success is-add-fee-button" type="button">Add Fee</button>
+              </div>
+            </div>
+            <div class="my-4" id="container--licenceCategoryFees"></div>
           </section>
         </div>
       </div>

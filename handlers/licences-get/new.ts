@@ -8,7 +8,7 @@ import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js"
 import type * as recordTypes from "../../types/recordTypes";
 
 
-export const handler: RequestHandler = (_request, response) => {
+export const handler: RequestHandler = (request, response) => {
 
   const licenceCategories = getLicenceCategories();
 
@@ -18,7 +18,7 @@ export const handler: RequestHandler = (_request, response) => {
     licenceId: "",
     licenceCategoryKey: "",
     licenceNumber: "",
-    licenseeName: "",
+    licenseeName: request.query.licenseeName as string,
     licenseeBusinessName: "",
     licenseeAddress1: "",
     licenseeAddress2: "",

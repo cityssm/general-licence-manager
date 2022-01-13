@@ -37,5 +37,5 @@ interface ConfigDefaults {
     licenseeCity: string;
     licenseeProvince: string;
 }
-export declare type LicenceNumberFunction = "year-fourDigits";
+export declare type LicenceNumberFunction = "year-fourDigits" | "year-fiveDigits" | "year-sixDigits";
 export {};

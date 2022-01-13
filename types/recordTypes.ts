@@ -19,7 +19,7 @@ export interface Record {
 
 export interface Licence extends Record {
 
-  licenceId: number;
+  licenceId: number | "";
   licenceCategoryKey: string;
   licenceNumber: string;
 
@@ -34,17 +34,17 @@ export interface Licence extends Record {
   isRenewal: boolean;
 
   startDate: number;
-  startDateString: string;
-  endDate: number;
-  endDateString: string;
+  startDateString?: string;
+  endDate?: number;
+  endDateString?: string;
 
-  issueDate: number;
-  issueDateString: string;
-  issueTime: number;
-  issueTimeString: string;
+  issueDate?: number;
+  issueDateString?: string;
+  issueTime?: number;
+  issueTimeString?: string;
 
-  licenceFee: number;
-  replacementFee: number;
+  licenceFee: number | "";
+  replacementFee: number | "";
 
   licenceFields?: LicenceField[];
   licenceApprovals?: LicenceApproval[];

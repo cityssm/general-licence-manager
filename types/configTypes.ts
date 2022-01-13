@@ -44,4 +44,4 @@ interface ConfigDefaults {
   licenseeProvince: string;
 }
 
-export type LicenceNumberFunction = "year-fourDigits";
+export type LicenceNumberFunction = "year-fourDigits" | "year-fiveDigits" | "year-sixDigits";

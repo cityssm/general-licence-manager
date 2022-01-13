@@ -1,14 +1,14 @@
 import { getLicenceCategories } from "../../helpers/functions.cache.js";
 import * as configFunctions from "../../helpers/functions.config.js";
 import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
-export const handler = (_request, response) => {
+export const handler = (request, response) => {
     const licenceCategories = getLicenceCategories();
     const currentDate = new Date();
     const licence = {
         licenceId: "",
         licenceCategoryKey: "",
         licenceNumber: "",
-        licenseeName: "",
+        licenseeName: request.query.licenseeName,
         licenseeBusinessName: "",
         licenseeAddress1: "",
         licenseeAddress2: "",

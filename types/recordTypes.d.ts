@@ -11,7 +11,7 @@ export interface Record {
     recordDelete_dateString?: string;
 }
 export interface Licence extends Record {
-    licenceId: number;
+    licenceId: number | "";
     licenceCategoryKey: string;
     licenceNumber: string;
     licenseeName: string;
@@ -23,15 +23,15 @@ export interface Licence extends Record {
     licenseePostalCode: string;
     isRenewal: boolean;
     startDate: number;
-    startDateString: string;
-    endDate: number;
-    endDateString: string;
-    issueDate: number;
-    issueDateString: string;
-    issueTime: number;
-    issueTimeString: string;
-    licenceFee: number;
-    replacementFee: number;
+    startDateString?: string;
+    endDate?: number;
+    endDateString?: string;
+    issueDate?: number;
+    issueDateString?: string;
+    issueTime?: number;
+    issueTimeString?: string;
+    licenceFee: number | "";
+    replacementFee: number | "";
     licenceFields?: LicenceField[];
     licenceApprovals?: LicenceApproval[];
     licenceTransactions?: LicenceTransaction[];

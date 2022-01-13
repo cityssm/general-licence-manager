@@ -14,15 +14,203 @@
 </nav>
 
 <h1 class="title is-1">
-  <%= isCreate ? "Create a New Licence" : "Update a Licence" %>
+  <%= isCreate ? "Create a New Licence" : "Licence #" + licence.licenceNumber %>
 </h1>
 
 <form id="form--licenceEdit">
   <input id="licenceEdit--licenceId" name="licenceId" type="hidden" value="<%= licence.licenceId %>" />
+
+  <div class="columns">
+    <div class="column">
+      <div class="field">
+        <label class="label" for="licenceEdit--licenceCategoryKey">Licence Category</label>
+        <div class="control is-expanded">
+          <div class="select is-fullwidth">
+            <select
+              id="licenceEdit--licenceCategoryKey" name="licenceCategoryKey"
+              <%= isCreate ? "" : "readonly" %>
+              required>
+              <% if (isCreate) { %>
+                <option
+                  data-licence-length-years="0"
+                  data-licence-length-months="0"
+                  data-licence-length-days="0"
+                  value="">
+                  (Select a Category)
+                </option>
+              <% } %>
+              <% for (const licenceCategory of licenceCategories) { %>
+                <option
+                  data-licence-length-years="<%= licenceCategory.licenceLengthYears %>"
+                  data-licence-length-months="<%= licenceCategory.licenceLengthMonths %>"
+                  data-licence-length-days="<%= licenceCategory.licenceLengthDays %>"
+                  value="<%= licenceCategory.licenceCategoryKey %>">
+                  <%= licenceCategory.licenceCategory %>
+                </option>
+              <% } %>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="column">
+      <label class="label" for="licenceEdit--licenceNumber">Licence Number</label>
+      <div class="field has-addons">
+        <div class="control is-expanded">
+          <input class="input" id="licenceEdit--licenceNumber" name="licenceNumber"
+            type="text"
+            value="<%= licence.licenceNumber %>"
+            <%= isCreate ? "" : "required" %>
+            maxlength="20" readonly />
+        </div>
+        <div class="control">
+          <button class="button is-unlock-button" type="button">
+            <i class="fas fa-unlock" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+      <% if (isCreate) { %>
+        <p class="help">Leave the Licence Number blank to generate on save.</p>
+      <% } %>
+    </div>
+    <div class="column is-align-self-center ">
+      <div class="facheck">
+        <input id="licenceEdit--isRenewal" name="isRenewal" type="checkbox" <%= licence.isRenewal ? "checked" : "" %> />
+        <label for="licenceEdit--isRenewal">Licence is a Renewal</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="columns">
+    <div class="column">
+      <h2 class="title is-3">
+        Licensee Information
+      </h2>
+
+      <div class="field">
+        <label class="label" for="licenceEdit--licenseeName">Licensee Name</label>
+        <div class="control">
+          <input class="input" id="licenceEdit--licenseeName" name="licenseeName" type="text" value="<%= licence.licenseeName %>" maxlength="100" required />
+        </div>
+      </div>
+      <div class="field">
+        <label class="label" for="licenceEdit--licenseeBusinessName">Business Name</label>
+        <div class="control">
+          <input class="input" id="licenceEdit--licenseeBusinessName" name="licenseeBusinessName" type="text" value="<%= licence.licenseeBusinessName %>" maxlength="100" />
+        </div>
+      </div>
+      <div class="field">
+        <label class="label" for="licenceEdit--licenseeAddress1">Address</label>
+        <div class="control">
+          <input class="input" id="licenceEdit--licenseeAddress1" name="licenseeAddress1" type="text" value="<%= licence.licenseeAddress1 %>" placeholder="Line 1" maxlength="50" />
+        </div>
+      </div>
+      <div class="field">
+        <div class="control">
+          <input class="input" id="licenceEdit--licenseeAddress2" name="licenseeAddress2" type="text" value="<%= licence.licenseeAddress2 %>" placeholder="Line 2" maxlength="50" aria-label="Address Line 2" />
+        </div>
+      </div>
+      <div class="columns">
+        <div class="column">
+          <div class="field">
+            <label class="label" for="licenceEdit--licenseeCity">City</label>
+            <div class="control">
+              <input class="input" id="licenceEdit--licenseeCity" name="licenseeCity" type="text" value="<%= licence.licenseeCity %>" maxlength="20" />
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="field">
+            <label class="label" for="licenceEdit--licenseeProvince">Province</label>
+            <div class="control">
+              <input class="input" id="licenceEdit--licenseeProvince" name="licenseeProvince" type="text" value="<%= licence.licenseeProvince %>" maxlength="2" />
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="field">
+            <label class="label" for="licenceEdit--licenseePostalCode">Postal Code</label>
+            <div class="control">
+              <input class="input" id="licenceEdit--licenseePostalCode" name="licenseePostalCode" type="text" value="<%= licence.licenseePostalCode %>" maxlength="7" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="column">
+      <div class="mb-4 <%= isCreate ? "is-hidden" : "" %>" id="container--licenceFields"></div>
+
+      <div class="mb-4 <%= isCreate ? "is-hidden" : "" %>" id="container--licenceApprovals"></div>
+
+      <h2 class="title is-3">Status</h2>
+
+      <div class="columns">
+        <div class="column">
+          <div class="field">
+            <label class="label" for="licenceEdit--startDateString">Start Date</label>
+            <div class="control">
+              <input class="input" id="licenceEdit--startDateString" name="startDateString" type="date" value="<%= licence.startDateString %>" required />
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <label class="label" for="licenceEdit--endDateString">End Date</label>
+          <div class="field has-addons">
+            <div class="control is-expanded">
+              <input class="input" id="licenceEdit--endDateString" name="endDateString" type="date" value="<%= licence.endDateString %>" readonly required />
+            </div>
+            <div class="control">
+              <button class="button is-unlock-button" type="button">
+                <i class="fas fa-unlock" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="title is-3">Fees</h2>
+
+      <div class="columns">
+        <div class="column">
+          <label class="label" for="licenceEdit--licenceFee">Licence Fee</label>
+          <div class="field has-addons">
+            <div class="control">
+              <span class="button is-static">$</span>
+            </div>
+            <div class="control is-expanded">
+              <input class="input has-text-right" id="licenceEdit--licenceFee" name="licenceFee" type="text" value="<%= licence.licenceFee ? licence.licenceFee.toFixed(2) : "" %>" readonly required />
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <label class="label" for="licenceEdit--replacementFee">Replacement Fee</label>
+          <div class="field has-addons">
+            <div class="control">
+              <span class="button is-static">$</span>
+            </div>
+            <div class="control is-expanded">
+              <input class="input has-text-right" id="licenceEdit--replacementFee" name="replacementFee" type="text" value="<%= licence.replacementFee ? licence.replacementFee.toFixed(2) : "" %>" readonly required />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <% if (isCreate) { %>
+        <div class="message is-info is-small">
+          <p class="message-body">Transaction tracking will become available after saving.</p>
+        </div>
+      <% } %>
+    </div>
+  </div>
 </form>
 
-<div class="is-block-print" id="container--searchResults"></div>
-
 <%- include('_footerA'); -%>
+
+<% if (!isCreate) { %>
+  <script>
+    exports.licenceCategory = <%- JSON.stringify(licenceCategory) %>;
+  </script>
+<% } %>
+<script src="<%= urlPrefix %>/javascripts/licence-edit.min.js"></script>
 
 <%- include('_footerB'); -%>

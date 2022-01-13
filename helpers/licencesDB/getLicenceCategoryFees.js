@@ -26,7 +26,7 @@ export const getLicenceCategoryFees = (licenceCategoryKey, feeType, database) =>
         " and licenceCategoryKey = ?" +
         (feeType === "current"
             ? " and effectiveStartDate <= ?" +
-                " (and effectiveEndDate is null or effectiveEndDate >= ?)"
+                " and (effectiveEndDate is null or effectiveEndDate >= ?)"
             : "") +
         " order by effectiveStartDate desc")
         .all(parameters);

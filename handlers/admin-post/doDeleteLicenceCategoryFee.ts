@@ -4,6 +4,8 @@ import { deleteLicenceCategoryFee } from "../../helpers/licencesDB/deleteLicence
 import { getLicenceCategoryFee } from "../../helpers/licencesDB/getLicenceCategoryFee.js";
 import { getLicenceCategoryFees } from "../../helpers/licencesDB/getLicenceCategoryFees.js";
 
+import * as cacheFunctions from "../../helpers/functions.cache.js";
+
 
 export const handler: RequestHandler = async (request, response) => {
 
@@ -13,6 +15,8 @@ export const handler: RequestHandler = async (request, response) => {
 
   if (licenceCategoryFee) {
     deleteLicenceCategoryFee(licenceFeeId, request.session);
+
+    cacheFunctions.clearAll();
     const licenceCategoryFees = getLicenceCategoryFees(licenceCategoryFee.licenceCategoryKey, "all");
 
     response.json({

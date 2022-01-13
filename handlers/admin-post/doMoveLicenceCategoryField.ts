@@ -3,6 +3,8 @@ import type { RequestHandler } from "express";
 import { moveLicenceCategoryField } from "../../helpers/licencesDB/moveLicenceCategoryField.js";
 import { getLicenceCategoryFields } from "../../helpers/licencesDB/getLicenceCategoryFields.js";
 
+import * as cacheFunctions from "../../helpers/functions.cache.js";
+
 
 export const handler: RequestHandler = async (request, response) => {
 
@@ -11,6 +13,7 @@ export const handler: RequestHandler = async (request, response) => {
 
   const licenceCategoryKey = moveLicenceCategoryField(licenceFieldKey_from, licenceFieldKey_to, request.session);
 
+  cacheFunctions.clearAll();
   const licenceCategoryFields = getLicenceCategoryFields(licenceCategoryKey);
 
   response.json({

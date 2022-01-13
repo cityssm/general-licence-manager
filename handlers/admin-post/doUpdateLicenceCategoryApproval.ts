@@ -4,10 +4,14 @@ import { updateLicenceCategoryApproval } from "../../helpers/licencesDB/updateLi
 import { getLicenceCategoryApproval } from "../../helpers/licencesDB/getLicenceCategoryApproval.js";
 import { getLicenceCategoryApprovals } from "../../helpers/licencesDB/getLicenceCategoryApprovals.js";
 
+import * as cacheFunctions from "../../helpers/functions.cache.js";
+
 
 export const handler: RequestHandler = async (request, response) => {
 
   const success = updateLicenceCategoryApproval(request.body, request.session);
+
+  cacheFunctions.clearAll();
 
   const licenceCategoryApproval = getLicenceCategoryApproval(request.body.licenceApprovalKey);
 

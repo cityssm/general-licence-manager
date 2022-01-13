@@ -1,11 +1,13 @@
 import type { RequestHandler } from "express";
 
-import { getLicenceCategories } from "../../helpers/licencesDB/getLicenceCategories.js";
+import * as cacheFunctions from "../../helpers/functions.cache.js";
 import { getPrintEJSList } from "../../helpers/functions.print.js";
 
 export const handler: RequestHandler = async (_request, response) => {
 
-  const licenceCategories = getLicenceCategories();
+  cacheFunctions.clearAll();
+
+  const licenceCategories = cacheFunctions.getLicenceCategories();
 
   const printEJSList = await getPrintEJSList();
 

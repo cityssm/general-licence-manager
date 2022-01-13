@@ -4,6 +4,8 @@ import { deleteLicenceCategoryField } from "../../helpers/licencesDB/deleteLicen
 import { getLicenceCategoryField } from "../../helpers/licencesDB/getLicenceCategoryField.js";
 import { getLicenceCategoryFields } from "../../helpers/licencesDB/getLicenceCategoryFields.js";
 
+import * as cacheFunctions from "../../helpers/functions.cache.js";
+
 
 export const handler: RequestHandler = async (request, response) => {
 
@@ -13,6 +15,8 @@ export const handler: RequestHandler = async (request, response) => {
 
   if (licenceCategoryField) {
     deleteLicenceCategoryField(licenceFieldKey, request.session);
+
+    cacheFunctions.clearAll();
     const licenceCategoryFields = getLicenceCategoryFields(licenceCategoryField.licenceCategoryKey);
 
     response.json({

@@ -1,4 +1,4 @@
-import { getLicenceCategories } from "../../helpers/licencesDB/getLicenceCategories.js";
+import { getLicenceCategories } from "../../helpers/functions.cache.js";
 import * as configFunctions from "../../helpers/functions.config.js";
 import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
 export const handler = (_request, response) => {

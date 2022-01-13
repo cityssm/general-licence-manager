@@ -1,7 +1,8 @@
 import type { RequestHandler } from "express";
 
 import { deleteLicenceCategory } from "../../helpers/licencesDB/deleteLicenceCategory.js";
-import { getLicenceCategories } from "../../helpers/licencesDB/getLicenceCategories.js";
+
+import * as cacheFunctions from "../../helpers/functions.cache.js";
 
 
 export const handler: RequestHandler = async (request, response) => {
@@ -10,7 +11,8 @@ export const handler: RequestHandler = async (request, response) => {
 
   deleteLicenceCategory(licenceCategoryKey, request.session);
 
-  const licenceCategories = getLicenceCategories();
+  cacheFunctions.clearAll();
+  const licenceCategories = cacheFunctions.getLicenceCategories();
 
   response.json({
     success: true,

@@ -1,8 +1,9 @@
 import { addLicenceCategory } from "../../helpers/licencesDB/addLicenceCategory.js";
-import { getLicenceCategories } from "../../helpers/licencesDB/getLicenceCategories.js";
+import * as cacheFunctions from "../../helpers/functions.cache.js";
 export const handler = async (request, response) => {
     const licenceCategoryKey = addLicenceCategory(request.body, request.session);
-    const licenceCategories = getLicenceCategories();
+    cacheFunctions.clearAll();
+    const licenceCategories = cacheFunctions.getLicenceCategories();
     response.json({
         success: true,
         licenceCategories,

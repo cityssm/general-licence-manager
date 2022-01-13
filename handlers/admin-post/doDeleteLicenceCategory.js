@@ -1,9 +1,10 @@
 import { deleteLicenceCategory } from "../../helpers/licencesDB/deleteLicenceCategory.js";
-import { getLicenceCategories } from "../../helpers/licencesDB/getLicenceCategories.js";
+import * as cacheFunctions from "../../helpers/functions.cache.js";
 export const handler = async (request, response) => {
     const licenceCategoryKey = request.body.licenceCategoryKey;
     deleteLicenceCategory(licenceCategoryKey, request.session);
-    const licenceCategories = getLicenceCategories();
+    cacheFunctions.clearAll();
+    const licenceCategories = cacheFunctions.getLicenceCategories();
     response.json({
         success: true,
         licenceCategories

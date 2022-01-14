@@ -1,6 +1,17 @@
-export const handler = (_request, response) => {
+import { getLicence } from "../../helpers/licencesDB/getLicence.js";
+import { getLicenceCategory } from "../../helpers/licencesDB/getLicenceCategory.js";
+export const handler = (request, response) => {
+    const licenceId = Number.parseInt(request.params.licenceId);
+    const licence = getLicence(licenceId);
+    const licenceCategory = getLicenceCategory(licence.licenceCategoryKey, {
+        includeApprovals: false,
+        includeFields: false,
+        includeFees: false
+    });
     return response.render("licence-view", {
-        headTitle: "Licence View"
+        headTitle: "Licence View",
+        licence,
+        licenceCategory
     });
 };
 export default handler;

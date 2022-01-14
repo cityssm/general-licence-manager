@@ -46,6 +46,7 @@ export interface Licence extends Record {
   licenceFee: number | "";
   replacementFee: number | "";
 
+  licenceCategory?: string;
   licenceFields?: LicenceField[];
   licenceApprovals?: LicenceApproval[];
   licenceTransactions?: LicenceTransaction[];
@@ -55,11 +56,24 @@ export interface LicenceField {
   licenceId?: number;
   licenceFieldKey: string;
   licenceFieldValue: string;
+
+  licenceField?: string;
+  licenceFieldDescription?: string;
+  isRequired?: boolean;
+  minimumLength?: number;
+  maximumLength?: number;
+  pattern?: string;
 }
 
 export interface LicenceApproval {
   licenceId?: number;
   licenceApprovalKey: string;
+  isApproved?: boolean;
+
+  licenceApproval?: string;
+  licenceApprovalDescription?: string;
+  isRequiredForNew?: boolean;
+  isRequiredForRenewal?: boolean;
 }
 
 export interface LicenceTransaction extends Record {

@@ -28,7 +28,7 @@
           <div class="select is-fullwidth">
             <select
               id="licenceEdit--licenceCategoryKey" name="licenceCategoryKey"
-              <%= isCreate ? "" : "readonly" %>
+              <%= isCreate ? "" : "disabled" %>
               required>
               <% if (isCreate) { %>
                 <option
@@ -138,9 +138,64 @@
       </div>
     </div>
     <div class="column">
-      <div class="mb-4 <%= isCreate ? "is-hidden" : "" %>" id="container--licenceFields"></div>
+      <div class="mb-4 <%= isCreate || licence.licenceFields.length === 0 ? "is-hidden" : "" %>" id="container--licenceFields">
+        <% if (!isCreate && licence.licenceFields.length > 0) { %>
+          <h2 class="title is-3">Fields</h2>
+          <% let licenceFieldKeys = []; %>
+          <% for (const licenceField of licence.licenceFields) { %>
+            <% licenceFieldKeys.push(licenceField.licenceFieldKey); %>
+            <div class="field">
+              <label class="label" for="licenceFieldEdit--<%= licenceField.licenceFieldKey %>">
+                <%= licenceField.licenceField %>
+              </label>
+              <div class="control">
+                <input class="input"
+                  id="licenceFieldEdit--<%= licenceField.licenceFieldKey %>"
+                  name="field--<%= licenceField.licenceFieldKey %>"
+                  type="text"
+                  value="<%= licenceField.licenceFieldValue %>"
+                  minlength="<%= licenceField.minimumLength %>"
+                  maxlength="<%= licenceField.maximumLength %>"
+                  <% if (licenceField.pattern !== "") { %>pattern="<%= licenceField.pattern %>"<% } %>
+                  <%= licenceField.isRequired ? "required" : "" %>
+                  />
+              </div>
+              <% if (licenceField.licenceFieldDescription !== "") { %>
+                <p class="help">
+                  <%= licenceField.licenceFieldDescription %>
+                </p>
+              <% } %>
+            </div>
+          <% } %>
+          <input name="licenceFieldKeys" type="hidden" value="<%= licenceFieldKeys.join(",") %>" />
+        <% } %>
+      </div>
 
-      <div class="mb-4 <%= isCreate ? "is-hidden" : "" %>" id="container--licenceApprovals"></div>
+      <div class="mb-4 <%= isCreate || licence.licenceApprovals.length === 0 ? "is-hidden" : "" %>" id="container--licenceApprovals">
+        <% if (!isCreate && licence.licenceApprovals.length > 0) { %>
+          <h2 class="title is-3">Approvals</h2>
+          <% let licenceApprovalKeys = []; %>
+          <% for (const licenceApproval of licence.licenceApprovals) { %>
+            <% licenceApprovalKeys.push(licenceApproval.licenceApprovalKey); %>
+            <div class="facheck mt-2">
+              <input id="licenceApprovalEdit--<%=licenceApproval.licenceApprovalKey %>"
+                name="approval--<%=licenceApproval.licenceApprovalKey %>"
+                data-is-required-for-new="<%= licenceApproval.isRequiredForNew ? "true" : "false" %>"
+                data-is-required-for-renewal="<%= licenceApproval.isRequiredForRenewal ? "true" : "false" %>"
+                type="checkbox"
+                <%= licenceApproval.isApproved ? "checked" : "" %>
+                <%= (licence.isRenewal && licenceApproval.isRequiredForRenewal) || (!licence.isRenewal && licenceApproval.isRequiredForNew) ? "required" : "" %>
+                />
+              <label for="licenceApprovalEdit--<%=licenceApproval.licenceApprovalKey %>"><%= licenceApproval.licenceApproval %></label>
+            </div>
+            <% if (licenceApproval.licenceApprovalDescription !== "") { %>
+              <p class="help">
+                <%= licenceApproval.licenceApprovalDescription %>
+              </p>
+            <% } %>
+          <% } %>
+        <% } %>
+      </div>
 
       <h2 class="title is-3">Status</h2>
 
@@ -202,13 +257,19 @@
       <% } %>
     </div>
   </div>
+  <div class="has-text-right">
+    <button class="button is-success" type="submit">
+      <span class="icon"><i class="fas fa-save" aria-hidden="true"></i></span>
+      <span><%= isCreate ? "Create New Licence" : "Update Licence" %></span>
+    </button>
+  </div>
 </form>
 
 <%- include('_footerA'); -%>
 
 <% if (!isCreate) { %>
   <script>
-    exports.licenceCategory = <%- JSON.stringify(licenceCategory) %>;
+    exports.licenceCategory = <%- JSON.stringify(licenceCategories[0]) %>;
   </script>
 <% } %>
 <script src="<%= urlPrefix %>/javascripts/licence-edit.min.js"></script>

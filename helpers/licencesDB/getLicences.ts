@@ -7,6 +7,7 @@ import type * as recordTypes from "../../types/recordTypes";
 
 interface GetLicencesFilters {
   licenceCategoryKey?: string;
+  licenceStatus?: "" | "active" | "past"
 }
 
 
@@ -22,6 +23,8 @@ export const getLicences = (filters: GetLicencesFilters, options: {
     readonly: true
   });
 
+  const currentDate = dateTimeFunctions.dateToInteger(new Date());
+
   const sqlParameters = [];
 
   let sqlWhereClause = " where l.recordDelete_timeMillis is null";
@@ -29,6 +32,15 @@ export const getLicences = (filters: GetLicencesFilters, options: {
   if (filters.licenceCategoryKey !== "") {
     sqlWhereClause += " and l.licenceCategoryKey = ?";
     sqlParameters.push(filters.licenceCategoryKey);
+  }
+
+  if (filters.licenceStatus === "active") {
+    sqlWhereClause += " and l.startDate <= ? and l.endDate >= ?";
+    sqlParameters.push(currentDate, currentDate);
+
+  } else if (filters.licenceStatus === "past") {
+    sqlWhereClause += " and l.endDate < ?";
+    sqlParameters.push(currentDate);
   }
 
   let count = 0;

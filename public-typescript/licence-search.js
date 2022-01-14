@@ -26,15 +26,40 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             searchResultsElement.innerHTML = "<table class=\"table is-fullwidth is-striped is-hoverable has-sticky-header\">" +
                 "<thead><tr>" +
+                "<th>Licence Number</th>" +
+                "<th>Category</th>" +
+                "<th>Licensee</th>" +
+                "<th>Effective Start</th>" +
+                "<th>Effective End</th>" +
+                "<th class=\"has-text-centered\">Status</th>" +
                 "</tr></thead>" +
-                "<tbody></tbody>" +
                 "</table>";
-            const tbodyElement = searchResultsElement.querySelector("tbody");
+            const tbodyElement = document.createElement("tbody");
             for (const licenceObject of licenceList) {
                 const trElement = document.createElement("tr");
-                trElement.innerHTML = "";
+                let licenseeHTML = cityssm.escapeHTML(licenceObject.licenseeName);
+                if (licenceObject.licenseeBusinessName.trim() !== "") {
+                    licenseeHTML = cityssm.escapeHTML(licenceObject.licenseeBusinessName) + "<br />" +
+                        "<span class=\"is-size-7\">" + licenseeHTML + "</span>";
+                }
+                trElement.innerHTML =
+                    ("<td>" +
+                        "<a href=\"" + urlPrefix + "/licences/" + licenceObject.licenceId.toString() + "\">" +
+                        cityssm.escapeHTML(licenceObject.licenceNumber) +
+                        "</a>" +
+                        "</td>") +
+                        "<td>" + cityssm.escapeHTML(licenceObject.licenceCategory) + "</td>" +
+                        "<td>" + licenseeHTML + "</td>" +
+                        "<td>" + licenceObject.startDateString + "</td>" +
+                        "<td>" + licenceObject.endDateString + "</td>" +
+                        ("<td class=\"has-text-centered\">" +
+                            (licenceObject.issueDate
+                                ? "<span class=\"tag is-success\">Issued</span>"
+                                : "<span class=\"tag is-warning\">Pending</span>") +
+                            "</td>");
                 tbodyElement.append(trElement);
             }
+            searchResultsElement.querySelector("table").append(tbodyElement);
             searchResultsElement.insertAdjacentHTML("beforeend", "<div class=\"level is-block-print\">" +
                 "<div class=\"level-left has-text-weight-bold\">" +
                 "Displaying licences " +

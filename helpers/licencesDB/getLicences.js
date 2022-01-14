@@ -5,11 +5,20 @@ export const getLicences = (filters, options) => {
     const database = sqlite(databasePath, {
         readonly: true
     });
+    const currentDate = dateTimeFunctions.dateToInteger(new Date());
     const sqlParameters = [];
     let sqlWhereClause = " where l.recordDelete_timeMillis is null";
     if (filters.licenceCategoryKey !== "") {
         sqlWhereClause += " and l.licenceCategoryKey = ?";
         sqlParameters.push(filters.licenceCategoryKey);
+    }
+    if (filters.licenceStatus === "active") {
+        sqlWhereClause += " and l.startDate <= ? and l.endDate >= ?";
+        sqlParameters.push(currentDate, currentDate);
+    }
+    else if (filters.licenceStatus === "past") {
+        sqlWhereClause += " and l.endDate < ?";
+        sqlParameters.push(currentDate);
     }
     let count = 0;
     if (options.limit !== -1) {

@@ -2,7 +2,6 @@ import { Router } from "express";
 
 import * as permissionHandlers from "../handlers/permissions.js";
 
-
 import handler_search from "../handlers/licences-get/search.js";
 import handler_doSearch from "../handlers/licences-post/doSearch.js";
 
@@ -11,6 +10,8 @@ import handler_view from "../handlers/licences-get/view.js";
 import handler_new from "../handlers/licences-get/new.js";
 import handler_edit from "../handlers/licences-get/edit.js";
 import handler_doGetLicenceCategory from "../handlers/licences-post/doGetLicenceCategory.js";
+import handler_doCreateLicence from "../handlers/licences-post/doCreateLicence.js";
+import handler_doUpdateLicence from "../handlers/licences-post/doUpdateLicence.js";
 
 import handler_print from "../handlers/licences-get/print.js";
 
@@ -40,11 +41,11 @@ router.get("/new",
   handler_new);
 
 
-router.get("/:licenceID",
+router.get("/:licenceId",
   handler_view);
 
 
-router.get("/:licenceID/edit",
+router.get("/:licenceId/edit",
   permissionHandlers.updateGetHandler,
   handler_edit);
 
@@ -53,12 +54,23 @@ router.post("/doGetLicenceCategory",
   permissionHandlers.updatePostHandler,
   handler_doGetLicenceCategory);
 
+
+router.post("/doCreateLicence",
+  permissionHandlers.updatePostHandler,
+  handler_doCreateLicence);
+
+
+router.post("/doUpdateLicence",
+  permissionHandlers.updatePostHandler,
+  handler_doUpdateLicence);
+
+
 /*
  * Licence Print
  */
 
 
-router.get("/:licenceID/print",
+router.get("/:licenceId/print",
   handler_print);
 
 

@@ -1,9 +1,12 @@
 /* eslint-disable unicorn/filename-case, unicorn/prefer-module */
 
 import type { cityssmGlobal } from "@cityssm/bulma-webapp-js/src/types";
+import type { BulmaJS } from "@cityssm/bulma-js/types";
+
 import type * as recordTypes from "../types/recordTypes";
 
 declare const cityssm: cityssmGlobal;
+declare const bulmaJS: BulmaJS;
 
 (() => {
   const urlPrefix = document.querySelector("main").dataset.urlPrefix;
@@ -11,6 +14,42 @@ declare const cityssm: cityssmGlobal;
   const licenceId = (document.querySelector("#licenceEdit--licenceId") as HTMLInputElement).value;
 
   const isCreate = (licenceId === "");
+
+  /*
+   * Form Submit
+   */
+
+  document.querySelector("#form--licenceEdit").addEventListener("submit", (formEvent: SubmitEvent) => {
+
+    formEvent.preventDefault();
+
+    const submitURL = urlPrefix + "/licences/" +
+      (isCreate
+        ? "doCreateLicence"
+        : "doUpdateLicence");
+
+    cityssm.postJSON(submitURL, formEvent.currentTarget,
+      (responseJSON: { success: boolean; errorMessage?: string; licenceId?: number }) => {
+
+        if (responseJSON.success) {
+
+          if (isCreate) {
+            window.location.href = urlPrefix + "/licences/" + responseJSON.licenceId.toString() + "/edit";
+          } else {
+            bulmaJS.alert({
+              message: "Licence Updated Successfully",
+              contextualColorName: "success"
+            });
+          }
+        } else {
+          bulmaJS.alert({
+            title: "Error Updating Licence",
+            message: responseJSON.errorMessage,
+            contextualColorName: "danger"
+          });
+        }
+      });
+  });
 
   /*
    * End Date
@@ -238,6 +277,10 @@ declare const cityssm: cityssmGlobal;
 
   if (isCreate) {
     licenceCategoryKeyElement.addEventListener("change", refreshLicenceCategory);
+
+    if (licenceCategoryKeyElement.value !== "") {
+      refreshLicenceCategory();
+    }
 
   } else {
     licenceCategory = exports.licenceCategory;

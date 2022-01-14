@@ -10,7 +10,7 @@ import type * as recordTypes from "../../types/recordTypes";
 
 export const getLicenceCategory = (licenceCategoryKey: string, options: {
   includeApprovals: boolean;
-  includeFees: "current" | "all";
+  includeFees: "current" | "all" | false;
   includeFields: boolean;
 }): recordTypes.LicenceCategory => {
 
@@ -22,8 +22,7 @@ export const getLicenceCategory = (licenceCategoryKey: string, options: {
     database.prepare("select licenceCategoryKey, licenceCategory, bylawNumber, printEJS," +
       " licenceLengthYears, licenceLengthMonths, licenceLengthDays" +
       " from LicenceCategories" +
-      " where recordDelete_timeMillis is null" +
-      " and licenceCategoryKey = ?")
+      " where licenceCategoryKey = ?")
       .get(licenceCategoryKey);
 
   if (licenceCategory && options.includeApprovals) {

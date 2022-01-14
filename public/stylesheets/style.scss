@@ -12,7 +12,10 @@
 }
 
 
-.input:read-only {
+.input:read-only,
+.select select:disabled,
+.select select:disabled:read-only {
   cursor: not-allowed;
   background-color: #f5f5f5;
+  border-color: #dbdbdb;
 }

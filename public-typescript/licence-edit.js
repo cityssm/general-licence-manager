@@ -4,6 +4,33 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const urlPrefix = document.querySelector("main").dataset.urlPrefix;
     const licenceId = document.querySelector("#licenceEdit--licenceId").value;
     const isCreate = (licenceId === "");
+    document.querySelector("#form--licenceEdit").addEventListener("submit", (formEvent) => {
+        formEvent.preventDefault();
+        const submitURL = urlPrefix + "/licences/" +
+            (isCreate
+                ? "doCreateLicence"
+                : "doUpdateLicence");
+        cityssm.postJSON(submitURL, formEvent.currentTarget, (responseJSON) => {
+            if (responseJSON.success) {
+                if (isCreate) {
+                    window.location.href = urlPrefix + "/licences/" + responseJSON.licenceId.toString() + "/edit";
+                }
+                else {
+                    bulmaJS.alert({
+                        message: "Licence Updated Successfully",
+                        contextualColorName: "success"
+                    });
+                }
+            }
+            else {
+                bulmaJS.alert({
+                    title: "Error Updating Licence",
+                    message: responseJSON.errorMessage,
+                    contextualColorName: "danger"
+                });
+            }
+        });
+    });
     const licenceCategoryKeyElement = document.querySelector("#licenceEdit--licenceCategoryKey");
     const isRenewalElement = document.querySelector("#licenceEdit--isRenewal");
     const startDateStringElement = document.querySelector("#licenceEdit--startDateString");
@@ -160,6 +187,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
     };
     if (isCreate) {
         licenceCategoryKeyElement.addEventListener("change", refreshLicenceCategory);
+        if (licenceCategoryKeyElement.value !== "") {
+            refreshLicenceCategory();
+        }
     }
     else {
         licenceCategory = exports.licenceCategory;

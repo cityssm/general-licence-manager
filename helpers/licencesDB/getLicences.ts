@@ -6,8 +6,9 @@ import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js"
 import type * as recordTypes from "../../types/recordTypes";
 
 interface GetLicencesFilters {
-  licenceCategoryKey?: string;
-  licenceStatus?: "" | "active" | "past"
+  licenceCategoryKey: string;
+  licensee: string;
+  licenceStatus: "" | "active" | "past"
 }
 
 
@@ -32,6 +33,15 @@ export const getLicences = (filters: GetLicencesFilters, options: {
   if (filters.licenceCategoryKey !== "") {
     sqlWhereClause += " and l.licenceCategoryKey = ?";
     sqlParameters.push(filters.licenceCategoryKey);
+  }
+
+  if (filters.licensee !== "") {
+    const licenseePieces = filters.licensee.trim().split(" ");
+
+    for (const licenseePiece of licenseePieces) {
+      sqlWhereClause += " and (l.licenseeName like '%' || ? || '%' or l.licenseeBusinessName like '%' || ? || '%')";
+      sqlParameters.push(licenseePiece, licenseePiece);
+    }
   }
 
   if (filters.licenceStatus === "active") {

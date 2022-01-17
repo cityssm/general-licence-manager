@@ -1,0 +1,47 @@
+<div class="modal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <h3 class="modal-card-title">Add a New Transaction</h3>
+      <button class="delete is-close-modal-button" aria-label="close" type="button"></button>
+    </header>
+    <section class="modal-card-body">
+      <div class="columns">
+        <div class="column">
+          <p>
+            <strong>Licence Fee</strong><br />
+            $<span id="transactionAdd--licenceFee"></span>
+          </p>
+          <p>
+            <strong>Outstanding Balance</strong><br />
+            $<span id="transactionAdd--outstandingBalance"></span>
+          </p>
+          <p>
+            <strong>Replacement Fee</strong><br />
+            $<span id="transactionAdd--replacementFee"></span>
+          </p>
+        </div>
+        <div class="column">
+          <form id="form--transactionAdd">
+            <div class="field">
+              <label class="label" for="transactionAdd--transactionAmount">Transaction Amount</label>
+              <div class="control has-icons-left">
+                <input class="input has-text-right" id="transactionAdd--transactionAmount" name="transactionAmount" type="text" inputmode="numeric" pattern="^\d+(\.\d{2})?$" maxlength="11" required />
+                <span class="icon is-left">
+                  <i class="fas fa-dollar-sign" aria-hidden="true"></i>
+                </span>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+    <footer class="modal-card-foot is-justify-content-right">
+      <button class="button is-success" type="submit" form="form--transactionAdd">
+        <span class="icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
+        <span>Add Transaction</span>
+      </button>
+      <button class="button is-close-modal-button" type="button">Cancel</button>
+    </footer>
+  </div>
+</div>

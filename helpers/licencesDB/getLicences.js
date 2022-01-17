@@ -12,6 +12,13 @@ export const getLicences = (filters, options) => {
         sqlWhereClause += " and l.licenceCategoryKey = ?";
         sqlParameters.push(filters.licenceCategoryKey);
     }
+    if (filters.licensee !== "") {
+        const licenseePieces = filters.licensee.trim().split(" ");
+        for (const licenseePiece of licenseePieces) {
+            sqlWhereClause += " and (l.licenseeName like '%' || ? || '%' or l.licenseeBusinessName like '%' || ? || '%')";
+            sqlParameters.push(licenseePiece, licenseePiece);
+        }
+    }
     if (filters.licenceStatus === "active") {
         sqlWhereClause += " and l.startDate <= ? and l.endDate >= ?";
         sqlParameters.push(currentDate, currentDate);

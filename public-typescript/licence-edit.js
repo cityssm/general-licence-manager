@@ -71,20 +71,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
             return;
         }
         licenceFieldsContainerElement.classList.remove("is-hidden");
-        licenceFieldsContainerElement.innerHTML = "<h2 class=\"title is-3\">Fields</h2>";
+        licenceFieldsContainerElement.innerHTML = "<h2 class=\"panel-heading\">Fields</h2>";
         const licenceFieldKeys = [];
         for (const licenceCategoryField of licenceCategory.licenceCategoryFields) {
-            const fieldElement = document.createElement("div");
-            fieldElement.className = "field";
-            fieldElement.innerHTML = "<label class=\"label\"></label>" +
+            const panelBlockElement = document.createElement("div");
+            panelBlockElement.className = "panel-block is-block";
+            panelBlockElement.innerHTML = "<div class=\"field\">" +
+                "<label class=\"label\"></label>" +
                 "<div class=\"control\">" +
                 "<input class=\"input\" type=\"text\" />" +
+                "</div>" +
                 "</div>";
             const inputId = "licenceFieldEdit--" + licenceCategoryField.licenceFieldKey;
-            const labelElement = fieldElement.querySelector("label");
+            const labelElement = panelBlockElement.querySelector("label");
             labelElement.setAttribute("for", inputId);
             labelElement.textContent = licenceCategoryField.licenceField;
-            const inputElement = fieldElement.querySelector("input");
+            const inputElement = panelBlockElement.querySelector("input");
             inputElement.id = inputId;
             inputElement.name = "field--" + licenceCategoryField.licenceFieldKey;
             inputElement.minLength = licenceCategoryField.minimumLength;
@@ -99,9 +101,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 const helpElement = document.createElement("p");
                 helpElement.className = "help";
                 helpElement.textContent = licenceCategoryField.licenceFieldDescription;
-                fieldElement.append(helpElement);
+                panelBlockElement.append(helpElement);
             }
-            licenceFieldsContainerElement.append(fieldElement);
+            licenceFieldsContainerElement.append(panelBlockElement);
             licenceFieldKeys.push(licenceCategoryField.licenceFieldKey);
         }
         const licenceFieldKeysElement = document.createElement("input");
@@ -118,19 +120,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
             return;
         }
         licenceApprovalsContainerElement.classList.remove("is-hidden");
-        licenceApprovalsContainerElement.innerHTML = "<h2 class=\"title is-3\">Approvals</h2>";
+        licenceApprovalsContainerElement.innerHTML = "<h2 class=\"panel-heading\">Approvals</h2>";
         const licenceApprovalKeys = [];
         for (const licenceCategoryApproval of licenceCategory.licenceCategoryApprovals) {
-            const faCheckElement = document.createElement("div");
-            faCheckElement.className = "facheck mt-2";
-            faCheckElement.innerHTML =
+            const panelBlockElement = document.createElement("div");
+            panelBlockElement.className = "panel-block is-block";
+            panelBlockElement.innerHTML = "<div class=\"facheck\">" +
                 "<input type=\"checkbox\" />" +
-                    "<label></label>";
+                "<label></label>" +
+                "</div>";
             const inputId = "licenceApprovalEdit--" + licenceCategoryApproval.licenceApprovalKey;
-            const labelElement = faCheckElement.querySelector("label");
+            const labelElement = panelBlockElement.querySelector("label");
             labelElement.setAttribute("for", inputId);
             labelElement.textContent = licenceCategoryApproval.licenceApproval;
-            const inputElement = faCheckElement.querySelector("input");
+            const inputElement = panelBlockElement.querySelector("input");
             inputElement.id = inputId;
             inputElement.name = "approval--" + licenceCategoryApproval.licenceApprovalKey;
             inputElement.dataset.isRequiredForNew = licenceCategoryApproval.isRequiredForNew ? "true" : "false";
@@ -139,13 +142,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 (!isRenewalElement.checked && licenceCategoryApproval.isRequiredForNew)) {
                 inputElement.required = true;
             }
-            licenceApprovalsContainerElement.append(faCheckElement);
             if (licenceCategoryApproval.licenceApprovalDescription !== "") {
                 const helpElement = document.createElement("p");
                 helpElement.className = "help";
                 helpElement.textContent = licenceCategoryApproval.licenceApprovalDescription;
-                licenceApprovalsContainerElement.append(helpElement);
+                panelBlockElement.append(helpElement);
             }
+            licenceApprovalsContainerElement.append(panelBlockElement);
             licenceApprovalKeys.push(licenceCategoryApproval.licenceApprovalKey);
         }
         const licenceApprovalKeysElement = document.createElement("input");
@@ -205,4 +208,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         refreshLicenceCategoryFees();
     });
+    const openAddTransactionModal = (clickEvent) => {
+        clickEvent.preventDefault();
+        cityssm.openHtmlModal("transaction-add", {
+            onshow: (modalElement) => {
+            }
+        });
+    };
+    if (!isCreate) {
+        document.querySelector("#button--addTransaction").addEventListener("click", openAddTransactionModal);
+    }
 })();

@@ -39,7 +39,7 @@ export const getUnusedLicenceCategoryKey = (licenceCategory) => {
     const database = sqlite(databasePath, {
         readonly: true
     });
-    const licenceCategoryKey = getUnusedKey(database, licenceCategory, 20, "select licenceCategoryKey" +
+    const licenceCategoryKey = getUnusedKey(database, licenceCategory, 50, "select licenceCategoryKey" +
         " from LicenceCategories" +
         " where licenceCategoryKey = ?");
     database.close();
@@ -49,7 +49,7 @@ export const getUnusedLicenceFieldKey = (licenceCategoryKey, licenceField) => {
     const database = sqlite(databasePath, {
         readonly: true
     });
-    const licenceFieldKey = getUnusedKey(database, licenceCategoryKey + " " + licenceField, 50, "select licenceFieldKey" +
+    const licenceFieldKey = getUnusedKey(database, licenceCategoryKey + " " + licenceField, 80, "select licenceFieldKey" +
         " from LicenceCategoryFields" +
         " where licenceFieldKey = ?");
     database.close();
@@ -59,7 +59,7 @@ export const getUnusedLicenceApprovalKey = (licenceCategoryKey, licenceApproval)
     const database = sqlite(databasePath, {
         readonly: true
     });
-    const licenceApprovalKey = getUnusedKey(database, licenceCategoryKey + " " + licenceApproval, 50, "select licenceApprovalKey" +
+    const licenceApprovalKey = getUnusedKey(database, licenceCategoryKey + " " + licenceApproval, 80, "select licenceApprovalKey" +
         " from LicenceCategoryApprovals" +
         " where licenceApprovalKey = ?");
     database.close();

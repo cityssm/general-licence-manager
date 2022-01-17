@@ -75,11 +75,20 @@ export const getLicence = (licenceId: number | string): recordTypes.Licence => {
       " order by c.orderNumber, c.licenceApproval")
       .all(licenceId,
         licence.licenceCategoryKey, licenceId);
+
+    licence.licenceTransactions = database.prepare("select transactionIndex," +
+      " transactionDate, userFn_dateIntegerToString(transactionDate) as transactionDateString," +
+      " transactionTime, userFn_timeIntegerToString(transactionTime) as transactionTimeString," +
+      " externalReceiptNumber, transactionAmount, transactionNote" +
+      " from LicenceTransactions" +
+      " where recordDelete_timeMillis is null" +
+      " and licenceId = ?")
+      .all(licenceId);
   }
 
-database.close();
+  database.close();
 
-return licence;
+  return licence;
 };
 
 

@@ -234,6 +234,20 @@
               </div>
             </div>
           </div>
+          <% if (!isCreate) { %>
+            <% if (licence.issueDate) { %>
+              <p>
+                <strong>Issue Date</strong><br />
+                <%= licence.issueDateString %>
+              </p>
+            <% } else { %>
+              <div class="message is-warning is-small">
+                <p class="message-body">
+                  This licence has not been issued.
+                </p>
+              </div>
+            <% } %>
+          <% } %>
         </div>
       </div>
     </div>
@@ -247,7 +261,8 @@
         <% if (!isCreate) { %>
           <div class="level-right">
             <button class="level-item button is-success is-small" id="button--addTransaction" type="button">
-              Add Transaction
+              <span class="icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
+              <span>Add Transaction</span>
             </button>
           </div>
         <% } %>
@@ -292,8 +307,10 @@
                 </tr>
               </thead>
               <tbody>
+                <% let transactionTotal = 0; %>
                 <% for (const licenceTransaction of licence.licenceTransactions) { %>
-                  <tr>
+                  <% transactionTotal += licenceTransaction.transactionAmount; %>
+                  <tr data-transaction-index="<%= licenceTransaction.transactionIndex %>">
                     <td>
                       <%= licenceTransaction.transactionDateString %>
                     </td>
@@ -306,7 +323,7 @@
               <tfoot>
                 <tr>
                   <th>Total</th>
-                  <th class="has-text-right">$0.00</th>
+                  <th class="has-text-right">$<%= transactionTotal.toFixed(2) %></th>
                 </tr>
               </tfoot>
             </table>
@@ -315,13 +332,57 @@
       </div>
     </div>
   </div>
+  <%
+    const submitButtonText = isCreate ? "Create Licence" : "Update Licence";
+  %>
   <div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
-    <button class="button is-circle is-success has-tooltip-left" data-tooltip="Update Licence" type="submit">
+    <button class="button is-circle is-success has-tooltip-left" data-tooltip="<%= submitButtonText %>" type="submit">
       <i class="fas fa-save" aria-hidden="true"></i>
-      <span class="sr-only">Update Licence</span>
+      <span class="sr-only"><%= submitButtonText %></span>
     </button>
   </div>
+  <div class="has-text-right">
+    <button class="button is-success" type="submit">
+      <span class="icon"><i class="fas fa-save" aria-hidden="true"></i></span>
+      <span><%= submitButtonText %></span>
+    </button>
+    <% if (!isCreate) { %>
+      <% if (licence.issueDate) { %>
+        <a class="button is-link" href="<%= urlPrefix %>/licences/<%= licence.licenceId %>/print" target="_blank">
+          Print Licence
+        </a>
+      <% } else { %>
+        <button class="button is-primary" id="is-issue-licence-button" type="button">
+          Issue Licence
+        </button>
+      <% } %>
+      <div class="dropdown is-right has-text-left">
+        <div class="dropdown-trigger">
+          <button class="button" type="button">
+            <span>More Options</span>
+            <span class="icon">
+              <i class="fas fa-angle-down" aria-hidden="true"></i>
+            </span>
+          </button>
+        </div>
+        <div class="dropdown-menu">
+          <div class="dropdown-content">
+            <a class="dropdown-item" href="#">
+              <span class="icon is-small"><i class="fas fa-trash-alt has-text-danger" aria-hidden="true"></i></span>
+              Delete Licence
+            </a>
+          </div>
+        </div>
+      </div>
+    <% } %>
+    <% if (isCreate) { %>
+      <a class="button is-danger is-inverted" href="<%= urlPrefix %>/licences">
+        Cancel
+      </a>
+    <% } %>
+  </div>
 </form>
+
 
 <%- include('_footerA'); -%>
 

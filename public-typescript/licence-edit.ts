@@ -19,7 +19,16 @@ declare const bulmaJS: BulmaJS;
    * Form Submit
    */
 
-  document.querySelector("#form--licenceEdit").addEventListener("submit", (formEvent: SubmitEvent) => {
+  let hasUnsavedChanges = false;
+
+  const setUnsavedChanges = () => {
+    hasUnsavedChanges = true;
+    cityssm.enableNavBlocker();
+  };
+
+  const editFormElement = document.querySelector("#form--licenceEdit");
+
+  editFormElement.addEventListener("submit", (formEvent: SubmitEvent) => {
 
     formEvent.preventDefault();
 
@@ -32,6 +41,9 @@ declare const bulmaJS: BulmaJS;
       (responseJSON: { success: boolean; errorMessage?: string; licenceId?: number }) => {
 
         if (responseJSON.success) {
+
+          hasUnsavedChanges = false;
+          cityssm.disableNavBlocker();
 
           if (isCreate) {
             window.location.href = urlPrefix + "/licences/" + responseJSON.licenceId.toString() + "/edit";
@@ -50,6 +62,14 @@ declare const bulmaJS: BulmaJS;
         }
       });
   });
+
+  const inputElements = editFormElement.querySelectorAll("input, select");
+
+  for (const inputElement of inputElements) {
+    if (inputElement.hasAttribute("name")) {
+      inputElement.addEventListener("change", setUnsavedChanges);
+    }
+  }
 
   /*
    * End Date
@@ -317,19 +337,169 @@ declare const bulmaJS: BulmaJS;
    * Transactions
    */
 
+  const licenceTransactionsTableElement = document.querySelector("#table--licenceTransactions") as HTMLTableElement;
+
+  let licenceTransactions: recordTypes.LicenceTransaction[];
+
+  const getOutstandingBalance = () => {
+
+    const licenceFeeString = (document.querySelector("#licenceEdit--licenceFee") as HTMLInputElement).value;
+
+    const transactionAmountTotalString = licenceTransactionsTableElement.querySelectorAll("tfoot th")[1].textContent.slice(1);
+
+    const outstandingBalance = Math.max(Number.parseFloat(licenceFeeString) - Number.parseFloat(transactionAmountTotalString), 0);
+
+    return outstandingBalance;
+  };
+
+  const renderLicenceTransactions = () => {
+
+    const tbodyElement = licenceTransactionsTableElement.querySelector("tbody");
+
+    tbodyElement.innerHTML = "";
+
+    let transactionTotal = 0;
+
+    for (const licenceTransaction of licenceTransactions) {
+
+      const trElement = document.createElement("tr");
+
+      trElement.dataset.transactionIndex = licenceTransaction.transactionIndex.toString();
+
+      trElement.innerHTML = "<td>" + licenceTransaction.transactionDateString + "</td>" +
+        "<td class=\"has-text-right\">$" + licenceTransaction.transactionAmount.toFixed(2) + "</td>";
+
+      tbodyElement.append(trElement);
+
+      transactionTotal += licenceTransaction.transactionAmount;
+    }
+
+    licenceTransactionsTableElement.querySelectorAll("tfoot th")[1].textContent =
+      "$" + transactionTotal.toFixed(2);
+  };
+
   const openAddTransactionModal = (clickEvent: Event) => {
 
     clickEvent.preventDefault();
 
+    let addTransactionModalElement: HTMLElement;
+    let addTransactionCloseModalFunction: () => void;
+
+    const addTransactionSubmitFunction = (formEvent: SubmitEvent) => {
+      formEvent.preventDefault();
+
+      cityssm.postJSON(urlPrefix + "/licences/doAddLicenceTransaction",
+        formEvent.currentTarget,
+        (responseJSON: { success: true; licenceTransactions: recordTypes.LicenceTransaction[]; }) => {
+          if (responseJSON.success) {
+            licenceTransactions = responseJSON.licenceTransactions;
+            renderLicenceTransactions();
+            addTransactionCloseModalFunction();
+          }
+        });
+    };
+
+    const setTransactionAmountFunction = (clickEvent: Event) => {
+      clickEvent.preventDefault();
+
+      const transactionAmountSpanId = (clickEvent.currentTarget as HTMLElement).dataset.spanId;
+
+      (addTransactionModalElement.querySelector("#transactionAdd--transactionAmount") as HTMLInputElement).value =
+        addTransactionModalElement.querySelector("#" + transactionAmountSpanId).textContent;
+    };
+
     cityssm.openHtmlModal("transaction-add", {
       onshow: (modalElement) => {
-        
+
+        (modalElement.querySelector("#transactionAdd--licenceId") as HTMLInputElement).value = licenceId;
+
+        const licenceFeeString = (document.querySelector("#licenceEdit--licenceFee") as HTMLInputElement).value;
+
+        modalElement.querySelector("#transactionAdd--licenceFee").textContent = licenceFeeString;
+
+        modalElement.querySelector("#transactionAdd--replacementFee").textContent =
+          (document.querySelector("#licenceEdit--replacementFee") as HTMLInputElement).value;
+
+        const outstandingBalance = getOutstandingBalance();
+
+        modalElement.querySelector("#transactionAdd--outstandingBalance").textContent = outstandingBalance.toFixed(2);
+      },
+      onshown: (modalElement, closeModalFunction) => {
+
+        addTransactionModalElement = modalElement;
+        addTransactionCloseModalFunction = closeModalFunction;
+
+        const setTransactionAmountButtonElements = modalElement.querySelectorAll(".is-set-transaction-amount-button");
+
+        for (const setTransactionAmountButtonElement of setTransactionAmountButtonElements) {
+          setTransactionAmountButtonElement.addEventListener("click", setTransactionAmountFunction);
+        }
+
+        modalElement.querySelector("#form--transactionAdd").addEventListener("submit", addTransactionSubmitFunction);
       }
     });
   };
 
   if (!isCreate) {
-
     document.querySelector("#button--addTransaction").addEventListener("click", openAddTransactionModal);
+  }
+
+  /*
+   * Issue Licence
+   */
+
+  const issueLicenceButtonElement = document.querySelector("#is-issue-licence-button");
+
+  if (issueLicenceButtonElement) {
+
+    const doIssue = () => {
+
+      cityssm.postJSON(urlPrefix + "/licences/doIssueLicence", {
+        licenceId
+      },
+        (responseJSON: { success: boolean }) => {
+
+          if (responseJSON.success) {
+            window.location.reload();
+          }
+        });
+    };
+
+    issueLicenceButtonElement.addEventListener("click", (clickEvent) => {
+      clickEvent.preventDefault();
+
+
+      if (hasUnsavedChanges) {
+        bulmaJS.alert({
+          title: "Licence Has Unsaved Changes",
+          message: "Please save your licence changes before issuing the licence.",
+          contextualColorName: "warning"
+        });
+
+      } else if (getOutstandingBalance() > 0) {
+
+        bulmaJS.confirm({
+          title: "Licence Has an Outstanding Balance",
+          message: "Are you sure you want to issue this licence with an outstanding balance?",
+          contextualColorName: "warning",
+          okButton: {
+            text: "Yes, Issue with Outstanding Balance",
+            callbackFunction: doIssue
+          }
+        });
+
+      } else {
+
+        bulmaJS.confirm({
+          title: "Issue Licence",
+          message: "Are you sure you want to issue this licence?",
+          contextualColorName: "info",
+          okButton: {
+            text: "Yes, Issue Licence",
+            callbackFunction: doIssue
+          }
+        });
+      }
+    });
   }
 })();

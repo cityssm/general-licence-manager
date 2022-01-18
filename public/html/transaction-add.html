@@ -8,21 +8,35 @@
     <section class="modal-card-body">
       <div class="columns">
         <div class="column">
-          <p>
-            <strong>Licence Fee</strong><br />
-            $<span id="transactionAdd--licenceFee"></span>
-          </p>
-          <p>
-            <strong>Outstanding Balance</strong><br />
-            $<span id="transactionAdd--outstandingBalance"></span>
-          </p>
-          <p>
-            <strong>Replacement Fee</strong><br />
-            $<span id="transactionAdd--replacementFee"></span>
-          </p>
+          <table class="table is-fullwidth">
+            <tr>
+              <th>Licence Fee</th>
+              <td class="has-text-right">
+                $<span id="transactionAdd--licenceFee"></span>
+              </td>
+              <td></td>
+            </tr>
+            <tr>
+              <th>Outstanding Balance</th>
+              <td class="has-text-right">
+                $<span id="transactionAdd--outstandingBalance"></span>
+              </td>
+              <td>
+                <button class="button is-small is-set-transaction-amount-button" data-span-id="transactionAdd--outstandingBalance" type="button"><i class="fas fa-angle-double-right" aria-label="Set Outstanding Balance as Transaction Amount"></i></button>
+              </td>
+            </tr>
+            <tr>
+              <th>Replacement Fee</th>
+              <td class="has-text-right">$<span id="transactionAdd--replacementFee"></span></td>
+              <td>
+                <button class="button is-small is-set-transaction-amount-button" data-span-id="transactionAdd--replacementFee" type="button"><i class="fas fa-angle-double-right" aria-label="Set Replacement Fee as Transaction Amount"></i></button>
+              </td>
+            </tr>
+          </table>
         </div>
         <div class="column">
           <form id="form--transactionAdd">
+            <input id="transactionAdd--licenceId" name="licenceId" type="hidden" />
             <div class="field">
               <label class="label" for="transactionAdd--transactionAmount">Transaction Amount</label>
               <div class="control has-icons-left">
@@ -30,6 +44,18 @@
                 <span class="icon is-left">
                   <i class="fas fa-dollar-sign" aria-hidden="true"></i>
                 </span>
+              </div>
+            </div>
+            <div class="field">
+              <label class="label" for="transactionAdd--externalReceiptNumber">Receipt Number</label>
+              <div class="control">
+                <input class="input" id="transactionAdd--externalReceiptNumber" name="externalReceiptNumber" maxlength="20" />
+              </div>
+            </div>
+            <div class="field">
+              <label class="label" for="transactionAdd--transactionNote">Transaction Note</label>
+              <div class="control">
+                <textarea class="textarea" id="transactionAdd--transactionNote" name="transactionNote"></textarea>
               </div>
             </div>
           </form>

@@ -3,6 +3,8 @@ import { licencesDB as databasePath } from "../../data/databasePaths.js";
 
 import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
 
+import { getLicenceTransactions } from "./getLicenceTransactions.js";
+
 import type * as recordTypes from "../../types/recordTypes";
 
 
@@ -76,14 +78,7 @@ export const getLicence = (licenceId: number | string): recordTypes.Licence => {
       .all(licenceId,
         licence.licenceCategoryKey, licenceId);
 
-    licence.licenceTransactions = database.prepare("select transactionIndex," +
-      " transactionDate, userFn_dateIntegerToString(transactionDate) as transactionDateString," +
-      " transactionTime, userFn_timeIntegerToString(transactionTime) as transactionTimeString," +
-      " externalReceiptNumber, transactionAmount, transactionNote" +
-      " from LicenceTransactions" +
-      " where recordDelete_timeMillis is null" +
-      " and licenceId = ?")
-      .all(licenceId);
+    licence.licenceTransactions = getLicenceTransactions(licenceId, database);
   }
 
   database.close();

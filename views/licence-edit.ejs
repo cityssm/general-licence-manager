@@ -7,9 +7,24 @@
       <span class="icon is-small"><i class="fas fa-certificate" aria-hidden="true"></i></span>
       <span>Licences</span></a>
     </li>
-    <li class="is-active"><a href="#" aria-current="page">
-      <%= isCreate ? "Create a New Licence" : "Update a Licence" %>
-    </a></li>
+    <% if (isCreate) { %>
+      <li class="is-active">
+        <a href="#" aria-current="page">
+          Create a New Licence
+        </a>
+      </li>
+    <% } else { %>
+      <li>
+        <a href="<%= urlPrefix %>/licences/<%= licence.licenceId %>">
+          Licence #<%= licence.licenceNumber %>
+        </a>
+      </li>
+      <li class="is-active">
+        <a href="#" aria-current="page">
+          Update
+        </a>
+      </li>
+    <% } %>
   </ul>
 </nav>
 
@@ -234,7 +249,9 @@
               </div>
             </div>
           </div>
-          <% if (!isCreate) { %>
+        </div>
+        <% if (!isCreate) { %>
+          <div class="panel-block is-block">
             <% if (licence.issueDate) { %>
               <p>
                 <strong>Issue Date</strong><br />
@@ -247,8 +264,8 @@
                 </p>
               </div>
             <% } %>
-          <% } %>
-        </div>
+          </div>
+        <% } %>
       </div>
     </div>
   </div>
@@ -349,7 +366,8 @@
     <% if (!isCreate) { %>
       <% if (licence.issueDate) { %>
         <a class="button is-link" href="<%= urlPrefix %>/licences/<%= licence.licenceId %>/print" target="_blank">
-          Print Licence
+          <span class="icon"><i class="fas fa-print" aria-hidden="true"></i></span>
+          <span>Print Licence</span>
         </a>
       <% } else { %>
         <button class="button is-primary" id="is-issue-licence-button" type="button">
@@ -367,7 +385,7 @@
         </div>
         <div class="dropdown-menu">
           <div class="dropdown-content">
-            <a class="dropdown-item" href="#">
+            <a class="dropdown-item" id="is-delete-licence-button" href="#">
               <span class="icon is-small"><i class="fas fa-trash-alt has-text-danger" aria-hidden="true"></i></span>
               Delete Licence
             </a>

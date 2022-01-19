@@ -1,0 +1,122 @@
+<%
+  const urlPrefix = configFunctions.getProperty("reverseProxy.urlPrefix");
+%><html>
+<head>
+  <meta charset="utf-8" />
+  <style>
+    * {
+      box-sizing: border-box;
+      font-size: 12pt;
+    }
+
+    html {
+      font-family: Arial, sans-serif;
+    }
+
+    .page {
+      margin: 20px 30px;
+    }
+
+    .box {
+      border: 1px solid #ccc;
+      padding: 20px;
+    }
+
+    table {
+      width: 100%;
+    }
+
+    table td {
+      vertical-align: top;
+    }
+
+    p {
+      line-height: 1.4;
+    }
+
+    .is-fixed {
+      table-layout: fixed;
+    }
+
+    .has-text-centered {
+      text-align: center;
+    }
+
+    .is-24pt {
+      font-size: 24pt;
+    }
+
+    .is-18pt {
+      font-size: 18pt;
+    }
+
+    .is-12pt {
+      font-size: 12pt;
+    }
+
+    .pt-2 {
+      padding-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1 class="has-text-centered is-24pt">
+      <span class="is-12pt">Licence</span><br />
+      <%= licenceCategory.licenceCategory %><br />
+      <span class="is-18pt"><%= licence.licenceNumber %></span>
+    </h1>
+    <table>
+      <tr>
+        <td style="width: 40%">
+          <p>
+            <strong>Issued To</strong><br />
+            <%= licence.licenseeName %><br />
+            <%= licence.licenseeBusinessName %>
+          </p>
+          <p>
+            <strong>Effective Dates</strong><br />
+            <%= licence.startDateString %> to
+            <%= licence.endDateString %>
+          </p>
+        </td>
+        <td>
+          <% for (const licenceField of licence.licenceFields) { %>
+            <p>
+              <strong><%= licenceField.licenceField %></strong><br />
+              <%= licenceField.licenceFieldValue %>
+            </p>
+          <% } %>
+          <% for (const licenceApproval of licence.licenceApprovals) { %>
+            <p>
+              <% if (licenceApproval.isApproved) { %>
+                ✔️
+              <% } else { %>
+                ✖️
+              <% } %>
+              <%= licenceApproval.licenceApproval %>
+            </p>
+          <% } %>
+        </td>
+      </tr>
+      <tr>
+        <td class="pt-2">
+          <p>
+            <strong>Issued Date</strong><br />
+            <%= licence.issueDateString %>
+          </p>
+        </td>
+        <td class="pt-2">
+          <p>
+            <strong>Licensing Authority</strong>
+          </p>
+          <br />
+          <br />
+          <br />
+          <hr />
+        </td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

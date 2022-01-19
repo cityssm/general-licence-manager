@@ -3,26 +3,33 @@ import type { RequestHandler } from "express";
 import path from "path";
 import * as ejs from "ejs";
 
+import { getLicence } from "../../helpers/licencesDB/getLicence.js";
+import { getLicenceCategory } from "../../helpers/functions.cache.js";
+
 import * as configFunctions from "../../helpers/functions.config.js";
 
 import convertHTMLToPDF from "pdf-puppeteer";
 
 
-const urlPrefix = configFunctions.getProperty("reverseProxy.urlPrefix");
-
-const __dirname = ".";
-
-
 export const handler: RequestHandler = async(request, response, next) => {
 
-/*
-  const reportPath = path.join(__dirname, "reports", printTemplate);
+  const licenceId = request.params.licenceId;
+
+  const licence = getLicence(licenceId);
+
+  if (!licence || !licence.issueDate) {
+    return next("Licence not available for printing.");
+  }
+
+  const licenceCategory = getLicenceCategory(licence.licenceCategoryKey);
+
+  const reportPath = path.join(".", "print", licenceCategory.printEJS + ".ejs");
 
   const pdfCallbackFunction = (pdf: Buffer) => {
 
     response.setHeader("Content-Disposition",
       "attachment;" +
-      " filename=licence-" + licenceID.toString() + "-" + licence.recordUpdate_timeMillis.toString() + ".pdf"
+      " filename=licence-" + licenceId + "-" + licence.recordUpdate_timeMillis.toString() + ".pdf"
     );
 
     response.setHeader("Content-Type", "application/pdf");
@@ -34,8 +41,7 @@ export const handler: RequestHandler = async(request, response, next) => {
     reportPath, {
       configFunctions,
       licence,
-      licenceTicketTypeSummary,
-      organization
+      licenceCategory
     }, {},
     async(ejsError, ejsData) => {
 
@@ -52,7 +58,6 @@ export const handler: RequestHandler = async(request, response, next) => {
       return;
     }
   );
-  */
 };
 
 

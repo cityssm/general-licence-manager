@@ -28,7 +28,9 @@ export const getLicence = (licenceId: number | string): recordTypes.Licence => {
       " endDate, userFn_dateIntegerToString(endDate) as endDateString," +
       " issueDate, userFn_dateIntegerToString(issueDate) as issueDateString," +
       " issueTime, userFn_timeIntegerToString(issueTime) as issueTimeString," +
-      " licenceFee, replacementFee" +
+      " licenceFee, replacementFee," +
+      " recordCreate_userName, recordCreate_timeMillis," +
+      " recordUpdate_userName, recordUpdate_timeMillis" +
       " from Licences" +
       " where recordDelete_timeMillis is null" +
       " and licenceId = ?")

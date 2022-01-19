@@ -4,12 +4,15 @@ data/sessions/
 node_modules/
 
 app.min.js
+bin/*.min.js
 bin/daemon/
 data/*.db
 data/*.db-journal
 data/*.min.js
 data/config.*
+handlers/*.min.js
 helpers/*.min.js
-public/images-custom/*
 routes/*.min.js
 *.pem
+
+public/_private/*

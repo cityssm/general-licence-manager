@@ -13,9 +13,23 @@
   </ul>
 </nav>
 
-<h1 class="title is-1">
-  Licence #<%= licence.licenceNumber %>
-</h1>
+<div class="level">
+  <div class="level-left">
+    <div class="level-item">
+      <h1 class="title is-1">
+        Licence #<%= licence.licenceNumber %>
+      </h1>
+    </div>
+  </div>
+  <% if (licence.issueDate) { %>
+    <div class="level-right">
+      <a class="level-item button is-link" href="<%= urlPrefix %>/licences/<%= licence.licenceId %>/print" target="_blank">
+        <span class="icon"><i class="fas fa-print" aria-hidden="true"></i></span>
+        <span>Print Licence</span>
+      </a>
+    </div>
+    <% } %>
+</div>
 
 <% if (user.userProperties.canUpdate) { %>
   <div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
@@ -26,78 +40,106 @@
   </div>
 <% } %>
 
-<div class="columns">
-  <div class="column is-5">
+<div class="panel">
+  <div class="panel-block">
     <p>
       <strong>Licence Category</strong><br />
       <%= licenceCategory.licenceCategory %>
     </p>
+  </div>
+</div>
 
-    <h2 class="title is-3">
-      Licensee Information
-    </h2>
-    <p>
-      <%= licence.licenseeName %><br />
-      <%= licence.licenseeBusinessName %><br />
-      <%= licence.licenseeAddress1 %><br />
-      <%= licence.licenseeAddress2 %><br />
-      <%= licence.licenseeCity %>, <%= licence.licenseeProvince %><br />
-      <%= licence.licenseePostalCode %>
-    </p>
+<div class="columns">
+  <div class="column is-5">
+
+    <div class="panel">
+      <h2 class="panel-heading">Licensee Information</h2>
+      <div class="panel-block is-block">
+        <%= licence.licenseeName %><br />
+        <%= licence.licenseeBusinessName %><br />
+        <%= licence.licenseeAddress1 %><br />
+        <%= licence.licenseeAddress2 %><br />
+        <%= licence.licenseeCity %>, <%= licence.licenseeProvince %><br />
+        <%= licence.licenseePostalCode %>
+      </div>
+    </div>
   </div>
   <div class="column">
     <% if (licence.licenceFields.length > 0 || licence.licenceApprovals.length > 0) { %>
       <div class="columns">
         <% if (licence.licenceFields.length > 0) { %>
           <div class="column">
-            <h2 class="title is-3">Fields</h2>
-            <% for (const licenceField of licence.licenceFields) { %>
-              <p>
-                <strong><%= licenceField.licenceField %></strong><br />
-                <%= licenceField.licenceFieldValue %>
-              </p>
-            <% } %>
+            <div class="panel">
+              <h2 class="panel-heading">Fields</h2>
+              <% for (const licenceField of licence.licenceFields) { %>
+                <div class="panel-block is-block">
+                  <strong><%= licenceField.licenceField %></strong><br />
+                  <%= licenceField.licenceFieldValue %>
+                </div>
+              <% } %>
+            </div>
           </div>
         <% } %>
         <% if (licence.licenceApprovals.length > 0) { %>
           <div class="column">
-            <h2 class="title is-3">Approvals</h2>
-            <% for (const licenceApproval of licence.licenceApprovals) { %>
-              <p>
-                <span class="icon">
-                  <% if (licenceApproval.isApproved) { %>
-                    <i class="far fa-check-square" aria-label="Approved"></i>
-                  <% } else { %>
-                    <i class="far fa-square" aria-label="Not Approved"></i>
-                  <% } %>
-                </span>
-                <span><%= licenceApproval.licenceApproval %></span>
-              </p>
-            <% } %>
+            <div class="panel">
+              <h2 class="panel-heading">Approvals</h2>
+              <% for (const licenceApproval of licence.licenceApprovals) { %>
+                <div class="panel-block is-block">
+                  <span class="icon">
+                    <% if (licenceApproval.isApproved) { %>
+                      <i class="far fa-check-square" aria-label="Approved"></i>
+                    <% } else { %>
+                      <i class="far fa-square" aria-label="Not Approved"></i>
+                    <% } %>
+                  </span>
+                  <span><%= licenceApproval.licenceApproval %></span>
+                </div>
+              <% } %>
+            </div>
           </div>
         <% } %>
       </div>
     <% } %>
 
-    <h2 class="title is-3">Status</h2>
-
-    <div class="columns">
-      <div class="column">
-        <p>
-          <strong>Start Date</strong><br />
-          <%= licence.startDateString %>
-        </p>
+    <div class="panel">
+      <h2 class="panel-heading">Status</h2>
+      <div class="panel-block is-block">
+        <div class="columns">
+          <div class="column">
+            <p>
+              <strong>Start Date</strong><br />
+              <%= licence.startDateString %>
+            </p>
+          </div>
+          <div class="column">
+            <p>
+              <strong>End Date</strong><br />
+              <%= licence.endDateString %>
+            </p>
+          </div>
+        </div>
       </div>
-      <div class="column">
-        <p>
-          <strong>End Date</strong><br />
-          <%= licence.endDateString %>
-        </p>
+      <div class="panel-block is-block">
+        <% if (licence.issueDate) { %>
+          <p>
+            <strong>Issue Date</strong><br />
+            <%= licence.issueDateString %>
+          </p>
+        <% } else { %>
+          <div class="message is-warning is-small">
+            <p class="message-body">
+              This licence has not been issued.
+            </p>
+          </div>
+        <% } %>
       </div>
     </div>
-
-    <h2 class="title is-3">Fees</h2>
-
+  </div>
+</div>
+<div class="panel">
+  <h2 class="panel-heading">Fees</h2>
+  <div class="panel-block is-block">
     <div class="columns">
       <div class="column">
         <strong>Licence Fee</strong><br />
@@ -106,6 +148,36 @@
       <div class="column">
         <strong>Replacement Fee</strong><br />
         $<%= licence.replacementFee ? licence.replacementFee.toFixed(2) : "" %>
+      </div>
+      <div class="column is-6">
+        <table class="table is-fullwidth">
+          <thead>
+            <tr>
+              <th>Transaction</th>
+              <th class="has-text-right">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% let transactionTotal = 0; %>
+            <% for (const licenceTransaction of licence.licenceTransactions) { %>
+              <% transactionTotal += licenceTransaction.transactionAmount; %>
+              <tr data-transaction-index="<%= licenceTransaction.transactionIndex %>">
+                <td>
+                  <%= licenceTransaction.transactionDateString %>
+                </td>
+                <td class="has-text-right">
+                  $<%= licenceTransaction.transactionAmount.toFixed(2) %>
+                </td>
+              </tr>
+            <% } %>
+          </tbody>
+          <tfoot>
+            <tr>
+              <th>Total</th>
+              <th class="has-text-right">$<%= transactionTotal.toFixed(2) %></th>
+            </tr>
+          </tfoot>
+        </table>
       </div>
     </div>
   </div>

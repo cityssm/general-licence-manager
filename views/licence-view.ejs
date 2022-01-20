@@ -56,9 +56,13 @@
       <h2 class="panel-heading">Licensee Information</h2>
       <div class="panel-block is-block">
         <%= licence.licenseeName %><br />
-        <%= licence.licenseeBusinessName %><br />
+        <% if (licence.licenseeBusinessName !== "") { %>
+          <%= licence.licenseeBusinessName %><br />
+        <% } %>
         <%= licence.licenseeAddress1 %><br />
-        <%= licence.licenseeAddress2 %><br />
+        <% if (licence.licenseeAddress2 !== "") { %>
+          <%= licence.licenseeAddress2 %><br />
+        <% } %>
         <%= licence.licenseeCity %>, <%= licence.licenseeProvince %><br />
         <%= licence.licenseePostalCode %>
       </div>

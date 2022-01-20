@@ -1,14 +1,24 @@
 import type { RequestHandler } from "express";
 
-// import * as configFunctions from "../../helpers/functions.config.js";
+import { getReportData } from "../../helpers/licencesDB/getReportData.js";
+
+import papaparse from "papaparse";
 
 
 export const handler: RequestHandler = (request, response) => {
 
-  // const reportName = request.params.reportName;
+  const reportName = request.params.reportName;
 
-  /*
-  const csv = rawToCSV(rowsColumnsObject);
+  let rows: unknown[] = [];
+
+  switch (reportName) {
+
+    default:
+      rows = getReportData(reportName, request.query);
+      break;
+  }
+
+  const csv = papaparse.unparse(rows);
 
   response.setHeader("Content-Disposition",
     "attachment; filename=" + reportName + "-" + Date.now().toString() + ".csv");
@@ -16,7 +26,6 @@ export const handler: RequestHandler = (request, response) => {
   response.setHeader("Content-Type", "text/csv");
 
   response.send(csv);
-  */
 };
 
 

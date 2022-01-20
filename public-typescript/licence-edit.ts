@@ -502,4 +502,45 @@ declare const bulmaJS: BulmaJS;
       }
     });
   }
+
+  /*
+   * Delete Licence
+   */
+
+  if (!isCreate) {
+
+    document.querySelector("#is-delete-licence-button").addEventListener("click", (clickEvent) => {
+
+      clickEvent.preventDefault();
+
+      const isIssued = !issueLicenceButtonElement;
+      const isPast = endDateStringElement.value < cityssm.dateToString(new Date());
+
+      const doDelete = () => {
+
+        cityssm.postJSON(urlPrefix + "/licences/doDeleteLicence", {
+          licenceId
+        },
+          (responseJSON: { success: boolean }) => {
+            if (responseJSON.success) {
+              window.location.href = urlPrefix + "/licences";
+            }
+          });
+      };
+
+      bulmaJS.confirm({
+        title: "Delete Licence",
+        message: "<p>Are you sure you want to delete this licence?</p>" +
+          (isIssued
+            ? "<p>Note that <strong>this licence has been issued</strong>, and deleting it may cause confusion.</p>"
+            : ""),
+        messageIsHtml: true,
+        contextualColorName: (isPast ? "info" : "warning"),
+        okButton: {
+          text: "Yes, Delete Licence",
+          callbackFunction: doDelete
+        }
+      });
+    });
+  }
 })();

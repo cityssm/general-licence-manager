@@ -72,6 +72,28 @@ declare const bulmaJS: BulmaJS;
   }
 
   /*
+   * Unlock Buttons
+   */
+
+  const unlockField = (clickEvent: Event) => {
+    clickEvent.preventDefault();
+
+    const inputElement = (clickEvent.currentTarget as HTMLButtonElement)
+      .closest(".field")
+      .querySelector("input");
+
+    inputElement.readOnly = false;
+
+    inputElement.focus();
+  };
+
+  const unlockButtonElements = editFormElement.querySelectorAll(".is-unlock-button");
+
+  for (const unlockButtonElement of unlockButtonElements) {
+    unlockButtonElement.addEventListener("click", unlockField);
+  }
+
+  /*
    * End Date
    */
 
@@ -85,6 +107,8 @@ declare const bulmaJS: BulmaJS;
   const refreshEndDate = () => {
 
     const endDate = startDateStringElement.valueAsDate;
+
+    endDateStringElement.readOnly = true;
 
     if (!endDate || licenceCategoryKeyElement.value === "") {
       endDateStringElement.value = "";

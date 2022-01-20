@@ -45,12 +45,25 @@ Object.defineProperty(exports, "__esModule", { value: true });
             inputElement.addEventListener("change", setUnsavedChanges);
         }
     }
+    const unlockField = (clickEvent) => {
+        clickEvent.preventDefault();
+        const inputElement = clickEvent.currentTarget
+            .closest(".field")
+            .querySelector("input");
+        inputElement.readOnly = false;
+        inputElement.focus();
+    };
+    const unlockButtonElements = editFormElement.querySelectorAll(".is-unlock-button");
+    for (const unlockButtonElement of unlockButtonElements) {
+        unlockButtonElement.addEventListener("click", unlockField);
+    }
     const licenceCategoryKeyElement = document.querySelector("#licenceEdit--licenceCategoryKey");
     const isRenewalElement = document.querySelector("#licenceEdit--isRenewal");
     const startDateStringElement = document.querySelector("#licenceEdit--startDateString");
     const endDateStringElement = document.querySelector("#licenceEdit--endDateString");
     const refreshEndDate = () => {
         const endDate = startDateStringElement.valueAsDate;
+        endDateStringElement.readOnly = true;
         if (!endDate || licenceCategoryKeyElement.value === "") {
             endDateStringElement.value = "";
             return;

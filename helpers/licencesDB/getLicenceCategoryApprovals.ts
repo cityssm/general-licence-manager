@@ -4,7 +4,7 @@ import { licencesDB as databasePath } from "../../data/databasePaths.js";
 import type * as recordTypes from "../../types/recordTypes";
 
 
-export const getLicenceCategoryApprovals = (licenceCategoryKey: string, database?: sqlite.Database) => {
+export const getLicenceCategoryApprovals = (licenceCategoryKey: string, database?: sqlite.Database): recordTypes.LicenceCategoryApproval[] => {
 
   let doCloseDatabase = false;
 

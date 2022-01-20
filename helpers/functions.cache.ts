@@ -13,7 +13,7 @@ const licenceCategoriesMap = new Map<string, recordTypes.LicenceCategory>();
 
 
 export const getLicenceCategories = (): recordTypes.LicenceCategory[] => {
-  
+
   if (!licenceCategoriesList) {
     debug("Cache miss: getLicenceCategories");
     licenceCategoriesList = database_getLicenceCategories();
@@ -37,7 +37,7 @@ export const getLicenceCategory = (licenceCategoryKey: string): recordTypes.Lice
 };
 
 
-export const clearAll = () => {
+export const clearAll = (): void => {
   licenceCategoriesList = undefined;
   licenceCategoriesMap.clear();
 };

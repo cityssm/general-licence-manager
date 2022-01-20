@@ -9,7 +9,7 @@ interface ReportParameters {
 }
 
 
-export const getReportData = (reportName: string, reportParameters?: ReportParameters) => {
+export const getReportData = (reportName: string, reportParameters?: ReportParameters): unknown[] => {
 
   let sql: string;
   const sqlParameters = [];

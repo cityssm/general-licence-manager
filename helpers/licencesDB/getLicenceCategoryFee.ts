@@ -6,7 +6,7 @@ import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js"
 import type * as recordTypes from "../../types/recordTypes";
 
 
-export const getLicenceCategoryFee = (licenceFeeId: number | string, database?: sqlite.Database) => {
+export const getLicenceCategoryFee = (licenceFeeId: number | string, database?: sqlite.Database): recordTypes.LicenceCategoryFee => {
 
   let doCloseDatabase = false;
 

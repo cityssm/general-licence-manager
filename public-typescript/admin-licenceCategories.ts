@@ -163,6 +163,8 @@ declare const bulmaJS: BulmaJS;
         maximumLengthElement.min = licenceCategoryField.minimumLength.toString();
 
         (modalElement.querySelector("#licenceCategoryFieldEdit--pattern") as HTMLInputElement).value = licenceCategoryField.pattern;
+
+        (modalElement.querySelector("#licenceCategoryFieldEdit--printKey") as HTMLInputElement).value = licenceCategoryField.printKey;
       },
       onshown: (modalElement, closeModalFunction) => {
         editLicenceCategoryFieldModalCloseFunction = closeModalFunction;
@@ -348,6 +350,7 @@ declare const bulmaJS: BulmaJS;
           (modalElement.querySelector("#licenceCategoryApprovalEdit--isRequiredForRenewal") as HTMLInputElement).checked = true;
         }
 
+        (modalElement.querySelector("#licenceCategoryApprovalEdit--printKey") as HTMLTextAreaElement).value = licenceCategoryApproval.printKey;
       },
       onshown: (modalElement, closeModalFunction) => {
         editLicenceCategoryApprovalModalCloseFunction = closeModalFunction;

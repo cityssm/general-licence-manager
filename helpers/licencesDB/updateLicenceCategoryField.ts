@@ -11,6 +11,7 @@ interface UpdateLicenceCategoryFieldForm {
   minimumLength: string;
   maximumLength: string;
   pattern: string;
+  printKey: string;
 }
 
 
@@ -27,6 +28,7 @@ export const updateLicenceCategoryField =
         " minimumLength = ?," +
         " maximumLength = ?," +
         " pattern = ?," +
+        " printKey = ?," +
         " recordUpdate_userName = ?," +
         " recordUpdate_timeMillis = ?" +
         " where licenceFieldKey = ?")
@@ -36,6 +38,7 @@ export const updateLicenceCategoryField =
         licenceCategoryFieldForm.minimumLength,
         licenceCategoryFieldForm.maximumLength,
         licenceCategoryFieldForm.pattern,
+        licenceCategoryFieldForm.printKey,
         requestSession.user.userName,
         Date.now(),
         licenceCategoryFieldForm.licenceFieldKey);

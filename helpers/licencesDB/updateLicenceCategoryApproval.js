@@ -8,10 +8,11 @@ export const updateLicenceCategoryApproval = (licenceCategoryApprovalForm, reque
         " licenceApprovalDescription = ?," +
         " isRequiredForNew = ?," +
         " isRequiredForRenewal = ?," +
+        " printKey = ?," +
         " recordUpdate_userName = ?," +
         " recordUpdate_timeMillis = ?" +
         " where licenceApprovalKey = ?")
-        .run(licenceCategoryApprovalForm.licenceApproval, licenceCategoryApprovalForm.licenceApprovalDescription, licenceCategoryApprovalForm.isRequiredForNew ? 1 : 0, licenceCategoryApprovalForm.isRequiredForRenewal ? 1 : 0, requestSession.user.userName, Date.now(), licenceCategoryApprovalForm.licenceApprovalKey);
+        .run(licenceCategoryApprovalForm.licenceApproval, licenceCategoryApprovalForm.licenceApprovalDescription, licenceCategoryApprovalForm.isRequiredForNew ? 1 : 0, licenceCategoryApprovalForm.isRequiredForRenewal ? 1 : 0, licenceCategoryApprovalForm.printKey, requestSession.user.userName, Date.now(), licenceCategoryApprovalForm.licenceApprovalKey);
     database.close();
     return true;
 };

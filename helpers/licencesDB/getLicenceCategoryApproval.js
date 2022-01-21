@@ -10,7 +10,7 @@ export const getLicenceCategoryApproval = (licenceApprovalKey, database) => {
     }
     const licenceCategoryApproval = database.prepare("select licenceApprovalKey, licenceCategoryKey," +
         " licenceApproval, licenceApprovalDescription," +
-        " isRequiredForNew, isRequiredForRenewal" +
+        " isRequiredForNew, isRequiredForRenewal, printKey" +
         " from LicenceCategoryApprovals" +
         " where recordDelete_timeMillis is null" +
         " and licenceApprovalKey = ?")

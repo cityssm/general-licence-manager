@@ -63,6 +63,7 @@ export interface LicenceField {
   minimumLength?: number;
   maximumLength?: number;
   pattern?: string;
+  printKey?: string;
 }
 
 export interface LicenceApproval {
@@ -74,6 +75,7 @@ export interface LicenceApproval {
   licenceApprovalDescription?: string;
   isRequiredForNew?: boolean;
   isRequiredForRenewal?: boolean;
+  printKey?: string;
 }
 
 export interface LicenceTransaction extends Record {
@@ -114,6 +116,7 @@ export interface LicenceCategoryApproval extends Record {
   licenceApprovalDescription: string;
   isRequiredForNew: boolean;
   isRequiredForRenewal: boolean;
+  printKey: string;
   orderNumber?: number;
 }
 
@@ -138,6 +141,7 @@ export interface LicenceCategoryField extends Record {
   minimumLength: number;
   maximumLength: number;
   pattern: string;
+  printKey: string;
   orderNumber?: number;
 }
 

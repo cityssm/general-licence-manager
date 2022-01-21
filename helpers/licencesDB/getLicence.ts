@@ -42,7 +42,7 @@ export const getLicence = (licenceId: number | string): recordTypes.Licence => {
 
       "select f.licenceFieldKey, f.licenceFieldValue," +
       " c.licenceField, c.licenceFieldDescription," +
-      " c.isRequired, c.minimumLength, c.maximumLength, c.pattern, c.orderNumber" +
+      " c.isRequired, c.minimumLength, c.maximumLength, c.pattern, c.printKey, c.orderNumber" +
       " from LicenceFields f" +
       " left join LicenceCategoryFields c on f.licenceFieldKey = c.licenceFieldKey" +
       " where f.licenceId = ?" +
@@ -51,7 +51,7 @@ export const getLicence = (licenceId: number | string): recordTypes.Licence => {
 
       " select c.licenceFieldKey, '' as licenceFieldValue," +
       " c.licenceField, c.licenceFieldDescription," +
-      " c.isRequired, c.minimumLength, c.maximumLength, c.pattern, c.orderNumber" +
+      " c.isRequired, c.minimumLength, c.maximumLength, c.pattern, c.printKey, c.orderNumber" +
       " from LicenceCategoryFields c" +
       " where c.recordDelete_timeMillis is null" +
       " and c.licenceCategoryKey = ?" +
@@ -64,14 +64,14 @@ export const getLicence = (licenceId: number | string): recordTypes.Licence => {
     licence.licenceApprovals = database.prepare(
       "select a.licenceApprovalKey, 1 as isApproved," +
       " c.licenceApproval, c.licenceApprovalDescription," +
-      " c.isRequiredForNew, c.isRequiredForRenewal, c.orderNumber" +
+      " c.isRequiredForNew, c.isRequiredForRenewal, c.printKey, c.orderNumber" +
       " from LicenceApprovals a" +
       " left join LicenceCategoryApprovals c on a.licenceApprovalKey = c.LicenceApprovalKey" +
       " where a.licenceId = ?" +
       " union" +
       " select c.licenceApprovalKey, 0 as isApproved," +
       " c.licenceApproval, c.licenceApprovalDescription," +
-      " c.isRequiredForNew, c.isRequiredForRenewal, c.orderNumber" +
+      " c.isRequiredForNew, c.isRequiredForRenewal, c.printKey, c.orderNumber" +
       " from LicenceCategoryApprovals c" +
       " where c.recordDelete_timeMillis is null" +
       " and c.licenceCategoryKey = ?" +

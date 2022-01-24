@@ -10,6 +10,7 @@ data/*.db
 data/*.db-journal
 data/*.min.js
 data/config.*
+!data/config.appveyor.*
 handlers/*.min.js
 helpers/*.min.js
 routes/*.min.js

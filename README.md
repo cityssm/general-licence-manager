@@ -26,6 +26,21 @@ but was built with the following licence types in mind.
 
 **[User Documentation (In the Works)](docs/)**
 
+## Features
+
+-   Unlimited, easy-to-configure licence categories
+    with category specific fields.
+
+-   Customizable licence print templates.
+
+-   Prepare for upcoming new and renewal fee increases by
+    setting up new licence fees **before** they come into effect.
+
+-   **Free to use and open source.**
+
+Something missing?
+**[Open an issue.](https://github.com/cityssm/general-licence-manager/issues/new/choose)**
+
 ## About this Project
 
 ⭐ **This application is under development and not ready for production use.** ⭐

@@ -70,9 +70,10 @@ export function getProperty(propertyName: string): unknown {
 
     if (currentObject[propertyNamePiece]) {
       currentObject = currentObject[propertyNamePiece];
-    } else {
-      return configFallbackValues.get(propertyName);
+      continue;
     }
+
+    return configFallbackValues.get(propertyName);
   }
 
   return currentObject;

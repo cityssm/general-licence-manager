@@ -22,10 +22,9 @@ export function getProperty(propertyName) {
     for (const propertyNamePiece of propertyNameSplit) {
         if (currentObject[propertyNamePiece]) {
             currentObject = currentObject[propertyNamePiece];
+            continue;
         }
-        else {
-            return configFallbackValues.get(propertyName);
-        }
+        return configFallbackValues.get(propertyName);
     }
     return currentObject;
 }

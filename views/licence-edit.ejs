@@ -61,7 +61,8 @@
                       data-licence-length-years="<%= licenceCategory.licenceLengthYears %>"
                       data-licence-length-months="<%= licenceCategory.licenceLengthMonths %>"
                       data-licence-length-days="<%= licenceCategory.licenceLengthDays %>"
-                      value="<%= licenceCategory.licenceCategoryKey %>">
+                      value="<%= licenceCategory.licenceCategoryKey %>"
+                      <%= (licence.licenceCategoryKey === licenceCategory.licenceCategoryKey) ? "selected" : "" %>>
                       <%= licenceCategory.licenceCategory %>
                     </option>
                   <% } %>
@@ -385,7 +386,13 @@
         </div>
         <div class="dropdown-menu">
           <div class="dropdown-content">
-            <a class="dropdown-item" id="is-delete-licence-button" href="#">
+            <% if (licence.issueDate) { %>
+              <a class="dropdown-item" id="is-renew-licence-button" role="button" href="#">
+                <span class="icon is-small"><i class="fas fa-stamp" aria-hidden="true"></i></span>
+                Renew Licence
+              </a>
+            <% } %>
+            <a class="dropdown-item" id="is-delete-licence-button" role="button" href="#">
               <span class="icon is-small"><i class="fas fa-trash-alt has-text-danger" aria-hidden="true"></i></span>
               Delete Licence
             </a>

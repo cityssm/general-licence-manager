@@ -87,6 +87,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
     };
     if (isCreate) {
         licenceCategoryKeyElement.addEventListener("change", refreshEndDate);
+        if (licenceCategoryKeyElement.value !== "") {
+            refreshEndDate();
+        }
     }
     startDateStringElement.addEventListener("change", refreshEndDate);
     let licenceCategory;
@@ -344,6 +347,40 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     }
                 });
             }
+        });
+    }
+    if (!isCreate && !issueLicenceButtonElement) {
+        const doRenew = () => {
+            const url = new URL(window.location.protocol + "//" +
+                window.location.host +
+                urlPrefix + "/licences/new");
+            url.searchParams.append("licenceCategoryKey", licenceCategoryKeyElement.value);
+            url.searchParams.append("isRenewal", "true");
+            url.searchParams.append("licenseeName", document.querySelector("#licenceEdit--licenseeName").value);
+            url.searchParams.append("licenseeBusinessName", document.querySelector("#licenceEdit--licenseeBusinessName").value);
+            url.searchParams.append("licenseeAddress1", document.querySelector("#licenceEdit--licenseeAddress1").value);
+            url.searchParams.append("licenseeAddress2", document.querySelector("#licenceEdit--licenseeAddress2").value);
+            url.searchParams.append("licenseeCity", document.querySelector("#licenceEdit--licenseeCity").value);
+            url.searchParams.append("licenseeProvince", document.querySelector("#licenceEdit--licenseeProvince").value);
+            url.searchParams.append("licenseePostalCode", document.querySelector("#licenceEdit--licenseePostalCode").value);
+            let newStartDate = endDateStringElement.valueAsDate;
+            newStartDate.setDate(newStartDate.getDate() + 1);
+            if (newStartDate.getTime() < Date.now()) {
+                newStartDate = new Date();
+            }
+            url.searchParams.append("startDateString", cityssm.dateToString(newStartDate));
+            window.location.href = url.toString();
+        };
+        document.querySelector("#is-renew-licence-button").addEventListener("click", (clickEvent) => {
+            clickEvent.preventDefault();
+            bulmaJS.confirm({
+                title: "Renew Licence",
+                message: "Are you sure you want to renew this licence?",
+                okButton: {
+                    text: "Yes, Renew this Licence",
+                    callbackFunction: doRenew
+                }
+            });
         });
     }
     if (!isCreate) {

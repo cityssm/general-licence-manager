@@ -1,5 +1,5 @@
 interface ReportParameters {
-    [parameterName: string]: unknown;
+    [parameterName: string]: string | number;
 }
 export declare const getReportData: (reportName: string, reportParameters?: ReportParameters) => unknown[];
 export default getReportData;

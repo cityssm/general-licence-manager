@@ -35,6 +35,7 @@ export const initLicencesDB = (): boolean => {
       " licenceCategory varchar(100) not null," +
       " bylawNumber varchar(20) default ''," +
 
+      " licenceLengthFunction varchar(50) not null default ''," +
       " licenceLengthYears smallint not null default 1," +
       " licenceLengthMonths smallint default 0," +
       " licenceLengthDays smallint not null default 0," +

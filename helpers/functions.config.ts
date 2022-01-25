@@ -31,6 +31,8 @@ configFallbackValues.set("defaults.licenceNumberFunction", "year-fourDigits");
 configFallbackValues.set("defaults.licenseeCity", "");
 configFallbackValues.set("defaults.licenseeProvince", "ON");
 
+configFallbackValues.set("licenceLengthFunctions", {});
+
 
 /*
  * Set up function overloads
@@ -50,6 +52,10 @@ export function getProperty(propertyName: "users.isAdmin"): string[];
 export function getProperty(propertyName: "defaults.licenseeCity"): string;
 export function getProperty(propertyName: "defaults.licenseeProvince"): string;
 export function getProperty(propertyName: "defaults.licenceNumberFunction"): configTypes.LicenceNumberFunction;
+
+export function getProperty(propertyName: "licenceLengthFunctions"): {
+  [licenceLengthFunctionName: string]: configTypes.LicenceLengthFunction;
+};
 
 export function getProperty(propertyName: "reverseProxy.disableCompression"): boolean;
 export function getProperty(propertyName: "reverseProxy.disableEtag"): boolean;
@@ -87,3 +93,11 @@ export const keepAliveMillis =
       getProperty("session.maxAgeMillis") - (10 * 60 * 1000)
     )
     : 0;
+
+export const getLicenceLengthFunctionNames = (): string[] => {
+  return Object.keys(getProperty("licenceLengthFunctions"));
+};
+
+export const getLicenceLengthFunction = (licenceLengthFunctionName: string): configTypes.LicenceLengthFunction => {
+  return getProperty("licenceLengthFunctions")[licenceLengthFunctionName];
+};

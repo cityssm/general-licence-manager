@@ -4,6 +4,7 @@ interface UpdateLicenceCategoryForm {
     licenceCategory: string;
     bylawNumber: string;
     printEJS: string;
+    licenceLengthFunction: string;
     licenceLengthYears: string;
     licenceLengthMonths: string;
     licenceLengthDays: string;

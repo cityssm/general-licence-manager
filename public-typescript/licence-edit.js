@@ -69,21 +69,41 @@ Object.defineProperty(exports, "__esModule", { value: true });
             return;
         }
         const licenceCategoryOptionElement = licenceCategoryKeyElement.selectedOptions[0];
-        const licenceLengthYears = Number.parseInt(licenceCategoryOptionElement.dataset.licenceLengthYears);
-        const licenceLengthMonths = Number.parseInt(licenceCategoryOptionElement.dataset.licenceLengthMonths);
-        const licenceLengthDays = Number.parseInt(licenceCategoryOptionElement.dataset.licenceLengthDays);
-        if (licenceLengthYears > 0) {
-            endDate.setFullYear(endDate.getFullYear() + licenceLengthYears);
-            endDate.setDate(endDate.getDate() - 1);
+        const licenceLengthFunction = licenceCategoryOptionElement.dataset.licenceLengthFunction;
+        if (licenceLengthFunction === "") {
+            const licenceLengthYears = Number.parseInt(licenceCategoryOptionElement.dataset.licenceLengthYears);
+            const licenceLengthMonths = Number.parseInt(licenceCategoryOptionElement.dataset.licenceLengthMonths);
+            const licenceLengthDays = Number.parseInt(licenceCategoryOptionElement.dataset.licenceLengthDays);
+            if (licenceLengthYears > 0) {
+                endDate.setFullYear(endDate.getFullYear() + licenceLengthYears);
+                endDate.setDate(endDate.getDate() - 1);
+            }
+            if (licenceLengthMonths > 0) {
+                endDate.setMonth(endDate.getMonth() + licenceLengthMonths);
+                endDate.setDate(endDate.getDate() - 1);
+            }
+            if (licenceLengthDays > 0) {
+                endDate.setDate(endDate.getDate() + licenceLengthDays - 1);
+            }
+            endDateStringElement.valueAsDate = endDate;
         }
-        if (licenceLengthMonths > 0) {
-            endDate.setMonth(endDate.getMonth() + licenceLengthMonths);
-            endDate.setDate(endDate.getDate() - 1);
+        else {
+            cityssm.postJSON(urlPrefix + "/licences/doGetLicenceEndDate", {
+                licenceLengthFunction,
+                startDateString: startDateStringElement.value
+            }, (responseJSON) => {
+                if (responseJSON.success) {
+                    endDateStringElement.value = responseJSON.endDateString;
+                }
+                else {
+                    bulmaJS.alert({
+                        title: "End Date Error",
+                        message: responseJSON.errorMessage,
+                        contextualColorName: "danger"
+                    });
+                }
+            });
         }
-        if (licenceLengthDays > 0) {
-            endDate.setDate(endDate.getDate() + licenceLengthDays - 1);
-        }
-        endDateStringElement.valueAsDate = endDate;
     };
     if (isCreate) {
         licenceCategoryKeyElement.addEventListener("change", refreshEndDate);

@@ -9,7 +9,10 @@ import handler_view from "../handlers/licences-get/view.js";
 
 import handler_new from "../handlers/licences-get/new.js";
 import handler_edit from "../handlers/licences-get/edit.js";
+
 import handler_doGetLicenceCategory from "../handlers/licences-post/doGetLicenceCategory.js";
+import handler_doGetLicenceEndDate from "../handlers/licences-post/doGetLicenceEndDate.js";
+
 import handler_doCreateLicence from "../handlers/licences-post/doCreateLicence.js";
 import handler_doUpdateLicence from "../handlers/licences-post/doUpdateLicence.js";
 import handler_doIssueLicence from "../handlers/licences-post/doIssueLicence.js";
@@ -57,6 +60,11 @@ router.get("/:licenceId/edit",
 router.post("/doGetLicenceCategory",
   permissionHandlers.updatePostHandler,
   handler_doGetLicenceCategory);
+
+
+router.post("/doGetLicenceEndDate",
+  permissionHandlers.updatePostHandler,
+  handler_doGetLicenceEndDate);
 
 
 router.post("/doCreateLicence",

@@ -117,25 +117,48 @@ declare const bulmaJS: BulmaJS;
 
     const licenceCategoryOptionElement = licenceCategoryKeyElement.selectedOptions[0];
 
-    const licenceLengthYears = Number.parseInt(licenceCategoryOptionElement.dataset.licenceLengthYears);
-    const licenceLengthMonths = Number.parseInt(licenceCategoryOptionElement.dataset.licenceLengthMonths);
-    const licenceLengthDays = Number.parseInt(licenceCategoryOptionElement.dataset.licenceLengthDays);
+    const licenceLengthFunction = licenceCategoryOptionElement.dataset.licenceLengthFunction;
 
-    if (licenceLengthYears > 0) {
-      endDate.setFullYear(endDate.getFullYear() + licenceLengthYears);
-      endDate.setDate(endDate.getDate() - 1);
+    if (licenceLengthFunction === "") {
+
+      const licenceLengthYears = Number.parseInt(licenceCategoryOptionElement.dataset.licenceLengthYears);
+      const licenceLengthMonths = Number.parseInt(licenceCategoryOptionElement.dataset.licenceLengthMonths);
+      const licenceLengthDays = Number.parseInt(licenceCategoryOptionElement.dataset.licenceLengthDays);
+
+      if (licenceLengthYears > 0) {
+        endDate.setFullYear(endDate.getFullYear() + licenceLengthYears);
+        endDate.setDate(endDate.getDate() - 1);
+      }
+
+      if (licenceLengthMonths > 0) {
+        endDate.setMonth(endDate.getMonth() + licenceLengthMonths);
+        endDate.setDate(endDate.getDate() - 1);
+      }
+
+      if (licenceLengthDays > 0) {
+        endDate.setDate(endDate.getDate() + licenceLengthDays - 1);
+      }
+
+      endDateStringElement.valueAsDate = endDate;
+
+    } else {
+
+      cityssm.postJSON(urlPrefix + "/licences/doGetLicenceEndDate", {
+        licenceLengthFunction,
+        startDateString: startDateStringElement.value
+      }, (responseJSON: { success: boolean; errorMessage?: string; endDateString?: string; }) => {
+
+        if (responseJSON.success) {
+          endDateStringElement.value = responseJSON.endDateString;
+        } else {
+          bulmaJS.alert({
+            title: "End Date Error",
+            message: responseJSON.errorMessage,
+            contextualColorName: "danger"
+          });
+        }
+      });
     }
-
-    if (licenceLengthMonths > 0) {
-      endDate.setMonth(endDate.getMonth() + licenceLengthMonths);
-      endDate.setDate(endDate.getDate() - 1);
-    }
-
-    if (licenceLengthDays > 0) {
-      endDate.setDate(endDate.getDate() + licenceLengthDays - 1);
-    }
-
-    endDateStringElement.valueAsDate = endDate;
   };
 
   if (isCreate) {

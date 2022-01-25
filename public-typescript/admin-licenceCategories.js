@@ -550,6 +550,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 printEJSElement.append(optionElement);
             }
             printEJSElement.value = licenceCategory.printEJS;
+            const licenceLengthFunctionElement = editModalElement.querySelector("#licenceCategoryEdit--licenceLengthFunction");
+            if (!licenceLengthFunctionElement.querySelector("option[value='" + licenceCategory.licenceLengthFunction + "']")) {
+                const optionElement = document.createElement("option");
+                optionElement.value = licenceCategory.licenceLengthFunction;
+                optionElement.textContent = licenceCategory.licenceLengthFunction + " (Missing)";
+                printEJSElement.append(optionElement);
+            }
+            licenceLengthFunctionElement.value = licenceCategory.licenceLengthFunction;
             editModalElement.querySelector("#licenceCategoryEdit--licenceLengthYears").value = licenceCategory.licenceLengthYears.toString();
             editModalElement.querySelector("#licenceCategoryEdit--licenceLengthMonths").value = licenceCategory.licenceLengthMonths.toString();
             editModalElement.querySelector("#licenceCategoryEdit--licenceLengthDays").value = licenceCategory.licenceLengthDays.toString();
@@ -573,6 +581,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     optionElement.value = printEJS;
                     optionElement.textContent = printEJS;
                     printEJSElement.append(optionElement);
+                }
+                const licenceLengthFunctionElement = modalElement.querySelector("#licenceCategoryEdit--licenceLengthFunction");
+                for (const licenceLengthFunctionName of exports.licenceLengthFunctionNames) {
+                    const optionElement = document.createElement("option");
+                    optionElement.value = licenceLengthFunctionName;
+                    optionElement.textContent = licenceLengthFunctionName;
+                    licenceLengthFunctionElement.append(optionElement);
                 }
                 cityssm.postJSON(urlPrefix + "/admin/doGetLicenceCategory", {
                     licenceCategoryKey

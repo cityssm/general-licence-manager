@@ -97,6 +97,7 @@ export interface LicenceCategory extends Record {
   licenceCategoryKey: string;
   licenceCategory: string;
   bylawNumber: string;
+  licenceLengthFunction: string;
   licenceLengthYears: number;
   licenceLengthMonths: number;
   licenceLengthDays: number;

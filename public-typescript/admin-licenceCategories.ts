@@ -792,6 +792,17 @@ declare const bulmaJS: BulmaJS;
 
       printEJSElement.value = licenceCategory.printEJS;
 
+      const licenceLengthFunctionElement = editModalElement.querySelector("#licenceCategoryEdit--licenceLengthFunction") as HTMLSelectElement;
+
+      if (!licenceLengthFunctionElement.querySelector("option[value='" + licenceCategory.licenceLengthFunction + "']")) {
+        const optionElement = document.createElement("option");
+        optionElement.value = licenceCategory.licenceLengthFunction;
+        optionElement.textContent = licenceCategory.licenceLengthFunction + " (Missing)";
+        printEJSElement.append(optionElement);
+      }
+
+      licenceLengthFunctionElement.value = licenceCategory.licenceLengthFunction;
+
       (editModalElement.querySelector("#licenceCategoryEdit--licenceLengthYears") as HTMLInputElement).value = licenceCategory.licenceLengthYears.toString();
       (editModalElement.querySelector("#licenceCategoryEdit--licenceLengthMonths") as HTMLInputElement).value = licenceCategory.licenceLengthMonths.toString();
       (editModalElement.querySelector("#licenceCategoryEdit--licenceLengthDays") as HTMLInputElement).value = licenceCategory.licenceLengthDays.toString();
@@ -824,6 +835,15 @@ declare const bulmaJS: BulmaJS;
           optionElement.value = printEJS;
           optionElement.textContent = printEJS;
           printEJSElement.append(optionElement);
+        }
+
+        const licenceLengthFunctionElement = modalElement.querySelector("#licenceCategoryEdit--licenceLengthFunction") as HTMLSelectElement;
+
+        for (const licenceLengthFunctionName of (exports.licenceLengthFunctionNames as string[])) {
+          const optionElement = document.createElement("option");
+          optionElement.value = licenceLengthFunctionName;
+          optionElement.textContent = licenceLengthFunctionName;
+          licenceLengthFunctionElement.append(optionElement);
         }
 
         cityssm.postJSON(urlPrefix + "/admin/doGetLicenceCategory", {

@@ -16,6 +16,7 @@ configFallbackValues.set("users.isAdmin", ["administrator"]);
 configFallbackValues.set("defaults.licenceNumberFunction", "year-fourDigits");
 configFallbackValues.set("defaults.licenseeCity", "");
 configFallbackValues.set("defaults.licenseeProvince", "ON");
+configFallbackValues.set("licenceLengthFunctions", {});
 export function getProperty(propertyName) {
     const propertyNameSplit = propertyName.split(".");
     let currentObject = config;
@@ -31,3 +32,9 @@ export function getProperty(propertyName) {
 export const keepAliveMillis = getProperty("session.doKeepAlive")
     ? Math.max(getProperty("session.maxAgeMillis") / 2, getProperty("session.maxAgeMillis") - (10 * 60 * 1000))
     : 0;
+export const getLicenceLengthFunctionNames = () => {
+    return Object.keys(getProperty("licenceLengthFunctions"));
+};
+export const getLicenceLengthFunction = (licenceLengthFunctionName) => {
+    return getProperty("licenceLengthFunctions")[licenceLengthFunctionName];
+};

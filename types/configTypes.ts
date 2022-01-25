@@ -13,6 +13,9 @@ export interface Config {
     isAdmin?: string[];
   },
   defaults?: ConfigDefaults;
+  licenceLengthFunctions?: {
+    [licenceLengthFunctionName: string]: LicenceLengthFunction;
+  };
 }
 
 interface ConfigApplication {
@@ -45,3 +48,6 @@ interface ConfigDefaults {
 }
 
 export type LicenceNumberFunction = "year-fourDigits" | "year-fiveDigits" | "year-sixDigits";
+
+
+export type LicenceLengthFunction = (startDate: Date) => Date;

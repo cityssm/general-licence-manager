@@ -7,13 +7,14 @@ export const updateLicenceCategory = (licenceCategoryForm, requestSession) => {
         " set licenceCategory = ?," +
         " bylawNumber = ?," +
         " printEJS = ?," +
+        " licenceLengthFunction = ?," +
         " licenceLengthYears = ?," +
         " licenceLengthMonths = ?," +
         " licenceLengthDays = ?," +
         " recordUpdate_userName = ?," +
         " recordUpdate_timeMillis = ?" +
         " where licenceCategoryKey = ?")
-        .run(licenceCategoryForm.licenceCategory, licenceCategoryForm.bylawNumber, licenceCategoryForm.printEJS, licenceCategoryForm.licenceLengthYears, licenceCategoryForm.licenceLengthMonths, licenceCategoryForm.licenceLengthDays, requestSession.user.userName, Date.now(), licenceCategoryForm.licenceCategoryKey);
+        .run(licenceCategoryForm.licenceCategory, licenceCategoryForm.bylawNumber, licenceCategoryForm.printEJS, licenceCategoryForm.licenceLengthFunction, licenceCategoryForm.licenceLengthYears, licenceCategoryForm.licenceLengthMonths, licenceCategoryForm.licenceLengthDays, requestSession.user.userName, Date.now(), licenceCategoryForm.licenceCategoryKey);
     database.close();
     return true;
 };

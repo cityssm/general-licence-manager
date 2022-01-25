@@ -8,6 +8,7 @@ interface UpdateLicenceCategoryForm {
   licenceCategory: string;
   bylawNumber: string;
   printEJS: string;
+  licenceLengthFunction: string;
   licenceLengthYears: string;
   licenceLengthMonths: string;
   licenceLengthDays: string;
@@ -23,6 +24,7 @@ export const updateLicenceCategory =
         " set licenceCategory = ?," +
         " bylawNumber = ?," +
         " printEJS = ?," +
+        " licenceLengthFunction = ?," +
         " licenceLengthYears = ?," +
         " licenceLengthMonths = ?," +
         " licenceLengthDays = ?," +
@@ -32,6 +34,7 @@ export const updateLicenceCategory =
       .run(licenceCategoryForm.licenceCategory,
         licenceCategoryForm.bylawNumber,
         licenceCategoryForm.printEJS,
+        licenceCategoryForm.licenceLengthFunction,
         licenceCategoryForm.licenceLengthYears,
         licenceCategoryForm.licenceLengthMonths,
         licenceCategoryForm.licenceLengthDays,

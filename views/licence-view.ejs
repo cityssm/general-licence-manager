@@ -22,7 +22,7 @@
     </div>
   </div>
   <% if (licence.issueDate) { %>
-    <div class="level-right">
+    <div class="level-right is-hidden-print">
       <a class="level-item button is-link" href="<%= urlPrefix %>/licences/<%= licence.licenceId %>/print" target="_blank">
         <span class="icon"><i class="fas fa-print" aria-hidden="true"></i></span>
         <span>Print Licence</span>

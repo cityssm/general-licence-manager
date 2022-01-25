@@ -32,7 +32,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 "<th>Effective Start</th>" +
                 "<th>Effective End</th>" +
                 "<th class=\"has-text-centered\">Status</th>" +
-                "<th></th>" +
+                "<th class=\"is-hidden-print\"></th>" +
                 "</tr></thead>" +
                 "</table>";
             const tbodyElement = document.createElement("tbody");
@@ -58,7 +58,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                                 ? "<span class=\"tag is-success\">Issued</span>"
                                 : "<span class=\"tag is-warning\">Pending</span>") +
                             "</td>") +
-                        ("<td class=\"has-text-right\">" +
+                        ("<td class=\"is-hidden-print has-text-right\">" +
                             (licenceObject.issueDate
                                 ? "<a class=\"button is-small\" href=\"" + urlPrefix + "/licences/" + licenceObject.licenceId + "/print\" target=\"_blank\">" +
                                     "<i class=\"fas fa-print\" aria-label=\"Print\"></i>" +

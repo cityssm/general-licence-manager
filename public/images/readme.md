@@ -1,6 +1,6 @@
 # Image Credit
 
-## Bingo Balls
+## Stamp
 
 ![stamp.png](stamp.png)
 ![favicon.png](favicon.png)
@@ -13,6 +13,6 @@
 
 ![login.jpg](login.jpg)
 
--   Photo by winvcf.
+-   Photo by icame.
 -   Licensed under the [Pixabay License](https://pixabay.com/service/license/).
--   <https://pixabay.com/photos/stamp-secret-important-official-3406367/>
+-   <https://pixabay.com/photos/parchment-contract-paper-document-2217669/>

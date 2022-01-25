@@ -3,6 +3,7 @@ import * as ejs from "ejs";
 import { getLicence } from "../../helpers/licencesDB/getLicence.js";
 import { getLicenceCategory } from "../../helpers/functions.cache.js";
 import * as configFunctions from "../../helpers/functions.config.js";
+import * as printFunctions from "../../helpers/functions.print.js";
 import convertHTMLToPDF from "pdf-puppeteer";
 export const handler = async (request, response, next) => {
     const licenceId = request.params.licenceId;
@@ -20,6 +21,7 @@ export const handler = async (request, response, next) => {
     };
     await ejs.renderFile(reportPath, {
         configFunctions,
+        printFunctions,
         licence,
         licenceCategory
     }, {}, async (ejsError, ejsData) => {

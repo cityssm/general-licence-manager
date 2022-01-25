@@ -3,8 +3,6 @@ import { licencesDB as databasePath } from "../../data/databasePaths.js";
 
 import * as configFunctions from "../functions.config.js";
 
-import type * as recordTypes from "../../types/recordTypes";
-
 
 const getNextYearNDigitsLicenceNumber = (database: sqlite.Database, digits: number): string => {
 
@@ -31,7 +29,7 @@ const getNextYearNDigitsLicenceNumber = (database: sqlite.Database, digits: numb
 
   const licenceNumberIndex = Number.parseInt(licenceNumber.split("-")[1]) + 1;
 
-  return currentYear.toString() + "-" + "1".padStart(digits, licenceNumberIndex.toString());
+  return currentYear.toString() + "-" + licenceNumberIndex.toString().padStart(digits, "0");
 };
 
 
@@ -51,7 +49,7 @@ export const getNextLicenceNumber = (database?: sqlite.Database): string => {
   let licenceNumber = "";
 
   switch (configFunctions.getProperty("defaults.licenceNumberFunction")) {
-    
+
     case "year-fourDigits":
       licenceNumber = getNextYearNDigitsLicenceNumber(database, 4);
       break;

@@ -17,3 +17,13 @@ export const getPrintEJSList = async () => {
     }
     return printEJSList;
 };
+export const getLicenceFieldByPrintKey = (licence, printKey) => {
+    return licence.licenceFields.find((currentLicenceField) => {
+        return currentLicenceField.printKey === printKey;
+    });
+};
+export const getLicenceApprovalByPrintKey = (licence, printKey) => {
+    return licence.licenceApprovals.find((currentLicenceApproval) => {
+        return currentLicenceApproval.printKey === printKey;
+    });
+};

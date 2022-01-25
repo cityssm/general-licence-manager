@@ -65,6 +65,7 @@ export const initLicencesDB = (): boolean => {
       " minimumLength smallint not null default 1," +
       " maximumLength smallint not null default 100," +
       " pattern varchar(100) not null default ''," +
+      " printKey varchar(50) not null default ''," +
       " orderNumber smallint not null default 0," +
       recordColumns + "," +
       " foreign key (licenceCategoryKey) references LicenceCategories (licenceCategoryKey)" +
@@ -77,6 +78,7 @@ export const initLicencesDB = (): boolean => {
       " licenceApprovalDescription text not null default ''," +
       " isRequiredForNew bit not null default 1," +
       " isRequiredForRenewal bit not null default 1," +
+      " printKey varchar(50) not null default ''," +
       " orderNumber smallint not null default 0," +
       recordColumns + "," +
       " foreign key (licenceCategoryKey) references LicenceCategories (licenceCategoryKey)" +

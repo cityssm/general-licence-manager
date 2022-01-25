@@ -1,0 +1,156 @@
+<%
+  const urlPrefix = configFunctions.getProperty("reverseProxy.urlPrefix");
+%><html>
+<head>
+  <meta charset="utf-8" />
+  <style>
+    * {
+      box-sizing: border-box;
+      font-size: 12pt;
+    }
+
+    html {
+      font-family: Arial, sans-serif;
+    }
+
+    .page {
+      margin: 20px 30px;
+    }
+
+    .box {
+      border: 1px solid #ccc;
+      padding: 20px;
+    }
+
+    table {
+      width: 100%;
+    }
+
+    table td {
+      vertical-align: top;
+    }
+
+    p {
+      line-height: 1.4;
+    }
+
+    .is-fixed {
+      table-layout: fixed;
+    }
+
+    .has-text-centered {
+      text-align: center;
+    }
+
+    .is-24pt {
+      font-size: 24pt;
+    }
+
+    .is-20pt {
+      font-size: 18pt;
+    }
+
+    .is-18pt {
+      font-size: 18pt;
+    }
+
+    .is-12pt {
+      font-size: 12pt;
+    }
+
+    .mt-2 {
+      margin-top: 20px;
+    }
+
+    .pt-2 {
+      padding-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="box">
+      <h1 class="has-text-centered">
+        The Corporation of<br />
+        <span class="is-20pt">The City of Sault Ste. Marie</span>
+      </h1>
+      <table class="mt-2">
+        <tr>
+          <td style="width:100px;padding-right:20px">
+            <img src="http://localhost:<%= configFunctions.getProperty("application.httpPort") %><%= urlPrefix %>/_private/ssm-shield.svg" alt="" style="width:100%" />
+          </td>
+          <td>
+            Clerk's Department<br />
+            Civic Centre<br />
+            99 Foster Drive<br />
+            Sault Ste. Marie, ON<br />
+            P6A 5X6<br />
+            Telephone 705-759-5290
+          </td>
+          <td>
+            Municipal Licence<br />
+            Expires<br />
+            <%= licence.endDateString %>
+          </td>
+        </tr>
+      </table>
+      <table class="mt-2">
+        <tr>
+          <td style="width:40%">
+            <p>
+              <strong>Issued To</strong><br />
+              <%= licence.licenseeName %><br />
+              <% if (licence.licenseeBusinessName !== "") { %>
+                <%= licence.licenseeBusinessName %><br />
+              <% } %>
+              <%= licence.licenseeAddress1 %><br />
+              <% if (licence.licenseeAddress2 !== "") { %>
+                <%= licence.licenseeAddress2 %><br />
+              <% } %>
+              <%= licence.licenseeCity %>, <%= licence.licenseeProvince %><br />
+              <%= licence.licenseePostalCode %>
+            </p>
+          </td>
+          <td>
+            <p>
+              For carrying on business, trade, or occupation as a(n):<br />
+              <%= licenceCategory.licenceCategory %>
+            </p>
+          </td>
+        </tr>
+      </table>
+      <p>
+        Within the city limits for the period and on the conditions nerein mentioned.
+        The licence must observe all applicable rules and regulations enacted from time to time
+        by the City Council.
+      </p>
+      <p class="has-text-centered">
+        Display this licence in a prominent place.
+      </p>
+      <table>
+        <tr>
+          <td>
+            <p>
+              <strong>Issue Date</strong><br />
+              <%= licence.issueDateString %>
+            </p>
+          </td>
+          <td>
+            <p>
+              <strong>Licence Account Number</strong><br />
+              <%= licence.licenceNumber %>
+            </p>
+          </td>
+          <td>
+            <p>
+              <strong>Amount</strong><br />
+              $<%= licence.licenceFee.toFixed(2) %>
+            </p>
+          </td>
+        </tr>
+      </table>
+      <p class="has-text-centered">This licence is your receipt.</p>
+    </div>
+  </div>
+</body>
+</html>

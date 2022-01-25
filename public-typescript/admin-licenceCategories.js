@@ -106,6 +106,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 maximumLengthElement.value = licenceCategoryField.maximumLength.toString();
                 maximumLengthElement.min = licenceCategoryField.minimumLength.toString();
                 modalElement.querySelector("#licenceCategoryFieldEdit--pattern").value = licenceCategoryField.pattern;
+                modalElement.querySelector("#licenceCategoryFieldEdit--printKey").value = licenceCategoryField.printKey;
             },
             onshown: (modalElement, closeModalFunction) => {
                 editLicenceCategoryFieldModalCloseFunction = closeModalFunction;
@@ -241,6 +242,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 if (licenceCategoryApproval.isRequiredForRenewal) {
                     modalElement.querySelector("#licenceCategoryApprovalEdit--isRequiredForRenewal").checked = true;
                 }
+                modalElement.querySelector("#licenceCategoryApprovalEdit--printKey").value = licenceCategoryApproval.printKey;
             },
             onshown: (modalElement, closeModalFunction) => {
                 editLicenceCategoryApprovalModalCloseFunction = closeModalFunction;

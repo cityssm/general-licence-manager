@@ -18,7 +18,7 @@ const getNextYearNDigitsLicenceNumber = (database, digits) => {
         return currentYear.toString() + "-" + "1".padStart(digits, "0");
     }
     const licenceNumberIndex = Number.parseInt(licenceNumber.split("-")[1]) + 1;
-    return currentYear.toString() + "-" + "1".padStart(digits, licenceNumberIndex.toString());
+    return currentYear.toString() + "-" + licenceNumberIndex.toString().padStart(digits, "0");
 };
 export const getNextLicenceNumber = (database) => {
     let doCloseDatabase = false;

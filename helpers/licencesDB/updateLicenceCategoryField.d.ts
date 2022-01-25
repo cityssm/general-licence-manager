@@ -7,6 +7,7 @@ interface UpdateLicenceCategoryFieldForm {
     minimumLength: string;
     maximumLength: string;
     pattern: string;
+    printKey: string;
 }
 export declare const updateLicenceCategoryField: (licenceCategoryFieldForm: UpdateLicenceCategoryFieldForm, requestSession: expressSession.Session) => boolean;
 export default updateLicenceCategoryField;

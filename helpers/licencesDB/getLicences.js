@@ -8,24 +8,26 @@ export const getLicences = (filters, options) => {
     const currentDate = dateTimeFunctions.dateToInteger(new Date());
     const sqlParameters = [];
     let sqlWhereClause = " where l.recordDelete_timeMillis is null";
-    if (filters.licenceCategoryKey !== "") {
+    if (filters.licenceCategoryKey && filters.licenceCategoryKey !== "") {
         sqlWhereClause += " and l.licenceCategoryKey = ?";
         sqlParameters.push(filters.licenceCategoryKey);
     }
-    if (filters.licensee !== "") {
+    if (filters.licensee && filters.licensee !== "") {
         const licenseePieces = filters.licensee.trim().split(" ");
         for (const licenseePiece of licenseePieces) {
             sqlWhereClause += " and (l.licenseeName like '%' || ? || '%' or l.licenseeBusinessName like '%' || ? || '%')";
             sqlParameters.push(licenseePiece, licenseePiece);
         }
     }
-    if (filters.licenceStatus === "active") {
-        sqlWhereClause += " and l.startDate <= ? and l.endDate >= ?";
-        sqlParameters.push(currentDate, currentDate);
-    }
-    else if (filters.licenceStatus === "past") {
-        sqlWhereClause += " and l.endDate < ?";
-        sqlParameters.push(currentDate);
+    if (filters.licenceStatus) {
+        if (filters.licenceStatus === "active") {
+            sqlWhereClause += " and l.startDate <= ? and l.endDate >= ?";
+            sqlParameters.push(currentDate, currentDate);
+        }
+        else if (filters.licenceStatus === "past") {
+            sqlWhereClause += " and l.endDate < ?";
+            sqlParameters.push(currentDate);
+        }
     }
     let count = 0;
     if (options.limit !== -1) {

@@ -5,6 +5,7 @@ interface UpdateLicenceCategoryApprovalForm {
     licenceApprovalDescription: string;
     isRequiredForNew?: string;
     isRequiredForRenewal?: string;
+    printKey: string;
 }
 export declare const updateLicenceCategoryApproval: (licenceCategoryApprovalForm: UpdateLicenceCategoryApprovalForm, requestSession: expressSession.Session) => boolean;
 export default updateLicenceCategoryApproval;

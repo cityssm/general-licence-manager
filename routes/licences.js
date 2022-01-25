@@ -9,6 +9,7 @@ import handler_doGetLicenceCategory from "../handlers/licences-post/doGetLicence
 import handler_doCreateLicence from "../handlers/licences-post/doCreateLicence.js";
 import handler_doUpdateLicence from "../handlers/licences-post/doUpdateLicence.js";
 import handler_doIssueLicence from "../handlers/licences-post/doIssueLicence.js";
+import handler_doDeleteLicence from "../handlers/licences-post/doDeleteLicence.js";
 import handler_doAddLicenceTransaction from "../handlers/licences-post/doAddLicenceTransaction.js";
 import handler_print from "../handlers/licences-get/print.js";
 export const router = Router();
@@ -21,6 +22,7 @@ router.post("/doGetLicenceCategory", permissionHandlers.updatePostHandler, handl
 router.post("/doCreateLicence", permissionHandlers.updatePostHandler, handler_doCreateLicence);
 router.post("/doUpdateLicence", permissionHandlers.updatePostHandler, handler_doUpdateLicence);
 router.post("/doIssueLicence", permissionHandlers.updatePostHandler, handler_doIssueLicence);
+router.post("/doDeleteLicence", permissionHandlers.updatePostHandler, handler_doDeleteLicence);
 router.post("/doAddLicenceTransaction", permissionHandlers.updatePostHandler, handler_doAddLicenceTransaction);
 router.get("/:licenceId/print", handler_print);
 export default router;

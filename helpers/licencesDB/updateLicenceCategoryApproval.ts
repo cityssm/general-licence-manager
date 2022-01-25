@@ -9,6 +9,7 @@ interface UpdateLicenceCategoryApprovalForm {
   licenceApprovalDescription: string;
   isRequiredForNew?: string;
   isRequiredForRenewal?: string;
+  printKey: string;
 }
 
 
@@ -23,6 +24,7 @@ export const updateLicenceCategoryApproval =
         " licenceApprovalDescription = ?," +
         " isRequiredForNew = ?," +
         " isRequiredForRenewal = ?," +
+        " printKey = ?," +
         " recordUpdate_userName = ?," +
         " recordUpdate_timeMillis = ?" +
         " where licenceApprovalKey = ?")
@@ -30,6 +32,7 @@ export const updateLicenceCategoryApproval =
         licenceCategoryApprovalForm.licenceApprovalDescription,
         licenceCategoryApprovalForm.isRequiredForNew ? 1 : 0,
         licenceCategoryApprovalForm.isRequiredForRenewal ? 1 : 0,
+        licenceCategoryApprovalForm.printKey,
         requestSession.user.userName,
         Date.now(),
         licenceCategoryApprovalForm.licenceApprovalKey);

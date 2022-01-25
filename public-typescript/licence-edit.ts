@@ -72,6 +72,28 @@ declare const bulmaJS: BulmaJS;
   }
 
   /*
+   * Unlock Buttons
+   */
+
+  const unlockField = (clickEvent: Event) => {
+    clickEvent.preventDefault();
+
+    const inputElement = (clickEvent.currentTarget as HTMLButtonElement)
+      .closest(".field")
+      .querySelector("input");
+
+    inputElement.readOnly = false;
+
+    inputElement.focus();
+  };
+
+  const unlockButtonElements = editFormElement.querySelectorAll(".is-unlock-button");
+
+  for (const unlockButtonElement of unlockButtonElements) {
+    unlockButtonElement.addEventListener("click", unlockField);
+  }
+
+  /*
    * End Date
    */
 
@@ -85,6 +107,8 @@ declare const bulmaJS: BulmaJS;
   const refreshEndDate = () => {
 
     const endDate = startDateStringElement.valueAsDate;
+
+    endDateStringElement.readOnly = true;
 
     if (!endDate || licenceCategoryKeyElement.value === "") {
       endDateStringElement.value = "";
@@ -116,6 +140,10 @@ declare const bulmaJS: BulmaJS;
 
   if (isCreate) {
     licenceCategoryKeyElement.addEventListener("change", refreshEndDate);
+
+    if (licenceCategoryKeyElement.value !== "") {
+      refreshEndDate();
+    }
   }
 
   startDateStringElement.addEventListener("change", refreshEndDate);
@@ -500,6 +528,97 @@ declare const bulmaJS: BulmaJS;
           }
         });
       }
+    });
+  }
+
+  /*
+   * Renew Licence
+   */
+
+  if (!isCreate && !issueLicenceButtonElement) {
+
+
+    const doRenew = () => {
+
+      const url = new URL(window.location.protocol + "//" +
+        window.location.host +
+        urlPrefix + "/licences/new");
+
+      url.searchParams.append("licenceCategoryKey", licenceCategoryKeyElement.value);
+      url.searchParams.append("isRenewal", "true");
+      url.searchParams.append("licenseeName", (document.querySelector("#licenceEdit--licenseeName") as HTMLInputElement).value);
+      url.searchParams.append("licenseeBusinessName", (document.querySelector("#licenceEdit--licenseeBusinessName") as HTMLInputElement).value);
+      url.searchParams.append("licenseeAddress1", (document.querySelector("#licenceEdit--licenseeAddress1") as HTMLInputElement).value);
+      url.searchParams.append("licenseeAddress2", (document.querySelector("#licenceEdit--licenseeAddress2") as HTMLInputElement).value);
+      url.searchParams.append("licenseeCity", (document.querySelector("#licenceEdit--licenseeCity") as HTMLInputElement).value);
+      url.searchParams.append("licenseeProvince", (document.querySelector("#licenceEdit--licenseeProvince") as HTMLInputElement).value);
+      url.searchParams.append("licenseePostalCode", (document.querySelector("#licenceEdit--licenseePostalCode") as HTMLInputElement).value);
+
+      let newStartDate = endDateStringElement.valueAsDate;
+      newStartDate.setDate(newStartDate.getDate() + 1);
+
+      if (newStartDate.getTime() < Date.now()) {
+        newStartDate = new Date();
+      }
+
+      url.searchParams.append("startDateString", cityssm.dateToString(newStartDate));
+
+      window.location.href = url.toString();
+    };
+
+    document.querySelector("#is-renew-licence-button").addEventListener("click", (clickEvent) => {
+
+      clickEvent.preventDefault();
+
+      bulmaJS.confirm({
+        title: "Renew Licence",
+        message: "Are you sure you want to renew this licence?",
+        okButton: {
+          text: "Yes, Renew this Licence",
+          callbackFunction: doRenew
+        }
+      });
+    });
+  }
+
+  /*
+   * Delete Licence
+   */
+
+  if (!isCreate) {
+
+    document.querySelector("#is-delete-licence-button").addEventListener("click", (clickEvent) => {
+
+      clickEvent.preventDefault();
+
+      const isIssued = !issueLicenceButtonElement;
+      const isPast = endDateStringElement.value < cityssm.dateToString(new Date());
+
+      const doDelete = () => {
+
+        cityssm.postJSON(urlPrefix + "/licences/doDeleteLicence", {
+          licenceId
+        },
+          (responseJSON: { success: boolean }) => {
+            if (responseJSON.success) {
+              window.location.href = urlPrefix + "/licences";
+            }
+          });
+      };
+
+      bulmaJS.confirm({
+        title: "Delete Licence",
+        message: "<p>Are you sure you want to delete this licence?</p>" +
+          (isIssued
+            ? "<p>Note that <strong>this licence has been issued</strong>, and deleting it may cause confusion.</p>"
+            : ""),
+        messageIsHtml: true,
+        contextualColorName: (isPast ? "info" : "warning"),
+        okButton: {
+          text: "Yes, Delete Licence",
+          callbackFunction: doDelete
+        }
+      });
     });
   }
 })();

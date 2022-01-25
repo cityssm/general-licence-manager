@@ -12,22 +12,45 @@ export const handler: RequestHandler = (request, response) => {
 
   const licenceCategories = getLicenceCategories();
 
-  const currentDate = new Date();
+  let startDateString = request.query.startDateString as string;
+  let startDate = 0;
+  if (!startDateString || startDateString === "") {
+    const currentDate = new Date();
+    startDateString = dateTimeFunctions.dateToString(currentDate);
+    startDate = dateTimeFunctions.dateToInteger(currentDate);
+  } else {
+    startDate = dateTimeFunctions.dateStringToInteger(startDateString);
+  }
+
+  let licenseeCity = request.query.licenseeCity as string;
+  if (!licenseeCity || licenseeCity === "") {
+    licenseeCity = configFunctions.getProperty("defaults.licenseeCity");
+  }
+
+  let licenseeProvince = request.query.licenseeProvince as string;
+  if (!licenseeProvince || licenseeProvince === "") {
+    licenseeProvince = configFunctions.getProperty("defaults.licenseeProvince");
+  }
+
+  let isRenewal = false;
+  if (request.query.isRenewal && request.query.isRenewal !== "") {
+    isRenewal = true;
+  }
 
   const licence: recordTypes.Licence = {
     licenceId: "",
-    licenceCategoryKey: "",
+    licenceCategoryKey: request.query.licenceCategoryKey as string,
     licenceNumber: "",
     licenseeName: request.query.licenseeName as string,
-    licenseeBusinessName: "",
-    licenseeAddress1: "",
-    licenseeAddress2: "",
-    licenseeCity: configFunctions.getProperty("defaults.licenseeCity"),
-    licenseeProvince: configFunctions.getProperty("defaults.licenseeProvince"),
-    licenseePostalCode: "",
-    isRenewal: false,
-    startDate: dateTimeFunctions.dateToInteger(currentDate),
-    startDateString: dateTimeFunctions.dateToString(currentDate),
+    licenseeBusinessName: request.query.licenseeBusinessName as string,
+    licenseeAddress1: request.query.licenseeAddress1 as string,
+    licenseeAddress2: request.query.licenseeAddress2 as string,
+    licenseeCity,
+    licenseeProvince,
+    licenseePostalCode: request.query.licenseePostalCode as string,
+    isRenewal,
+    startDate,
+    startDateString,
     endDateString: "",
     licenceFee: "",
     replacementFee: ""

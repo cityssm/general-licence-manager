@@ -4,7 +4,7 @@ import { licencesDB as databasePath } from "../../data/databasePaths.js";
 import type * as recordTypes from "../../types/recordTypes";
 
 
-export const getLicenceCategoryFields = (licenceCategoryKey: string, database?: sqlite.Database) => {
+export const getLicenceCategoryFields = (licenceCategoryKey: string, database?: sqlite.Database): recordTypes.LicenceCategoryField[] => {
 
   let doCloseDatabase = false;
 
@@ -19,7 +19,7 @@ export const getLicenceCategoryFields = (licenceCategoryKey: string, database?: 
 
   const licenceCategoryFields: recordTypes.LicenceCategoryField[] =
     database.prepare("select licenceFieldKey, licenceField, licenceFieldDescription," +
-      " isRequired, minimumLength, maximumLength, pattern, orderNumber" +
+      " isRequired, minimumLength, maximumLength, pattern, printKey, orderNumber" +
       " from LicenceCategoryFields" +
       " where recordDelete_timeMillis is null" +
       " and licenceCategoryKey = ?" +

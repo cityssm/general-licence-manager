@@ -13,6 +13,7 @@ import handler_doGetLicenceCategory from "../handlers/licences-post/doGetLicence
 import handler_doCreateLicence from "../handlers/licences-post/doCreateLicence.js";
 import handler_doUpdateLicence from "../handlers/licences-post/doUpdateLicence.js";
 import handler_doIssueLicence from "../handlers/licences-post/doIssueLicence.js";
+import handler_doDeleteLicence from "../handlers/licences-post/doDeleteLicence.js";
 
 import handler_doAddLicenceTransaction from "../handlers/licences-post/doAddLicenceTransaction.js";
 
@@ -71,6 +72,11 @@ router.post("/doUpdateLicence",
 router.post("/doIssueLicence",
   permissionHandlers.updatePostHandler,
   handler_doIssueLicence);
+
+
+router.post("/doDeleteLicence",
+  permissionHandlers.updatePostHandler,
+  handler_doDeleteLicence);
 
 
 router.post("/doAddLicenceTransaction",

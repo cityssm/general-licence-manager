@@ -149,6 +149,18 @@
           </td>
         </tr>
       </table>
+      <%
+        const specialProvisionsField = printFunctions.getLicenceFieldByPrintKey(licence, "special-provisions");
+        if (specialProvisionsField && specialProvisionsField.licenceFieldValue && specialProvisionsField.licenceFieldValue !== "") {
+      %>
+        <p>
+          <strong>Additional Description or Special Provisions</strong><br />
+          <%= specialProvisionsField.licenceFieldValue %>
+        </p>
+      <%
+        }
+      %>
+
       <p class="has-text-centered">This licence is your receipt.</p>
     </div>
   </div>

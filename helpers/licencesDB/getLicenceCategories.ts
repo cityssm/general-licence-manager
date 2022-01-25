@@ -20,6 +20,7 @@ export const getLicenceCategories = (): recordTypes.LicenceCategory[] => {
       " where recordDelete_timeMillis is null" +
       " and effectiveStartDate <= ?" +
       " and (effectiveEndDate is null or effectiveEndDate >= ?)" +
+      " group by licenceCategoryKey" +
       ") f on c.licenceCategoryKey = f.licenceCategoryKey") +
     " where c.recordDelete_timeMillis is null" +
     " order by c.licenceCategory, c.licenceCategoryKey";

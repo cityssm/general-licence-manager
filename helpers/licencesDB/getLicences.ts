@@ -3,18 +3,26 @@ import { licencesDB as databasePath } from "../../data/databasePaths.js";
 
 import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
 
+import { getLicenceFields } from "./getLicenceFields.js";
+import { getLicenceTransactions } from "./getLicenceTransactions.js";
+
 import type * as recordTypes from "../../types/recordTypes";
+
 
 interface GetLicencesFilters {
   licenceCategoryKey?: string;
   licensee?: string;
-  licenceStatus?: "" | "active" | "past"
+  licenceStatus?: "" | "active" | "past",
+  startDateMin?: number;
+  startDateMax?: number;
 }
 
 
 export const getLicences = (filters: GetLicencesFilters, options: {
   limit: number;
   offset: number;
+  includeFields?: boolean;
+  includeTransactions?: boolean;
 }): {
     count: number;
     licences: recordTypes.Licence[];
@@ -55,6 +63,16 @@ export const getLicences = (filters: GetLicencesFilters, options: {
     }
   }
 
+  if (filters.startDateMin) {
+    sqlWhereClause += " and l.startDate >= ?";
+    sqlParameters.push(filters.startDateMin);
+  }
+
+  if (filters.startDateMax) {
+    sqlWhereClause += " and l.startDate <= ?";
+    sqlParameters.push(filters.startDateMax);
+  }
+
   let count = 0;
 
   if (options.limit !== -1) {
@@ -90,6 +108,22 @@ export const getLicences = (filters: GetLicencesFilters, options: {
   const rows: recordTypes.Licence[] = database
     .prepare(sql)
     .all(sqlParameters);
+
+  if (options.limit === -1) {
+    count = rows.length;
+  }
+
+  if (options.includeFields) {
+    for (const licence of rows) {
+      licence.licenceFields = getLicenceFields(licence.licenceId, licence.licenceCategoryKey, database);
+    }
+  }
+
+  if (options.includeTransactions) {
+    for (const licence of rows) {
+      licence.licenceTransactions = getLicenceTransactions(licence.licenceId, database);
+    }
+  }
 
   database.close();
 

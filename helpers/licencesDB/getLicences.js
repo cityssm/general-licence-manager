@@ -1,6 +1,8 @@
 import sqlite from "better-sqlite3";
 import { licencesDB as databasePath } from "../../data/databasePaths.js";
 import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
+import { getLicenceFields } from "./getLicenceFields.js";
+import { getLicenceTransactions } from "./getLicenceTransactions.js";
 export const getLicences = (filters, options) => {
     const database = sqlite(databasePath, {
         readonly: true
@@ -28,6 +30,14 @@ export const getLicences = (filters, options) => {
             sqlWhereClause += " and l.endDate < ?";
             sqlParameters.push(currentDate);
         }
+    }
+    if (filters.startDateMin) {
+        sqlWhereClause += " and l.startDate >= ?";
+        sqlParameters.push(filters.startDateMin);
+    }
+    if (filters.startDateMax) {
+        sqlWhereClause += " and l.startDate <= ?";
+        sqlParameters.push(filters.startDateMax);
     }
     let count = 0;
     if (options.limit !== -1) {
@@ -58,6 +68,19 @@ export const getLicences = (filters, options) => {
     const rows = database
         .prepare(sql)
         .all(sqlParameters);
+    if (options.limit === -1) {
+        count = rows.length;
+    }
+    if (options.includeFields) {
+        for (const licence of rows) {
+            licence.licenceFields = getLicenceFields(licence.licenceId, licence.licenceCategoryKey, database);
+        }
+    }
+    if (options.includeTransactions) {
+        for (const licence of rows) {
+            licence.licenceTransactions = getLicenceTransactions(licence.licenceId, database);
+        }
+    }
     database.close();
     return {
         count,

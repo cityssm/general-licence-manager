@@ -3,10 +3,14 @@ interface GetLicencesFilters {
     licenceCategoryKey?: string;
     licensee?: string;
     licenceStatus?: "" | "active" | "past";
+    startDateMin?: number;
+    startDateMax?: number;
 }
 export declare const getLicences: (filters: GetLicencesFilters, options: {
     limit: number;
     offset: number;
+    includeFields?: boolean;
+    includeTransactions?: boolean;
 }) => {
     count: number;
     licences: recordTypes.Licence[];

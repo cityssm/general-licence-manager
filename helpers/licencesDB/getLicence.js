@@ -1,6 +1,7 @@
 import sqlite from "better-sqlite3";
 import { licencesDB as databasePath } from "../../data/databasePaths.js";
 import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
+import { getLicenceFields } from "./getLicenceFields.js";
 import { getLicenceTransactions } from "./getLicenceTransactions.js";
 export const getLicence = (licenceId) => {
     const database = sqlite(databasePath, {
@@ -26,22 +27,7 @@ export const getLicence = (licenceId) => {
         " and licenceId = ?")
         .get(licenceId);
     if (licence) {
-        licence.licenceFields = database.prepare("select f.licenceFieldKey, f.licenceFieldValue," +
-            " c.licenceField, c.licenceFieldDescription," +
-            " c.isRequired, c.minimumLength, c.maximumLength, c.pattern, c.printKey, c.orderNumber" +
-            " from LicenceFields f" +
-            " left join LicenceCategoryFields c on f.licenceFieldKey = c.licenceFieldKey" +
-            " where f.licenceId = ?" +
-            " union" +
-            " select c.licenceFieldKey, '' as licenceFieldValue," +
-            " c.licenceField, c.licenceFieldDescription," +
-            " c.isRequired, c.minimumLength, c.maximumLength, c.pattern, c.printKey, c.orderNumber" +
-            " from LicenceCategoryFields c" +
-            " where c.recordDelete_timeMillis is null" +
-            " and c.licenceCategoryKey = ?" +
-            " and c.licenceFieldKey not in (select licenceFieldKey from LicenceFields where licenceId = ?)" +
-            " order by c.orderNumber, c.licenceField")
-            .all(licenceId, licence.licenceCategoryKey, licenceId);
+        licence.licenceFields = getLicenceFields(licenceId, licence.licenceCategoryKey, database);
         licence.licenceApprovals = database.prepare("select a.licenceApprovalKey, 1 as isApproved," +
             " c.licenceApproval, c.licenceApprovalDescription," +
             " c.isRequiredForNew, c.isRequiredForRenewal, c.printKey, c.orderNumber" +

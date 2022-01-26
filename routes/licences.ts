@@ -5,6 +5,9 @@ import * as permissionHandlers from "../handlers/permissions.js";
 import handler_search from "../handlers/licences-get/search.js";
 import handler_doSearch from "../handlers/licences-post/doSearch.js";
 
+import handler_licenceCategorySummary from "../handlers/licences-get/licenceCategorySummary.js";
+import handler_doGetLicenceCategorySummary from "../handlers/licences-post/doGetLicenceCategorySummary.js";
+
 import handler_view from "../handlers/licences-get/view.js";
 
 import handler_new from "../handlers/licences-get/new.js";
@@ -36,6 +39,18 @@ router.get("/", handler_search);
 
 router.post("/doSearch",
   handler_doSearch);
+
+
+/*
+ * Licence Category Summary
+ */
+
+
+router.get("/licenceCategorySummary", handler_licenceCategorySummary);
+
+
+router.post("/doGetLicenceCategorySummary",
+  handler_doGetLicenceCategorySummary);
 
 
 /*

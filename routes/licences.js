@@ -14,6 +14,7 @@ import handler_doUpdateLicence from "../handlers/licences-post/doUpdateLicence.j
 import handler_doIssueLicence from "../handlers/licences-post/doIssueLicence.js";
 import handler_doDeleteLicence from "../handlers/licences-post/doDeleteLicence.js";
 import handler_doAddLicenceTransaction from "../handlers/licences-post/doAddLicenceTransaction.js";
+import handler_doDeleteLicenceTransaction from "../handlers/licences-post/doDeleteLicenceTransaction.js";
 import handler_print from "../handlers/licences-get/print.js";
 export const router = Router();
 router.get("/", handler_search);
@@ -30,5 +31,6 @@ router.post("/doUpdateLicence", permissionHandlers.updatePostHandler, handler_do
 router.post("/doIssueLicence", permissionHandlers.updatePostHandler, handler_doIssueLicence);
 router.post("/doDeleteLicence", permissionHandlers.updatePostHandler, handler_doDeleteLicence);
 router.post("/doAddLicenceTransaction", permissionHandlers.updatePostHandler, handler_doAddLicenceTransaction);
+router.post("/doDeleteLicenceTransaction", permissionHandlers.updatePostHandler, handler_doDeleteLicenceTransaction);
 router.get("/:licenceId/print", handler_print);
 export default router;

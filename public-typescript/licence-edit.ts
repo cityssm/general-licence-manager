@@ -403,6 +403,39 @@ declare const bulmaJS: BulmaJS;
     return outstandingBalance;
   };
 
+  const deleteLicenceTransaction = (clickEvent: Event) => {
+
+    clickEvent.preventDefault();
+
+    const transactionIndex = (clickEvent.currentTarget as HTMLButtonElement)
+      .closest("tr").dataset.transactionIndex;
+
+    const doDelete = () => {
+
+      cityssm.postJSON(urlPrefix + "/licences/doDeleteLicenceTransaction", {
+        licenceId,
+        transactionIndex
+      }, (responseJSON: { success: boolean; licenceTransactions: recordTypes.LicenceTransaction[] }) => {
+
+        if (responseJSON.success) {
+          licenceTransactions = responseJSON.licenceTransactions;
+          renderLicenceTransactions();
+        }
+      });
+    };
+
+    bulmaJS.confirm({
+      title: "Delete Transaction",
+      message: "Are you sure you want to delete this transaction?" +
+        " In the event of a refund, it may be better to create a new negative transaction.",
+      contextualColorName: "danger",
+      okButton: {
+        text: "Yes, Delete the Transaction",
+        callbackFunction: doDelete
+      }
+    })
+  };
+
   const renderLicenceTransactions = () => {
 
     const tbodyElement = licenceTransactionsTableElement.querySelector("tbody");
@@ -418,7 +451,14 @@ declare const bulmaJS: BulmaJS;
       trElement.dataset.transactionIndex = licenceTransaction.transactionIndex.toString();
 
       trElement.innerHTML = "<td>" + licenceTransaction.transactionDateString + "</td>" +
-        "<td class=\"has-text-right\">$" + licenceTransaction.transactionAmount.toFixed(2) + "</td>";
+        "<td class=\"has-text-right\">$" + licenceTransaction.transactionAmount.toFixed(2) + "</td>" +
+        ("<td>" +
+          "<button class=\"button is-small is-danger is-inverted\" type=\"button\">" +
+          "<i class=\"fas fa-trash\" aria-label=\"Delete Transaction\"></i>" +
+          "</button>" +
+          "</td>");
+
+      trElement.querySelector("button").addEventListener("click", deleteLicenceTransaction);
 
       tbodyElement.append(trElement);
 
@@ -493,6 +533,12 @@ declare const bulmaJS: BulmaJS;
 
   if (!isCreate) {
     document.querySelector("#button--addTransaction").addEventListener("click", openAddTransactionModal);
+
+    const deleteTransactionButtonElements = document.querySelectorAll(".is-delete-transaction-button");
+
+    for (const deleteTransactionButtonElement of deleteTransactionButtonElements) {
+      deleteTransactionButtonElement.addEventListener("click", deleteLicenceTransaction);
+    }
   }
 
   /*

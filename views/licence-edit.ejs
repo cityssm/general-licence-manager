@@ -326,6 +326,7 @@
                 <tr>
                   <th>Transaction</th>
                   <th class="has-text-right">Amount</th>
+                  <th class="has-width-1"></th>
                 </tr>
               </thead>
               <tbody>
@@ -339,6 +340,11 @@
                     <td class="has-text-right">
                       $<%= licenceTransaction.transactionAmount.toFixed(2) %>
                     </td>
+                    <td>
+                      <button class="button is-small is-danger is-inverted is-delete-transaction-button" type="button">
+                        <i class="fas fa-trash" aria-label="Delete Transaction"></i>
+                      </button>
+                    </td>
                   </tr>
                 <% } %>
               </tbody>
@@ -346,6 +352,7 @@
                 <tr>
                   <th>Total</th>
                   <th class="has-text-right">$<%= transactionTotal.toFixed(2) %></th>
+                  <th></th>
                 </tr>
               </tfoot>
             </table>

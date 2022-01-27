@@ -8,6 +8,29 @@ declare const cityssm: cityssmGlobal;
 
 (() => {
 
+  const debounce = (functionToDebounce: () => void, wait: number, immediate?: boolean) => {
+
+    let timeout: NodeJS.Timeout;
+
+    return function (...arguments_: unknown[]) {
+
+      // eslint-disable-next-line @typescript-eslint/no-this-alias, unicorn/no-this-assignment
+      const debounceContext = this;
+      const debounceArguments = arguments_;
+
+      const later = () => {
+        timeout = undefined;
+        if (!immediate) functionToDebounce.apply(debounceContext, debounceArguments);
+      };
+
+      const callNow = immediate && !timeout;
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+
+      if (callNow) functionToDebounce.apply(debounceContext, debounceArguments);
+    };
+  };
+
   const urlPrefix = document.querySelector("main").dataset.urlPrefix;
 
   /*
@@ -203,9 +226,10 @@ declare const cityssm: cityssmGlobal;
 
   getLicenceCategorySummary();
 
-  const inputElements = filterFormElement.querySelectorAll("input, select");
+  const debounceFunction_getLicenceCategorySummary = debounce(getLicenceCategorySummary, 200);
 
-  for (const inputElement of inputElements) {
-    inputElement.addEventListener("change", getLicenceCategorySummary);
-  }
+  startDateStringMinElement.addEventListener("change", debounceFunction_getLicenceCategorySummary);
+  startDateStringMaxElement.addEventListener("change", debounceFunction_getLicenceCategorySummary);
+
+  document.querySelector("#filter--licenceCategoryKey").addEventListener("change", getLicenceCategorySummary);
 })();

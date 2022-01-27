@@ -1,6 +1,23 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
+    const debounce = (functionToDebounce, wait, immediate) => {
+        let timeout;
+        return function (...arguments_) {
+            const debounceContext = this;
+            const debounceArguments = arguments_;
+            const later = () => {
+                timeout = undefined;
+                if (!immediate)
+                    functionToDebounce.apply(debounceContext, debounceArguments);
+            };
+            const callNow = immediate && !timeout;
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+            if (callNow)
+                functionToDebounce.apply(debounceContext, debounceArguments);
+        };
+    };
     const urlPrefix = document.querySelector("main").dataset.urlPrefix;
     const startDateStringMinElement = document.querySelector("#filter--startDateStringMin");
     const startDateStringMaxElement = document.querySelector("#filter--startDateStringMax");
@@ -119,8 +136,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         formEvent.preventDefault();
     });
     getLicenceCategorySummary();
-    const inputElements = filterFormElement.querySelectorAll("input, select");
-    for (const inputElement of inputElements) {
-        inputElement.addEventListener("change", getLicenceCategorySummary);
-    }
+    const debounceFunction_getLicenceCategorySummary = debounce(getLicenceCategorySummary, 200);
+    startDateStringMinElement.addEventListener("change", debounceFunction_getLicenceCategorySummary);
+    startDateStringMaxElement.addEventListener("change", debounceFunction_getLicenceCategorySummary);
+    document.querySelector("#filter--licenceCategoryKey").addEventListener("change", getLicenceCategorySummary);
 })();

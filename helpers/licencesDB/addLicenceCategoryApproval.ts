@@ -3,7 +3,7 @@ import { licencesDB as databasePath } from "../../data/databasePaths.js";
 
 import { getUnusedLicenceApprovalKey } from "./getUnusedKey.js";
 
-import type * as expressSession from "express-session";
+import type * as recordTypes from "../../types/recordTypes";
 
 interface AddLicenceCategoryApprovalForm {
   licenceCategoryKey: string;
@@ -11,7 +11,7 @@ interface AddLicenceCategoryApprovalForm {
 }
 
 export const addLicenceCategoryApproval =
-  (licenceCategoryApprovalForm: AddLicenceCategoryApprovalForm, requestSession: expressSession.Session): string => {
+  (licenceCategoryApprovalForm: AddLicenceCategoryApprovalForm, requestSession: recordTypes.PartialSession): string => {
 
     const licenceApprovalKey =
       getUnusedLicenceApprovalKey(licenceCategoryApprovalForm.licenceCategoryKey, licenceCategoryApprovalForm.licenceApproval);

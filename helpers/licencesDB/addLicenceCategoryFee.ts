@@ -1,11 +1,11 @@
 import sqlite from "better-sqlite3";
 import { licencesDB as databasePath } from "../../data/databasePaths.js";
 
-import type * as expressSession from "express-session";
+import type * as recordTypes from "../../types/recordTypes";
 
 
 export const addLicenceCategoryFee =
-  (licenceCategoryKey: string, requestSession: expressSession.Session): number => {
+  (licenceCategoryKey: string, requestSession: recordTypes.PartialSession): number => {
 
     const database = sqlite(databasePath);
 

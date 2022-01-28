@@ -1,4 +1,4 @@
-import type * as expressSession from "express-session";
+import type * as recordTypes from "../../types/recordTypes";
 interface UpdateLicenceCategoryApprovalForm {
     licenceApprovalKey: string;
     licenceApproval: string;
@@ -7,5 +7,5 @@ interface UpdateLicenceCategoryApprovalForm {
     isRequiredForRenewal?: string;
     printKey: string;
 }
-export declare const updateLicenceCategoryApproval: (licenceCategoryApprovalForm: UpdateLicenceCategoryApprovalForm, requestSession: expressSession.Session) => boolean;
+export declare const updateLicenceCategoryApproval: (licenceCategoryApprovalForm: UpdateLicenceCategoryApprovalForm, requestSession: recordTypes.PartialSession) => boolean;
 export default updateLicenceCategoryApproval;

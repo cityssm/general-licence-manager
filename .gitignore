@@ -17,3 +17,4 @@ routes/*.min.js
 *.pem
 
 public/_private/*
+temp/sqlConfig.*

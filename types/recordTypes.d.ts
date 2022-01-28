@@ -129,3 +129,6 @@ declare module "express-session" {
         user: User;
     }
 }
+export interface PartialSession {
+    user: User;
+}

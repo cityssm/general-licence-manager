@@ -3,16 +3,19 @@ import { licencesDB as databasePath } from "../../data/databasePaths.js";
 
 import { getUnusedLicenceCategoryKey } from "./getUnusedKey.js";
 
-import type * as expressSession from "express-session";
+import type * as recordTypes from "../../types/recordTypes";
 
 interface AddLicenceCategoryForm {
+  licenceCategoryKey?: string;
   licenceCategory: string;
 }
 
 export const addLicenceCategory =
-  (licenceCategoryForm: AddLicenceCategoryForm, requestSession: expressSession.Session): string => {
+  (licenceCategoryForm: AddLicenceCategoryForm, requestSession: recordTypes.PartialSession): string => {
 
-    const licenceCategoryKey = getUnusedLicenceCategoryKey(licenceCategoryForm.licenceCategory);
+    const licenceCategoryKey = (licenceCategoryForm.licenceCategoryKey && licenceCategoryForm.licenceCategoryKey !== ""
+      ? licenceCategoryForm.licenceCategoryKey
+      : getUnusedLicenceCategoryKey(licenceCategoryForm.licenceCategory));
 
     const database = sqlite(databasePath);
 

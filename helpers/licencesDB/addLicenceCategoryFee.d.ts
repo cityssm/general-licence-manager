@@ -1,3 +1,3 @@
-import type * as expressSession from "express-session";
-export declare const addLicenceCategoryFee: (licenceCategoryKey: string, requestSession: expressSession.Session) => number;
+import type * as recordTypes from "../../types/recordTypes";
+export declare const addLicenceCategoryFee: (licenceCategoryKey: string, requestSession: recordTypes.PartialSession) => number;
 export default addLicenceCategoryFee;

@@ -1,7 +1,7 @@
 import sqlite from "better-sqlite3";
 import { licencesDB as databasePath } from "../../data/databasePaths.js";
 
-import type * as expressSession from "express-session";
+import type * as recordTypes from "../../types/recordTypes";
 
 interface UpdateLicenceCategoryApprovalForm {
   licenceApprovalKey: string;
@@ -14,7 +14,7 @@ interface UpdateLicenceCategoryApprovalForm {
 
 
 export const updateLicenceCategoryApproval =
-  (licenceCategoryApprovalForm: UpdateLicenceCategoryApprovalForm, requestSession: expressSession.Session): boolean => {
+  (licenceCategoryApprovalForm: UpdateLicenceCategoryApprovalForm, requestSession: recordTypes.PartialSession): boolean => {
 
     const database = sqlite(databasePath);
 

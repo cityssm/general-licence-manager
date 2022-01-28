@@ -1,11 +1,11 @@
-import type * as expressSession from "express-session";
+import type * as recordTypes from "../../types/recordTypes";
 interface UpdateLicenceCategoryFeeForm {
-    licenceFeeId: string;
+    licenceFeeId: number | string;
     effectiveStartDateString: string;
     effectiveEndDateString: string;
-    licenceFee: string;
-    renewalFee: string;
-    replacementFee: string;
+    licenceFee: number | string;
+    renewalFee: number | string;
+    replacementFee: number | string;
 }
-export declare const updateLicenceCategoryFee: (licenceCategoryFeeForm: UpdateLicenceCategoryFeeForm, requestSession: expressSession.Session) => boolean;
+export declare const updateLicenceCategoryFee: (licenceCategoryFeeForm: UpdateLicenceCategoryFeeForm, requestSession: recordTypes.PartialSession) => boolean;
 export default updateLicenceCategoryFee;

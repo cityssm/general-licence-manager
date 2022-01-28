@@ -12,7 +12,8 @@
     "start": "cross-env NODE_ENV=production node ./bin/www",
     "dev": "cross-env NODE_ENV=dev DEBUG=general-licence-manager:* nodemon ./bin/www",
     "test": "mocha --timeout 10000 --exit",
-    "coverage": "c8 --reporter=lcov --reporter=text --reporter=text-summary mocha --timeout 10000 --exit"
+    "coverage": "c8 --reporter=lcov --reporter=text --reporter=text-summary mocha --timeout 10000 --exit",
+    "dev:importFromLegacy": "cross-env NODE_ENV=dev DEBUG=general-licence-manager:* node ./temp/importFromLegacy"
   },
   "repository": {
     "type": "git",
@@ -52,6 +53,7 @@
   },
   "devDependencies": {
     "@cityssm/bulma-webapp-css": "^0.10.0",
+    "@cityssm/mssql-multi-pool": "^2.1.3",
     "@types/activedirectory2": "^1.2.3",
     "@types/better-sqlite3": "^7.4.2",
     "@types/compression": "^1.7.2",

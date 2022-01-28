@@ -3,20 +3,20 @@ import { licencesDB as databasePath } from "../../data/databasePaths.js";
 
 import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
 
-import type * as expressSession from "express-session";
+import type * as recordTypes from "../../types/recordTypes";
 
 interface UpdateLicenceCategoryFeeForm {
-  licenceFeeId: string;
+  licenceFeeId: number | string;
   effectiveStartDateString: string;
   effectiveEndDateString: string;
-  licenceFee: string;
-  renewalFee: string;
-  replacementFee: string;
+  licenceFee: number | string;
+  renewalFee: number | string;
+  replacementFee: number | string;
 }
 
 
 export const updateLicenceCategoryFee =
-  (licenceCategoryFeeForm: UpdateLicenceCategoryFeeForm, requestSession: expressSession.Session): boolean => {
+  (licenceCategoryFeeForm: UpdateLicenceCategoryFeeForm, requestSession: recordTypes.PartialSession): boolean => {
 
     const database = sqlite(databasePath);
 

@@ -1,4 +1,4 @@
-import type * as expressSession from "express-session";
+import type * as recordTypes from "../../types/recordTypes";
 interface UpdateLicenceCategoryForm {
     licenceCategoryKey: string;
     licenceCategory: string;
@@ -9,5 +9,5 @@ interface UpdateLicenceCategoryForm {
     licenceLengthMonths: string;
     licenceLengthDays: string;
 }
-export declare const updateLicenceCategory: (licenceCategoryForm: UpdateLicenceCategoryForm, requestSession: expressSession.Session) => boolean;
+export declare const updateLicenceCategory: (licenceCategoryForm: UpdateLicenceCategoryForm, requestSession: recordTypes.PartialSession) => boolean;
 export default updateLicenceCategory;

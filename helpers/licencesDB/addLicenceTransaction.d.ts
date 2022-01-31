@@ -1,9 +1,10 @@
-import type * as expressSession from "express-session";
+import type * as recordTypes from "../../types/recordTypes";
 interface AddLicenceTransactionForm {
-    licenceId: string;
-    transactionAmount: string;
+    licenceId: number | string;
+    transactionAmount: number | string;
+    transactionDateString?: string;
     externalReceiptNumber: string;
     transactionNote: string;
 }
-export declare const addLicenceTransaction: (licenceTransactionForm: AddLicenceTransactionForm, requestSession: expressSession.Session) => number;
+export declare const addLicenceTransaction: (licenceTransactionForm: AddLicenceTransactionForm, requestSession: recordTypes.PartialSession) => number;
 export default addLicenceTransaction;

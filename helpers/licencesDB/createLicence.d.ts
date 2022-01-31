@@ -1,4 +1,4 @@
-import type * as expressSession from "express-session";
+import type * as recordTypes from "../../types/recordTypes";
 interface CreateLicenceForm {
     licenceCategoryKey: string;
     licenceNumber: string;
@@ -18,5 +18,5 @@ interface CreateLicenceForm {
     licenceApprovalKeys?: string;
     [fieldOrApprovalKey: string]: string;
 }
-export declare const createLicence: (licenceForm: CreateLicenceForm, requestSession: expressSession.Session) => number;
+export declare const createLicence: (licenceForm: CreateLicenceForm, requestSession: recordTypes.PartialSession) => number;
 export default createLicence;

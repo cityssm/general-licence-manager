@@ -22,7 +22,11 @@ export const addLicenceTransaction = (licenceTransactionForm, requestSession) =>
         " recordCreate_userName, recordCreate_timeMillis," +
         " recordUpdate_userName, recordUpdate_timeMillis)" +
         " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
-        .run(licenceTransactionForm.licenceId, transactionIndex, dateTimeFunctions.dateToInteger(rightNow), dateTimeFunctions.dateToTimeInteger(rightNow), licenceTransactionForm.externalReceiptNumber, licenceTransactionForm.transactionAmount, licenceTransactionForm.transactionNote, requestSession.user.userName, rightNow.getTime(), requestSession.user.userName, rightNow.getTime());
+        .run(licenceTransactionForm.licenceId, transactionIndex, licenceTransactionForm.transactionDateString
+        ? dateTimeFunctions.dateStringToInteger(licenceTransactionForm.transactionDateString)
+        : dateTimeFunctions.dateToInteger(rightNow), licenceTransactionForm.transactionDateString
+        ? 0
+        : dateTimeFunctions.dateToTimeInteger(rightNow), licenceTransactionForm.externalReceiptNumber, licenceTransactionForm.transactionAmount, licenceTransactionForm.transactionNote, requestSession.user.userName, rightNow.getTime(), requestSession.user.userName, rightNow.getTime());
     database.close();
     return transactionIndex;
 };

@@ -7,7 +7,7 @@ import { getNextLicenceNumber } from "./getNextLicenceNumber.js";
 import { saveLicenceFields } from "./saveLicenceFields.js";
 import { saveLicenceApprovals } from "./saveLicenceApprovals.js";
 
-import type * as expressSession from "express-session";
+import type * as recordTypes from "../../types/recordTypes";
 
 interface CreateLicenceForm {
   licenceCategoryKey: string;
@@ -30,7 +30,7 @@ interface CreateLicenceForm {
 }
 
 export const createLicence =
-  (licenceForm: CreateLicenceForm, requestSession: expressSession.Session): number => {
+  (licenceForm: CreateLicenceForm, requestSession: recordTypes.PartialSession): number => {
 
     const database = sqlite(databasePath);
 

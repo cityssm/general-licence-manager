@@ -1,11 +1,21 @@
 import sqlite from "better-sqlite3";
+import { licencesDB as databasePath } from "../../data/databasePaths.js";
 
 
 export const saveLicenceFields =
   (licenceId: number | string,
     licenceFieldKeys: string[],
     licenceForm: { [fieldKey: string]: string },
-    database: sqlite.Database): boolean => {
+    database?: sqlite.Database): boolean => {
+
+    let doCloseDatabase = false;
+
+    if (!database) {
+
+      database = sqlite(databasePath);
+
+      doCloseDatabase = true;
+    }
 
     for (const licenceFieldKey of licenceFieldKeys) {
 
@@ -18,6 +28,10 @@ export const saveLicenceFields =
         .run(licenceId,
           licenceFieldKey,
           licenceFieldValue);
+    }
+
+    if (doCloseDatabase) {
+      database.close();
     }
 
     return true;

@@ -3,7 +3,7 @@ import { licencesDB as databasePath } from "../../data/databasePaths.js";
 
 import { getUnusedLicenceFieldKey } from "./getUnusedKey.js";
 
-import type * as expressSession from "express-session";
+import type * as recordTypes from "../../types/recordTypes";
 
 interface AddLicenceCategoryFieldForm {
   licenceCategoryKey: string;
@@ -11,7 +11,7 @@ interface AddLicenceCategoryFieldForm {
 }
 
 export const addLicenceCategoryField =
-  (licenceCategoryFieldForm: AddLicenceCategoryFieldForm, requestSession: expressSession.Session): string => {
+  (licenceCategoryFieldForm: AddLicenceCategoryFieldForm, requestSession: recordTypes.PartialSession): string => {
 
     const licenceFieldKey =
       getUnusedLicenceFieldKey(licenceCategoryFieldForm.licenceCategoryKey, licenceCategoryFieldForm.licenceField);

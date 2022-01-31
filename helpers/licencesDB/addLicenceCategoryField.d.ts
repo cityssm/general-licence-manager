@@ -1,7 +1,7 @@
-import type * as expressSession from "express-session";
+import type * as recordTypes from "../../types/recordTypes";
 interface AddLicenceCategoryFieldForm {
     licenceCategoryKey: string;
     licenceField: string;
 }
-export declare const addLicenceCategoryField: (licenceCategoryFieldForm: AddLicenceCategoryFieldForm, requestSession: expressSession.Session) => string;
+export declare const addLicenceCategoryField: (licenceCategoryFieldForm: AddLicenceCategoryFieldForm, requestSession: recordTypes.PartialSession) => string;
 export default addLicenceCategoryField;

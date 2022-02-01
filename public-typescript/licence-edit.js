@@ -342,6 +342,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     document.querySelector("#licenceEdit--replacementFee").value;
                 const outstandingBalance = getOutstandingBalance();
                 modalElement.querySelector("#transactionAdd--outstandingBalance").textContent = outstandingBalance.toFixed(2);
+                modalElement.querySelector("#transactionAdd--transactionAmount").value =
+                    (outstandingBalance > 0
+                        ? outstandingBalance.toFixed(2)
+                        : document.querySelector("#licenceEdit--replacementFee").value);
             },
             onshown: (modalElement, closeModalFunction) => {
                 addTransactionModalElement = modalElement;
@@ -388,6 +392,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     contextualColorName: "warning",
                     okButton: {
                         text: "Yes, Issue with Outstanding Balance",
+                        callbackFunction: doIssue
+                    }
+                });
+            }
+            else if (startDateStringElement.value < cityssm.dateToString(new Date())) {
+                bulmaJS.confirm({
+                    title: "Licence Has a Start Date in the Past",
+                    message: "Are you sure you want to issue this licence with a start date in the past?",
+                    contextualColorName: "warning",
+                    okButton: {
+                        text: "Yes, Issue with a Past Start Date",
                         callbackFunction: doIssue
                     }
                 });

@@ -514,6 +514,11 @@ declare const bulmaJS: BulmaJS;
         const outstandingBalance = getOutstandingBalance();
 
         modalElement.querySelector("#transactionAdd--outstandingBalance").textContent = outstandingBalance.toFixed(2);
+
+        (modalElement.querySelector("#transactionAdd--transactionAmount") as HTMLInputElement).value =
+          (outstandingBalance > 0
+            ? outstandingBalance.toFixed(2)
+            : (document.querySelector("#licenceEdit--replacementFee") as HTMLInputElement).value);
       },
       onshown: (modalElement, closeModalFunction) => {
 
@@ -565,7 +570,6 @@ declare const bulmaJS: BulmaJS;
     issueLicenceButtonElement.addEventListener("click", (clickEvent) => {
       clickEvent.preventDefault();
 
-
       if (hasUnsavedChanges) {
         bulmaJS.alert({
           title: "Licence Has Unsaved Changes",
@@ -581,6 +585,18 @@ declare const bulmaJS: BulmaJS;
           contextualColorName: "warning",
           okButton: {
             text: "Yes, Issue with Outstanding Balance",
+            callbackFunction: doIssue
+          }
+        });
+
+      } else if (startDateStringElement.value < cityssm.dateToString(new Date())) {
+
+        bulmaJS.confirm({
+          title: "Licence Has a Start Date in the Past",
+          message: "Are you sure you want to issue this licence with a start date in the past?",
+          contextualColorName: "warning",
+          okButton: {
+            text: "Yes, Issue with a Past Start Date",
             callbackFunction: doIssue
           }
         });

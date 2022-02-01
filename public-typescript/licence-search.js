@@ -60,7 +60,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                             "</td>") +
                         ("<td class=\"is-hidden-print has-text-right\">" +
                             (licenceObject.issueDate
-                                ? "<a class=\"button is-small\" href=\"" + urlPrefix + "/licences/" + licenceObject.licenceId + "/print\" target=\"_blank\">" +
+                                ? "<a class=\"button is-small\" href=\"" + urlPrefix + "/licences/" + licenceObject.licenceId + "/print\" target=\"_blank\" download>" +
                                     "<i class=\"fas fa-print\" aria-label=\"Print\"></i>" +
                                     "</a>"
                                 : "") +

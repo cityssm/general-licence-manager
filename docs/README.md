@@ -3,3 +3,5 @@
 # Help Documentation
 
 **Thank you for taking the time to read the documentation.**
+
+![Login Page](images/login.png)

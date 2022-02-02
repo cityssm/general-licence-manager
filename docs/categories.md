@@ -1,6 +1,6 @@
 [Home](https://cityssm.github.io/general-licence-manager/)
 •
-[Help](readme.md)
+[Help](https://cityssm.github.io/general-licence-manager/docs/)
 
 # Licence Categories
 

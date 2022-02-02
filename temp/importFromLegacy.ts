@@ -80,7 +80,7 @@ interface LCMAST_Row {
 
 // Licence Expiry Functions
 
-const licenceCategoryKeys_march30NextYear = ["01", "02", "04", "09", "37"];
+const licenceCategoryKeys_march30NextYear = new Set(["01", "02", "04", "09", "37"]);
 
 // Licence Fields
 const licenceField_VEHYR = "Vehicle Year";
@@ -155,7 +155,7 @@ const importLicenceCategories = async () => {
       licenceCategoryKey,
       licenceCategory: categoryRow.LGTA_CATEGORY_NAME.trim(),
       bylawNumber: categoryRow.LGTA_BYLAW_NO.trim(),
-      licenceLengthFunction: licenceCategoryKeys_march30NextYear.includes(licenceCategoryKey)
+      licenceLengthFunction: licenceCategoryKeys_march30NextYear.has(licenceCategoryKey)
         ? "march30NextYear"
         : "",
       licenceLengthYears: "1",
@@ -275,7 +275,7 @@ const importLicences = async () => {
 
     if (licenceCategory.licenceLengthFunction === "") {
 
-      let endDate = dateTimeFunctions.dateStringToDate(startDateString);
+      const endDate = dateTimeFunctions.dateStringToDate(startDateString);
       endDate.setFullYear(endDate.getFullYear() + 1);
       endDate.setDate(endDate.getDate() - 1);
 

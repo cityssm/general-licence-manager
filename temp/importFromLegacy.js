@@ -20,7 +20,7 @@ import { addLicenceTransaction } from "../helpers/licencesDB/addLicenceTransacti
 import { issueLicenceWithDate } from "../helpers/licencesDB/issueLicence.js";
 import Debug from "debug";
 const debug = Debug("general-licence-manager:importFromLegacy");
-const licenceCategoryKeys_march30NextYear = ["01", "02", "04", "09", "37"];
+const licenceCategoryKeys_march30NextYear = new Set(["01", "02", "04", "09", "37"]);
 const licenceField_VEHYR = "Vehicle Year";
 const licenceField_VEHMAKE = "Vehicle Make";
 const licenceField_VEHSER = "Vehicle VIN";
@@ -69,7 +69,7 @@ const importLicenceCategories = async () => {
             licenceCategoryKey,
             licenceCategory: categoryRow.LGTA_CATEGORY_NAME.trim(),
             bylawNumber: categoryRow.LGTA_BYLAW_NO.trim(),
-            licenceLengthFunction: licenceCategoryKeys_march30NextYear.includes(licenceCategoryKey)
+            licenceLengthFunction: licenceCategoryKeys_march30NextYear.has(licenceCategoryKey)
                 ? "march30NextYear"
                 : "",
             licenceLengthYears: "1",
@@ -152,7 +152,7 @@ const importLicences = async () => {
             : currentYearString + "-01-01";
         let endDateString = nextYearString + "-03-30";
         if (licenceCategory.licenceLengthFunction === "") {
-            let endDate = dateTimeFunctions.dateStringToDate(startDateString);
+            const endDate = dateTimeFunctions.dateStringToDate(startDateString);
             endDate.setFullYear(endDate.getFullYear() + 1);
             endDate.setDate(endDate.getDate() - 1);
             endDateString = dateTimeFunctions.dateToString(endDate);

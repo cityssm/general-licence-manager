@@ -34,15 +34,20 @@ declare const bulmaJS: BulmaJS;
       const panelBlockElement = document.createElement("a");
       panelBlockElement.className = "panel-block is-block";
       panelBlockElement.dataset.licenceCategoryKey = licenceCategory.licenceCategoryKey;
+      panelBlockElement.setAttribute("role", "button");
 
-      panelBlockElement.innerHTML = "<strong>" + cityssm.escapeHTML(licenceCategory.licenceCategory) + "</strong><br />" +
-        "<div class=\"columns\">" +
-        ("<div class=\"column has-text-centered\">" +
+      panelBlockElement.innerHTML =
+        "<div class=\"columns is-multiline is-mobile\">" +
+        ("<div class=\"column is-6-tablet is-12-mobile\">" +
+          "<strong>" + cityssm.escapeHTML(licenceCategory.licenceCategory) + "</strong><br />" +
+          "<span class=\"is-size-7\">" + cityssm.escapeHTML(licenceCategory.bylawNumber) + "</span>" +
+          "</div>") +
+        ("<div class=\"column is-6-mobile has-text-centered\">" +
           (licenceCategory.hasEffectiveFee
             ? "<i class=\"fas fa-check has-text-success\"></i><br /><span class=\"is-size-7\">Effective Fee</span>"
             : "<i class=\"fas fa-exclamation-triangle has-text-danger\"></i><br /><span class=\"is-size-7\">No Effective Fee</span>") +
           "</div>") +
-        ("<div class=\"column has-text-centered\">" +
+        ("<div class=\"column is-6-mobile has-text-centered\">" +
           (licenceCategory.printEJS === ""
             ? "<i class=\"fas fa-exclamation-triangle has-text-danger\"></i><br /><span class=\"is-size-7\">No Print Template</span>"
             : "<i class=\"fas fa-check has-text-success\"></i><br /><span class=\"is-size-7\">Print Template</span>") +
@@ -245,6 +250,7 @@ declare const bulmaJS: BulmaJS;
         const panelBlockElement = document.createElement("a");
         panelBlockElement.className = "panel-block is-block";
         panelBlockElement.dataset.licenceFieldKey = categoryField.licenceFieldKey;
+        panelBlockElement.setAttribute("role", "button");
 
         panelBlockElement.innerHTML = "<div class=\"columns is-mobile\">" +
           ("<div class=\"column\">" +
@@ -431,6 +437,7 @@ declare const bulmaJS: BulmaJS;
         const panelBlockElement = document.createElement("a");
         panelBlockElement.className = "panel-block is-block";
         panelBlockElement.dataset.licenceApprovalKey = categoryApproval.licenceApprovalKey;
+        panelBlockElement.setAttribute("role", "button");
 
         panelBlockElement.innerHTML = "<div class=\"columns is-mobile\">" +
           ("<div class=\"column\">" +

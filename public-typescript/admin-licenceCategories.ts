@@ -205,13 +205,22 @@ declare const bulmaJS: BulmaJS;
     if (dragEvent.dataTransfer.getData("text/plain").startsWith(licenceCategoryField_dragDataPrefix)) {
 
       const licenceFieldKey_drag = dragEvent.dataTransfer.getData("text/plain").slice(licenceCategoryField_dragDataPrefix.length);
-      const licenceFieldKey_drop = (dragEvent.currentTarget as HTMLElement).dataset.licenceFieldKey;
+
+      const dropElement = dragEvent.currentTarget as HTMLElement;
+      const licenceFieldKey_drop = dropElement.dataset.licenceFieldKey;
 
       if (licenceFieldKey_drag !== licenceFieldKey_drop) {
         dragEvent.preventDefault();
         dragEvent.dataTransfer.dropEffect = "move";
+        dropElement.style.borderTop = "20px solid #ededed";
       }
     }
+  };
+
+  const licenceCategoryField_dragleave = (dragEvent: DragEvent) => {
+
+    const dropElement = dragEvent.currentTarget as HTMLElement;
+    dropElement.style.borderTopWidth = "0px";
   };
 
   const licenceCategoryField_drop = (dragEvent: DragEvent) => {
@@ -250,6 +259,7 @@ declare const bulmaJS: BulmaJS;
         const panelBlockElement = document.createElement("a");
         panelBlockElement.className = "panel-block is-block";
         panelBlockElement.dataset.licenceFieldKey = categoryField.licenceFieldKey;
+        panelBlockElement.style.transition = "border-width 80ms";
         panelBlockElement.setAttribute("role", "button");
 
         panelBlockElement.innerHTML = "<div class=\"columns is-mobile\">" +
@@ -270,6 +280,7 @@ declare const bulmaJS: BulmaJS;
           panelBlockElement.draggable = true;
           panelBlockElement.addEventListener("dragstart", licenceCategoryField_dragstart);
           panelBlockElement.addEventListener("dragover", licenceCategoryField_dragover);
+          panelBlockElement.addEventListener("dragleave", licenceCategoryField_dragleave);
           panelBlockElement.addEventListener("drop", licenceCategoryField_drop);
         }
 
@@ -392,13 +403,22 @@ declare const bulmaJS: BulmaJS;
     if (dragEvent.dataTransfer.getData("text/plain").startsWith(licenceCategoryApproval_dragDataPrefix)) {
 
       const licenceApprovalKey_drag = dragEvent.dataTransfer.getData("text/plain").slice(licenceCategoryApproval_dragDataPrefix.length);
-      const licenceApprovalKey_drop = (dragEvent.currentTarget as HTMLElement).dataset.licenceApprovalKey;
+
+      const dropElement = dragEvent.currentTarget as HTMLElement;
+      const licenceApprovalKey_drop = dropElement.dataset.licenceApprovalKey;
 
       if (licenceApprovalKey_drag !== licenceApprovalKey_drop) {
         dragEvent.preventDefault();
         dragEvent.dataTransfer.dropEffect = "move";
+        dropElement.style.borderTop = "20px solid #ededed";
       }
     }
+  };
+
+  const licenceCategoryApproval_dragleave = (dragEvent: DragEvent) => {
+
+    const dropElement = dragEvent.currentTarget as HTMLElement;
+    dropElement.style.borderTopWidth = "0px";
   };
 
   const licenceCategoryApproval_drop = (dragEvent: DragEvent) => {
@@ -457,6 +477,7 @@ declare const bulmaJS: BulmaJS;
           panelBlockElement.draggable = true;
           panelBlockElement.addEventListener("dragstart", licenceCategoryApproval_dragstart);
           panelBlockElement.addEventListener("dragover", licenceCategoryApproval_dragover);
+          panelBlockElement.addEventListener("dragleave", licenceCategoryApproval_dragleave);
           panelBlockElement.addEventListener("drop", licenceCategoryApproval_drop);
         }
 

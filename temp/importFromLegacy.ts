@@ -200,10 +200,10 @@ const importLicenceCategories = async () => {
 
     updateLicenceCategoryApproval({
       licenceApprovalKey: newApprovalKey,
-      licenceApproval: categoryRow.LGTA_NEW_APPROVALS,
+      licenceApproval: categoryRow.LGTA_NEW_APPROVALS.trim(),
       licenceApprovalDescription: "Required for New Licences",
       isRequiredForNew: "true",
-      printKey: "ssm-municipalLicence"
+      printKey: "approval-new"
     }, session);
 
     if (categoryRow.LGTA_RENEWAL_APPROVALS) {
@@ -215,10 +215,10 @@ const importLicenceCategories = async () => {
 
       updateLicenceCategoryApproval({
         licenceApprovalKey: renewalApprovalKey,
-        licenceApproval: categoryRow.LGTA_RENEWAL_APPROVALS,
+        licenceApproval: categoryRow.LGTA_RENEWAL_APPROVALS.trim(),
         licenceApprovalDescription: "Required for Renewed Licences",
         isRequiredForRenewal: "true",
-        printKey: "ssm-municipalLicence"
+        printKey: "approval-renew"
       }, session);
     }
 

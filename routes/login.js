@@ -8,6 +8,7 @@ const getSafeRedirectURL = (possibleRedirectURL = "") => {
         ? possibleRedirectURL.slice(urlPrefix.length)
         : possibleRedirectURL).toLowerCase();
     switch (urlToCheck) {
+        case "/admin/licenceCategories":
         case "/licences":
         case "/reports":
             return urlPrefix + urlToCheck;

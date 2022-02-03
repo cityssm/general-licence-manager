@@ -8,6 +8,7 @@ export interface Config {
     };
     activeDirectory?: ConfigActiveDirectory;
     users?: {
+        testing?: string[];
         canLogin?: string[];
         canUpdate?: string[];
         isAdmin?: string[];

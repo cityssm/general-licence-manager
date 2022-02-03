@@ -23,6 +23,7 @@ configFallbackValues.set("session.secret", "cityssm/general-licence-manager");
 configFallbackValues.set("session.maxAgeMillis", 60 * 60 * 1000);
 configFallbackValues.set("session.doKeepAlive", false);
 
+configFallbackValues.set("users.testing", []);
 configFallbackValues.set("users.canLogin", ["administrator"]);
 configFallbackValues.set("users.canUpdate", []);
 configFallbackValues.set("users.isAdmin", ["administrator"]);
@@ -45,6 +46,7 @@ export function getProperty(propertyName: "application.userDomain"): string;
 
 export function getProperty(propertyName: "activeDirectory"): configTypes.ConfigActiveDirectory;
 
+export function getProperty(propertyName: "users.testing"): string[];
 export function getProperty(propertyName: "users.canLogin"): string[];
 export function getProperty(propertyName: "users.canUpdate"): string[];
 export function getProperty(propertyName: "users.isAdmin"): string[];

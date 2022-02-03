@@ -1,10 +1,15 @@
 import { Router } from "express";
 
+import Debug from "debug";
+
 import * as configFunctions from "../helpers/functions.config.js";
 
 import * as authenticationFunctions from "../helpers/functions.authentication.js";
 
 import type * as recordTypes from "../types/recordTypes";
+
+
+const debug = Debug("general-licence-manager:login");
 
 export const router = Router();
 
@@ -56,7 +61,20 @@ router.route("/")
 
     const redirectURL = getSafeRedirectURL(request.body.redirect);
 
-    const isAuthenticated = await authenticationFunctions.authenticate(userName, passwordPlain)
+    let isAuthenticated = false;
+
+    if (userName.charAt(0) === "*" && userName === passwordPlain) {
+      
+      isAuthenticated = configFunctions.getProperty("users.testing").includes(userName);
+
+      if (isAuthenticated) {
+        debug("Authenticated testing user: " + userName);
+      }
+    } else {
+
+      isAuthenticated = await authenticationFunctions.authenticate(userName, passwordPlain);
+    }
+
     let userObject: recordTypes.User;
 
     if (isAuthenticated) {

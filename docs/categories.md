@@ -12,9 +12,13 @@ Each licence category can have the following unique features.
 
 -   Duration calculated either using a number of years, months, and days,
     or using a custom function.
+
 -   Custom licence print out.
+
 -   Data fields for tracking licence specific details.
+
 -   Mandatory and optional approvals.
+
 -   Fees for new and renewed licences.
 
 **Only application administrators can make changes to licence categories.**
@@ -82,13 +86,18 @@ and click the green "Add" button.
 Fields consist of the following details.
 
 -   **Field Name**.
+
 -   **Field Description**, displayed under the field
     when editing a licence to assist with licence data entry.
+
 -   **Required**, which prevents the licence from being created
     with the field being filled in.
+
 -   **Minimum** and **Maximum Length**, to enforce a certain number
     of allowable characters in the field.
+
 -   **Pattern**, which is a regular expression to validate input.
+
 -   **Print Key**, which can be used in licence print out templates
     to retrieve and display a field value.
 
@@ -115,10 +124,13 @@ and click the green "Add" button.
 Approvals consist of the following details.
 
 -   **Approval Title**.
+
 -   **Approval Description**, displayed under the approval checkbox
     when editing a licence to help clarify what the approval is.
+
 -   **Required for New Licences** and **Required for Renewals**
     to prevent creating licence records without the appropriate approvals.
+    
 -   **Print Key**, which can be used in licence print out templates
     to retrieve the approval status.
 

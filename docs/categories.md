@@ -130,7 +130,7 @@ Approvals consist of the following details.
 
 -   **Required for New Licences** and **Required for Renewals**
     to prevent creating licence records without the appropriate approvals.
-    
+
 -   **Print Key**, which can be used in licence print out templates
     to retrieve the approval status.
 
@@ -153,5 +153,6 @@ Fees consist of the following details.
 -   **Effective Start Date** and **Effective End Date**,
     to indicate when the fee should be applied.
     The end date can be left blank to keep the fee from expiring.
+
 -   **Licence Fee**, **Renewal Fee**, and **Replacement Fee**
     to set the cost of the licence.

@@ -41,7 +41,7 @@
     "debug": "^4.3.3",
     "ejs": "^3.1.6",
     "exit-hook": "^3.0.0",
-    "express": "^4.17.2",
+    "express": "^4.17.3",
     "express-rate-limit": "^6.2.0",
     "express-session": "^1.17.2",
     "http-errors": "^2.0.0",

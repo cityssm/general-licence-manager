@@ -10,7 +10,7 @@ import type * as configTypes from "../types/configTypes";
 
 const configFallbackValues = new Map<string, unknown>();
 
-configFallbackValues.set("application.applicationName", "General Licensing System");
+configFallbackValues.set("application.applicationName", "General Licence Manager");
 configFallbackValues.set("application.logoURL", "/images/stamp.png");
 configFallbackValues.set("application.httpPort", 7000);
 

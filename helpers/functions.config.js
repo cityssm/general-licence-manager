@@ -1,6 +1,6 @@
 import { config } from "../data/config.js";
 const configFallbackValues = new Map();
-configFallbackValues.set("application.applicationName", "General Licensing System");
+configFallbackValues.set("application.applicationName", "General Licence Manager");
 configFallbackValues.set("application.logoURL", "/images/stamp.png");
 configFallbackValues.set("application.httpPort", 7000);
 configFallbackValues.set("reverseProxy.disableCompression", false);

@@ -32,6 +32,11 @@ configFallbackValues.set("defaults.licenceNumberFunction", "year-fourDigits");
 configFallbackValues.set("defaults.licenseeCity", "");
 configFallbackValues.set("defaults.licenseeProvince", "ON");
 
+configFallbackValues.set("settings.licenceAlias", "Licence");
+configFallbackValues.set("settings.licenceAliasPlural", "Licences");
+configFallbackValues.set("settings.licenseeAlias", "Licensee");
+configFallbackValues.set("settings.licenseeAliasPlural", "Licensees");
+
 configFallbackValues.set("licenceLengthFunctions", {});
 
 
@@ -54,6 +59,11 @@ export function getProperty(propertyName: "users.isAdmin"): string[];
 export function getProperty(propertyName: "defaults.licenseeCity"): string;
 export function getProperty(propertyName: "defaults.licenseeProvince"): string;
 export function getProperty(propertyName: "defaults.licenceNumberFunction"): configTypes.LicenceNumberFunction;
+
+export function getProperty(propertyName: "settings.licenceAlias"): string;
+export function getProperty(propertyName: "settings.licenceAliasPlural"): string;
+export function getProperty(propertyName: "settings.licenseeAlias"): string;
+export function getProperty(propertyName: "settings.licenseeAliasPlural"): string;
 
 export function getProperty(propertyName: "licenceLengthFunctions"): {
   [licenceLengthFunctionName: string]: configTypes.LicenceLengthFunction;

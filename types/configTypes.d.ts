@@ -14,6 +14,12 @@ export interface Config {
         isAdmin?: string[];
     };
     defaults?: ConfigDefaults;
+    settings?: {
+        licenceAlias?: string;
+        licenceAliasPlural?: string;
+        licenseeAlias?: string;
+        licenseeAliasPlural?: string;
+    };
     licenceLengthFunctions?: {
         [licenceLengthFunctionName: string]: LicenceLengthFunction;
     };

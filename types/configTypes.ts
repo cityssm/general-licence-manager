@@ -12,8 +12,14 @@ export interface Config {
     canLogin?: string[];
     canUpdate?: string[];
     isAdmin?: string[];
-  },
+  };
   defaults?: ConfigDefaults;
+  settings?: {
+    licenceAlias?: string;
+    licenceAliasPlural?: string;
+    licenseeAlias?: string;
+    licenseeAliasPlural?: string;
+  };
   licenceLengthFunctions?: {
     [licenceLengthFunctionName: string]: LicenceLengthFunction;
   };

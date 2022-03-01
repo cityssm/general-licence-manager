@@ -17,6 +17,10 @@ configFallbackValues.set("users.isAdmin", ["administrator"]);
 configFallbackValues.set("defaults.licenceNumberFunction", "year-fourDigits");
 configFallbackValues.set("defaults.licenseeCity", "");
 configFallbackValues.set("defaults.licenseeProvince", "ON");
+configFallbackValues.set("settings.licenceAlias", "Licence");
+configFallbackValues.set("settings.licenceAliasPlural", "Licences");
+configFallbackValues.set("settings.licenseeAlias", "Licensee");
+configFallbackValues.set("settings.licenseeAliasPlural", "Licensees");
 configFallbackValues.set("licenceLengthFunctions", {});
 export function getProperty(propertyName) {
     const propertyNameSplit = propertyName.split(".");

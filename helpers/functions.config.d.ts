@@ -11,6 +11,10 @@ export declare function getProperty(propertyName: "users.isAdmin"): string[];
 export declare function getProperty(propertyName: "defaults.licenseeCity"): string;
 export declare function getProperty(propertyName: "defaults.licenseeProvince"): string;
 export declare function getProperty(propertyName: "defaults.licenceNumberFunction"): configTypes.LicenceNumberFunction;
+export declare function getProperty(propertyName: "settings.licenceAlias"): string;
+export declare function getProperty(propertyName: "settings.licenceAliasPlural"): string;
+export declare function getProperty(propertyName: "settings.licenseeAlias"): string;
+export declare function getProperty(propertyName: "settings.licenseeAliasPlural"): string;
 export declare function getProperty(propertyName: "licenceLengthFunctions"): {
     [licenceLengthFunctionName: string]: configTypes.LicenceLengthFunction;
 };

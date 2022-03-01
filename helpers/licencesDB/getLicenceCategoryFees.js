@@ -20,7 +20,9 @@ export const getLicenceCategoryFees = (licenceCategoryKey, feeType, database) =>
         " fn_dateIntegerToString(effectiveStartDate) as effectiveStartDateString," +
         " effectiveEndDate," +
         " fn_dateIntegerToString(effectiveEndDate) as effectiveEndDateString," +
-        " licenceFee, renewalFee, replacementFee" +
+        " licenceFee," +
+        " ifnull(renewalFee, licenceFee) as renewalFee," +
+        " ifnull(replacementFee, licenceFee) as replacementFee" +
         " from LicenceCategoryFees" +
         " where recordDelete_timeMillis is null" +
         " and licenceCategoryKey = ?" +

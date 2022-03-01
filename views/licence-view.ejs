@@ -5,10 +5,10 @@
     <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
     <li><a href="<%= urlPrefix %>/licences">
       <span class="icon is-small"><i class="fas fa-certificate" aria-hidden="true"></i></span>
-      <span>Licences</span></a>
+      <span><%= configFunctions.getProperty("settings.licenceAliasPlural") %></span></a>
     </li>
     <li class="is-active"><a href="#" aria-current="page">
-      Licence #<%= licence.licenceNumber %>
+      <%= configFunctions.getProperty("settings.licenceAlias") %> #<%= licence.licenceNumber %>
     </a></li>
   </ul>
 </nav>
@@ -17,7 +17,7 @@
   <div class="level-left">
     <div class="level-item">
       <h1 class="title is-1">
-        Licence #<%= licence.licenceNumber %>
+        <%= configFunctions.getProperty("settings.licenceAlias") %> #<%= licence.licenceNumber %>
       </h1>
     </div>
   </div>
@@ -25,7 +25,7 @@
     <div class="level-right is-hidden-print">
       <a class="level-item button is-link" href="<%= urlPrefix %>/licences/<%= licence.licenceId %>/print" target="_blank">
         <span class="icon"><i class="fas fa-print" aria-hidden="true"></i></span>
-        <span>Print Licence</span>
+        <span>Print <%= configFunctions.getProperty("settings.licenceAlias") %></span>
       </a>
     </div>
     <% } %>
@@ -33,9 +33,9 @@
 
 <% if (user.userProperties.canUpdate) { %>
   <div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
-    <a class="button is-circle is-primary has-tooltip-left" data-tooltip="Update Licence" href="<%= urlPrefix %>/licences/<%= licence.licenceId %>/edit">
+    <a class="button is-circle is-primary has-tooltip-left" data-tooltip="Update <%= configFunctions.getProperty("settings.licenceAlias") %>" href="<%= urlPrefix %>/licences/<%= licence.licenceId %>/edit">
       <i class="fas fa-pencil-alt" aria-hidden="true"></i>
-      <span class="sr-only">Update Licence</span>
+      <span class="sr-only">Update <%= configFunctions.getProperty("settings.licenceAlias") %></span>
     </a>
   </div>
 <% } %>
@@ -43,7 +43,7 @@
 <div class="panel">
   <div class="panel-block">
     <p>
-      <strong>Licence Category</strong><br />
+      <strong><%= configFunctions.getProperty("settings.licenceAlias") %> Category</strong><br />
       <%= licenceCategory.licenceCategory %>
     </p>
   </div>
@@ -53,7 +53,7 @@
   <div class="column is-5">
 
     <div class="panel">
-      <h2 class="panel-heading">Licensee Information</h2>
+      <h2 class="panel-heading"><%= configFunctions.getProperty("settings.licenseeAlias") %> Information</h2>
       <div class="panel-block is-block">
         <%= licence.licenseeName %><br />
         <% if (licence.licenseeBusinessName !== "") { %>
@@ -133,7 +133,7 @@
         <% } else { %>
           <div class="message is-warning is-small">
             <p class="message-body">
-              This licence has not been issued.
+              This <%= configFunctions.getProperty("settings.licenceAlias").toLowerCase() %> has not been issued.
             </p>
           </div>
         <% } %>
@@ -146,7 +146,7 @@
   <div class="panel-block is-block">
     <div class="columns">
       <div class="column">
-        <strong>Licence Fee</strong><br />
+        <strong><%= configFunctions.getProperty("settings.licenceAlias") %> Fee</strong><br />
         $<%= licence.licenceFee ? licence.licenceFee.toFixed(2) : "" %>
       </div>
       <div class="column">

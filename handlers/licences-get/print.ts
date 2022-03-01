@@ -12,14 +12,14 @@ import * as printFunctions from "../../helpers/functions.print.js";
 import convertHTMLToPDF from "pdf-puppeteer";
 
 
-export const handler: RequestHandler = async(request, response, next) => {
+export const handler: RequestHandler = async (request, response, next) => {
 
   const licenceId = request.params.licenceId;
 
   const licence = getLicence(licenceId);
 
   if (!licence || !licence.issueDate) {
-    return next("Licence not available for printing.");
+    return next(configFunctions.getProperty("settings.licenceAlias") + " not available for printing.");
   }
 
   const licenceCategory = getLicenceCategory(licence.licenceCategoryKey);
@@ -30,7 +30,7 @@ export const handler: RequestHandler = async(request, response, next) => {
 
     response.setHeader("Content-Disposition",
       "attachment;" +
-      " filename=licence-" + licenceId + "-" + licence.recordUpdate_timeMillis.toString() + ".pdf"
+      " filename=" + configFunctions.getProperty("settings.licenceAlias").toLowerCase() + "-" + licenceId + "-" + licence.recordUpdate_timeMillis.toString() + ".pdf"
     );
 
     response.setHeader("Content-Type", "application/pdf");
@@ -45,7 +45,7 @@ export const handler: RequestHandler = async(request, response, next) => {
       licence,
       licenceCategory
     }, {},
-    async(ejsError, ejsData) => {
+    async (ejsError, ejsData) => {
 
       if (ejsError) {
         return next(ejsError);

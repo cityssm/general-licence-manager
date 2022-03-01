@@ -11,6 +11,7 @@ declare const bulmaJS: BulmaJS;
 (() => {
 
   const urlPrefix = document.querySelector("main").dataset.urlPrefix;
+  const licenceAlias = exports.licenceAlias as string;
 
   let licenceCategories: recordTypes.LicenceCategory[] = exports.licenceCategories;
 
@@ -20,7 +21,7 @@ declare const bulmaJS: BulmaJS;
 
     if (licenceCategories.length === 0) {
       licenceCategoriesContainerElement.innerHTML = "<div class=\"message is-warning\">" +
-        "<p class=\"message-body\">There are no licence categories available.</p>" +
+        "<p class=\"message-body\">There are no categories available.</p>" +
         "</div>";
 
       return;
@@ -67,7 +68,7 @@ declare const bulmaJS: BulmaJS;
 
     licenceCategoriesContainerElement.innerHTML = "<p class=\"has-text-centered has-text-grey-lighter\">" +
       "<i class=\"fas fa-3x fa-circle-notch fa-spin\" aria-hidden=\"true\"></i><br />" +
-      "<em>Loading licence categories...</em>" +
+      "<em>Loading categories...</em>" +
       "</p>";
 
     cityssm.postJSON(urlPrefix + "/admin/doGetLicenceCategories", {},
@@ -129,8 +130,8 @@ declare const bulmaJS: BulmaJS;
       clickEvent.preventDefault();
 
       bulmaJS.confirm({
-        title: "Delete Licence Field",
-        message: "Are you sure you want to delete this licence field?",
+        title: "Delete Field",
+        message: "Are you sure you want to delete this field?",
         contextualColorName: "warning",
         okButton: {
           text: "Yes, Delete It",
@@ -247,7 +248,7 @@ declare const bulmaJS: BulmaJS;
 
     if (licenceCategoryFields.length === 0) {
       fieldsContainerElement.innerHTML = "<div class=\"message is-info\">" +
-        "<p class=\"message-body\">There are no additional fields captured with this licence.</p>" +
+        "<p class=\"message-body\">There are no additional fields captured with this category.</p>" +
         "</div>";
     } else {
 
@@ -337,8 +338,8 @@ declare const bulmaJS: BulmaJS;
       clickEvent.preventDefault();
 
       bulmaJS.confirm({
-        title: "Delete Licence Approval",
-        message: "Are you sure you want to delete this licence approval?",
+        title: "Delete Approval",
+        message: "Are you sure you want to delete this approval?",
         contextualColorName: "warning",
         okButton: {
           text: "Yes, Delete It",
@@ -445,7 +446,7 @@ declare const bulmaJS: BulmaJS;
 
     if (licenceCategoryApprovals.length === 0) {
       approvalsContainerElement.innerHTML = "<div class=\"message is-info\">" +
-        "<p class=\"message-body\">There are no approvals associated with this licence.</p>" +
+        "<p class=\"message-body\">There are no approvals associated with this category.</p>" +
         "</div>";
     } else {
 
@@ -537,7 +538,7 @@ declare const bulmaJS: BulmaJS;
       clickEvent.preventDefault();
 
       bulmaJS.confirm({
-        title: "Delete Licence Fee",
+        title: "Delete Fee",
         message: "Are you sure you want to delete this fee record?",
         contextualColorName: "warning",
         okButton: {
@@ -598,7 +599,7 @@ declare const bulmaJS: BulmaJS;
 
     if (licenceCategoryFees.length === 0) {
       feesContainerElement.innerHTML = "<div class=\"message is-warning\">" +
-        "<p class=\"message-body\">There are no fees associated with this licence.</p>" +
+        "<p class=\"message-body\">There are no fees associated with this category.</p>" +
         "</div>";
     } else {
 
@@ -685,7 +686,7 @@ declare const bulmaJS: BulmaJS;
       clickEvent.preventDefault();
 
       bulmaJS.confirm({
-        title: "Delete Licence Category",
+        title: "Delete Category",
         message: "Are you sure you want to delete this category?",
         contextualColorName: "warning",
         okButton: {
@@ -707,7 +708,7 @@ declare const bulmaJS: BulmaJS;
 
           if (responseJSON.success) {
             bulmaJS.alert({
-              message: "Licence Category updated successfully.",
+              message: "Category updated successfully.",
               contextualColorName: "success"
             });
 
@@ -715,7 +716,7 @@ declare const bulmaJS: BulmaJS;
 
           } else {
             bulmaJS.alert({
-              title: "Error Updating Licence Category",
+              title: "Error Updating Category",
               message: responseJSON.errorMessage,
               contextualColorName: "danger"
             });
@@ -795,7 +796,7 @@ declare const bulmaJS: BulmaJS;
       if (!responseJSON.success) {
 
         bulmaJS.alert({
-          message: "Error loading Licence Category.",
+          message: "Error Loading Category.",
           contextualColorName: "danger"
         });
 
@@ -851,6 +852,11 @@ declare const bulmaJS: BulmaJS;
       onshow: (modalElement) => {
 
         editModalElement = modalElement;
+
+        const licenceElements = modalElement.querySelectorAll("[data-setting='licenceAlias']");
+        for (const element of licenceElements) {
+          element.textContent = licenceAlias;
+        }
 
         (modalElement.querySelector("#licenceCategoryEdit--licenceCategoryKey") as HTMLInputElement).value = licenceCategoryKey;
         (modalElement.querySelector("#licenceCategoryFieldAdd--licenceCategoryKey") as HTMLInputElement).value = licenceCategoryKey;
@@ -948,6 +954,13 @@ declare const bulmaJS: BulmaJS;
     };
 
     cityssm.openHtmlModal("licenceCategory-add", {
+      onshow: (modalElement) => {
+
+        const licenceElements = modalElement.querySelectorAll("[data-setting='licenceAlias']");
+        for (const element of licenceElements) {
+          element.textContent = licenceAlias;
+        }
+      },
       onshown: (modalElement, closeModalFunction) => {
         bulmaJS.toggleHtmlClipped();
         addLicenceCategoryCloseModalFunction = closeModalFunction;

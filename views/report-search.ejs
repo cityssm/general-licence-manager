@@ -11,7 +11,7 @@
 </nav>
 
 <h1 class="title is-1">
-  Licence Reports
+  <%= configFunctions.getProperty("settings.licenceAlias") %> Reports
 </h1>
 
 <%
@@ -56,9 +56,9 @@
           <span class="tag is-info">CSV</span>
         </div>
         <div>
-          <h3 class="title is-5 is-marginless">Full Licence List</h3>
+          <h3 class="title is-5 is-marginless">Full <%= configFunctions.getProperty("settings.licenceAlias") %> List</h3>
           <p>
-            All active licences.
+            All active <%= configFunctions.getProperty("settings.licenceAliasPlural").toLowerCase() %>.
           </p>
         </div>
       </a>

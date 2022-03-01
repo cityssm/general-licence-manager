@@ -1,5 +1,6 @@
 import type { RequestHandler } from "express";
 
+import * as configFunctions from "../../helpers/functions.config.js";
 import { getLicenceCategories } from "../../helpers/licencesDB/getLicenceCategories.js";
 import { getLicenceStats } from "../../helpers/licencesDB/getLicenceStats.js";
 
@@ -11,7 +12,7 @@ export const handler: RequestHandler = (_request, response) => {
   const licenceStats = getLicenceStats();
 
   response.render("licence-licenceCategorySummary", {
-    headTitle: "Licence Category Summary",
+    headTitle: configFunctions.getProperty("settings.licenceAlias") + " Category Summary",
     licenceCategories,
     licenceStats
   });

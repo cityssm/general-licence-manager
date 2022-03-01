@@ -18,9 +18,10 @@
           </div>
           <div class="media-content has-text-black">
             <h2 class="title is-4 is-marginless">
-              <a href="<%= urlPrefix %>/licences">Licences</a>
+              <a href="<%= urlPrefix %>/licences">
+              <%= configFunctions.getProperty("settings.licenceAliasPlural") %></a>
             </h2>
-            <p>View and maintain licences.</p>
+            <p>View and maintain <%= configFunctions.getProperty("settings.licenceAliasPlural").toLowerCase() %>.</p>
           </div>
         </div>
         <% if (user.userProperties.canUpdate) { %>
@@ -30,7 +31,7 @@
             </div>
             <div class="media-content has-text-black">
               <h2 class="title is-4 is-marginless">
-                <a href="<%= urlPrefix %>/licences/new">Create a New Licence</a>
+                <a href="<%= urlPrefix %>/licences/new">Create a New <%= configFunctions.getProperty("settings.licenceAlias") %></a>
               </h2>
             </div>
           </div>
@@ -59,9 +60,14 @@
             </div>
             <div class="media-content has-text-black">
               <h2 class="title is-4 is-marginless">
-                <a href="<%= urlPrefix %>/admin/licenceCategories">Licence Categories</a>
+                <a href="<%= urlPrefix %>/admin/licenceCategories">
+                  <%= configFunctions.getProperty("settings.licenceAlias") %> Categories
+                </a>
               </h2>
-              <p>Add new licence types.  Maintain existing licence types.</p>
+              <p>
+                Add new <%= configFunctions.getProperty("settings.licenceAlias").toLowerCase() %> types.
+                Maintain existing <%= configFunctions.getProperty("settings.licenceAlias").toLowerCase() %> types.
+              </p>
             </div>
           </div>
         </div>

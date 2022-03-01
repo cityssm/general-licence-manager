@@ -19,6 +19,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
         };
     };
     const urlPrefix = document.querySelector("main").dataset.urlPrefix;
+    const licenceAlias = exports.licenceAlias;
+    const licenseeAlias = exports.licenseeAlias;
     const startDateStringMinElement = document.querySelector("#filter--startDateStringMin");
     const startDateStringMaxElement = document.querySelector("#filter--startDateStringMax");
     startDateStringMinElement.addEventListener("change", () => {
@@ -32,14 +34,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const getLicenceCategorySummary = () => {
         resultsElement.innerHTML = "<p class=\"has-text-centered has-text-grey-lighter\">" +
             "<i class=\"fas fa-3x fa-circle-notch fa-spin\" aria-hidden=\"true\"></i><br />" +
-            "<em>Loading licences...</em><br />" +
+            "<em>Loading records...</em><br />" +
             "Please be patient with larger start date ranges." +
             "</p>";
         cityssm.postJSON(urlPrefix + "/licences/doGetLicenceCategorySummary", filterFormElement, (responseJSON) => {
             try {
                 if (responseJSON.licences.length === 0) {
                     resultsElement.innerHTML = "<div class=\"message is-info\">" +
-                        "<p class=\"message-body\">There are no licences that meet the report criteria.</p>" +
+                        "<p class=\"message-body\">There are no records that meet the report criteria.</p>" +
                         "</div>";
                     return;
                 }
@@ -98,15 +100,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 const licenceTableElement = document.createElement("table");
                 licenceTableElement.className = "table is-striped is-hoverable is-fullwidth has-sticky-header";
                 licenceTableElement.innerHTML = "<thead><tr>" +
-                    "<th>Licence Number</th>" +
-                    "<th>Licensee</th>" +
+                    "<th>" + licenceAlias + " Number</th>" +
+                    "<th>" + licenseeAlias + "</th>" +
                     "<th class=\"has-text-right\">Transaction</th>" +
                     "</tr></thead>";
                 let totalTransactionAmountSum = 0;
                 const summaryTableElement = document.createElement("table");
                 summaryTableElement.className = "table is-striped is-hoverable is-fullwidth has-sticky-header";
                 summaryTableElement.innerHTML = "<thead><tr>" +
-                    "<th>Licence Category</th>" +
+                    "<th>" + licenceAlias + " Category</th>" +
                     "<th class=\"has-text-right\">Count</th>" +
                     "<th class=\"has-text-right\">Transactions</th>" +
                     "</tr></thead>" +

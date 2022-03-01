@@ -1,4 +1,4 @@
-/* eslint-disable unicorn/filename-case */
+/* eslint-disable unicorn/filename-case, unicorn/prefer-module */
 
 import type { cityssmGlobal } from "@cityssm/bulma-webapp-js/src/types";
 import type * as recordTypes from "../types/recordTypes";
@@ -9,6 +9,9 @@ declare const cityssm: cityssmGlobal;
 (() => {
 
   const urlPrefix = document.querySelector("main").dataset.urlPrefix;
+  const licenceAlias = exports.licenceAlias as string;
+  const licenceAliasPlural = exports.licenceAliasPlural as string;
+  const licenseeAlias = exports.licenseeAlias as string;
 
   const formElement = document.querySelector("#form--filters") as HTMLFormElement;
 
@@ -24,7 +27,7 @@ declare const cityssm: cityssmGlobal;
 
     searchResultsElement.innerHTML = "<p class=\"has-text-centered has-text-grey-lighter\">" +
       "<i class=\"fas fa-3x fa-circle-notch fa-spin\" aria-hidden=\"true\"></i><br />" +
-      "<em>Loading licences...</em>" +
+      "<em>Loading records...</em>" +
       "</p>";
 
     cityssm.postJSON(urlPrefix + "/licences/doSearch",
@@ -47,9 +50,9 @@ declare const cityssm: cityssmGlobal;
 
         searchResultsElement.innerHTML = "<table class=\"table is-fullwidth is-striped is-hoverable has-sticky-header\">" +
           "<thead><tr>" +
-          "<th>Licence Number</th>" +
+          "<th>" + licenceAlias + " Number</th>" +
           "<th>Category</th>" +
-          "<th>Licensee</th>" +
+          "<th>" + licenseeAlias + "</th>" +
           "<th>Effective Start</th>" +
           "<th>Effective End</th>" +
           "<th class=\"has-text-centered\">Status</th>" +
@@ -100,7 +103,7 @@ declare const cityssm: cityssmGlobal;
 
         searchResultsElement.insertAdjacentHTML("beforeend", "<div class=\"level is-block-print\">" +
           "<div class=\"level-left has-text-weight-bold\">" +
-          "Displaying licences " +
+          "Displaying " + licenceAliasPlural + " " +
           (currentOffset + 1).toString() +
           " to " +
           Math.min(currentLimit + currentOffset, licenceResults.count).toString() +
@@ -138,7 +141,7 @@ declare const cityssm: cityssmGlobal;
             nextElement.className = "button ml-3";
 
             nextElement.innerHTML =
-              "<span>Next Licences</span>" +
+              "<span>Next " + licenceAliasPlural + "</span>" +
               "<span class=\"icon\"><i class=\"fas fa-chevron-right\" aria-hidden=\"true\"></i></span>";
 
             nextElement.addEventListener("click", (clickEvent) => {

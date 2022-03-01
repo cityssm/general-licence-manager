@@ -1,4 +1,4 @@
-/* eslint-disable unicorn/filename-case*/
+/* eslint-disable unicorn/filename-case, unicorn/prefer-module */
 
 import type { cityssmGlobal } from "@cityssm/bulma-webapp-js/src/types";
 import type * as recordTypes from "../types/recordTypes";
@@ -12,7 +12,7 @@ declare const cityssm: cityssmGlobal;
 
     let timeout: NodeJS.Timeout;
 
-    return function (...arguments_: unknown[]) {
+    return function(...arguments_: unknown[]) {
 
       // eslint-disable-next-line @typescript-eslint/no-this-alias, unicorn/no-this-assignment
       const debounceContext = this;
@@ -32,6 +32,9 @@ declare const cityssm: cityssmGlobal;
   };
 
   const urlPrefix = document.querySelector("main").dataset.urlPrefix;
+
+  const licenceAlias = exports.licenceAlias as string;
+  const licenseeAlias = exports.licenseeAlias as string;
 
   /*
    * Start Date Fields
@@ -61,7 +64,7 @@ declare const cityssm: cityssmGlobal;
 
     resultsElement.innerHTML = "<p class=\"has-text-centered has-text-grey-lighter\">" +
       "<i class=\"fas fa-3x fa-circle-notch fa-spin\" aria-hidden=\"true\"></i><br />" +
-      "<em>Loading licences...</em><br />" +
+      "<em>Loading records...</em><br />" +
       "Please be patient with larger start date ranges." +
       "</p>";
 
@@ -72,7 +75,7 @@ declare const cityssm: cityssmGlobal;
         try {
           if (responseJSON.licences.length === 0) {
             resultsElement.innerHTML = "<div class=\"message is-info\">" +
-              "<p class=\"message-body\">There are no licences that meet the report criteria.</p>" +
+              "<p class=\"message-body\">There are no records that meet the report criteria.</p>" +
               "</div>";
 
             return;
@@ -172,8 +175,8 @@ declare const cityssm: cityssmGlobal;
           licenceTableElement.className = "table is-striped is-hoverable is-fullwidth has-sticky-header";
 
           licenceTableElement.innerHTML = "<thead><tr>" +
-            "<th>Licence Number</th>" +
-            "<th>Licensee</th>" +
+            "<th>" + licenceAlias + " Number</th>" +
+            "<th>" + licenseeAlias + "</th>" +
             "<th class=\"has-text-right\">Transaction</th>" +
             "</tr></thead>";
 
@@ -183,7 +186,7 @@ declare const cityssm: cityssmGlobal;
           summaryTableElement.className = "table is-striped is-hoverable is-fullwidth has-sticky-header";
 
           summaryTableElement.innerHTML = "<thead><tr>" +
-            "<th>Licence Category</th>" +
+            "<th>" + licenceAlias + " Category</th>" +
             "<th class=\"has-text-right\">Count</th>" +
             "<th class=\"has-text-right\">Transactions</th>" +
             "</tr></thead>" +

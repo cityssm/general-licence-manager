@@ -2,7 +2,7 @@
   <div class="modal-background"></div>
   <div class="modal-card" style="width:1200px;max-width:100vw">
     <header class="modal-card-head">
-      <h2 class="modal-card-title">Update Licence Category</h2>
+      <h2 class="modal-card-title">Update <span data-setting="licenceAlias"></span> Category</h2>
       <button class="delete is-close-modal-button" aria-label="close" type="button"></button>
     </header>
     <div class="modal-card-body">
@@ -11,7 +11,9 @@
           <form id="form--licenceCategoryEdit">
             <input id="licenceCategoryEdit--licenceCategoryKey" name="licenceCategoryKey" type="hidden" value="" />
             <div class="field">
-              <label class="label" for="licenceCategoryEdit--licenceCategory">Licence Category</label>
+              <label class="label" for="licenceCategoryEdit--licenceCategory">
+                <span data-setting="licenceAlias"></span> Category
+              </label>
               <div class="control">
                 <input class="input" id="licenceCategoryEdit--licenceCategory" name="licenceCategory" type="text" maxlength="100" required />
               </div>
@@ -39,7 +41,9 @@
               </div>
             </div>
             <div class="field">
-              <label class="label" for="licenceCategoryEdit--licenceLengthFunction">Licence Length Function</label>
+              <label class="label" for="licenceCategoryEdit--licenceLengthFunction">
+                <span data-setting="licenceAlias"></span> Length Function
+              </label>
               <div class="control is-expanded">
                 <div class="select is-fullwidth">
                   <select id="licenceCategoryEdit--licenceLengthFunction" name="licenceLengthFunction">
@@ -52,7 +56,9 @@
                 the year, month, and day values are ignored.
               </p>
             </div>
-            <label class="label" for="licenceCategoryEdit--licenceLengthYears">Licence Length</label>
+            <label class="label" for="licenceCategoryEdit--licenceLengthYears">
+              <span data-setting="licenceAlias"></span> Length
+            </label>
             <div class="columns">
               <div class="column">
                 <div class="field has-addons">

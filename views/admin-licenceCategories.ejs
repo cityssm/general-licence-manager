@@ -6,13 +6,13 @@
     <li><a href="#">Admin</a></li>
     <li class="is-active"><a href="#" aria-current="page">
       <span class="icon is-small"><i class="fas fa-cogs" aria-hidden="true"></i></span>
-      <span>Licence Categories</span>
+      <span><%= configFunctions.getProperty("settings.licenceAlias") %> Categories</span>
     </a></li>
   </ul>
 </nav>
 
 <h1 class="title is-1">
-  Licence Categories
+  <%= configFunctions.getProperty("settings.licenceAlias") %> Categories
 </h1>
 
 <div class="fixed-container is-fixed-bottom-right mr-4 mb-4 is-hidden-print">

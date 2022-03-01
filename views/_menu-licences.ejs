@@ -5,26 +5,26 @@
   <ul class="menu-list">
     <li>
       <a
-        <% if (headTitle === "Licences") { %>
+        <% if (headTitle === configFunctions.getProperty("settings.licenceAliasPlural")) { %>
           class="is-active" href="#" aria-current="page"
         <% } else { %>
           href="<%= urlPrefix %>/licences"
         <% } %>
         >
         <span class="icon"><i class="fas fa-search" aria-hidden="true"></i></span>
-        Licence Search
+        <%= configFunctions.getProperty("settings.licenceAlias") %> Search
       </a>
     </li>
     <li>
       <a
-        <% if (headTitle === "Licence Category Summary") { %>
+        <% if (headTitle === configFunctions.getProperty("settings.licenceAlias") + " Category Summary") { %>
           class="is-active" href="#" aria-current="page"
         <% } else { %>
           href="<%= urlPrefix %>/licences/licenceCategorySummary"
         <% } %>
         >
         <span class="icon"><i class="fas fa-table" aria-hidden="true"></i></span>
-        Licence Category Summary
+        <%= configFunctions.getProperty("settings.licenceAlias") %> Category Summary
       </a>
     </li>
   </ul>

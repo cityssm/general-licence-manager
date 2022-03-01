@@ -9,13 +9,13 @@ export const handler = async (request, response, next) => {
     const licenceId = request.params.licenceId;
     const licence = getLicence(licenceId);
     if (!licence || !licence.issueDate) {
-        return next("Licence not available for printing.");
+        return next(configFunctions.getProperty("settings.licenceAlias") + " not available for printing.");
     }
     const licenceCategory = getLicenceCategory(licence.licenceCategoryKey);
     const reportPath = path.join(".", "print", licenceCategory.printEJS + ".ejs");
     const pdfCallbackFunction = (pdf) => {
         response.setHeader("Content-Disposition", "attachment;" +
-            " filename=licence-" + licenceId + "-" + licence.recordUpdate_timeMillis.toString() + ".pdf");
+            " filename=" + configFunctions.getProperty("settings.licenceAlias").toLowerCase() + "-" + licenceId + "-" + licence.recordUpdate_timeMillis.toString() + ".pdf");
         response.setHeader("Content-Type", "application/pdf");
         response.send(pdf);
     };

@@ -57,7 +57,7 @@ export const handler: RequestHandler = (request, response) => {
   };
 
   response.render("licence-edit", {
-    headTitle: "Licence Create",
+    headTitle: configFunctions.getProperty("settings.licenceAlias") + " Create",
     isCreate: true,
     licenceCategories,
     licence

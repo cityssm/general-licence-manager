@@ -8,10 +8,10 @@
         <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
         <li><a href="<%= urlPrefix %>/licences">
           <span class="icon is-small"><i class="fas fa-certificate" aria-hidden="true"></i></span>
-          <span>Licences</span></a>
+          <span><%= configFunctions.getProperty("settings.licenceAliasPlural") %></span></a>
         </li>
         <li class="is-active"><a href="#" aria-current="page">
-          Licence Category Summary
+          <%= configFunctions.getProperty("settings.licenceAlias") %> Category Summary
         </a></li>
       </ul>
     </nav>
@@ -19,7 +19,7 @@
     <div class="columns">
       <div class="column">
         <h1 class="title is-1">
-          Licence Category Summary
+          <%= configFunctions.getProperty("settings.licenceAlias") %> Category Summary
         </h1>
 
         <div class="box">
@@ -27,7 +27,7 @@
             <div class="columns">
               <div class="column">
                 <div class="field">
-                  <label class="label" for="filter--licenceCategoryKey">Licence Category</label>
+                  <label class="label" for="filter--licenceCategoryKey"><%= configFunctions.getProperty("settings.licenceAlias") %> Category</label>
                   <div class="control has-icons-left">
                     <div class="select is-fullwidth">
                       <select id="filter--licenceCategoryKey" name="licenceCategoryKey">

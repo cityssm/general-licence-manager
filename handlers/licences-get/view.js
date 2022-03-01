@@ -13,7 +13,7 @@ export const handler = (request, response) => {
         includeFees: false
     });
     return response.render("licence-view", {
-        headTitle: "Licence View",
+        headTitle: configFunctions.getProperty("settings.licenceAlias") + " View",
         licence,
         licenceCategory
     });

@@ -2,6 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const urlPrefix = document.querySelector("main").dataset.urlPrefix;
+    const licenceAlias = exports.licenceAlias;
+    const licenceAliasPlural = exports.licenceAliasPlural;
+    const licenseeAlias = exports.licenseeAlias;
     const formElement = document.querySelector("#form--filters");
     const limitElement = document.querySelector("#filter--limit");
     const offsetElement = document.querySelector("#filter--offset");
@@ -11,7 +14,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const currentOffset = Number.parseInt(offsetElement.value, 10);
         searchResultsElement.innerHTML = "<p class=\"has-text-centered has-text-grey-lighter\">" +
             "<i class=\"fas fa-3x fa-circle-notch fa-spin\" aria-hidden=\"true\"></i><br />" +
-            "<em>Loading licences...</em>" +
+            "<em>Loading records...</em>" +
             "</p>";
         cityssm.postJSON(urlPrefix + "/licences/doSearch", formElement, (licenceResults) => {
             const licenceList = licenceResults.licences;
@@ -26,9 +29,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             searchResultsElement.innerHTML = "<table class=\"table is-fullwidth is-striped is-hoverable has-sticky-header\">" +
                 "<thead><tr>" +
-                "<th>Licence Number</th>" +
+                "<th>" + licenceAlias + " Number</th>" +
                 "<th>Category</th>" +
-                "<th>Licensee</th>" +
+                "<th>" + licenseeAlias + "</th>" +
                 "<th>Effective Start</th>" +
                 "<th>Effective End</th>" +
                 "<th class=\"has-text-centered\">Status</th>" +
@@ -70,7 +73,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             searchResultsElement.querySelector("table").append(tbodyElement);
             searchResultsElement.insertAdjacentHTML("beforeend", "<div class=\"level is-block-print\">" +
                 "<div class=\"level-left has-text-weight-bold\">" +
-                "Displaying licences " +
+                "Displaying " + licenceAliasPlural + " " +
                 (currentOffset + 1).toString() +
                 " to " +
                 Math.min(currentLimit + currentOffset, licenceResults.count).toString() +
@@ -98,7 +101,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     const nextElement = document.createElement("a");
                     nextElement.className = "button ml-3";
                     nextElement.innerHTML =
-                        "<span>Next Licences</span>" +
+                        "<span>Next " + licenceAliasPlural + "</span>" +
                             "<span class=\"icon\"><i class=\"fas fa-chevron-right\" aria-hidden=\"true\"></i></span>";
                     nextElement.addEventListener("click", (clickEvent) => {
                         clickEvent.preventDefault();

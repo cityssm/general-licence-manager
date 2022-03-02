@@ -23,9 +23,9 @@ export const addLicenceTransaction = (licenceTransactionForm, requestSession) =>
         " recordCreate_userName, recordCreate_timeMillis," +
         " recordUpdate_userName, recordUpdate_timeMillis)" +
         " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
-        .run(licenceTransactionForm.licenceId, transactionIndex, licenceTransactionForm.transactionDateString
+        .run(licenceTransactionForm.licenceId, transactionIndex, licenceTransactionForm.transactionDateString && licenceTransactionForm.transactionDateString !== ""
         ? dateTimeFunctions.dateStringToInteger(licenceTransactionForm.transactionDateString)
-        : dateTimeFunctions.dateToInteger(rightNow), licenceTransactionForm.transactionDateString
+        : dateTimeFunctions.dateToInteger(rightNow), licenceTransactionForm.transactionDateString && licenceTransactionForm.transactionDateString !== ""
         ? 0
         : dateTimeFunctions.dateToTimeInteger(rightNow), licenceTransactionForm.bankTransitNumber, licenceTransactionForm.bankInstitutionNumber, licenceTransactionForm.bankAccountNumber, licenceTransactionForm.externalReceiptNumber, licenceTransactionForm.transactionAmount, licenceTransactionForm.transactionNote, requestSession.user.userName, rightNow.getTime(), requestSession.user.userName, rightNow.getTime());
     database.close();

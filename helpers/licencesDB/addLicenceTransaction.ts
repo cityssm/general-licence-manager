@@ -47,10 +47,10 @@ export const addLicenceTransaction =
         " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
       .run(licenceTransactionForm.licenceId,
         transactionIndex,
-        licenceTransactionForm.transactionDateString
+        licenceTransactionForm.transactionDateString && licenceTransactionForm.transactionDateString !== ""
           ? dateTimeFunctions.dateStringToInteger(licenceTransactionForm.transactionDateString)
           : dateTimeFunctions.dateToInteger(rightNow),
-        licenceTransactionForm.transactionDateString
+        licenceTransactionForm.transactionDateString && licenceTransactionForm.transactionDateString !== ""
           ? 0
           : dateTimeFunctions.dateToTimeInteger(rightNow),
         licenceTransactionForm.bankTransitNumber,

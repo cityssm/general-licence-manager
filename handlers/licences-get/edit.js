@@ -4,6 +4,9 @@ import { getLicenceCategory } from "../../helpers/licencesDB/getLicenceCategory.
 export const handler = (request, response) => {
     const licenceId = request.params.licenceId;
     const licence = getLicence(licenceId);
+    if (!licence) {
+        return response.redirect(configFunctions.getProperty("reverseProxy.urlPrefix") + "/licences/?error=licenceIdNotFound");
+    }
     const licenceCategory = getLicenceCategory(licence.licenceCategoryKey, {
         includeApprovals: false,
         includeFields: false,

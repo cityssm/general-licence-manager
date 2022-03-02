@@ -101,7 +101,11 @@
         <div class="column is-align-self-center ">
           <div class="facheck">
             <input id="licenceEdit--isRenewal" name="isRenewal" type="checkbox" <%= licence.isRenewal ? "checked" : "" %> />
-            <label for="licenceEdit--isRenewal"><%= configFunctions.getProperty("settings.licenceAlias") %> is a Renewal</label>
+            <label for="licenceEdit--isRenewal">
+              <%= configFunctions.getProperty("settings.licenceAlias") %>
+              is
+              <%= configFunctions.getProperty("settings.renewalAlias") %>
+            </label>
           </div>
         </div>
       </div>

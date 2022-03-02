@@ -12,6 +12,7 @@ declare const bulmaJS: BulmaJS;
 
   const urlPrefix = document.querySelector("main").dataset.urlPrefix;
   const licenceAlias = exports.licenceAlias as string;
+  const renewalAlias = exports.renewalAlias as string;
 
   let licenceCategories: recordTypes.LicenceCategory[] = exports.licenceCategories;
 
@@ -555,6 +556,11 @@ declare const bulmaJS: BulmaJS;
     cityssm.openHtmlModal("licenceCategoryFee-edit", {
 
       onshow: (modalElement) => {
+
+        const renewalElements = modalElement.querySelectorAll("[data-setting='renewalAlias']");
+        for (const element of renewalElements) {
+          element.textContent = renewalAlias;
+        }
 
         (modalElement.querySelector("#licenceCategoryFeeEdit--licenceFeeId") as HTMLInputElement).value = licenceCategoryFee.licenceFeeId.toString();
         (modalElement.querySelector("#licenceCategoryFeeEdit--effectiveStartDateString") as HTMLInputElement).value = licenceCategoryFee.effectiveStartDateString;

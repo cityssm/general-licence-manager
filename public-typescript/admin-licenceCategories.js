@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const urlPrefix = document.querySelector("main").dataset.urlPrefix;
     const licenceAlias = exports.licenceAlias;
+    const renewalAlias = exports.renewalAlias;
     let licenceCategories = exports.licenceCategories;
     const licenceCategoriesContainerElement = document.querySelector("#container--licenceCategories");
     const renderLicenceCategories = () => {
@@ -392,6 +393,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
         cityssm.openHtmlModal("licenceCategoryFee-edit", {
             onshow: (modalElement) => {
+                const renewalElements = modalElement.querySelectorAll("[data-setting='renewalAlias']");
+                for (const element of renewalElements) {
+                    element.textContent = renewalAlias;
+                }
                 modalElement.querySelector("#licenceCategoryFeeEdit--licenceFeeId").value = licenceCategoryFee.licenceFeeId.toString();
                 modalElement.querySelector("#licenceCategoryFeeEdit--effectiveStartDateString").value = licenceCategoryFee.effectiveStartDateString;
                 modalElement.querySelector("#licenceCategoryFeeEdit--effectiveEndDateString").value = licenceCategoryFee.effectiveEndDateString;

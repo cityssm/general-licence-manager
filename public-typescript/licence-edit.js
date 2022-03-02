@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const urlPrefix = document.querySelector("main").dataset.urlPrefix;
+    const licenceAlias = exports.licenceAlias;
     const licenceId = document.querySelector("#licenceEdit--licenceId").value;
     const isCreate = (licenceId === "");
     let hasUnsavedChanges = false;
@@ -380,15 +381,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
             clickEvent.preventDefault();
             if (hasUnsavedChanges) {
                 bulmaJS.alert({
-                    title: "Licence Has Unsaved Changes",
-                    message: "Please save your licence changes before issuing the licence.",
+                    title: licenceAlias + " Has Unsaved Changes",
+                    message: "Please save your " + licenceAlias.toLowerCase() + " changes before issuing the " + licenceAlias.toLowerCase() + ".",
                     contextualColorName: "warning"
                 });
             }
             else if (getOutstandingBalance() > 0) {
                 bulmaJS.confirm({
-                    title: "Licence Has an Outstanding Balance",
-                    message: "Are you sure you want to issue this licence with an outstanding balance?",
+                    title: licenceAlias + " Has an Outstanding Balance",
+                    message: "Are you sure you want to issue this " + licenceAlias.toLowerCase() + " with an outstanding balance?",
                     contextualColorName: "warning",
                     okButton: {
                         text: "Yes, Issue with Outstanding Balance",
@@ -398,8 +399,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             else if (startDateStringElement.value < cityssm.dateToString(new Date())) {
                 bulmaJS.confirm({
-                    title: "Licence Has a Start Date in the Past",
-                    message: "Are you sure you want to issue this licence with a start date in the past?",
+                    title: licenceAlias + " Has a Start Date in the Past",
+                    message: "Are you sure you want to issue this " + licenceAlias.toLowerCase() + " with a start date in the past?",
                     contextualColorName: "warning",
                     okButton: {
                         text: "Yes, Issue with a Past Start Date",
@@ -409,11 +410,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             else {
                 bulmaJS.confirm({
-                    title: "Issue Licence",
-                    message: "Are you sure you want to issue this licence?",
+                    title: "Issue " + licenceAlias,
+                    message: "Are you sure you want to issue this " + licenceAlias.toLowerCase() + "?",
                     contextualColorName: "info",
                     okButton: {
-                        text: "Yes, Issue Licence",
+                        text: "Yes, Issue " + licenceAlias,
                         callbackFunction: doIssue
                     }
                 });
@@ -446,9 +447,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             clickEvent.preventDefault();
             bulmaJS.confirm({
                 title: "Renew Licence",
-                message: "Are you sure you want to renew this licence?",
+                message: "Are you sure you want to renew this " + licenceAlias.toLowerCase() + "?",
                 okButton: {
-                    text: "Yes, Renew this Licence",
+                    text: "Yes, Renew this " + licenceAlias,
                     callbackFunction: doRenew
                 }
             });
@@ -469,15 +470,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 });
             };
             bulmaJS.confirm({
-                title: "Delete Licence",
-                message: "<p>Are you sure you want to delete this licence?</p>" +
+                title: "Delete " + licenceAlias,
+                message: "<p>Are you sure you want to delete this " + licenceAlias.toLowerCase() + "?</p>" +
                     (isIssued
-                        ? "<p>Note that <strong>this licence has been issued</strong>, and deleting it may cause confusion.</p>"
+                        ? "<p>Note that <strong>this " + licenceAlias.toLowerCase() + " has been issued</strong>, and deleting it may cause confusion.</p>"
                         : ""),
                 messageIsHtml: true,
                 contextualColorName: (isPast ? "info" : "warning"),
                 okButton: {
-                    text: "Yes, Delete Licence",
+                    text: "Yes, Delete " + licenceAlias,
                     callbackFunction: doDelete
                 }
             });

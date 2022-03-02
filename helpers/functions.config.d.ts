@@ -15,6 +15,7 @@ export declare function getProperty(propertyName: "settings.licenceAlias"): stri
 export declare function getProperty(propertyName: "settings.licenceAliasPlural"): string;
 export declare function getProperty(propertyName: "settings.licenseeAlias"): string;
 export declare function getProperty(propertyName: "settings.licenseeAliasPlural"): string;
+export declare function getProperty(propertyName: "settings.renewalAlias"): string;
 export declare function getProperty(propertyName: "licenceLengthFunctions"): {
     [licenceLengthFunctionName: string]: configTypes.LicenceLengthFunction;
 };

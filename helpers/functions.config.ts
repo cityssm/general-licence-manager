@@ -36,6 +36,7 @@ configFallbackValues.set("settings.licenceAlias", "Licence");
 configFallbackValues.set("settings.licenceAliasPlural", "Licences");
 configFallbackValues.set("settings.licenseeAlias", "Licensee");
 configFallbackValues.set("settings.licenseeAliasPlural", "Licensees");
+configFallbackValues.set("settings.renewalAlias", "Renewal");
 
 configFallbackValues.set("licenceLengthFunctions", {});
 
@@ -64,6 +65,7 @@ export function getProperty(propertyName: "settings.licenceAlias"): string;
 export function getProperty(propertyName: "settings.licenceAliasPlural"): string;
 export function getProperty(propertyName: "settings.licenseeAlias"): string;
 export function getProperty(propertyName: "settings.licenseeAliasPlural"): string;
+export function getProperty(propertyName: "settings.renewalAlias"): string;
 
 export function getProperty(propertyName: "licenceLengthFunctions"): {
   [licenceLengthFunctionName: string]: configTypes.LicenceLengthFunction;

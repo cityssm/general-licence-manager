@@ -84,6 +84,9 @@ export interface LicenceTransaction extends Record {
   transactionDateString?: string;
   transactionTime: number;
   transactionTimeString?: string;
+  bankTransitNumber?: string;
+  bankInstitutionNumber?: string;
+  bankAccountNumber?: string;
   externalReceiptNumber: string;
   transactionAmount: number;
   transactionNote: string;

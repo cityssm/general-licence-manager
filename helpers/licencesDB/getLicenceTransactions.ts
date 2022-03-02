@@ -26,6 +26,7 @@ export const getLicenceTransactions = (licenceId: number | string, database?: sq
     database.prepare("select transactionIndex," +
       " transactionDate, userFn_dateIntegerToString(transactionDate) as transactionDateString," +
       " transactionTime, userFn_timeIntegerToString(transactionTime) as transactionTimeString," +
+      " bankTransitNumber, bankInstitutionNumber, bankAccountNumber," +
       " externalReceiptNumber, transactionAmount, transactionNote" +
       " from LicenceTransactions" +
       " where recordDelete_timeMillis is null" +

@@ -9,6 +9,9 @@ interface AddLicenceTransactionForm {
   licenceId: number | string;
   transactionAmount: number | string;
   transactionDateString?: string;
+  bankTransitNumber: string;
+  bankInstitutionNumber?: string;
+  bankAccountNumber?: string;
   externalReceiptNumber: string;
   transactionNote: string;
 }
@@ -37,10 +40,11 @@ export const addLicenceTransaction =
       .prepare("insert into LicenceTransactions" +
         "(licenceId, transactionIndex," +
         " transactionDate, transactionTime," +
+        " bankTransitNumber, bankInstitutionNumber, bankAccountNumber," +
         " externalReceiptNumber, transactionAmount, transactionNote," +
         " recordCreate_userName, recordCreate_timeMillis," +
         " recordUpdate_userName, recordUpdate_timeMillis)" +
-        " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+        " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
       .run(licenceTransactionForm.licenceId,
         transactionIndex,
         licenceTransactionForm.transactionDateString
@@ -49,6 +53,9 @@ export const addLicenceTransaction =
         licenceTransactionForm.transactionDateString
           ? 0
           : dateTimeFunctions.dateToTimeInteger(rightNow),
+        licenceTransactionForm.bankTransitNumber,
+        licenceTransactionForm.bankInstitutionNumber,
+        licenceTransactionForm.bankAccountNumber,
         licenceTransactionForm.externalReceiptNumber,
         licenceTransactionForm.transactionAmount,
         licenceTransactionForm.transactionNote,

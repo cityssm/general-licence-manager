@@ -18,15 +18,16 @@ export const addLicenceTransaction = (licenceTransactionForm, requestSession) =>
         .prepare("insert into LicenceTransactions" +
         "(licenceId, transactionIndex," +
         " transactionDate, transactionTime," +
+        " bankTransitNumber, bankInstitutionNumber, bankAccountNumber," +
         " externalReceiptNumber, transactionAmount, transactionNote," +
         " recordCreate_userName, recordCreate_timeMillis," +
         " recordUpdate_userName, recordUpdate_timeMillis)" +
-        " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+        " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
         .run(licenceTransactionForm.licenceId, transactionIndex, licenceTransactionForm.transactionDateString
         ? dateTimeFunctions.dateStringToInteger(licenceTransactionForm.transactionDateString)
         : dateTimeFunctions.dateToInteger(rightNow), licenceTransactionForm.transactionDateString
         ? 0
-        : dateTimeFunctions.dateToTimeInteger(rightNow), licenceTransactionForm.externalReceiptNumber, licenceTransactionForm.transactionAmount, licenceTransactionForm.transactionNote, requestSession.user.userName, rightNow.getTime(), requestSession.user.userName, rightNow.getTime());
+        : dateTimeFunctions.dateToTimeInteger(rightNow), licenceTransactionForm.bankTransitNumber, licenceTransactionForm.bankInstitutionNumber, licenceTransactionForm.bankAccountNumber, licenceTransactionForm.externalReceiptNumber, licenceTransactionForm.transactionAmount, licenceTransactionForm.transactionNote, requestSession.user.userName, rightNow.getTime(), requestSession.user.userName, rightNow.getTime());
     database.close();
     return transactionIndex;
 };

@@ -134,6 +134,9 @@ export const initLicencesDB = (): boolean => {
       " transactionIndex integer not null," +
       " transactionDate integer not null," +
       " transactionTime integer not null," +
+      " bankTransitNumber varchar(10)," +
+      " bankInstitutionNumber varchar(10)," +
+      " bankAccountNumber varchar(10)," +
       " externalReceiptNumber varchar(20)," +
       " transactionAmount decimal(10, 2) not null," +
       " transactionNote text," +

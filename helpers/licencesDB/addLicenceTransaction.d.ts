@@ -3,6 +3,9 @@ interface AddLicenceTransactionForm {
     licenceId: number | string;
     transactionAmount: number | string;
     transactionDateString?: string;
+    bankTransitNumber: string;
+    bankInstitutionNumber?: string;
+    bankAccountNumber?: string;
     externalReceiptNumber: string;
     transactionNote: string;
 }

@@ -1,13 +1,13 @@
 <div class="modal">
   <div class="modal-background"></div>
-  <div class="modal-card">
+  <div class="modal-card" style="width:900px">
     <header class="modal-card-head">
       <h3 class="modal-card-title">Add a New Transaction</h3>
       <button class="delete is-close-modal-button" aria-label="close" type="button"></button>
     </header>
     <section class="modal-card-body">
       <div class="columns">
-        <div class="column">
+        <div class="column is-5">
           <table class="table is-fullwidth">
             <tr>
               <th>Licence Fee</th>
@@ -33,10 +33,20 @@
               </td>
             </tr>
           </table>
+          <button class="button is-primary is-light is-fullwidth is-more-fields-button" type="button">
+            Show More Fields
+          </button>
         </div>
         <div class="column">
           <form id="form--transactionAdd">
             <input id="transactionAdd--licenceId" name="licenceId" type="hidden" />
+            <div class="field is-hidden is-more-fields">
+              <label class="label" for="transactionAdd--transactionDateString">Transaction Date</label>
+              <div class="control">
+                <input class="input" id="transactionAdd--transactionDateString" name="transactionDateString" type="date" />
+              </div>
+              <p class="help">Leave blank to use today's date.</p>
+            </div>
             <div class="field">
               <label class="label" for="transactionAdd--transactionAmount">Transaction Amount</label>
               <div class="control has-icons-left">
@@ -44,6 +54,32 @@
                 <span class="icon is-left">
                   <i class="fas fa-dollar-sign" aria-hidden="true"></i>
                 </span>
+              </div>
+            </div>
+            <div class="columns is-hidden is-more-fields">
+              <div class="column">
+                <div class="field">
+                  <label class="label" for="transactionAdd--bankInstitutionNumber">Institution Number</label>
+                  <div class="control">
+                    <input class="input" id="transactionAdd--bankInstitutionNumber" name="bankInstitutionNumber" inputmode="numeric" pattern="\d{3}" maxlength="3" />
+                  </div>
+                  <p class="help">Three digits</p>
+                </div>
+              </div>
+              <div class="column">
+                <div class="field">
+                  <label class="label" for="transactionAdd--bankTransitNumber">Transit Number</label>
+                  <div class="control">
+                    <input class="input" id="transactionAdd--bankTransitNumber" name="bankTransitNumber" inputmode="numeric" pattern="\d{5}" maxlength="5" />
+                  </div>
+                  <p class="help">Five digits</p>
+                </div>
+              </div>
+            </div>
+            <div class="field is-hidden is-more-fields">
+              <label class="label" for="transactionAdd--bankAccountNumber">Bank Account Number</label>
+              <div class="control">
+                <input class="input" id="transactionAdd--bankAccountNumber" name="bankAccountNumber" inputmode="numeric" pattern="^\d+$" maxlength="10" />
               </div>
             </div>
             <div class="field">

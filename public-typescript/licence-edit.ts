@@ -533,6 +533,15 @@ declare const bulmaJS: BulmaJS;
           setTransactionAmountButtonElement.addEventListener("click", setTransactionAmountFunction);
         }
 
+        modalElement.querySelector("button.is-more-fields-button").addEventListener("click", (clickEvent) => {
+          clickEvent.preventDefault();
+          (clickEvent.currentTarget as HTMLButtonElement).remove();
+
+          for(const element of modalElement.querySelectorAll(".is-more-fields")) {
+            element.classList.remove("is-hidden");
+          }
+        });
+
         modalElement.querySelector("#form--transactionAdd").addEventListener("submit", addTransactionSubmitFunction);
       }
     });

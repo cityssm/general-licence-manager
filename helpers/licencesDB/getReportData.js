@@ -1,6 +1,21 @@
 import sqlite from "better-sqlite3";
 import { licencesDB as databasePath } from "../../data/databasePaths.js";
+import camelCase from "camelcase";
+import * as configFunctions from "../functions.config.js";
 import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
+import { getCanadianBankName } from "@cityssm/get-canadian-bank-name";
+const licenceAliasSQL = camelCase(configFunctions.getProperty("settings.licenceAlias"));
+const licenseeAliasSQL = camelCase(configFunctions.getProperty("settings.licenseeAlias"));
+const licenceId = licenceAliasSQL + "Id";
+const licenceNumber = licenceAliasSQL + "Number";
+const licenceCategory = licenceAliasSQL + "Category";
+const licenseeName = licenseeAliasSQL + "Name";
+const licenseeBusinessName = licenseeAliasSQL + "BusinessName";
+const licenseeAddress1 = licenseeAliasSQL + "Address1";
+const licenseeAddress2 = licenseeAliasSQL + "Address2";
+const licenseeCity = licenseeAliasSQL + "City";
+const licenseeProvince = licenseeAliasSQL + "Province";
+const licenseePostalCode = licenseeAliasSQL + "PostalCode";
 export const getReportData = (reportName, reportParameters) => {
     let sql;
     const sqlParameters = [];
@@ -9,11 +24,16 @@ export const getReportData = (reportName, reportParameters) => {
             sql = "select * from Licences";
             break;
         case "licences-formatted":
-            sql = "select l.licenceId," +
-                " c.licenceCategory, l.licenceNumber," +
-                " l.licenseeName, l.licenseeBusinessName," +
-                " l.licenseeAddress1, l.licenseeAddress2," +
-                " l.licenseeCity, l.licenseeProvince, l.licenseePostalCode," +
+            sql = "select l.licenceId as " + licenceId + "," +
+                " c.licenceCategory as " + licenceCategory + "," +
+                " l.licenceNumber as " + licenceNumber + "," +
+                " l.licenseeName as " + licenseeName + "," +
+                " l.licenseeBusinessName as " + licenseeBusinessName + "," +
+                " l.licenseeAddress1 as " + licenseeAddress1 + "," +
+                " l.licenseeAddress2 as " + licenseeAddress2 + "," +
+                " l.licenseeCity as " + licenseeCity + "," +
+                " l.licenseeProvince as " + licenseeProvince + "," +
+                " l.licenseePostalCode as " + licenseePostalCode + "," +
                 " userFn_dateIntegerToString(l.startDate) as startDateString," +
                 " userFn_dateIntegerToString(l.endDate) as endDateString," +
                 " userFn_dateIntegerToString(l.issueDate) as issueDateString" +
@@ -26,10 +46,16 @@ export const getReportData = (reportName, reportParameters) => {
             break;
         case "licenceTransactions-byDate":
             sql = "select" +
-                " c.licenceCategory, l.licenceNumber," +
+                " c.licenceCategory as " + licenceCategory + "," +
+                " l.licenceNumber as " + licenceNumber + "," +
                 " userFn_dateIntegerToString(t.transactionDate) as transactionDateString," +
                 " userFn_timeIntegerToString(t.transactionTime) as transactionTimeString," +
-                " t.transactionAmount, t.externalReceiptNumber," +
+                " t.transactionAmount," +
+                " userFn_getCanadianBankName(t.bankInstitutionNumber, t.bankTransitNumber) as bankName," +
+                " t.bankInstitutionNumber," +
+                " t.bankTransitNumber," +
+                " t.bankAccountNumber," +
+                " t.externalReceiptNumber," +
                 " t.transactionNote" +
                 " from LicenceTransactions t" +
                 " left join Licences l on t.licenceId = l.licenceId" +
@@ -47,6 +73,7 @@ export const getReportData = (reportName, reportParameters) => {
     });
     database.function("userFn_dateIntegerToString", dateTimeFunctions.dateIntegerToString);
     database.function("userFn_timeIntegerToString", dateTimeFunctions.timeIntegerToString);
+    database.function("userFn_getCanadianBankName", getCanadianBankName);
     const rows = database.prepare(sql)
         .all(sqlParameters);
     database.close();

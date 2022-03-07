@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
+    const glm = exports.glm;
     const urlPrefix = document.querySelector("main").dataset.urlPrefix;
     const licenceAlias = exports.licenceAlias;
     const licenceId = document.querySelector("#licenceEdit--licenceId").value;
@@ -314,6 +315,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
         licenceTransactionsTableElement.querySelectorAll("tfoot th")[1].textContent =
             "$" + transactionTotal.toFixed(2);
     };
+    const addTransaction_getBankNameFunction = (changeEvent) => {
+        changeEvent.preventDefault();
+        const modalElement = changeEvent.currentTarget.closest(".modal");
+        const bankInstitutionNumber = modalElement.querySelector("#transactionAdd--bankInstitutionNumber").value;
+        const bankTransitNumber = modalElement.querySelector("#transactionAdd--bankTransitNumber").value;
+        const bankNameElement = modalElement.querySelector("#transactionAdd--bankName");
+        if (bankInstitutionNumber === "") {
+            bankNameElement.value = "";
+            return;
+        }
+        cityssm.postJSON(urlPrefix + "/licences/doGetBankName", {
+            bankInstitutionNumber,
+            bankTransitNumber
+        }, (responseJSON) => {
+            bankNameElement.value =
+                (!responseJSON.bankName || responseJSON.bankName === "")
+                    ? "Institution Not Found (" + bankInstitutionNumber + ")"
+                    : responseJSON.bankName;
+        });
+    };
     const openAddTransactionModal = (clickEvent) => {
         clickEvent.preventDefault();
         let addTransactionModalElement;
@@ -336,6 +357,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         };
         cityssm.openHtmlModal("transaction-add", {
             onshow: (modalElement) => {
+                glm.populateAliases(modalElement);
                 modalElement.querySelector("#transactionAdd--licenceId").value = licenceId;
                 const licenceFeeString = document.querySelector("#licenceEdit--licenceFee").value;
                 modalElement.querySelector("#transactionAdd--licenceFee").textContent = licenceFeeString;
@@ -361,6 +383,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     for (const element of modalElement.querySelectorAll(".is-more-fields")) {
                         element.classList.remove("is-hidden");
                     }
+                    modalElement.querySelector("#transactionAdd--bankInstitutionNumber").addEventListener("change", addTransaction_getBankNameFunction);
+                    modalElement.querySelector("#transactionAdd--bankTransitNumber").addEventListener("change", addTransaction_getBankNameFunction);
                 });
                 modalElement.querySelector("#form--transactionAdd").addEventListener("submit", addTransactionSubmitFunction);
             }

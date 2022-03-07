@@ -3,12 +3,16 @@
 import type { cityssmGlobal } from "@cityssm/bulma-webapp-js/src/types";
 import type { BulmaJS } from "@cityssm/bulma-js/types";
 
+import { GLM } from "../types/globalTypes";
 import type * as recordTypes from "../types/recordTypes";
 
 declare const cityssm: cityssmGlobal;
 declare const bulmaJS: BulmaJS;
 
 (() => {
+
+  const glm: GLM = exports.glm;
+
   const urlPrefix = document.querySelector("main").dataset.urlPrefix;
 
   const licenceAlias = exports.licenceAlias as string;
@@ -471,6 +475,36 @@ declare const bulmaJS: BulmaJS;
       "$" + transactionTotal.toFixed(2);
   };
 
+
+  const addTransaction_getBankNameFunction = (changeEvent: Event) => {
+
+    changeEvent.preventDefault();
+
+    const modalElement = (changeEvent.currentTarget as HTMLElement).closest(".modal") as HTMLElement;
+
+    const bankInstitutionNumber = (modalElement.querySelector("#transactionAdd--bankInstitutionNumber") as HTMLInputElement).value;
+    const bankTransitNumber = (modalElement.querySelector("#transactionAdd--bankTransitNumber") as HTMLInputElement).value;
+
+    const bankNameElement = modalElement.querySelector("#transactionAdd--bankName") as HTMLInputElement;
+
+    if (bankInstitutionNumber === "") {
+      bankNameElement.value = "";
+      return;
+    }
+
+    cityssm.postJSON(urlPrefix + "/licences/doGetBankName", {
+      bankInstitutionNumber,
+      bankTransitNumber
+    }, (responseJSON: { bankName: string }) => {
+
+      bankNameElement.value =
+        (!responseJSON.bankName || responseJSON.bankName === "")
+          ? "Institution Not Found (" + bankInstitutionNumber + ")"
+          : responseJSON.bankName;
+    });
+  };
+
+
   const openAddTransactionModal = (clickEvent: Event) => {
 
     clickEvent.preventDefault();
@@ -503,6 +537,8 @@ declare const bulmaJS: BulmaJS;
 
     cityssm.openHtmlModal("transaction-add", {
       onshow: (modalElement) => {
+
+        glm.populateAliases(modalElement);
 
         (modalElement.querySelector("#transactionAdd--licenceId") as HTMLInputElement).value = licenceId;
 
@@ -537,9 +573,12 @@ declare const bulmaJS: BulmaJS;
           clickEvent.preventDefault();
           (clickEvent.currentTarget as HTMLButtonElement).remove();
 
-          for(const element of modalElement.querySelectorAll(".is-more-fields")) {
+          for (const element of modalElement.querySelectorAll(".is-more-fields")) {
             element.classList.remove("is-hidden");
           }
+
+          modalElement.querySelector("#transactionAdd--bankInstitutionNumber").addEventListener("change", addTransaction_getBankNameFunction);
+          modalElement.querySelector("#transactionAdd--bankTransitNumber").addEventListener("change", addTransaction_getBankNameFunction);
         });
 
         modalElement.querySelector("#form--transactionAdd").addEventListener("submit", addTransactionSubmitFunction);

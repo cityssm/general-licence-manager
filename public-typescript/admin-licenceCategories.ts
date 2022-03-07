@@ -3,6 +3,7 @@
 import type { cityssmGlobal } from "@cityssm/bulma-webapp-js/src/types";
 import type { BulmaJS } from "@cityssm/bulma-js/types";
 
+import type { GLM } from "../types/globalTypes";
 import type * as recordTypes from "../types/recordTypes";
 
 declare const cityssm: cityssmGlobal;
@@ -10,9 +11,9 @@ declare const bulmaJS: BulmaJS;
 
 (() => {
 
+  const glm: GLM = exports.glm;
+
   const urlPrefix = document.querySelector("main").dataset.urlPrefix;
-  const licenceAlias = exports.licenceAlias as string;
-  const renewalAlias = exports.renewalAlias as string;
 
   let licenceCategories: recordTypes.LicenceCategory[] = exports.licenceCategories;
 
@@ -355,6 +356,7 @@ declare const bulmaJS: BulmaJS;
 
     cityssm.openHtmlModal("licenceCategoryApproval-edit", {
       onshow: (modalElement) => {
+        glm.populateAliases(modalElement);
 
         (modalElement.querySelector("#licenceCategoryApprovalEdit--licenceApprovalKey") as HTMLInputElement).value = licenceApprovalKey;
 
@@ -557,10 +559,7 @@ declare const bulmaJS: BulmaJS;
 
       onshow: (modalElement) => {
 
-        const renewalElements = modalElement.querySelectorAll("[data-setting='renewalAlias']");
-        for (const element of renewalElements) {
-          element.textContent = renewalAlias;
-        }
+        glm.populateAliases(modalElement);
 
         (modalElement.querySelector("#licenceCategoryFeeEdit--licenceFeeId") as HTMLInputElement).value = licenceCategoryFee.licenceFeeId.toString();
         (modalElement.querySelector("#licenceCategoryFeeEdit--effectiveStartDateString") as HTMLInputElement).value = licenceCategoryFee.effectiveStartDateString;
@@ -859,10 +858,7 @@ declare const bulmaJS: BulmaJS;
 
         editModalElement = modalElement;
 
-        const licenceElements = modalElement.querySelectorAll("[data-setting='licenceAlias']");
-        for (const element of licenceElements) {
-          element.textContent = licenceAlias;
-        }
+        glm.populateAliases(modalElement);
 
         (modalElement.querySelector("#licenceCategoryEdit--licenceCategoryKey") as HTMLInputElement).value = licenceCategoryKey;
         (modalElement.querySelector("#licenceCategoryFieldAdd--licenceCategoryKey") as HTMLInputElement).value = licenceCategoryKey;
@@ -962,10 +958,7 @@ declare const bulmaJS: BulmaJS;
     cityssm.openHtmlModal("licenceCategory-add", {
       onshow: (modalElement) => {
 
-        const licenceElements = modalElement.querySelectorAll("[data-setting='licenceAlias']");
-        for (const element of licenceElements) {
-          element.textContent = licenceAlias;
-        }
+        glm.populateAliases(modalElement)
       },
       onshown: (modalElement, closeModalFunction) => {
         bulmaJS.toggleHtmlClipped();

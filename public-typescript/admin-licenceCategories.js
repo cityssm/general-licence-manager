@@ -1,9 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
+    const glm = exports.glm;
     const urlPrefix = document.querySelector("main").dataset.urlPrefix;
-    const licenceAlias = exports.licenceAlias;
-    const renewalAlias = exports.renewalAlias;
     let licenceCategories = exports.licenceCategories;
     const licenceCategoriesContainerElement = document.querySelector("#container--licenceCategories");
     const renderLicenceCategories = () => {
@@ -249,6 +248,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
         cityssm.openHtmlModal("licenceCategoryApproval-edit", {
             onshow: (modalElement) => {
+                glm.populateAliases(modalElement);
                 modalElement.querySelector("#licenceCategoryApprovalEdit--licenceApprovalKey").value = licenceApprovalKey;
                 modalElement.querySelector("#licenceCategoryApprovalEdit--licenceApproval").value = licenceCategoryApproval.licenceApproval;
                 modalElement.querySelector("#licenceCategoryApprovalEdit--licenceApprovalDescription").value = licenceCategoryApproval.licenceApprovalDescription;
@@ -393,10 +393,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
         cityssm.openHtmlModal("licenceCategoryFee-edit", {
             onshow: (modalElement) => {
-                const renewalElements = modalElement.querySelectorAll("[data-setting='renewalAlias']");
-                for (const element of renewalElements) {
-                    element.textContent = renewalAlias;
-                }
+                glm.populateAliases(modalElement);
                 modalElement.querySelector("#licenceCategoryFeeEdit--licenceFeeId").value = licenceCategoryFee.licenceFeeId.toString();
                 modalElement.querySelector("#licenceCategoryFeeEdit--effectiveStartDateString").value = licenceCategoryFee.effectiveStartDateString;
                 modalElement.querySelector("#licenceCategoryFeeEdit--effectiveEndDateString").value = licenceCategoryFee.effectiveEndDateString;
@@ -600,10 +597,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         cityssm.openHtmlModal("licenceCategory-edit", {
             onshow: (modalElement) => {
                 editModalElement = modalElement;
-                const licenceElements = modalElement.querySelectorAll("[data-setting='licenceAlias']");
-                for (const element of licenceElements) {
-                    element.textContent = licenceAlias;
-                }
+                glm.populateAliases(modalElement);
                 modalElement.querySelector("#licenceCategoryEdit--licenceCategoryKey").value = licenceCategoryKey;
                 modalElement.querySelector("#licenceCategoryFieldAdd--licenceCategoryKey").value = licenceCategoryKey;
                 modalElement.querySelector("#licenceCategoryApprovalAdd--licenceCategoryKey").value = licenceCategoryKey;
@@ -670,10 +664,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         };
         cityssm.openHtmlModal("licenceCategory-add", {
             onshow: (modalElement) => {
-                const licenceElements = modalElement.querySelectorAll("[data-setting='licenceAlias']");
-                for (const element of licenceElements) {
-                    element.textContent = licenceAlias;
-                }
+                glm.populateAliases(modalElement);
             },
             onshown: (modalElement, closeModalFunction) => {
                 bulmaJS.toggleHtmlClipped();

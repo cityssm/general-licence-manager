@@ -1,5 +1,6 @@
 import sqlite from "better-sqlite3";
 import { licencesDB as databasePath } from "../../data/databasePaths.js";
+import { getCanadianBankName } from "@cityssm/get-canadian-bank-name";
 import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
 import { getLicenceFields } from "./getLicenceFields.js";
 import { getLicenceTransactions } from "./getLicenceTransactions.js";
@@ -9,6 +10,7 @@ export const getLicence = (licenceId) => {
     });
     database.function("userFn_dateIntegerToString", dateTimeFunctions.dateIntegerToString);
     database.function("userFn_timeIntegerToString", dateTimeFunctions.timeIntegerToString);
+    database.function("userFn_getCanadianBankName", getCanadianBankName);
     const licence = database.prepare("select licenceId, licenceCategoryKey," +
         " licenceNumber," +
         " licenseeName, licenseeBusinessName," +
@@ -20,6 +22,8 @@ export const getLicence = (licenceId) => {
         " issueDate, userFn_dateIntegerToString(issueDate) as issueDateString," +
         " issueTime, userFn_timeIntegerToString(issueTime) as issueTimeString," +
         " licenceFee, replacementFee," +
+        " bankInstitutionNumber, bankTransitNumber, bankAccountNumber," +
+        " userFn_getCanadianBankName(bankInstitutionNumber, bankTransitNumber) as bankName," +
         " recordCreate_userName, recordCreate_timeMillis," +
         " recordUpdate_userName, recordUpdate_timeMillis" +
         " from Licences" +

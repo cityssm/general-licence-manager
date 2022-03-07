@@ -32,6 +32,10 @@ export interface Licence extends Record {
     issueTimeString?: string;
     licenceFee: number | "";
     replacementFee: number | "";
+    bankInstitutionNumber?: string;
+    bankTransitNumber?: string;
+    bankAccountNumber?: string;
+    bankName?: string;
     licenceCategory?: string;
     licenceFields?: LicenceField[];
     licenceApprovals?: LicenceApproval[];
@@ -60,17 +64,20 @@ export interface LicenceApproval {
     printKey?: string;
 }
 export interface LicenceTransaction extends Record {
+    licenceId?: number;
     transactionIndex: number;
-    transactionDate: number;
+    transactionDate?: number;
     transactionDateString?: string;
-    transactionTime: number;
+    transactionTime?: number;
     transactionTimeString?: string;
-    bankTransitNumber?: string;
     bankInstitutionNumber?: string;
+    bankTransitNumber?: string;
     bankAccountNumber?: string;
-    externalReceiptNumber: string;
+    externalReceiptNumber?: string;
+    batchDate?: number;
+    batchDateString?: string;
     transactionAmount: number;
-    transactionNote: string;
+    transactionNote?: string;
 }
 export interface LicenceCategory extends Record {
     licenceCategoryKey: string;

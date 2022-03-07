@@ -79,6 +79,9 @@ export const initLicencesDB = () => {
             " issueDate integer, issueTime integer," +
             " licenceFee decimal(10, 2) not null," +
             " replacementFee decimal(10, 2) not null," +
+            " bankInstitutionNumber varchar(10)," +
+            " bankTransitNumber varchar(10)," +
+            " bankAccountNumber varchar(10)," +
             recordColumns + "," +
             " foreign key (licenceCategoryKey) references LicenceCategories (licenceCategoryKey)" +
             ")").run();
@@ -100,12 +103,13 @@ export const initLicencesDB = () => {
             " transactionIndex integer not null," +
             " transactionDate integer not null," +
             " transactionTime integer not null," +
-            " bankTransitNumber varchar(10)," +
             " bankInstitutionNumber varchar(10)," +
+            " bankTransitNumber varchar(10)," +
             " bankAccountNumber varchar(10)," +
             " externalReceiptNumber varchar(20)," +
             " transactionAmount decimal(10, 2) not null," +
             " transactionNote text," +
+            " batchDate integer," +
             recordColumns + "," +
             " primary key (licenceId, transactionIndex)," +
             " foreign key (licenceId) references Licences (licenceId)" +

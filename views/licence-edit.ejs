@@ -169,6 +169,37 @@
             </div>
           </div>
         </div>
+        <div class="panel-block is-block">
+          <div class="message is-info is-small">
+            <p class="message-body">
+              Banking information is only necessary for setting up preauthorized payments.
+            </p>
+          </div>
+          <div class="columns">
+            <div class="column">
+              <div class="field">
+                <label class="label" for="licenceEdit--bankInstitutionNumber">Institution Number</label>
+                <div class="control">
+                  <input class="input" id="licenceEdit--bankInstitutionNumber" name="bankInstitutionNumber" type="text" value="<%= licence.bankInstitutionNumber %>" inputmode="numeric" pattern="\d{3}" maxlength="3" />
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="field">
+                <label class="label" for="licenceEdit--bankTransitNumber">Transit Number</label>
+                <div class="control">
+                  <input class="input" id="licenceEdit--bankTransitNumber" name="bankTransitNumber" type="text" value="<%= licence.bankTransitNumber %>" inputmode="numeric" pattern="\d{5}" maxlength="5" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label" for="licenceEdit--bankAccountNumber">Account Number</label>
+            <div class="control">
+              <input class="input" id="licenceEdit--bankAccountNumber" name="bankAccountNumber" type="text" value="<%= licence.bankAccountNumber %>" inputmode="numeric" pattern="^\d+$" maxlength="10" />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="column">

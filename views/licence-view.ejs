@@ -66,6 +66,24 @@
         <%= licence.licenseeCity %>, <%= licence.licenseeProvince %><br />
         <%= licence.licenseePostalCode %>
       </div>
+      <% if ((licence.bankInstitutionNumber && licence.bankInstitutionNumber !== "") || (licence.bankTransitNumber && licence.bankTransitNumber !== "") || (licence.bankAccountNumber && licence.bankAccountNumber !== "")) { %>
+        <div class="panel-block">
+          <div class="columns">
+            <div class="column">
+              <strong>Institution Number</strong><br />
+              <%= licence.bankInstitutionNumber %>
+            </div>
+            <div class="column">
+              <strong>Transit Number</strong><br />
+              <%= licence.bankTransitNumber %>
+            </div>
+            <div class="column">
+              <strong>Account Number</strong><br />
+              <%= licence.bankAccountNumber %>
+            </div>
+          </div>
+        </div>
+      <% } %>
     </div>
   </div>
   <div class="column">

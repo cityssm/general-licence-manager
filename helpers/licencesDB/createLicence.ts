@@ -19,6 +19,9 @@ interface CreateLicenceForm {
   licenseeCity: string;
   licenseeProvince: string;
   licenseePostalCode: string;
+  bankInstitutionNumber: string;
+  bankTransitNumber: string;
+  bankAccountNumber: string;
   isRenewal?: string;
   startDateString: string;
   endDateString: string;
@@ -48,11 +51,12 @@ export const createLicence =
         " licenseeName, licenseeBusinessName," +
         " licenseeAddress1, licenseeAddress2," +
         " licenseeCity, licenseeProvince, licenseePostalCode," +
+        " bankInstitutionNumber, bankTransitNumber, bankAccountNumber," +
         " isRenewal, startDate, endDate," +
         " licenceFee, replacementFee," +
         " recordCreate_userName, recordCreate_timeMillis," +
         " recordUpdate_userName, recordUpdate_timeMillis)" +
-        " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+        " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
       .run(licenceForm.licenceCategoryKey,
         licenceNumber,
         licenceForm.licenseeName,
@@ -62,6 +66,9 @@ export const createLicence =
         licenceForm.licenseeCity,
         licenceForm.licenseeProvince,
         licenceForm.licenseePostalCode,
+        licenceForm.bankInstitutionNumber,
+        licenceForm.bankTransitNumber,
+        licenceForm.bankAccountNumber,
         licenceForm.isRenewal ? 1 : 0,
         dateTimeFunctions.dateStringToInteger(licenceForm.startDateString),
         dateTimeFunctions.dateStringToInteger(licenceForm.endDateString),

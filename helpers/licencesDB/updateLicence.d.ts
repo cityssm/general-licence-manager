@@ -9,6 +9,9 @@ interface UpdateLicenceForm {
     licenseeCity: string;
     licenseeProvince: string;
     licenseePostalCode: string;
+    bankInstitutionNumber: string;
+    bankTransitNumber: string;
+    bankAccountNumber: string;
     isRenewal?: string;
     startDateString: string;
     endDateString: string;

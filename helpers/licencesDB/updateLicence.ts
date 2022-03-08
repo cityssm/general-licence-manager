@@ -18,6 +18,9 @@ interface UpdateLicenceForm {
   licenseeCity: string;
   licenseeProvince: string;
   licenseePostalCode: string;
+  bankInstitutionNumber: string;
+  bankTransitNumber: string;
+  bankAccountNumber: string;
   isRenewal?: string;
   startDateString: string;
   endDateString: string;
@@ -45,6 +48,9 @@ export const updateLicence =
         " licenseeCity = ?," +
         " licenseeProvince = ?," +
         " licenseePostalCode = ?," +
+        " bankInstitutionNumber = ?," +
+        " bankTransitNumber = ?," +
+        " bankAccountNumber = ?," +
         " isRenewal = ?," +
         " startDate = ?," +
         " endDate = ?," +
@@ -61,6 +67,9 @@ export const updateLicence =
         licenceForm.licenseeCity,
         licenceForm.licenseeProvince,
         licenceForm.licenseePostalCode,
+        licenceForm.bankInstitutionNumber,
+        licenceForm.bankTransitNumber,
+        licenceForm.bankAccountNumber,
         licenceForm.isRenewal ? 1 : 0,
         dateTimeFunctions.dateStringToInteger(licenceForm.startDateString),
         dateTimeFunctions.dateStringToInteger(licenceForm.endDateString),

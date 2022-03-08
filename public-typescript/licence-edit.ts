@@ -21,6 +21,27 @@ declare const bulmaJS: BulmaJS;
 
   const isCreate = (licenceId === "");
 
+  const populateBankName = (bankInstitutionNumberElement: HTMLInputElement,
+    bankTransitNumberElement: HTMLInputElement,
+    bankNameElement: HTMLInputElement) => {
+
+    const bankInstitutionNumber = bankInstitutionNumberElement.value;
+    const bankTransitNumber = bankTransitNumberElement.value;
+
+    if (bankInstitutionNumber === "") {
+      bankNameElement.value = "";
+      return;
+    }
+
+    glm.getBankName(bankInstitutionNumber, bankTransitNumber,
+      (bankName) => {
+        bankNameElement.value =
+          (!bankName || bankName === "")
+            ? "Institution Not Found (" + bankInstitutionNumber + ")"
+            : bankName;
+      });
+  };
+
   /*
    * Form Submit
    */
@@ -98,6 +119,26 @@ declare const bulmaJS: BulmaJS;
   for (const unlockButtonElement of unlockButtonElements) {
     unlockButtonElement.addEventListener("click", unlockField);
   }
+
+  /*
+   * Licence Bank Fields
+   */
+
+
+  const bankInstitutionNumberElement = document.querySelector("#licenceEdit--bankInstitutionNumber") as HTMLInputElement;
+  const bankTransitNumberElement = document.querySelector("#licenceEdit--bankTransitNumber") as HTMLInputElement;
+
+  const refreshBankName = (changeEvent: Event) => {
+
+    changeEvent.preventDefault();
+
+    const bankNameElement = document.querySelector("#licenceEdit--bankName") as HTMLInputElement;
+
+    populateBankName(bankInstitutionNumberElement, bankTransitNumberElement, bankNameElement);
+  };
+
+  bankInstitutionNumberElement.addEventListener("change", refreshBankName);
+  bankTransitNumberElement.addEventListener("change", refreshBankName);
 
   /*
    * End Date
@@ -482,26 +523,11 @@ declare const bulmaJS: BulmaJS;
 
     const modalElement = (changeEvent.currentTarget as HTMLElement).closest(".modal") as HTMLElement;
 
-    const bankInstitutionNumber = (modalElement.querySelector("#transactionAdd--bankInstitutionNumber") as HTMLInputElement).value;
-    const bankTransitNumber = (modalElement.querySelector("#transactionAdd--bankTransitNumber") as HTMLInputElement).value;
-
+    const bankInstitutionNumberElement = modalElement.querySelector("#transactionAdd--bankInstitutionNumber") as HTMLInputElement;
+    const bankTransitNumberElement = modalElement.querySelector("#transactionAdd--bankTransitNumber") as HTMLInputElement;
     const bankNameElement = modalElement.querySelector("#transactionAdd--bankName") as HTMLInputElement;
 
-    if (bankInstitutionNumber === "") {
-      bankNameElement.value = "";
-      return;
-    }
-
-    cityssm.postJSON(urlPrefix + "/licences/doGetBankName", {
-      bankInstitutionNumber,
-      bankTransitNumber
-    }, (responseJSON: { bankName: string }) => {
-
-      bankNameElement.value =
-        (!responseJSON.bankName || responseJSON.bankName === "")
-          ? "Institution Not Found (" + bankInstitutionNumber + ")"
-          : responseJSON.bankName;
-    });
+    populateBankName(bankInstitutionNumberElement, bankTransitNumberElement, bankNameElement);
   };
 
 
@@ -569,6 +595,9 @@ declare const bulmaJS: BulmaJS;
           setTransactionAmountButtonElement.addEventListener("click", setTransactionAmountFunction);
         }
 
+        const addTransaction_bankInstitutionNumberElement = modalElement.querySelector("#transactionAdd--bankInstitutionNumber") as HTMLInputElement;
+        const addTransaction_bankTransitNumberElement = modalElement.querySelector("#transactionAdd--bankTransitNumber") as HTMLInputElement;
+
         modalElement.querySelector("button.is-more-fields-button").addEventListener("click", (clickEvent) => {
           clickEvent.preventDefault();
           (clickEvent.currentTarget as HTMLButtonElement).remove();
@@ -577,8 +606,21 @@ declare const bulmaJS: BulmaJS;
             element.classList.remove("is-hidden");
           }
 
-          modalElement.querySelector("#transactionAdd--bankInstitutionNumber").addEventListener("change", addTransaction_getBankNameFunction);
-          modalElement.querySelector("#transactionAdd--bankTransitNumber").addEventListener("change", addTransaction_getBankNameFunction);
+          addTransaction_bankInstitutionNumberElement.addEventListener("change", addTransaction_getBankNameFunction);
+          addTransaction_bankTransitNumberElement.addEventListener("change", addTransaction_getBankNameFunction);
+        });
+
+        modalElement.querySelector("button.is-copy-bank-numbers-button").addEventListener("click", (clickEvent) => {
+          clickEvent.preventDefault();
+
+          addTransaction_bankInstitutionNumberElement.value = bankInstitutionNumberElement.value;
+          addTransaction_bankTransitNumberElement.value = bankTransitNumberElement.value;
+
+          (modalElement.querySelector("#transactionAdd--bankName") as HTMLInputElement).value =
+            (document.querySelector("#licenceEdit--bankName") as HTMLInputElement).value;
+
+          (modalElement.querySelector("#transactionAdd--bankAccountNumber") as HTMLInputElement).value =
+            (document.querySelector("#licenceEdit--bankAccountNumber") as HTMLInputElement).value;
         });
 
         modalElement.querySelector("#form--transactionAdd").addEventListener("submit", addTransactionSubmitFunction);

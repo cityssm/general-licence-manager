@@ -194,6 +194,11 @@
             </div>
           </div>
           <div class="field">
+            <div class="control">
+              <input class="input" id="licenceEdit--bankName" type="text" value="<%= licence.bankName %>" readonly />
+            </div>
+          </div>
+          <div class="field">
             <label class="label" for="licenceEdit--bankAccountNumber">Account Number</label>
             <div class="control">
               <input class="input" id="licenceEdit--bankAccountNumber" name="bankAccountNumber" type="text" value="<%= licence.bankAccountNumber %>" inputmode="numeric" pattern="^\d+$" maxlength="10" />

@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
+    const urlPrefix = document.querySelector("main").dataset.urlPrefix;
     const aliasSettingNames = ["licenceAlias", "licenceAliasPlural",
         "licenseeAlias", "licenseeAliasPlural",
         "renewalAlias"];
@@ -16,6 +17,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
             for (const settingName of aliasSettingNames) {
                 populateAliases(containerElement, settingName);
             }
+        },
+        getBankName: (bankInstitutionNumber, bankTransitNumber, callbackFunction) => {
+            cityssm.postJSON(urlPrefix + "/licences/doGetBankName", {
+                bankInstitutionNumber,
+                bankTransitNumber
+            }, (responseJSON) => {
+                callbackFunction(responseJSON.bankName);
+            });
         }
     };
     exports.glm = glm;

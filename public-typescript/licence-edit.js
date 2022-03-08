@@ -6,6 +6,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const licenceAlias = exports.licenceAlias;
     const licenceId = document.querySelector("#licenceEdit--licenceId").value;
     const isCreate = (licenceId === "");
+    const populateBankName = (bankInstitutionNumberElement, bankTransitNumberElement, bankNameElement) => {
+        const bankInstitutionNumber = bankInstitutionNumberElement.value;
+        const bankTransitNumber = bankTransitNumberElement.value;
+        if (bankInstitutionNumber === "") {
+            bankNameElement.value = "";
+            return;
+        }
+        glm.getBankName(bankInstitutionNumber, bankTransitNumber, (bankName) => {
+            bankNameElement.value =
+                (!bankName || bankName === "")
+                    ? "Institution Not Found (" + bankInstitutionNumber + ")"
+                    : bankName;
+        });
+    };
     let hasUnsavedChanges = false;
     const setUnsavedChanges = () => {
         hasUnsavedChanges = true;
@@ -59,6 +73,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
     for (const unlockButtonElement of unlockButtonElements) {
         unlockButtonElement.addEventListener("click", unlockField);
     }
+    const bankInstitutionNumberElement = document.querySelector("#licenceEdit--bankInstitutionNumber");
+    const bankTransitNumberElement = document.querySelector("#licenceEdit--bankTransitNumber");
+    const refreshBankName = (changeEvent) => {
+        changeEvent.preventDefault();
+        const bankNameElement = document.querySelector("#licenceEdit--bankName");
+        populateBankName(bankInstitutionNumberElement, bankTransitNumberElement, bankNameElement);
+    };
+    bankInstitutionNumberElement.addEventListener("change", refreshBankName);
+    bankTransitNumberElement.addEventListener("change", refreshBankName);
     const licenceCategoryKeyElement = document.querySelector("#licenceEdit--licenceCategoryKey");
     const isRenewalElement = document.querySelector("#licenceEdit--isRenewal");
     const startDateStringElement = document.querySelector("#licenceEdit--startDateString");
@@ -318,22 +341,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const addTransaction_getBankNameFunction = (changeEvent) => {
         changeEvent.preventDefault();
         const modalElement = changeEvent.currentTarget.closest(".modal");
-        const bankInstitutionNumber = modalElement.querySelector("#transactionAdd--bankInstitutionNumber").value;
-        const bankTransitNumber = modalElement.querySelector("#transactionAdd--bankTransitNumber").value;
+        const bankInstitutionNumberElement = modalElement.querySelector("#transactionAdd--bankInstitutionNumber");
+        const bankTransitNumberElement = modalElement.querySelector("#transactionAdd--bankTransitNumber");
         const bankNameElement = modalElement.querySelector("#transactionAdd--bankName");
-        if (bankInstitutionNumber === "") {
-            bankNameElement.value = "";
-            return;
-        }
-        cityssm.postJSON(urlPrefix + "/licences/doGetBankName", {
-            bankInstitutionNumber,
-            bankTransitNumber
-        }, (responseJSON) => {
-            bankNameElement.value =
-                (!responseJSON.bankName || responseJSON.bankName === "")
-                    ? "Institution Not Found (" + bankInstitutionNumber + ")"
-                    : responseJSON.bankName;
-        });
+        populateBankName(bankInstitutionNumberElement, bankTransitNumberElement, bankNameElement);
     };
     const openAddTransactionModal = (clickEvent) => {
         clickEvent.preventDefault();
@@ -377,14 +388,25 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 for (const setTransactionAmountButtonElement of setTransactionAmountButtonElements) {
                     setTransactionAmountButtonElement.addEventListener("click", setTransactionAmountFunction);
                 }
+                const addTransaction_bankInstitutionNumberElement = modalElement.querySelector("#transactionAdd--bankInstitutionNumber");
+                const addTransaction_bankTransitNumberElement = modalElement.querySelector("#transactionAdd--bankTransitNumber");
                 modalElement.querySelector("button.is-more-fields-button").addEventListener("click", (clickEvent) => {
                     clickEvent.preventDefault();
                     clickEvent.currentTarget.remove();
                     for (const element of modalElement.querySelectorAll(".is-more-fields")) {
                         element.classList.remove("is-hidden");
                     }
-                    modalElement.querySelector("#transactionAdd--bankInstitutionNumber").addEventListener("change", addTransaction_getBankNameFunction);
-                    modalElement.querySelector("#transactionAdd--bankTransitNumber").addEventListener("change", addTransaction_getBankNameFunction);
+                    addTransaction_bankInstitutionNumberElement.addEventListener("change", addTransaction_getBankNameFunction);
+                    addTransaction_bankTransitNumberElement.addEventListener("change", addTransaction_getBankNameFunction);
+                });
+                modalElement.querySelector("button.is-copy-bank-numbers-button").addEventListener("click", (clickEvent) => {
+                    clickEvent.preventDefault();
+                    addTransaction_bankInstitutionNumberElement.value = bankInstitutionNumberElement.value;
+                    addTransaction_bankTransitNumberElement.value = bankTransitNumberElement.value;
+                    modalElement.querySelector("#transactionAdd--bankName").value =
+                        document.querySelector("#licenceEdit--bankName").value;
+                    modalElement.querySelector("#transactionAdd--bankAccountNumber").value =
+                        document.querySelector("#licenceEdit--bankAccountNumber").value;
                 });
                 modalElement.querySelector("#form--transactionAdd").addEventListener("submit", addTransactionSubmitFunction);
             }

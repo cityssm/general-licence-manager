@@ -2,6 +2,7 @@ import type { RequestHandler } from "express";
 
 import { getLicenceCategories } from "../../helpers/functions.cache.js";
 
+import { getCanadianBankName } from "@cityssm/get-canadian-bank-name";
 import * as configFunctions from "../../helpers/functions.config.js";
 import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
 
@@ -32,6 +33,14 @@ export const handler: RequestHandler = (request, response) => {
     licenseeProvince = configFunctions.getProperty("defaults.licenseeProvince");
   }
 
+  const bankInstitutionNumber = request.query.bankInstitutionNumber as string;
+  const bankTransitNumber = request.query.bankTransitNumber as string;
+  let bankName: string;
+
+  if (bankInstitutionNumber) {
+    bankName = getCanadianBankName(bankInstitutionNumber, bankTransitNumber);
+  }
+
   let isRenewal = false;
   if (request.query.isRenewal && request.query.isRenewal !== "") {
     isRenewal = true;
@@ -48,6 +57,10 @@ export const handler: RequestHandler = (request, response) => {
     licenseeCity,
     licenseeProvince,
     licenseePostalCode: request.query.licenseePostalCode as string,
+    bankInstitutionNumber,
+    bankTransitNumber,
+    bankName,
+    bankAccountNumber: request.query.bankAccountNumber as string,
     isRenewal,
     startDate,
     startDateString,

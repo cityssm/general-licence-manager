@@ -488,6 +488,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             url.searchParams.append("licenseeCity", document.querySelector("#licenceEdit--licenseeCity").value);
             url.searchParams.append("licenseeProvince", document.querySelector("#licenceEdit--licenseeProvince").value);
             url.searchParams.append("licenseePostalCode", document.querySelector("#licenceEdit--licenseePostalCode").value);
+            url.searchParams.append("bankInstitutionNumber", bankInstitutionNumberElement.value);
+            url.searchParams.append("bankTransitNumber", bankTransitNumberElement.value);
+            url.searchParams.append("bankAccountNumber", document.querySelector("#licenceEdit--bankAccountNumber").value);
             let newStartDate = endDateStringElement.valueAsDate;
             newStartDate.setDate(newStartDate.getDate() + 1);
             if (newStartDate.getTime() < Date.now()) {
@@ -499,7 +502,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         document.querySelector("#is-renew-licence-button").addEventListener("click", (clickEvent) => {
             clickEvent.preventDefault();
             bulmaJS.confirm({
-                title: "Renew Licence",
+                title: "Renew " + licenceAlias,
                 message: "Are you sure you want to renew this " + licenceAlias.toLowerCase() + "?",
                 okButton: {
                     text: "Yes, Renew this " + licenceAlias,

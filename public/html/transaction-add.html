@@ -61,7 +61,7 @@
                 <div class="field">
                   <label class="label" for="transactionAdd--bankInstitutionNumber">Institution Number</label>
                   <div class="control">
-                    <input class="input" id="transactionAdd--bankInstitutionNumber" name="bankInstitutionNumber" inputmode="numeric" pattern="\d{3}" maxlength="3" />
+                    <input class="input" id="transactionAdd--bankInstitutionNumber" name="bankInstitutionNumber" type="text" inputmode="numeric" pattern="\d{3}" maxlength="3" />
                   </div>
                   <p class="help">Three digits</p>
                 </div>
@@ -70,7 +70,7 @@
                 <div class="field">
                   <label class="label" for="transactionAdd--bankTransitNumber">Transit Number</label>
                   <div class="control">
-                    <input class="input" id="transactionAdd--bankTransitNumber" name="bankTransitNumber" inputmode="numeric" pattern="\d{5}" maxlength="5" />
+                    <input class="input" id="transactionAdd--bankTransitNumber" name="bankTransitNumber" type="text" inputmode="numeric" pattern="\d{5}" maxlength="5" />
                   </div>
                   <p class="help">Five digits</p>
                 </div>
@@ -78,19 +78,19 @@
             </div>
             <div class="field is-hidden is-more-fields">
               <div class="control">
-                <input class="input" id="transactionAdd--bankName" aria-label="Bank Name" readonly />
+                <input class="input" id="transactionAdd--bankName" type="text" aria-label="Bank Name" readonly />
               </div>
             </div>
             <div class="field is-hidden is-more-fields">
               <label class="label" for="transactionAdd--bankAccountNumber">Bank Account Number</label>
               <div class="control">
-                <input class="input" id="transactionAdd--bankAccountNumber" name="bankAccountNumber" inputmode="numeric" pattern="^\d+$" maxlength="10" />
+                <input class="input" id="transactionAdd--bankAccountNumber" name="bankAccountNumber" type="text" inputmode="numeric" pattern="^\d+$" maxlength="10" />
               </div>
             </div>
             <div class="field">
               <label class="label" for="transactionAdd--externalReceiptNumber">Receipt Number</label>
               <div class="control">
-                <input class="input" id="transactionAdd--externalReceiptNumber" name="externalReceiptNumber" maxlength="20" />
+                <input class="input" id="transactionAdd--externalReceiptNumber" name="externalReceiptNumber" type="text" maxlength="20" />
               </div>
             </div>
             <div class="field">

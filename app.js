@@ -10,6 +10,7 @@ import FileStore from "session-file-store";
 import routerLogin from "./routes/login.js";
 import routerDashboard from "./routes/dashboard.js";
 import routerLicences from "./routes/licences.js";
+import routerBatches from "./routes/batches.js";
 import routerReports from "./routes/reports.js";
 import routerAdmin from "./routes/admin.js";
 import * as configFunctions from "./helpers/functions.config.js";
@@ -100,6 +101,7 @@ app.get(urlPrefix + "/", sessionChecker, (_request, response) => {
 });
 app.use(urlPrefix + "/dashboard", sessionChecker, routerDashboard);
 app.use(urlPrefix + "/licences", sessionChecker, routerLicences);
+app.use(urlPrefix + "/batches", sessionChecker, routerBatches);
 app.use(urlPrefix + "/reports", sessionChecker, routerReports);
 app.use(urlPrefix + "/admin", sessionChecker, routerAdmin);
 app.all(urlPrefix + "/keepAlive", (_request, response) => {

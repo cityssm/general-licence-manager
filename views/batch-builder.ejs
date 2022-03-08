@@ -1,0 +1,69 @@
+<%- include('_header'); -%>
+
+<nav class="breadcrumb">
+  <ul>
+    <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+    <li><a href="#">Transaction Batches</a></li>
+    <li class="is-active"><a href="#" aria-current="page">
+      <span class="icon is-small"><i class="fas fa-receipt" aria-hidden="true"></i></span>
+      <span>Transaction Batch Builder</span>
+    </a></li>
+  </ul>
+</nav>
+
+<h1 class="title is-1">
+  Transaction Batch Builder
+</h1>
+
+<div class="message is-small is-info">
+  <div class="message-header">Important Notes</div>
+  <div class="message-body">
+    <p>
+      Only those <%= configFunctions.getProperty("settings.licenceAliasPlural").toLowerCase() %>
+      marked as issued with outstanding balances can be included in batches.
+    </p>
+  </div>
+</div>
+
+<% if (licences.length === 0) { %>
+  <div class="message is-info">
+    <p class="message-body">
+      There are no <%= configFunctions.getProperty("settings.licenceAliasPlural") %>
+      available for batch processing.
+    </p>
+  </div>
+<% } else { %>
+  <table class="table is-small is-narrow has-sticky-header has-sticky-column" id="table--transactionBatches">
+    <thead>
+      <tr>
+        <th><%= configFunctions.getProperty("settings.licenceAlias") %></th>
+        <th>
+          <button class="button is-fullwidth is-primary is-small" id="is-add-batch-button" type="button">
+            <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
+            <span>Add Batch</span>
+          </button>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for (const licence of licences) { %>
+        <tr data-licence-id="<%= licence.licenceId %>" data-max="<%= licence.outstandingBalance %>">
+          <th>
+            #<%= licence.licenceNumber %>
+          </th>
+          <td></td>
+        </tr>
+      <% } %>
+    </tbody>
+  </table>
+<% } %>
+
+<%- include('_footerA'); -%>
+<script>
+  exports.licences = <%- JSON.stringify(licences) %>;
+  exports.batchTransactions = <%- JSON.stringify(batchTransactions) %>;
+</script>
+<% if (licences.length > 0) { %>
+  <script src="<%= urlPrefix %>/javascripts/batch-builder.min.js"></script>
+<% } %>
+<%- include('_footerB'); -%>

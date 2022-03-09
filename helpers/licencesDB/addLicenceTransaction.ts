@@ -3,6 +3,8 @@ import { licencesDB as databasePath } from "../../data/databasePaths.js";
 
 import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
 
+import { getNextLicenceTransactionIndex } from "./getNextLicenceTransactionIndex.js";
+
 import type * as recordTypes from "../../types/recordTypes";
 
 interface AddLicenceTransactionForm {
@@ -21,18 +23,7 @@ export const addLicenceTransaction =
 
     const database = sqlite(databasePath);
 
-    let transactionIndex = 0;
-
-    const row: { transactionIndex: number } = database.prepare("select transactionIndex" +
-      " from LicenceTransactions" +
-      " where licenceId = ?" +
-      " order by transactionIndex desc" +
-      " limit 1")
-      .get(licenceTransactionForm.licenceId);
-
-    if (row) {
-      transactionIndex = row.transactionIndex + 1;
-    }
+    const transactionIndex = getNextLicenceTransactionIndex(licenceTransactionForm.licenceId, database);
 
     const rightNow = new Date();
 

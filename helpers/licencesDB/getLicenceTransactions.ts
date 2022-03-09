@@ -26,6 +26,7 @@ export const getLicenceTransactions = (licenceId: number | string, database?: sq
     database.prepare("select transactionIndex," +
       " transactionDate, userFn_dateIntegerToString(transactionDate) as transactionDateString," +
       " transactionTime, userFn_timeIntegerToString(transactionTime) as transactionTimeString," +
+      " batchDate, userFn_dateIntegerToString(batchDate) as batchDateString," +
       " bankTransitNumber, bankInstitutionNumber, bankAccountNumber," +
       " externalReceiptNumber, transactionAmount, transactionNote" +
       " from LicenceTransactions" +

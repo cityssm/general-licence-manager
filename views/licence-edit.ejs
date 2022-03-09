@@ -376,12 +376,26 @@
                 </tr>
               </thead>
               <tbody>
-                <% let transactionTotal = 0; %>
+                <%
+                  let transactionTotal = 0;
+                  const currentDate = dateTimeFns.dateToInteger(new Date());
+                %>
                 <% for (const licenceTransaction of licence.licenceTransactions) { %>
                   <% transactionTotal += licenceTransaction.transactionAmount; %>
                   <tr data-transaction-index="<%= licenceTransaction.transactionIndex %>">
                     <td>
-                      <%= licenceTransaction.transactionDateString %>
+                      <%= licenceTransaction.transactionDateString %><br />
+                      <div class="tags">
+                        <% if (currentDate < licenceTransaction.transactionDate) { %>
+                          <span class="tag is-warning">Upcoming</span>
+                        <% } %>
+                        <% if (licenceTransaction.batchDate) { %>
+                          <span class="tag is-info">Batch Transaction</span>
+                        <% } %>
+                        <% if (licenceTransaction.batchDate && (!licenceTransaction.externalReceiptNumber || licenceTransaction.externalReceiptNumber === "")) { %>
+                          <span class="tag is-warning">Unconfirmed</span>
+                        <% } %>
+                      </div>
                     </td>
                     <td class="has-text-right">
                       $<%= licenceTransaction.transactionAmount.toFixed(2) %>

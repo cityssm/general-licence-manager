@@ -490,6 +490,7 @@ declare const bulmaJS: BulmaJS;
     tbodyElement.innerHTML = "";
 
     let transactionTotal = 0;
+    const currentDateString = cityssm.dateToString(new Date());
 
     for (const licenceTransaction of licenceTransactions) {
 
@@ -497,7 +498,21 @@ declare const bulmaJS: BulmaJS;
 
       trElement.dataset.transactionIndex = licenceTransaction.transactionIndex.toString();
 
-      trElement.innerHTML = "<td>" + licenceTransaction.transactionDateString + "</td>" +
+      trElement.innerHTML =
+        ("<td>" +
+          licenceTransaction.transactionDateString + "<br />" +
+          "<div class=\"tags\">" +
+          (currentDateString < licenceTransaction.transactionDateString
+            ? "<span class=\"tag is-warning\">Upcoming</span>"
+            : "") +
+          (licenceTransaction.batchDate
+            ? "<span class=\"tag is-info\">Batch Transaction</span>"
+            : "") +
+          (licenceTransaction.batchDate  && (!licenceTransaction.externalReceiptNumber || licenceTransaction.externalReceiptNumber === "")
+            ? "<span class=\"tag is-warning\">Unconfirmed</span>"
+            : "") +
+          "</div>" +
+          "</td>") +
         "<td class=\"has-text-right\">$" + licenceTransaction.transactionAmount.toFixed(2) + "</td>" +
         ("<td>" +
           "<button class=\"button is-small is-danger is-inverted\" type=\"button\">" +

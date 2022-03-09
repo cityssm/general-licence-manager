@@ -321,16 +321,31 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const tbodyElement = licenceTransactionsTableElement.querySelector("tbody");
         tbodyElement.innerHTML = "";
         let transactionTotal = 0;
+        const currentDateString = cityssm.dateToString(new Date());
         for (const licenceTransaction of licenceTransactions) {
             const trElement = document.createElement("tr");
             trElement.dataset.transactionIndex = licenceTransaction.transactionIndex.toString();
-            trElement.innerHTML = "<td>" + licenceTransaction.transactionDateString + "</td>" +
-                "<td class=\"has-text-right\">$" + licenceTransaction.transactionAmount.toFixed(2) + "</td>" +
+            trElement.innerHTML =
                 ("<td>" +
-                    "<button class=\"button is-small is-danger is-inverted\" type=\"button\">" +
-                    "<i class=\"fas fa-trash\" aria-label=\"Delete Transaction\"></i>" +
-                    "</button>" +
-                    "</td>");
+                    licenceTransaction.transactionDateString + "<br />" +
+                    "<div class=\"tags\">" +
+                    (currentDateString < licenceTransaction.transactionDateString
+                        ? "<span class=\"tag is-warning\">Upcoming</span>"
+                        : "") +
+                    (licenceTransaction.batchDate
+                        ? "<span class=\"tag is-info\">Batch Transaction</span>"
+                        : "") +
+                    (licenceTransaction.batchDate && (!licenceTransaction.externalReceiptNumber || licenceTransaction.externalReceiptNumber === "")
+                        ? "<span class=\"tag is-warning\">Unconfirmed</span>"
+                        : "") +
+                    "</div>" +
+                    "</td>") +
+                    "<td class=\"has-text-right\">$" + licenceTransaction.transactionAmount.toFixed(2) + "</td>" +
+                    ("<td>" +
+                        "<button class=\"button is-small is-danger is-inverted\" type=\"button\">" +
+                        "<i class=\"fas fa-trash\" aria-label=\"Delete Transaction\"></i>" +
+                        "</button>" +
+                        "</td>");
             trElement.querySelector("button").addEventListener("click", deleteLicenceTransaction);
             tbodyElement.append(trElement);
             transactionTotal += licenceTransaction.transactionAmount;

@@ -86,6 +86,6 @@
     "gulp-changed": "^4.0.3",
     "gulp-minify": "^3.1.0",
     "nodemon": "^2.0.15",
-    "puppeteer": "^13.5.0"
+    "puppeteer": "^13.5.1"
   }
 }

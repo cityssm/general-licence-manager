@@ -6,14 +6,10 @@ import { getOutstandingBatchTransactions } from "../../helpers/licencesDB/getOut
 
 export const handler: RequestHandler = async (request, response) => {
 
-  const transactionIndex = createOrUpdateBatchTransaction(request);
-  const batchTransactions = getOutstandingBatchTransactions();
+  const results = createOrUpdateBatchTransaction(request.body, request.session);
+  results.batchTransactions = getOutstandingBatchTransactions();
 
-  response.json({
-    success: typeof(transactionIndex) === "number",
-    transactionIndex,
-    batchTransactions
-  });
+  response.json(results);
 };
 
 

@@ -47,14 +47,23 @@
     </thead>
     <tbody>
       <% for (const licence of licences) { %>
-        <tr data-licence-id="<%= licence.licenceId %>" data-max="<%= licence.outstandingBalance %>">
+        <tr data-licence-id="<%= licence.licenceId %>"
+            data-licence-number="<%= licence.licenceNumber %>"
+            data-outstanding-balance="<%= licence.outstandingBalance %>">
           <th>
-            #<%= licence.licenceNumber %>
+            <a href="<%= urlPrefix %>/licences/<%= licence.licenceId %>" target="_blank">#<%= licence.licenceNumber %></a><br />
+            <span class="has-text-weight-normal is-size-7">Outstanding Balance: $<%= licence.outstandingBalance.toFixed(2) %></span>
           </th>
           <td></td>
         </tr>
       <% } %>
     </tbody>
+    <tfoot>
+      <tr>
+        <th>Batch Totals</th>
+        <th></th>
+      </tr>
+    </tfoot>
   </table>
 <% } %>
 

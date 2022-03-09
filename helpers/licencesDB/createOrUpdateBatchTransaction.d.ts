@@ -4,5 +4,11 @@ interface TransactionForm {
     batchDateString: string;
     transactionAmount: string;
 }
-export declare const createOrUpdateBatchTransaction: (transactionForm: TransactionForm, requestSession: recordTypes.PartialSession) => number;
+interface CreateOrUpdateBatchTransactionReturn {
+    success: boolean;
+    message?: string;
+    transactionIndex?: number;
+    batchTransactions?: recordTypes.LicenceTransaction[];
+}
+export declare const createOrUpdateBatchTransaction: (transactionForm: TransactionForm, requestSession: recordTypes.PartialSession) => CreateOrUpdateBatchTransactionReturn;
 export default createOrUpdateBatchTransaction;

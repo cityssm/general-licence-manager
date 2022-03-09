@@ -1,11 +1,10 @@
 import sqlite from "better-sqlite3";
 import { licencesDB as databasePath } from "../../data/databasePaths.js";
 
+import * as configFunctions from "../functions.config.js";
 import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
 
-import { getNextLicenceNumber } from "./getNextLicenceNumber.js";
-import { saveLicenceFields } from "./saveLicenceFields.js";
-import { saveLicenceApprovals } from "./saveLicenceApprovals.js";
+import { getNextLicenceTransactionIndex } from "./getNextLicenceTransactionIndex.js";
 
 import type * as recordTypes from "../../types/recordTypes";
 
@@ -15,62 +14,156 @@ interface TransactionForm {
   transactionAmount: string;
 }
 
+interface CreateOrUpdateBatchTransactionReturn {
+  success: boolean;
+  message?: string;
+  transactionIndex?: number;
+  batchTransactions?: recordTypes.LicenceTransaction[];
+}
+
 export const createOrUpdateBatchTransaction =
-  (transactionForm: TransactionForm, requestSession: recordTypes.PartialSession): number => {
+  (transactionForm: TransactionForm, requestSession: recordTypes.PartialSession): CreateOrUpdateBatchTransactionReturn => {
 
     const database = sqlite(databasePath);
 
-    const rightNowMillis = Date.now();
+    // Get current bank numbers
 
-    const result = database
-      .prepare("insert into Licences" +
-        "(licenceCategoryKey, licenceNumber," +
-        " licenseeName, licenseeBusinessName," +
-        " licenseeAddress1, licenseeAddress2," +
-        " licenseeCity, licenseeProvince, licenseePostalCode," +
-        " bankInstitutionNumber, bankTransitNumber, bankAccountNumber," +
-        " isRenewal, startDate, endDate," +
-        " licenceFee, replacementFee," +
-        " recordCreate_userName, recordCreate_timeMillis," +
-        " recordUpdate_userName, recordUpdate_timeMillis)" +
-        " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
-      .run(licenceForm.licenceCategoryKey,
-        licenceNumber,
-        licenceForm.licenseeName,
-        licenceForm.licenseeBusinessName,
-        licenceForm.licenseeAddress1,
-        licenceForm.licenseeAddress2,
-        licenceForm.licenseeCity,
-        licenceForm.licenseeProvince,
-        licenceForm.licenseePostalCode,
-        licenceForm.bankInstitutionNumber,
-        licenceForm.bankTransitNumber,
-        licenceForm.bankAccountNumber,
-        licenceForm.isRenewal ? 1 : 0,
-        dateTimeFunctions.dateStringToInteger(licenceForm.startDateString),
-        dateTimeFunctions.dateStringToInteger(licenceForm.endDateString),
-        licenceForm.licenceFee,
-        licenceForm.replacementFee,
-        requestSession.user.userName,
-        rightNowMillis,
-        requestSession.user.userName,
-        rightNowMillis);
+    let message: string;
 
-    const licenceId = result.lastInsertRowid as number;
+    const bankRecord: {
+      bankInstitutionNumber?: string;
+      bankTransitNumber?: string;
+      bankAccountNumber?: string;
+    } = database.prepare("select" +
+      " bankInstitutionNumber, bankTransitNumber, bankAccountNumber" +
+      " from Licences" +
+      " where recordDelete_timeMillis is null" +
+      " and licenceId = ?" +
+      " and issueDate is not null")
+      .get(transactionForm.licenceId);
 
-    if (licenceForm.licenceFieldKeys) {
-      const licenceFieldKeys = licenceForm.licenceFieldKeys.split(",");
-      saveLicenceFields(licenceId, licenceFieldKeys, licenceForm, database);
+    if (!bankRecord) {
+
+      database.close();
+
+      return {
+        success: false,
+        message: configFunctions.getProperty("settings.licenceAlias") + " is not available for updates (licenceId = " + transactionForm.licenceId + ")."
+      }
+    } else if (!bankRecord.bankInstitutionNumber || bankRecord.bankInstitutionNumber === "" ||
+      !bankRecord.bankTransitNumber || bankRecord.bankTransitNumber === "" ||
+      !bankRecord.bankAccountNumber || bankRecord.bankAccountNumber === "") {
+
+      message = "Banking information is incomplete on the " + configFunctions.getProperty("settings.licenceAlias").toLowerCase() + ".";
     }
 
-    if (licenceForm.licenceApprovalKeys) {
-      const licenceApprovalKeys = licenceForm.licenceApprovalKeys.split(",");
-      saveLicenceApprovals(licenceId, licenceApprovalKeys, licenceForm, database);
+    // Look for an existing batch transaction
+
+    const batchDate = dateTimeFunctions.dateStringToInteger(transactionForm.batchDateString);
+
+    const currentTransactionRecord: {
+      transactionIndex?: number;
+      externalReceiptNumber?: string;
+    } = database.prepare("select transactionIndex, externalReceiptNumber" +
+      " from LicenceTransactions" +
+      " where recordCreate_timeMillis is not null" +
+      " and licenceId = ?" +
+      " and batchDate = ?")
+      .get(transactionForm.licenceId, batchDate);
+
+    // Save transaction
+
+    let runResult: sqlite.RunResult;
+    const doDelete = transactionForm.transactionAmount === "" || Number.parseFloat(transactionForm.transactionAmount) === 0;
+
+    const rightNowMillis = Date.now();
+    let transactionIndex: number;
+
+    if (currentTransactionRecord) {
+      // Do Update
+
+      transactionIndex = currentTransactionRecord.transactionIndex;
+
+      if (currentTransactionRecord.externalReceiptNumber && currentTransactionRecord.externalReceiptNumber !== "") {
+
+        database.close();
+
+        return {
+          success: false,
+          message: "The transaction has already been processed and cannot be updated.",
+          transactionIndex
+        };
+      } else if (doDelete) {
+
+        runResult = database.prepare("update LicenceTransactions" +
+          " set transactionAmount = 0," +
+          " recordDelete_userName = ?, " +
+          " recordDelete_timeMillis = ?" +
+          " where licenceId = ?" +
+          " and transactionIndex = ?"
+        ).run(requestSession.user.userName,
+          rightNowMillis,
+          transactionForm.licenceId,
+          transactionIndex);
+
+      } else {
+
+        runResult = database.prepare("update LicenceTransactions" +
+          " set bankInstitutionNumber = ?," +
+          " bankTransitNumber = ?," +
+          " bankAccountNumber = ?," +
+          " transactionAmount = ?," +
+          " recordUpdate_userName = ?," +
+          " recordUpdate_timeMillis = ?," +
+          " recordDelete_userName = null," +
+          " recordDelete_timeMillis = null" +
+          " where licenceId = ?" +
+          " and transactionIndex = ?")
+          .run(bankRecord.bankInstitutionNumber,
+            bankRecord.bankTransitNumber,
+            bankRecord.bankAccountNumber,
+            transactionForm.transactionAmount,
+            requestSession.user.userName,
+            rightNowMillis,
+            transactionForm.licenceId,
+            currentTransactionRecord.transactionIndex);
+      }
+
+    } else if (!doDelete) {
+      // Do Insert
+
+      transactionIndex = getNextLicenceTransactionIndex(transactionForm.licenceId, database);
+
+      runResult = database.prepare("insert into LicenceTransactions" +
+        " (licenceId, transactionIndex, transactionDate, transactionTime," +
+        " bankInstitutionNumber, bankTransitNumber, bankAccountNumber," +
+        " batchDate, transactionAmount," +
+        " recordCreate_userName, recordCreate_timeMillis," +
+        " recordUpdate_userName, recordUpdate_timeMillis)" +
+        " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+        .run(
+          transactionForm.licenceId,
+          transactionIndex,
+          batchDate,
+          0,
+          bankRecord.bankInstitutionNumber,
+          bankRecord.bankTransitNumber,
+          bankRecord.bankAccountNumber,
+          batchDate,
+          transactionForm.transactionAmount,
+          requestSession.user.userName,
+          rightNowMillis,
+          requestSession.user.userName,
+          rightNowMillis);
     }
 
     database.close();
 
-    return licenceId;
+    return {
+      success: (runResult ? runResult.changes > 0 : doDelete),
+      message,
+      transactionIndex
+    }
   };
 
 

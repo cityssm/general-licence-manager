@@ -2,16 +2,17 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const urlPrefix = document.querySelector("main").dataset.urlPrefix;
+    const licenceAlias = exports.licenceAlias;
     const transactionBatchesTableElement = document.querySelector("#table--transactionBatches");
     const licences = exports.licences;
     let batchDateStrings = [];
-    const updateBatchTransactionAmount = (changeEvent) => {
+    const createOrUpdateBatchTransactionAmount = (changeEvent) => {
         changeEvent.preventDefault();
         const transactionAmountElement = changeEvent.currentTarget;
         const transactionAmount = transactionAmountElement.value;
         const batchDateString = transactionAmountElement.closest("td").dataset.batchDateString;
         const licenceId = transactionAmountElement.closest("tr").dataset.licenceId;
-        cityssm.postJSON(urlPrefix + "/batches/updateBatchTransaction", {
+        cityssm.postJSON(urlPrefix + "/batches/doCreateOrUpdateBatchTransaction", {
             licenceId,
             batchDateString,
             transactionAmount
@@ -20,11 +21,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 batchTransactions = responseJSON.batchTransactions;
                 renderBatchTransactions();
             }
-            else {
+            if (responseJSON.message) {
+                const licenceNumber = transactionAmountElement.closest("tr").dataset.licenceNumber;
                 bulmaJS.alert({
-                    title: "Update Transaction Error",
-                    message: "Please try again.",
-                    contextualColorName: "danger"
+                    title: licenceAlias + " #" + licenceNumber + ", Batch " + batchDateString,
+                    message: responseJSON.message,
+                    contextualColorName: responseJSON.success ? "warning" : "danger"
                 });
             }
         });
@@ -36,11 +38,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         const tableRowElements = transactionBatchesTableElement.querySelectorAll("tbody tr");
         for (const batchDateString of batchDateStrings) {
-            const thElement = document.createElement("th");
-            thElement.dataset.batchDateString = batchDateString;
-            thElement.innerHTML = batchDateString;
+            const thHeadElement = document.createElement("th");
+            thHeadElement.dataset.batchDateString = batchDateString;
+            thHeadElement.innerHTML = batchDateString;
             transactionBatchesTableElement.querySelector("thead th:last-child")
-                .insertAdjacentElement("beforebegin", thElement);
+                .insertAdjacentElement("beforebegin", thHeadElement);
+            const thFootElement = document.createElement("th");
+            thHeadElement.dataset.batchDateString = batchDateString;
+            transactionBatchesTableElement.querySelector("tfoot th:last-child")
+                .insertAdjacentElement("beforebegin", thFootElement);
             for (const tableRowElement of tableRowElements) {
                 const tdElement = document.createElement("td");
                 tdElement.dataset.batchDateString = batchDateString;
@@ -51,8 +57,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     "</span>" +
                     "</div>";
                 const inputElement = tdElement.querySelector("input");
-                inputElement.max = tableRowElement.dataset.max;
-                inputElement.addEventListener("change", updateBatchTransactionAmount);
+                inputElement.min = "0";
+                inputElement.max = tableRowElement.dataset.outstandingBalance;
+                inputElement.step = "0.01";
+                inputElement.addEventListener("change", createOrUpdateBatchTransactionAmount);
                 tableRowElement.querySelector("td:last-child")
                     .insertAdjacentElement("beforebegin", tdElement);
             }

@@ -22,6 +22,7 @@ export const getOutstandingBatchTransactions = (): recordTypes.LicenceTransactio
       " transactionAmount" +
       " from LicenceTransactions" +
       " where recordDelete_timeMillis is null" +
+      " and licenceId in (select licenceId from Licences where recordDelete_timeMillis is null)" +
       " and batchDate is not null" +
       " and (externalReceiptNumber is null or externalReceiptNumber = '')" +
       " order by licenceId, batchDate")

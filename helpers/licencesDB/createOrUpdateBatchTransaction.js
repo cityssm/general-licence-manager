@@ -26,7 +26,9 @@ export const createOrUpdateBatchTransaction = (transactionForm, requestSession) 
         message = "Banking information is incomplete on the " + configFunctions.getProperty("settings.licenceAlias").toLowerCase() + ".";
     }
     const batchDate = dateTimeFunctions.dateStringToInteger(transactionForm.batchDateString);
-    const currentTransactionRecord = database.prepare("select transactionIndex, externalReceiptNumber" +
+    const currentTransactionRecord = database.prepare("select count(transactionIndex) as transactionCount," +
+        " min(transactionIndex) as transactionIndexMin," +
+        " max(externalReceiptNumber) as externalReceiptNumberMax" +
         " from LicenceTransactions" +
         " where recordCreate_timeMillis is not null" +
         " and licenceId = ?" +
@@ -37,8 +39,8 @@ export const createOrUpdateBatchTransaction = (transactionForm, requestSession) 
     const rightNowMillis = Date.now();
     let transactionIndex;
     if (currentTransactionRecord) {
-        transactionIndex = currentTransactionRecord.transactionIndex;
-        if (currentTransactionRecord.externalReceiptNumber && currentTransactionRecord.externalReceiptNumber !== "") {
+        transactionIndex = currentTransactionRecord.transactionIndexMin;
+        if (currentTransactionRecord.externalReceiptNumberMax && currentTransactionRecord.externalReceiptNumberMax !== "") {
             database.close();
             return {
                 success: false,
@@ -55,6 +57,15 @@ export const createOrUpdateBatchTransaction = (transactionForm, requestSession) 
                 " and transactionIndex = ?").run(requestSession.user.userName, rightNowMillis, transactionForm.licenceId, transactionIndex);
         }
         else {
+            if (currentTransactionRecord.transactionCount > 1) {
+                database.prepare("update LicenceTransactions" +
+                    " set transactionAmount = 0," +
+                    " recordDelete_userName = ?, " +
+                    " recordDelete_timeMillis = ?" +
+                    " where licenceId = ?" +
+                    " and batchDate = ?" +
+                    " and transactionIndex <> ?").run(requestSession.user.userName, rightNowMillis, transactionForm.licenceId, batchDate, transactionIndex);
+            }
             runResult = database.prepare("update LicenceTransactions" +
                 " set bankInstitutionNumber = ?," +
                 " bankTransitNumber = ?," +
@@ -66,7 +77,7 @@ export const createOrUpdateBatchTransaction = (transactionForm, requestSession) 
                 " recordDelete_timeMillis = null" +
                 " where licenceId = ?" +
                 " and transactionIndex = ?")
-                .run(bankRecord.bankInstitutionNumber, bankRecord.bankTransitNumber, bankRecord.bankAccountNumber, transactionForm.transactionAmount, requestSession.user.userName, rightNowMillis, transactionForm.licenceId, currentTransactionRecord.transactionIndex);
+                .run(bankRecord.bankInstitutionNumber, bankRecord.bankTransitNumber, bankRecord.bankAccountNumber, transactionForm.transactionAmount, requestSession.user.userName, rightNowMillis, transactionForm.licenceId, transactionIndex);
         }
     }
     else if (!doDelete) {

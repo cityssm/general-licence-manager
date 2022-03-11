@@ -62,9 +62,12 @@ export const createOrUpdateBatchTransaction =
     const batchDate = dateTimeFunctions.dateStringToInteger(transactionForm.batchDateString);
 
     const currentTransactionRecord: {
-      transactionIndex?: number;
-      externalReceiptNumber?: string;
-    } = database.prepare("select transactionIndex, externalReceiptNumber" +
+      transactionCount?: number;
+      transactionIndexMin?: number;
+      externalReceiptNumberMax?: string;
+    } = database.prepare("select count(transactionIndex) as transactionCount," +
+      " min(transactionIndex) as transactionIndexMin," +
+      " max(externalReceiptNumber) as externalReceiptNumberMax" +
       " from LicenceTransactions" +
       " where recordCreate_timeMillis is not null" +
       " and licenceId = ?" +
@@ -82,9 +85,9 @@ export const createOrUpdateBatchTransaction =
     if (currentTransactionRecord) {
       // Do Update
 
-      transactionIndex = currentTransactionRecord.transactionIndex;
+      transactionIndex = currentTransactionRecord.transactionIndexMin;
 
-      if (currentTransactionRecord.externalReceiptNumber && currentTransactionRecord.externalReceiptNumber !== "") {
+      if (currentTransactionRecord.externalReceiptNumberMax && currentTransactionRecord.externalReceiptNumberMax !== "") {
 
         database.close();
 
@@ -108,6 +111,22 @@ export const createOrUpdateBatchTransaction =
 
       } else {
 
+        if (currentTransactionRecord.transactionCount > 1) {
+
+          database.prepare("update LicenceTransactions" +
+            " set transactionAmount = 0," +
+            " recordDelete_userName = ?, " +
+            " recordDelete_timeMillis = ?" +
+            " where licenceId = ?" +
+            " and batchDate = ?" +
+            " and transactionIndex <> ?"
+          ).run(requestSession.user.userName,
+            rightNowMillis,
+            transactionForm.licenceId,
+            batchDate,
+            transactionIndex);
+        }
+
         runResult = database.prepare("update LicenceTransactions" +
           " set bankInstitutionNumber = ?," +
           " bankTransitNumber = ?," +
@@ -126,7 +145,7 @@ export const createOrUpdateBatchTransaction =
             requestSession.user.userName,
             rightNowMillis,
             transactionForm.licenceId,
-            currentTransactionRecord.transactionIndex);
+            transactionIndex);
       }
 
     } else if (!doDelete) {

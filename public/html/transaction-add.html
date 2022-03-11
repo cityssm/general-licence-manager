@@ -43,12 +43,22 @@
         <div class="column">
           <form id="form--transactionAdd">
             <input id="transactionAdd--licenceId" name="licenceId" type="hidden" />
-            <div class="field is-hidden is-more-fields">
-              <label class="label" for="transactionAdd--transactionDateString">Transaction Date</label>
-              <div class="control">
-                <input class="input" id="transactionAdd--transactionDateString" name="transactionDateString" type="date" />
+            <div class="columns is-vcentered is-hidden is-more-fields">
+              <div class="column">
+                <div class="field">
+                  <label class="label" for="transactionAdd--transactionDateString">Transaction Date</label>
+                  <div class="control">
+                    <input class="input" id="transactionAdd--transactionDateString" name="transactionDateString" type="date" />
+                  </div>
+                  <p class="help">Leave blank to use today's date.</p>
+                </div>
               </div>
-              <p class="help">Leave blank to use today's date.</p>
+              <div class="column">
+                <div class="facheck">
+                  <input id="transactionAdd--includeInBatch" name="includeInBatch" type="checkbox" />
+                  <label for="transactionAdd--includeInBatch">Include in Batch</label>
+                </div>
+              </div>
             </div>
             <div class="field">
               <label class="label" for="transactionAdd--transactionAmount">Transaction Amount</label>

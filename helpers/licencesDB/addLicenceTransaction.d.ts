@@ -3,6 +3,7 @@ interface AddLicenceTransactionForm {
     licenceId: number | string;
     transactionAmount: number | string;
     transactionDateString?: string;
+    includeInBatch?: string;
     bankTransitNumber: string;
     bankInstitutionNumber?: string;
     bankAccountNumber?: string;

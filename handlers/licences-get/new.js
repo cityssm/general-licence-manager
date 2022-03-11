@@ -1,4 +1,5 @@
 import { getLicenceCategories } from "../../helpers/functions.cache.js";
+import { getLicence } from "../../helpers/licencesDB/getLicence.js";
 import { getCanadianBankName } from "@cityssm/get-canadian-bank-name";
 import * as configFunctions from "../../helpers/functions.config.js";
 import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
@@ -32,6 +33,10 @@ export const handler = (request, response) => {
     if (request.query.isRenewal && request.query.isRenewal !== "") {
         isRenewal = true;
     }
+    let relatedLicence;
+    if (request.query.relatedLicenceId && request.query.relatedLicenceId !== "") {
+        relatedLicence = getLicence(request.query.relatedLicenceId);
+    }
     const licence = {
         licenceId: "",
         licenceCategoryKey: request.query.licenceCategoryKey,
@@ -58,7 +63,8 @@ export const handler = (request, response) => {
         headTitle: configFunctions.getProperty("settings.licenceAlias") + " Create",
         isCreate: true,
         licenceCategories,
-        licence
+        licence,
+        relatedLicence
     });
 };
 export default handler;

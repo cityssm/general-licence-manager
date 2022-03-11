@@ -73,6 +73,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
     for (const unlockButtonElement of unlockButtonElements) {
         unlockButtonElement.addEventListener("click", unlockField);
     }
+    if (isCreate && document.querySelector("#is-cancel-related-licence-id-button")) {
+        document.querySelector("#is-cancel-related-licence-id-button").addEventListener("click", (clickEvent) => {
+            clickEvent.preventDefault();
+            clickEvent.currentTarget.closest(".message").remove();
+        });
+    }
     const bankInstitutionNumberElement = document.querySelector("#licenceEdit--bankInstitutionNumber");
     const bankTransitNumberElement = document.querySelector("#licenceEdit--bankTransitNumber");
     const refreshBankName = (changeEvent) => {

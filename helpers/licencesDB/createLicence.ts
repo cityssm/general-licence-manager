@@ -4,6 +4,7 @@ import { licencesDB as databasePath } from "../../data/databasePaths.js";
 import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
 
 import { getNextLicenceNumber } from "./getNextLicenceNumber.js";
+import { addRelatedLicence } from "./addRelatedLicence.js";
 import { saveLicenceFields } from "./saveLicenceFields.js";
 import { saveLicenceApprovals } from "./saveLicenceApprovals.js";
 
@@ -12,6 +13,7 @@ import type * as recordTypes from "../../types/recordTypes";
 interface CreateLicenceForm {
   licenceCategoryKey: string;
   licenceNumber: string;
+  relatedLicenceId?: string;
   licenseeName: string;
   licenseeBusinessName: string;
   licenseeAddress1: string;
@@ -80,6 +82,10 @@ export const createLicence =
         rightNowMillis);
 
     const licenceId = result.lastInsertRowid as number;
+
+    if (licenceForm.relatedLicenceId) {
+      addRelatedLicence(licenceId, licenceForm.relatedLicenceId, database);
+    }
 
     if (licenceForm.licenceFieldKeys) {
       const licenceFieldKeys = licenceForm.licenceFieldKeys.split(",");

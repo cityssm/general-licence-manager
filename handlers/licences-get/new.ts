@@ -1,6 +1,7 @@
 import type { RequestHandler } from "express";
 
 import { getLicenceCategories } from "../../helpers/functions.cache.js";
+import { getLicence } from "../../helpers/licencesDB/getLicence.js";
 
 import { getCanadianBankName } from "@cityssm/get-canadian-bank-name";
 import * as configFunctions from "../../helpers/functions.config.js";
@@ -46,6 +47,12 @@ export const handler: RequestHandler = (request, response) => {
     isRenewal = true;
   }
 
+  let relatedLicence: recordTypes.Licence;
+
+  if (request.query.relatedLicenceId && request.query.relatedLicenceId !== "") {
+    relatedLicence = getLicence(request.query.relatedLicenceId as string);
+  }
+
   const licence: recordTypes.Licence = {
     licenceId: "",
     licenceCategoryKey: request.query.licenceCategoryKey as string,
@@ -73,7 +80,8 @@ export const handler: RequestHandler = (request, response) => {
     headTitle: configFunctions.getProperty("settings.licenceAlias") + " Create",
     isCreate: true,
     licenceCategories,
-    licence
+    licence,
+    relatedLicence
   });
 };
 

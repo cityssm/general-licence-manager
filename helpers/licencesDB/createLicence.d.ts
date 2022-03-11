@@ -2,6 +2,7 @@ import type * as recordTypes from "../../types/recordTypes";
 interface CreateLicenceForm {
     licenceCategoryKey: string;
     licenceNumber: string;
+    relatedLicenceId?: string;
     licenseeName: string;
     licenseeBusinessName: string;
     licenseeAddress1: string;

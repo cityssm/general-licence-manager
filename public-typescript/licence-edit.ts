@@ -121,6 +121,17 @@ declare const bulmaJS: BulmaJS;
   }
 
   /*
+   * Cancel Relationship Button
+   */
+
+  if (isCreate && document.querySelector("#is-cancel-related-licence-id-button")) {
+    document.querySelector("#is-cancel-related-licence-id-button").addEventListener("click", (clickEvent) => {
+      clickEvent.preventDefault();
+      (clickEvent.currentTarget as HTMLElement).closest(".message").remove();
+    });
+  }
+
+  /*
    * Licence Bank Fields
    */
 

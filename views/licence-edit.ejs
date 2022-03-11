@@ -35,70 +35,72 @@
 <form id="form--licenceEdit">
   <input id="licenceEdit--licenceId" name="licenceId" type="hidden" value="<%= licence.licenceId %>" />
 
-  <div class="panel">
-    <div class="panel-block is-block">
-      <div class="columns">
-        <div class="column">
-          <div class="field">
-            <label class="label" for="licenceEdit--licenceCategoryKey">
-              <%= configFunctions.getProperty("settings.licenceAlias") %> Category
-            </label>
-            <div class="control is-expanded">
-              <div class="select is-fullwidth">
-                <select
-                  id="licenceEdit--licenceCategoryKey" name="licenceCategoryKey"
-                  <%= isCreate ? "" : "disabled" %>
-                  required>
-                  <% if (isCreate) { %>
-                    <option
-                      data-licence-length-function=""
-                      data-licence-length-years="0"
-                      data-licence-length-months="0"
-                      data-licence-length-days="0"
-                      value="">
-                      (Select a Category)
-                    </option>
-                  <% } %>
-                  <% for (const licenceCategory of licenceCategories) { %>
-                    <option
-                      data-licence-length-function="<%= licenceCategory.licenceLengthFunction %>"
-                      data-licence-length-years="<%= licenceCategory.licenceLengthYears %>"
-                      data-licence-length-months="<%= licenceCategory.licenceLengthMonths %>"
-                      data-licence-length-days="<%= licenceCategory.licenceLengthDays %>"
-                      value="<%= licenceCategory.licenceCategoryKey %>"
-                      <%= (licence.licenceCategoryKey === licenceCategory.licenceCategoryKey) ? "selected" : "" %>>
-                      <%= licenceCategory.licenceCategory %>
-                    </option>
-                  <% } %>
-                </select>
+  <div class="columns">
+    <div class="column">
+      <div class="panel">
+        <div class="panel-block is-block">
+          <div class="columns">
+            <div class="column">
+              <div class="field">
+                <label class="label" for="licenceEdit--licenceCategoryKey">
+                  <%= configFunctions.getProperty("settings.licenceAlias") %> Category
+                </label>
+                <div class="control is-expanded">
+                  <div class="select is-fullwidth">
+                    <select
+                      id="licenceEdit--licenceCategoryKey" name="licenceCategoryKey"
+                      <%= isCreate ? "" : "disabled" %>
+                      required>
+                      <% if (isCreate) { %>
+                        <option
+                          data-licence-length-function=""
+                          data-licence-length-years="0"
+                          data-licence-length-months="0"
+                          data-licence-length-days="0"
+                          value="">
+                          (Select a Category)
+                        </option>
+                      <% } %>
+                      <% for (const licenceCategory of licenceCategories) { %>
+                        <option
+                          data-licence-length-function="<%= licenceCategory.licenceLengthFunction %>"
+                          data-licence-length-years="<%= licenceCategory.licenceLengthYears %>"
+                          data-licence-length-months="<%= licenceCategory.licenceLengthMonths %>"
+                          data-licence-length-days="<%= licenceCategory.licenceLengthDays %>"
+                          value="<%= licenceCategory.licenceCategoryKey %>"
+                          <%= (licence.licenceCategoryKey === licenceCategory.licenceCategoryKey) ? "selected" : "" %>>
+                          <%= licenceCategory.licenceCategory %>
+                        </option>
+                      <% } %>
+                    </select>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div class="column">
-          <label class="label" for="licenceEdit--licenceNumber">
-            <%= configFunctions.getProperty("settings.licenceAlias") %> Number
-          </label>
-          <div class="field has-addons">
-            <div class="control is-expanded">
-              <input class="input" id="licenceEdit--licenceNumber" name="licenceNumber"
-                type="text"
-                value="<%= licence.licenceNumber %>"
-                <%= isCreate ? "" : "required" %>
-                maxlength="20" readonly />
+            <div class="column">
+              <label class="label" for="licenceEdit--licenceNumber">
+                <%= configFunctions.getProperty("settings.licenceAlias") %> Number
+              </label>
+              <div class="field has-addons">
+                <div class="control is-expanded">
+                  <input class="input" id="licenceEdit--licenceNumber" name="licenceNumber"
+                    type="text"
+                    value="<%= licence.licenceNumber %>"
+                    <%= isCreate ? "" : "required" %>
+                    maxlength="20" readonly />
+                </div>
+                <div class="control">
+                  <button class="button has-tooltip-left is-unlock-button" data-tooltip="Unlock Field" type="button">
+                    <i class="fas fa-unlock" aria-hidden="true"></i>
+                    <span class="is-sr-only">Unlock <%= configFunctions.getProperty("settings.licenceAlias") %> Number Field</span>
+                  </button>
+                </div>
+              </div>
+              <% if (isCreate) { %>
+                <p class="help">Leave the <%= configFunctions.getProperty("settings.licenceAlias") %> Number blank to generate on save.</p>
+              <% } %>
             </div>
-            <div class="control">
-              <button class="button has-tooltip-left is-unlock-button" data-tooltip="Unlock Field" type="button">
-                <i class="fas fa-unlock" aria-hidden="true"></i>
-                <span class="is-sr-only">Unlock <%= configFunctions.getProperty("settings.licenceAlias") %> Number Field</span>
-              </button>
-            </div>
           </div>
-          <% if (isCreate) { %>
-            <p class="help">Leave the <%= configFunctions.getProperty("settings.licenceAlias") %> Number blank to generate on save.</p>
-          <% } %>
-        </div>
-        <div class="column is-align-self-center ">
           <div class="facheck">
             <input id="licenceEdit--isRenewal" name="isRenewal" type="checkbox" <%= licence.isRenewal ? "checked" : "" %> />
             <label for="licenceEdit--isRenewal">
@@ -109,6 +111,29 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="column">
+      <% if (isCreate && relatedLicence) { %>
+        <div class="message is-info">
+          <div class="message-body">
+            <input name="relatedLicenceId" type="hidden" value="<%= relatedLicence.licenceId %>" />
+            <p>
+              This new <%= configFunctions.getProperty("settings.licenceAlias").toLowerCase() %> will related to
+              <%= configFunctions.getProperty("settings.licenceAlias").toLowerCase() %> #<%= relatedLicence.licenceNumber %>.
+            </p>
+            <p class="mt-2 has-text-right">
+              <button class="button is-info" id="is-cancel-related-licence-id-button" type="button">
+                <span class="icon is-small">
+                  <i class="fas fa-times" aria-hidden="true"></i>
+                </span>
+                <span>Cancel Relationship</span>
+              </button>
+            </p>
+          </div>
+        </div>
+      <% } else if (!isCreate) { %>
+
+      <% } %>
     </div>
   </div>
 

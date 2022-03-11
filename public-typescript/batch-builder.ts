@@ -16,7 +16,7 @@ declare const bulmaJS: BulmaJS;
 
   const transactionBatchesTableElement = document.querySelector("#table--transactionBatches") as HTMLTableElement;
 
-  const licences = exports.licences as recordTypes.Licence[];
+  // const licences = exports.licences as recordTypes.Licence[];
 
   let batchDateStrings: string[] = [];
 
@@ -55,6 +55,7 @@ declare const bulmaJS: BulmaJS;
       });
   };
 
+
   const renderBatchDateColumns = () => {
 
     // Clear columns
@@ -74,6 +75,7 @@ declare const bulmaJS: BulmaJS;
       // thead
 
       const thHeadElement = document.createElement("th");
+      thHeadElement.className = "has-text-centered";
       thHeadElement.dataset.batchDateString = batchDateString;
       thHeadElement.innerHTML = batchDateString;
 
@@ -83,7 +85,8 @@ declare const bulmaJS: BulmaJS;
       // tfoot
 
       const thFootElement = document.createElement("th");
-      thHeadElement.dataset.batchDateString = batchDateString;
+      thFootElement.className = "has-text-right";
+      thFootElement.dataset.batchDateString = batchDateString;
 
       transactionBatchesTableElement.querySelector("tfoot th:last-child")
         .insertAdjacentElement("beforebegin", thFootElement);
@@ -134,14 +137,98 @@ declare const bulmaJS: BulmaJS;
 
   const renderBatchTransactions = () => {
 
+    // Clear all
+
+    const transactionAmountElements = transactionBatchesTableElement.querySelectorAll("input[data-field='transactionAmount']") as NodeListOf<HTMLInputElement>;
+
+    for (const transactionAmountElement of transactionAmountElements) {
+      transactionAmountElement.value = "";
+    }
+
+    // Loop through transactions
+
+    const licenceTotalsMap = new Map<number, number>();
+    const batchTotalsMap = new Map<string, number>();
+
     for (const transaction of batchTransactions) {
 
-      const inputElement = transactionBatchesTableElement
-        .querySelector("tr[data-licence-id='" + transaction.licenceId + "']")
-        .querySelector("td[data-batch-date-string='" + transaction.batchDateString + "']")
-        .querySelector("input");
+      // Display transaction
 
-      inputElement.value = transaction.transactionAmount.toFixed(2);
+      const inputCellElement = transactionBatchesTableElement
+        .querySelector("tr[data-licence-id='" + transaction.licenceId.toString() + "']")
+        .querySelector("td[data-batch-date-string='" + transaction.batchDateString + "']");
+
+      const inputElement = inputCellElement.querySelector("input");
+
+      const inputValue = Number.parseFloat(inputElement.value) || 0;
+
+      inputElement.value = (inputValue + transaction.transactionAmount).toFixed(2);
+
+      inputElement.classList.remove("has-background-danger-light");
+
+      if (!inputElement.checkValidity()) {
+        inputElement.classList.add("has-background-danger-light");
+      }
+
+      // Calculate licence total
+
+      if (licenceTotalsMap.has(transaction.licenceId)) {
+        licenceTotalsMap.set(transaction.licenceId,
+          licenceTotalsMap.get(transaction.licenceId) + transaction.transactionAmount);
+      } else {
+        licenceTotalsMap.set(transaction.licenceId, transaction.transactionAmount);
+      }
+
+      // Calculate batch total
+
+      if (batchTotalsMap.has(transaction.batchDateString)) {
+        batchTotalsMap.set(transaction.batchDateString,
+          batchTotalsMap.get(transaction.batchDateString) + transaction.transactionAmount);
+      } else {
+        batchTotalsMap.set(transaction.batchDateString, transaction.transactionAmount);
+      }
+    }
+
+    // Populate licence totals
+
+    const licenceRowElements = transactionBatchesTableElement.querySelectorAll("tbody tr[data-licence-id]") as NodeListOf<HTMLTableRowElement>;
+
+    for (const licenceRowElement of licenceRowElements) {
+
+      const licenceId = Number.parseInt(licenceRowElement.dataset.licenceId, 10);
+
+      const outstandingBalance = Number.parseFloat(licenceRowElement.dataset.outstandingBalance);
+
+      const licenceTotal = licenceTotalsMap.has(licenceId)
+        ? licenceTotalsMap.get(licenceId)
+        : 0;
+
+      const totalElement = licenceRowElement.querySelector("td:last-child");
+
+      totalElement.textContent = "$" + licenceTotal.toFixed(2);
+
+      // Set status colors
+
+      totalElement.classList.remove("has-background-success-light", "has-background-danger-light");
+
+      if (outstandingBalance === licenceTotal) {
+        totalElement.classList.add("has-background-success-light");
+      } else if (outstandingBalance < licenceTotal) {
+        totalElement.classList.add("has-background-danger-light");
+      }
+    }
+
+    // Populate batch totals
+
+    const batchTotalElements = transactionBatchesTableElement.querySelectorAll("tfoot th[data-batch-date-string]") as NodeListOf<HTMLTableCellElement>;
+
+    for (const batchTotalElement of batchTotalElements) {
+
+      const batchDateString = batchTotalElement.dataset.batchDateString;
+
+      batchTotalElement.textContent = batchTotalsMap.has(batchDateString)
+        ? "$" + batchTotalsMap.get(batchDateString).toFixed(2)
+        : "$0.00";
     }
   };
 

@@ -5,6 +5,7 @@ interface GetLicencesFilters {
     licenceStatus?: "" | "active" | "past";
     startDateMin?: number;
     startDateMax?: number;
+    relatedLicenceId?: number | string;
 }
 export declare const getLicences: (filters: GetLicencesFilters, options: {
     limit: number;

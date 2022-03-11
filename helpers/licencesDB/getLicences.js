@@ -39,6 +39,13 @@ export const getLicences = (filters, options) => {
         sqlWhereClause += " and l.startDate <= ?";
         sqlParameters.push(filters.startDateMax);
     }
+    if (filters.relatedLicenceId) {
+        sqlWhereClause += " and (" +
+            "l.licenceId in (select licenceIdA from RelatedLicences where licenceIdB = ?)" +
+            " or l.licenceId in (select licenceIdB from RelatedLicences where licenceIdA = ?))" +
+            " and l.licenceId <> ?";
+        sqlParameters.push(filters.relatedLicenceId, filters.relatedLicenceId, filters.relatedLicenceId);
+    }
     let count = 0;
     if (options.limit !== -1) {
         count = database.prepare("select ifnull(count(*), 0)" +

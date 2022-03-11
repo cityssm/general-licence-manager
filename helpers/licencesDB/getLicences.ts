@@ -15,6 +15,7 @@ interface GetLicencesFilters {
   licenceStatus?: "" | "active" | "past",
   startDateMin?: number;
   startDateMax?: number;
+  relatedLicenceId?: number | string;
 }
 
 
@@ -71,6 +72,15 @@ export const getLicences = (filters: GetLicencesFilters, options: {
   if (filters.startDateMax) {
     sqlWhereClause += " and l.startDate <= ?";
     sqlParameters.push(filters.startDateMax);
+  }
+
+  if (filters.relatedLicenceId) {
+    sqlWhereClause += " and (" +
+      "l.licenceId in (select licenceIdA from RelatedLicences where licenceIdB = ?)" +
+      " or l.licenceId in (select licenceIdB from RelatedLicences where licenceIdA = ?))" +
+      " and l.licenceId <> ?";
+
+    sqlParameters.push(filters.relatedLicenceId, filters.relatedLicenceId, filters.relatedLicenceId);
   }
 
   let count = 0;

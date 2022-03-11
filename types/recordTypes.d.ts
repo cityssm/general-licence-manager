@@ -36,6 +36,7 @@ export interface Licence extends Record {
     bankTransitNumber?: string;
     bankAccountNumber?: string;
     bankName?: string;
+    relatedLicences?: Licence[];
     licenceCategory?: string;
     licenceFields?: LicenceField[];
     licenceApprovals?: LicenceApproval[];

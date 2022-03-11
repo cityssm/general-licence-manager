@@ -4,6 +4,7 @@ import { licencesDB as databasePath } from "../../data/databasePaths.js";
 import { getCanadianBankName } from "@cityssm/get-canadian-bank-name";
 import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
 
+import { getLicences } from "./getLicences.js";
 import { getLicenceFields } from "./getLicenceFields.js";
 import { getLicenceTransactions } from "./getLicenceTransactions.js";
 
@@ -42,6 +43,13 @@ export const getLicence = (licenceId: number | string): recordTypes.Licence => {
       .get(licenceId);
 
   if (licence) {
+
+    licence.relatedLicences = getLicences({
+      relatedLicenceId: licenceId
+    }, {
+      limit: -1,
+      offset: 0
+    }).licences;
 
     licence.licenceFields = getLicenceFields(licenceId, licence.licenceCategoryKey, database);
 

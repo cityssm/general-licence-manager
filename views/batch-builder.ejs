@@ -50,7 +50,7 @@
         <tr data-licence-id="<%= licence.licenceId %>"
             data-licence-number="<%= licence.licenceNumber %>"
             data-outstanding-balance="<%= licence.outstandingBalance %>">
-          <th>
+          <th class="<%= (!licence.bankInstitutionNumber || licence.bankInstitutionNumber === "" || !licence.bankTransitNumber || licence.bankTransitNumber === "" || !licence.bankAccountNumber || licence.bankAccountNumber === "") ? "has-background-danger-light" : "" %>">
             <a href="<%= urlPrefix %>/licences/<%= licence.licenceId %>" target="_blank">#<%= licence.licenceNumber %></a><br />
             <span class="has-text-weight-normal is-size-7">Outstanding Balance: $<%= licence.outstandingBalance.toFixed(2) %></span>
           </th>

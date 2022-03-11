@@ -118,6 +118,14 @@ export const initLicencesDB = (): boolean => {
       " foreign key (licenceCategoryKey) references LicenceCategories (licenceCategoryKey)" +
       ")").run();
 
+    licencesDB.prepare("create table if not exists RelatedLicences (" +
+      "licenceIdA integer not null," +
+      " licenceIdB integer not null," +
+      " primary key (licenceIdA, licenceIdB)," +
+      " foreign key (licenceIdA) references Licences (licenceId)," +
+      " foreign key (licenceIdB) references Licences (licenceId)" +
+      ") without rowid").run();
+
     licencesDB.prepare("create table if not exists LicenceFields (" +
       "licenceId integer not null," +
       " licenceFieldKey varchar(80) not null," +

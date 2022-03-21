@@ -47,11 +47,33 @@
     </thead>
     <tbody>
       <% for (const licence of licences) { %>
+        <%
+          let errorMessage = "";
+
+          if (!licence.bankInstitutionNumber || licence.bankInstitutionNumber === "" || !licence.bankTransitNumber || licence.bankTransitNumber === "" || !licence.bankAccountNumber || licence.bankAccountNumber === "") {
+            errorMessage = "Banking information is incomplete on the plan.";
+          }
+        %>
         <tr data-licence-id="<%= licence.licenceId %>"
             data-licence-number="<%= licence.licenceNumber %>"
             data-outstanding-balance="<%= licence.outstandingBalance %>">
-          <th class="<%= (!licence.bankInstitutionNumber || licence.bankInstitutionNumber === "" || !licence.bankTransitNumber || licence.bankTransitNumber === "" || !licence.bankAccountNumber || licence.bankAccountNumber === "") ? "has-background-danger-light" : "" %>">
-            <a href="<%= urlPrefix %>/licences/<%= licence.licenceId %>" target="_blank">#<%= licence.licenceNumber %></a><br />
+          <th class="<%= errorMessage === "" ? "" : "has-background-danger-light" %>">
+            <div class="level is-mobile mb-0">
+              <div class="level-left">
+                <div class="level-item">
+                  <a href="<%= urlPrefix %>/licences/<%= licence.licenceId %>" target="_blank">#<%= licence.licenceNumber %></a>
+                </div>
+              </div>
+              <% if (errorMessage !== "") { %>
+                <div class="level-right">
+                  <div class="level-item">
+                    <span class="icon has-text-danger" data-tooltip="<%= errorMessage %>">
+                      <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
+                    </span>
+                  </div>
+                </div>
+              <% } %>
+            </div>
             <span class="has-text-weight-normal is-size-7">Outstanding Balance: $<%= licence.outstandingBalance.toFixed(2) %></span>
           </th>
           <td class="has-text-right"></td>

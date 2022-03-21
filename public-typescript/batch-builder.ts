@@ -99,7 +99,7 @@ declare const bulmaJS: BulmaJS;
         tdElement.dataset.batchDateString = batchDateString;
 
         tdElement.innerHTML = "<div class=\"control has-icons-left\">" +
-          "<input class=\"input is-small has-text-right\" data-field=\"transactionAmount\" type=\"number\" min=\"0\" />" +
+          "<input class=\"input is-small has-text-right\" data-field=\"transactionAmount\" type=\"number\" min=\"0\" onwheel=\"return false\" />" +
           "<span class=\"icon is-small is-left\">" +
           "<i class=\"fas fa-dollar-sign\" aria-hidden=\"true\"></i>" +
           "</span>" +
@@ -255,7 +255,7 @@ declare const bulmaJS: BulmaJS;
         bulmaJS.alert({
           title: "Batch Date Already Included",
           message: "To add a new batch, choose a new date."
-        })
+        });
       } else {
         batchDateStrings.push(batchDateString);
         batchDateStrings.sort();
@@ -272,6 +272,9 @@ declare const bulmaJS: BulmaJS;
         addBatch_closeModalFunction = closeModalFunction;
 
         modalElement.querySelector("#form--addBatch").addEventListener("submit", doAddBatch);
+      },
+      onremoved: () => {
+        bulmaJS.toggleHtmlClipped();
       }
     });
   });

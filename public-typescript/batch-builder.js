@@ -52,7 +52,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 const tdElement = document.createElement("td");
                 tdElement.dataset.batchDateString = batchDateString;
                 tdElement.innerHTML = "<div class=\"control has-icons-left\">" +
-                    "<input class=\"input is-small has-text-right\" data-field=\"transactionAmount\" type=\"number\" min=\"0\" />" +
+                    "<input class=\"input is-small has-text-right\" data-field=\"transactionAmount\" type=\"number\" min=\"0\" onwheel=\"return false\" />" +
                     "<span class=\"icon is-small is-left\">" +
                     "<i class=\"fas fa-dollar-sign\" aria-hidden=\"true\"></i>" +
                     "</span>" +
@@ -161,6 +161,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 addBatch_batchDateStringElement = modalElement.querySelector("#addBatch--batchDateString");
                 addBatch_closeModalFunction = closeModalFunction;
                 modalElement.querySelector("#form--addBatch").addEventListener("submit", doAddBatch);
+            },
+            onremoved: () => {
+                bulmaJS.toggleHtmlClipped();
             }
         });
     });

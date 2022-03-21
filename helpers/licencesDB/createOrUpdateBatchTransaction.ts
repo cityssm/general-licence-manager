@@ -9,9 +9,9 @@ import { getNextLicenceTransactionIndex } from "./getNextLicenceTransactionIndex
 import type * as recordTypes from "../../types/recordTypes";
 
 interface TransactionForm {
-  licenceId: string;
+  licenceId: string | number;
   batchDateString: string;
-  transactionAmount: string;
+  transactionAmount: string | number;
 }
 
 interface CreateOrUpdateBatchTransactionReturn {
@@ -77,12 +77,12 @@ export const createOrUpdateBatchTransaction =
     // Save transaction
 
     let runResult: sqlite.RunResult;
-    const doDelete = transactionForm.transactionAmount === "" || Number.parseFloat(transactionForm.transactionAmount) === 0;
+    const doDelete = transactionForm.transactionAmount === "" || Number.parseFloat(transactionForm.transactionAmount.toString()) === 0;
 
     const rightNowMillis = Date.now();
     let transactionIndex: number;
 
-    if (currentTransactionRecord) {
+    if (currentTransactionRecord && currentTransactionRecord.transactionCount > 0) {
       // Do Update
 
       transactionIndex = currentTransactionRecord.transactionIndexMin;

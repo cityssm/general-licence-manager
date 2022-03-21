@@ -1,8 +1,8 @@
 import type * as recordTypes from "../../types/recordTypes";
 interface TransactionForm {
-    licenceId: string;
+    licenceId: string | number;
     batchDateString: string;
-    transactionAmount: string;
+    transactionAmount: string | number;
 }
 interface CreateOrUpdateBatchTransactionReturn {
     success: boolean;

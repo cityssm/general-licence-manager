@@ -235,6 +235,55 @@ declare const bulmaJS: BulmaJS;
   renderBatchTransactions();
 
   /*
+   * Split Outstanding Balance
+   */
+
+  const splitOutstandingBalance = (clickEvent: Event) => {
+
+    clickEvent.preventDefault();
+
+    const licenceTrElement = (clickEvent.currentTarget as HTMLElement).closest("tr");
+
+    const licenceId = licenceTrElement.dataset.licenceId;
+    const outstandingBalance = licenceTrElement.dataset.outstandingBalance;
+
+    const doSplit = () => {
+
+      cityssm.postJSON(urlPrefix + "/batches/doSplitOutstandingBalance", {
+        licenceId,
+        batchDateStrings,
+        outstandingBalance
+      }, (responseJSON: { success: boolean; batchTransactions?: recordTypes.LicenceTransaction[]; }) => {
+        if (responseJSON.success) {
+          batchTransactions = responseJSON.batchTransactions;
+          renderBatchTransactions();
+        }
+      });
+    };
+
+    if (batchDateStrings.length === 0) {
+      bulmaJS.alert({
+        message: "There are no batches available."
+      });
+    } else {
+      bulmaJS.confirm({
+        title: "Split Balance Across Batches",
+        message: "Are you sure you want to evenly split the outstanding balance across " + batchDateStrings.length + " batch" + (batchDateStrings.length === 1 ? "" : "es") + "?",
+        okButton: {
+          text: "Yes, Split the Balance",
+          callbackFunction: doSplit
+        }
+      });
+    }
+  };
+
+  const splitOutstandingBalanceButtons = document.querySelectorAll(".is-split-outstanding-balance-button");
+
+  for (const splitOutstandingBalanceButton of splitOutstandingBalanceButtons) {
+    splitOutstandingBalanceButton.addEventListener("click", splitOutstandingBalance);
+  }
+
+  /*
    * Clear Licence Amounts
    */
 

@@ -35,10 +35,10 @@ export const createOrUpdateBatchTransaction = (transactionForm, requestSession) 
         " and batchDate = ?")
         .get(transactionForm.licenceId, batchDate);
     let runResult;
-    const doDelete = transactionForm.transactionAmount === "" || Number.parseFloat(transactionForm.transactionAmount) === 0;
+    const doDelete = transactionForm.transactionAmount === "" || Number.parseFloat(transactionForm.transactionAmount.toString()) === 0;
     const rightNowMillis = Date.now();
     let transactionIndex;
-    if (currentTransactionRecord) {
+    if (currentTransactionRecord && currentTransactionRecord.transactionCount > 0) {
         transactionIndex = currentTransactionRecord.transactionIndexMin;
         if (currentTransactionRecord.externalReceiptNumberMax && currentTransactionRecord.externalReceiptNumberMax !== "") {
             database.close();

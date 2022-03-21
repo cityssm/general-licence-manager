@@ -135,6 +135,33 @@ Object.defineProperty(exports, "__esModule", { value: true });
     };
     renderBatchDateColumns();
     renderBatchTransactions();
+    const clearLicenceTransactions = (clickEvent) => {
+        clickEvent.preventDefault();
+        const licenceId = clickEvent.currentTarget.closest("tr").dataset.licenceId;
+        const doClear = () => {
+            cityssm.postJSON(urlPrefix + "/batches/doClearLicenceBatchTransactions", {
+                licenceId
+            }, (responseJSON) => {
+                if (responseJSON.success) {
+                    batchTransactions = responseJSON.batchTransactions;
+                    renderBatchTransactions();
+                }
+            });
+        };
+        bulmaJS.confirm({
+            title: "Clear All Transactions",
+            message: "Are you sure you want to clear all transaction amounts in this row?",
+            contextualColorName: "warning",
+            okButton: {
+                text: "Yes, Clear All Trasnactions",
+                callbackFunction: doClear
+            }
+        });
+    };
+    const clearLicenceButtonElements = document.querySelectorAll(".is-clear-licence-button");
+    for (const clearLicenceButtonElement of clearLicenceButtonElements) {
+        clearLicenceButtonElement.addEventListener("click", clearLicenceTransactions);
+    }
     document.querySelector("#is-add-batch-button").addEventListener("click", (clickEvent) => {
         clickEvent.preventDefault();
         let addBatch_batchDateStringElement;

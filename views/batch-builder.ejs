@@ -33,10 +33,11 @@
     </p>
   </div>
 <% } else { %>
-  <table class="table is-small is-narrow has-sticky-header has-sticky-column" id="table--transactionBatches">
+  <table class="table is-small is-narrow has-sticky-header has-sticky-footer has-sticky-column" id="table--transactionBatches">
     <thead>
       <tr>
         <th><%= configFunctions.getProperty("settings.licenceAlias") %></th>
+        <th></th>
         <th>
           <button class="button is-fullwidth is-primary is-small" id="is-add-batch-button" type="button">
             <span class="icon is-small"><i class="fas fa-plus" aria-hidden="true"></i></span>
@@ -64,18 +65,35 @@
                   <a href="<%= urlPrefix %>/licences/<%= licence.licenceId %>" target="_blank">#<%= licence.licenceNumber %></a>
                 </div>
               </div>
-              <% if (errorMessage !== "") { %>
-                <div class="level-right">
+              <div class="level-right">
+                <% if (errorMessage !== "") { %>
                   <div class="level-item">
                     <span class="icon has-text-danger" data-tooltip="<%= errorMessage %>">
                       <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
                     </span>
                   </div>
-                </div>
-              <% } %>
+                <% } %>
+              </div>
             </div>
             <span class="has-text-weight-normal is-size-7">Outstanding Balance: $<%= licence.outstandingBalance.toFixed(2) %></span>
           </th>
+          <td>
+            <div class="dropdown">
+              <div class="dropdown-trigger">
+                <button class="button is-white is-small" type="button">
+                  <i class="fas fa-bars" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="dropdown-menu">
+                <div class="dropdown-content">
+                  <a class="dropdown-item is-clear-licence-button" role="button" href="#">
+                    <span class="icon"><i class="fas fa-eraser" aria-hidden="true"></i></span>
+                    <span>Clear All Amounts for <%= configFunctions.getProperty("settings.licenceAlias") %></span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </td>
           <td class="has-text-right"></td>
         </tr>
       <% } %>
@@ -83,6 +101,7 @@
     <tfoot>
       <tr>
         <th>Batch Totals</th>
+        <th>&nbsp;</th>
         <th></th>
       </tr>
     </tfoot>

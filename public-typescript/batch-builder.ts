@@ -55,7 +55,6 @@ declare const bulmaJS: BulmaJS;
       });
   };
 
-
   const renderBatchDateColumns = () => {
 
     // Clear columns
@@ -234,6 +233,47 @@ declare const bulmaJS: BulmaJS;
 
   renderBatchDateColumns();
   renderBatchTransactions();
+
+  /*
+   * Clear Licence Amounts
+   */
+
+  const clearLicenceTransactions = (clickEvent: Event) => {
+
+    clickEvent.preventDefault();
+
+    const licenceId = (clickEvent.currentTarget as HTMLElement).closest("tr").dataset.licenceId;
+
+    const doClear = () => {
+
+      cityssm.postJSON(urlPrefix + "/batches/doClearLicenceBatchTransactions", {
+        licenceId
+      }, (responseJSON: { success: boolean; batchTransactions: recordTypes.LicenceTransaction[]; }) => {
+
+        if (responseJSON.success) {
+          batchTransactions = responseJSON.batchTransactions;
+          renderBatchTransactions();
+        }
+      });
+    };
+
+    bulmaJS.confirm({
+      title: "Clear All Transactions",
+      message: "Are you sure you want to clear all transaction amounts in this row?",
+      contextualColorName: "warning",
+      okButton: {
+        text: "Yes, Clear All Trasnactions",
+        callbackFunction: doClear
+      }
+    });
+
+  };
+
+  const clearLicenceButtonElements = document.querySelectorAll(".is-clear-licence-button");
+
+  for (const clearLicenceButtonElement of clearLicenceButtonElements) {
+    clearLicenceButtonElement.addEventListener("click", clearLicenceTransactions);
+  }
 
   /*
    * Add Batch

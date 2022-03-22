@@ -62,7 +62,7 @@
 <body>
   <div class="page">
     <h1 class="has-text-centered is-24pt">
-      <span class="is-12pt">Licence</span><br />
+      <span class="is-12pt"><%= configFunctions.getProperty("settings.licenceAlias") %></span><br />
       <%= licenceCategory.licenceCategory %><br />
       <span class="is-18pt"><%= licence.licenceNumber %></span>
     </h1>
@@ -108,7 +108,7 @@
         </td>
         <td class="pt-2">
           <p>
-            <strong>Licensing Authority</strong>
+            <strong>Authority</strong>
           </p>
           <br />
           <br />

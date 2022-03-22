@@ -23,7 +23,7 @@ export const handler: RequestHandler = (request, response) => {
   });
 
   return response.render("licence-view", {
-    headTitle: configFunctions.getProperty("settings.licenceAlias") + " View",
+    headTitle: configFunctions.getProperty("settings.licenceAlias") + " #" + licence.licenceNumber,
     licence,
     licenceCategory
   });

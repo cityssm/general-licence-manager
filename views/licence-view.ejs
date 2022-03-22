@@ -40,20 +40,59 @@
   </div>
 <% } %>
 
-<div class="panel">
-  <div class="panel-block">
-    <p>
-      <strong><%= configFunctions.getProperty("settings.licenceAlias") %> Category</strong><br />
-      <%= licenceCategory.licenceCategory %>
-    </p>
+<div class="columns">
+  <div class="column">
+    <div class="panel">
+      <div class="panel-block">
+        <p>
+          <strong><%= configFunctions.getProperty("settings.licenceAlias") %> Category</strong><br />
+          <%= licenceCategory.licenceCategory %>
+        </p>
+      </div>
+    </div>
   </div>
+  <% if (licence.relatedLicences && licence.relatedLicences.length > 0) { %>
+    <div class="column is-7">
+      <div class="panel">
+        <h2 class="panel-heading">
+          Related <%= configFunctions.getProperty("settings.licenceAliasPlural") %>
+        </h2>
+        <% for (const relatedLicence of licence.relatedLicences) { %>
+          <a class="panel-block is-block" href="<%= urlPrefix %>/licences/<%= relatedLicence.licenceId %>" target="_blank">
+            <strong><%= configFunctions.getProperty("settings.licenceAlias") %> #<%= relatedLicence.licenceNumber %></strong><br />
+            <div class="columns is-size-7">
+              <div class="column">
+                <span data-tooltip="<%= configFunctions.getProperty("settings.licenceAlias") %> Category"><%= relatedLicence.licenceCategory %></span>
+              </div>
+              <div class="column">
+                <span data-tooltip="<%= configFunctions.getProperty("settings.licenseeAlias") %> Name"><%= relatedLicence.licenseeName %></span>
+              </div>
+              <div class="column">
+                <span data-tooltip="Start Date"><%= relatedLicence.startDateString %></span>
+                to
+                <span data-tooltip="End Date"><%= relatedLicence.endDateString %></span>
+              </div>
+              <div class="column is-narrow">
+                <% if (relatedLicence.issueDate) { %>
+                  <span class="tag is-success">Issued</span>
+                <% } else { %>
+                  <span class="tag is-warning">Pending</span>
+                <% } %>
+              </div>
+            </div>
+          </a>
+        <% } %>
+      </div>
+    </div>
+  <% } %>
 </div>
 
 <div class="columns">
   <div class="column is-5">
-
     <div class="panel">
-      <h2 class="panel-heading"><%= configFunctions.getProperty("settings.licenseeAlias") %> Information</h2>
+      <h2 class="panel-heading">
+        <%= configFunctions.getProperty("settings.licenseeAlias") %> Information
+      </h2>
       <div class="panel-block is-block">
         <%= licence.licenseeName %><br />
         <% if (licence.licenseeBusinessName !== "") { %>

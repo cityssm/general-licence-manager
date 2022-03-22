@@ -1,10 +1,36 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
+    const glm = exports.glm;
     const urlPrefix = document.querySelector("main").dataset.urlPrefix;
     const licenceAlias = exports.licenceAlias;
     const transactionBatchesTableElement = document.querySelector("#table--transactionBatches");
     let batchDateStrings = [];
+    const clearBatch = (clickEvent) => {
+        clickEvent.preventDefault();
+        const batchDateString = clickEvent.currentTarget.closest("th").dataset.batchDateString;
+        const doClear = () => {
+            cityssm.postJSON(urlPrefix + "/batches/doClearBatchTransactions", {
+                batchDateString
+            }, (responseJSON) => {
+                if (responseJSON.success) {
+                    batchTransactions = responseJSON.batchTransactions;
+                    buildBatchDateStringsList();
+                    renderBatchDateColumns();
+                    renderBatchTransactions();
+                }
+            });
+        };
+        bulmaJS.confirm({
+            title: "Clear and Remove Batch",
+            message: "Are you sure you want to clear all amounts in this batch?",
+            contextualColorName: "warning",
+            okButton: {
+                text: "Yes, Clear the Batch",
+                callbackFunction: doClear
+            }
+        });
+    };
     const createOrUpdateBatchTransactionAmount = (changeEvent) => {
         changeEvent.preventDefault();
         const transactionAmountElement = changeEvent.currentTarget;
@@ -38,9 +64,31 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const tableRowElements = transactionBatchesTableElement.querySelectorAll("tbody tr");
         for (const batchDateString of batchDateStrings) {
             const thHeadElement = document.createElement("th");
-            thHeadElement.className = "has-text-centered";
             thHeadElement.dataset.batchDateString = batchDateString;
-            thHeadElement.innerHTML = batchDateString;
+            thHeadElement.innerHTML = "<div class=\"level is-mobile mb-0\">" +
+                ("<div class=\"level-left\">" +
+                    "<div class=\"level-item\">" + batchDateString + "</div>" +
+                    "</div>") +
+                ("<div class=\"level-right\">" +
+                    "<div class=\"level-item\">" +
+                    ("<div class=\"dropdown is-up is-right has-text-weight-normal\">" +
+                        "<div class=\"dropdown-trigger\">" +
+                        "<button class=\"button is-small is-white has-tooltip-left\" data-tooltip=\"Batch Options\" type=\"button\" aria-label=\"Batch Options\">" +
+                        "<i class=\"fas fa-bars\" aria-hidden=\"true\"></i>" +
+                        "</button>" +
+                        "</div>" +
+                        "<div class=\"dropdown-menu\"><div class=\"dropdown-content\">" +
+                        "<a class=\"dropdown-item is-clear-batch-button\" role=\"button\" href=\"#\">" +
+                        "<span class=\"icon\"><i class=\"fas fa-trash\" aria-hidden=\"true\"></i></span>" +
+                        " <span>Clear and Remove Batch</span>" +
+                        "</a>" +
+                        "</div></div>" +
+                        "</div>") +
+                    "</div>" +
+                    "</div>") +
+                "</div>" +
+                "<div class=\"has-text-centered is-size-7\">" + glm.getDayName(batchDateString) + "</div>";
+            thHeadElement.querySelector(".is-clear-batch-button").addEventListener("click", clearBatch);
             transactionBatchesTableElement.querySelector("thead th:last-child")
                 .insertAdjacentElement("beforebegin", thHeadElement);
             const thFootElement = document.createElement("th");
@@ -66,6 +114,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     .insertAdjacentElement("beforebegin", tdElement);
             }
         }
+        bulmaJS.init(transactionBatchesTableElement);
     };
     let batchTransactions = exports.batchTransactions;
     const buildBatchDateStringsList = () => {

@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             element.textContent = alias;
         }
     };
+    const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     const glm = {
         populateAliases: (containerElement) => {
             for (const settingName of aliasSettingNames) {
@@ -25,6 +26,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }, (responseJSON) => {
                 callbackFunction(responseJSON.bankName);
             });
+        },
+        getDayName: (dateString) => {
+            return dayNames[cityssm.dateStringToDate(dateString).getDay()];
         }
     };
     exports.glm = glm;

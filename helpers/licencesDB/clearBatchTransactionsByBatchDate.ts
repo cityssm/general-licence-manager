@@ -1,25 +1,28 @@
 import sqlite from "better-sqlite3";
 import { licencesDB as databasePath } from "../../data/databasePaths.js";
 
+import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
+
 import type * as recordTypes from "../../types/recordTypes";
 
 
-export const clearLicenceBatchTransactions =
-  (licenceId: number | string, requestSession: recordTypes.PartialSession): boolean => {
+export const clearBatchTransactionsByBatchDate =
+  (batchDateString: string, requestSession: recordTypes.PartialSession): boolean => {
 
     const database = sqlite(databasePath);
+
+    const batchDate = dateTimeFunctions.dateStringToInteger(batchDateString);
 
     database.prepare("update LicenceTransactions" +
       " set transactionAmount = 0," +
       " recordDelete_userName = ?, " +
       " recordDelete_timeMillis = ?" +
-      " where licenceId = ?" +
-      " and batchDate is not null" +
+      " where batchDate = ?" +
       " and (externalReceiptNumber is null or externalReceiptNumber = '')" +
       " and recordDelete_timeMillis is null"
     ).run(requestSession.user.userName,
       Date.now(),
-      licenceId);
+      batchDate);
 
     database.close();
 
@@ -27,4 +30,4 @@ export const clearLicenceBatchTransactions =
   };
 
 
-export default clearLicenceBatchTransactions;
+export default clearBatchTransactionsByBatchDate;

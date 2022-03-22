@@ -24,6 +24,8 @@ declare const cityssm: cityssmGlobal;
     }
   };
 
+  const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
   const glm: GLM = {
 
     populateAliases: (containerElement) => {
@@ -39,6 +41,10 @@ declare const cityssm: cityssmGlobal;
       }, (responseJSON: { bankName: string }) => {
         callbackFunction(responseJSON.bankName);
       });
+    },
+
+    getDayName: (dateString: string) => {
+      return dayNames[cityssm.dateStringToDate(dateString).getDay()];
     }
   };
 

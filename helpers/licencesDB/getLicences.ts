@@ -106,7 +106,7 @@ export const getLicences = (filters: GetLicencesFilters, options: {
     " from Licences l" +
     " left join LicenceCategories c on l.licenceCategoryKey = c.licenceCategoryKey" +
     sqlWhereClause +
-    " order by startDate desc, endDate desc, licenceId";
+    " order by startDate desc, endDate desc, licenceId desc";
 
   if (options.limit !== -1) {
     sql += " limit " + options.limit.toString() +

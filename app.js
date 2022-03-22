@@ -101,7 +101,9 @@ app.get(urlPrefix + "/", sessionChecker, (_request, response) => {
 });
 app.use(urlPrefix + "/dashboard", sessionChecker, routerDashboard);
 app.use(urlPrefix + "/licences", sessionChecker, routerLicences);
-app.use(urlPrefix + "/batches", sessionChecker, routerBatches);
+if (configFunctions.getProperty("settings.includeBatches")) {
+    app.use(urlPrefix + "/batches", sessionChecker, routerBatches);
+}
 app.use(urlPrefix + "/reports", sessionChecker, routerReports);
 app.use(urlPrefix + "/admin", sessionChecker, routerAdmin);
 app.all(urlPrefix + "/keepAlive", (_request, response) => {

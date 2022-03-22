@@ -16,6 +16,7 @@ export declare function getProperty(propertyName: "settings.licenceAliasPlural")
 export declare function getProperty(propertyName: "settings.licenseeAlias"): string;
 export declare function getProperty(propertyName: "settings.licenseeAliasPlural"): string;
 export declare function getProperty(propertyName: "settings.renewalAlias"): string;
+export declare function getProperty(propertyName: "settings.includeBatches"): boolean;
 export declare function getProperty(propertyName: "licenceLengthFunctions"): {
     [licenceLengthFunctionName: string]: configTypes.LicenceLengthFunction;
 };

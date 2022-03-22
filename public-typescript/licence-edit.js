@@ -41,14 +41,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 else {
                     bulmaJS.alert({
-                        message: "Licence Updated Successfully",
+                        message: licenceAlias + " Updated Successfully",
                         contextualColorName: "success"
                     });
                 }
             }
             else {
                 bulmaJS.alert({
-                    title: "Error Updating Licence",
+                    title: "Error Updating " + licenceAlias,
                     message: responseJSON.errorMessage,
                     contextualColorName: "danger"
                 });
@@ -81,13 +81,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
     }
     const bankInstitutionNumberElement = document.querySelector("#licenceEdit--bankInstitutionNumber");
     const bankTransitNumberElement = document.querySelector("#licenceEdit--bankTransitNumber");
-    const refreshBankName = (changeEvent) => {
-        changeEvent.preventDefault();
-        const bankNameElement = document.querySelector("#licenceEdit--bankName");
-        populateBankName(bankInstitutionNumberElement, bankTransitNumberElement, bankNameElement);
-    };
-    bankInstitutionNumberElement.addEventListener("change", refreshBankName);
-    bankTransitNumberElement.addEventListener("change", refreshBankName);
+    if (exports.includeBatches) {
+        const refreshBankName = (changeEvent) => {
+            changeEvent.preventDefault();
+            const bankNameElement = document.querySelector("#licenceEdit--bankName");
+            populateBankName(bankInstitutionNumberElement, bankTransitNumberElement, bankNameElement);
+        };
+        bankInstitutionNumberElement.addEventListener("change", refreshBankName);
+        bankTransitNumberElement.addEventListener("change", refreshBankName);
+    }
     const licenceCategoryKeyElement = document.querySelector("#licenceEdit--licenceCategoryKey");
     const isRenewalElement = document.querySelector("#licenceEdit--isRenewal");
     const startDateStringElement = document.querySelector("#licenceEdit--startDateString");
@@ -414,21 +416,29 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 modalElement.querySelector("button.is-more-fields-button").addEventListener("click", (clickEvent) => {
                     clickEvent.preventDefault();
                     clickEvent.currentTarget.remove();
-                    for (const element of modalElement.querySelectorAll(".is-more-fields")) {
+                    let moreFieldsSelector = ".is-more-fields";
+                    if (exports.includeBatches) {
+                        moreFieldsSelector += ", .is-more-fields-batch";
+                    }
+                    for (const element of modalElement.querySelectorAll(moreFieldsSelector)) {
                         element.classList.remove("is-hidden");
                     }
-                    addTransaction_bankInstitutionNumberElement.addEventListener("change", addTransaction_getBankNameFunction);
-                    addTransaction_bankTransitNumberElement.addEventListener("change", addTransaction_getBankNameFunction);
+                    if (exports.includeBatches) {
+                        addTransaction_bankInstitutionNumberElement.addEventListener("change", addTransaction_getBankNameFunction);
+                        addTransaction_bankTransitNumberElement.addEventListener("change", addTransaction_getBankNameFunction);
+                    }
                 });
-                modalElement.querySelector("button.is-copy-bank-numbers-button").addEventListener("click", (clickEvent) => {
-                    clickEvent.preventDefault();
-                    addTransaction_bankInstitutionNumberElement.value = bankInstitutionNumberElement.value;
-                    addTransaction_bankTransitNumberElement.value = bankTransitNumberElement.value;
-                    modalElement.querySelector("#transactionAdd--bankName").value =
-                        document.querySelector("#licenceEdit--bankName").value;
-                    modalElement.querySelector("#transactionAdd--bankAccountNumber").value =
-                        document.querySelector("#licenceEdit--bankAccountNumber").value;
-                });
+                if (exports.includeBatches) {
+                    modalElement.querySelector("button.is-copy-bank-numbers-button").addEventListener("click", (clickEvent) => {
+                        clickEvent.preventDefault();
+                        addTransaction_bankInstitutionNumberElement.value = bankInstitutionNumberElement.value;
+                        addTransaction_bankTransitNumberElement.value = bankTransitNumberElement.value;
+                        modalElement.querySelector("#transactionAdd--bankName").value =
+                            document.querySelector("#licenceEdit--bankName").value;
+                        modalElement.querySelector("#transactionAdd--bankAccountNumber").value =
+                            document.querySelector("#licenceEdit--bankAccountNumber").value;
+                    });
+                }
                 modalElement.querySelector("#form--transactionAdd").addEventListener("submit", addTransactionSubmitFunction);
             }
         });

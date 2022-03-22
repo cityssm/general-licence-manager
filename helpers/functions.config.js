@@ -22,6 +22,7 @@ configFallbackValues.set("settings.licenceAliasPlural", "Licences");
 configFallbackValues.set("settings.licenseeAlias", "Licensee");
 configFallbackValues.set("settings.licenseeAliasPlural", "Licensees");
 configFallbackValues.set("settings.renewalAlias", "Renewal");
+configFallbackValues.set("settings.includeBatches", false);
 configFallbackValues.set("licenceLengthFunctions", {});
 export function getProperty(propertyName) {
     const propertyNameSplit = propertyName.split(".");

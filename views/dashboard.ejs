@@ -36,17 +36,19 @@
             </div>
           </div>
         <% } %>
-        <div class="media">
-          <div class="media-left">
-            <i class="fas fa-3x fa-fw fa-receipt" aria-hidden="true"></i>
+        <% if (configFunctions.getProperty("settings.includeBatches")) { %>
+          <div class="media">
+            <div class="media-left">
+              <i class="fas fa-3x fa-fw fa-receipt" aria-hidden="true"></i>
+            </div>
+            <div class="media-content has-text-black">
+              <h2 class="title is-4 is-marginless">
+                <a href="<%= urlPrefix %>/batches/builder">Transaction Batch Builder</a>
+              </h2>
+              <p>Build batches of transactions for later processing.</p>
+            </div>
           </div>
-          <div class="media-content has-text-black">
-            <h2 class="title is-4 is-marginless">
-              <a href="<%= urlPrefix %>/batches/builder">Transaction Batch Builder</a>
-            </h2>
-            <p>Build batches of transactions for later processing.</p>
-          </div>
-        </div>
+        <% } %>
       </div>
     </div>
     <div class="card mt-5">

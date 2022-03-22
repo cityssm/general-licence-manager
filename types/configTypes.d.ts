@@ -20,6 +20,7 @@ export interface Config {
         licenseeAlias?: string;
         licenseeAliasPlural?: string;
         renewalAlias?: string;
+        includeBatches?: boolean;
     };
     licenceLengthFunctions?: {
         [licenceLengthFunctionName: string]: LicenceLengthFunction;

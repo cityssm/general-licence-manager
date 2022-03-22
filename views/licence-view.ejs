@@ -66,7 +66,7 @@
         <%= licence.licenseeCity %>, <%= licence.licenseeProvince %><br />
         <%= licence.licenseePostalCode %>
       </div>
-      <% if ((licence.bankInstitutionNumber && licence.bankInstitutionNumber !== "") || (licence.bankTransitNumber && licence.bankTransitNumber !== "") || (licence.bankAccountNumber && licence.bankAccountNumber !== "")) { %>
+      <% if (configFunctions.getProperty("settings.includeBatches") && ((licence.bankInstitutionNumber && licence.bankInstitutionNumber !== "") || (licence.bankTransitNumber && licence.bankTransitNumber !== "") || (licence.bankAccountNumber && licence.bankAccountNumber !== ""))) { %>
         <div class="panel-block">
           <div class="columns">
             <div class="column">
@@ -181,7 +181,6 @@
           </thead>
           <tbody>
             <%
-
               let transactionTotal = 0;
               const currentDate = dateTimeFns.dateToInteger(new Date());
             %>

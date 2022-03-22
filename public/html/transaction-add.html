@@ -36,7 +36,7 @@
           <button class="button is-primary is-light is-fullwidth is-more-fields-button" type="button">
             Show More Fields
           </button>
-          <button class="button is-primary is-light is-fullwidth is-copy-bank-numbers-button is-hidden is-more-fields" type="button">
+          <button class="button is-primary is-light is-fullwidth is-copy-bank-numbers-button is-hidden is-more-fields-batch" type="button">
             Copy Licence Banking Details
           </button>
         </div>
@@ -53,7 +53,7 @@
                   <p class="help">Leave blank to use today's date.</p>
                 </div>
               </div>
-              <div class="column">
+              <div class="column is-hidden is-more-fields-batch">
                 <div class="facheck">
                   <input id="transactionAdd--includeInBatch" name="includeInBatch" type="checkbox" />
                   <label for="transactionAdd--includeInBatch">Include in Batch</label>
@@ -69,7 +69,7 @@
                 </span>
               </div>
             </div>
-            <div class="columns is-hidden is-more-fields">
+            <div class="columns is-hidden is-more-fields-batch">
               <div class="column">
                 <div class="field">
                   <label class="label" for="transactionAdd--bankInstitutionNumber">Institution Number</label>
@@ -89,12 +89,12 @@
                 </div>
               </div>
             </div>
-            <div class="field is-hidden is-more-fields">
+            <div class="field is-hidden is-more-fields-batch">
               <div class="control">
                 <input class="input" id="transactionAdd--bankName" type="text" aria-label="Bank Name" readonly />
               </div>
             </div>
-            <div class="field is-hidden is-more-fields">
+            <div class="field is-hidden is-more-fields-batch">
               <label class="label" for="transactionAdd--bankAccountNumber">Bank Account Number</label>
               <div class="control">
                 <input class="input" id="transactionAdd--bankAccountNumber" name="bankAccountNumber" type="text" inputmode="numeric" pattern="^\d+$" maxlength="10" />

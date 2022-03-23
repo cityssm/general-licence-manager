@@ -58,9 +58,9 @@
           Related <%= configFunctions.getProperty("settings.licenceAliasPlural") %>
         </h2>
         <% for (const relatedLicence of licence.relatedLicences) { %>
-          <a class="panel-block is-block" href="<%= urlPrefix %>/licences/<%= relatedLicence.licenceId %>" target="_blank">
-            <strong><%= configFunctions.getProperty("settings.licenceAlias") %> #<%= relatedLicence.licenceNumber %></strong><br />
-            <div class="columns is-size-7">
+          <div class="panel-block is-block">
+            <a class="has-text-weight-bold" href="<%= urlPrefix %>/licences/<%= relatedLicence.licenceId %>" target="_blank"><%= configFunctions.getProperty("settings.licenceAlias") %> #<%= relatedLicence.licenceNumber %></a><br />
+            <div class="columns pt-0 is-size-7">
               <div class="column">
                 <span data-tooltip="<%= configFunctions.getProperty("settings.licenceAlias") %> Category"><%= relatedLicence.licenceCategory %></span>
               </div>
@@ -80,7 +80,7 @@
                 <% } %>
               </div>
             </div>
-          </a>
+          </div>
         <% } %>
       </div>
     </div>

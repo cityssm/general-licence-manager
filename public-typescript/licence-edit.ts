@@ -16,6 +16,8 @@ declare const bulmaJS: BulmaJS;
   const urlPrefix = document.querySelector("main").dataset.urlPrefix;
 
   const licenceAlias = exports.licenceAlias as string;
+  const licenceAliasPlural = exports.licenceAliasPlural as string;
+  const licenseeAlias = exports.licenseeAlias as string;
 
   const licenceId = (document.querySelector("#licenceEdit--licenceId") as HTMLInputElement).value;
 
@@ -129,6 +131,115 @@ declare const bulmaJS: BulmaJS;
       clickEvent.preventDefault();
       (clickEvent.currentTarget as HTMLElement).closest(".message").remove();
     });
+  }
+
+  /*
+   * Related Licences
+   */
+
+  if (!isCreate) {
+
+    const removeRelatedLicence = (clickEvent: Event) => {
+
+      clickEvent.preventDefault();
+
+      const relatedLicenceId = ((clickEvent.currentTarget as HTMLElement).closest(".panel-block") as HTMLElement).dataset.relatedLicenceId;
+
+      const doRemove = () => {
+        cityssm.postJSON(urlPrefix + "/licences/doDeleteRelatedLicence", {
+          licenceId,
+          relatedLicenceId
+        }, (responseJSON: { success: boolean; relatedLicences?: recordTypes.Licence[]; }) => {
+
+          if (responseJSON.success) {
+            renderRelatedLicences(responseJSON.relatedLicences);
+          }
+        });
+      };
+
+      bulmaJS.confirm({
+        title: "Remove Related " + licenceAlias,
+        message: "Are you sure you want to remove this related " + licenceAlias.toLowerCase() + "?<br />" +
+          "Note that only the relationship will be removed, not the " + licenceAlias.toLowerCase() + " itself.",
+        messageIsHtml: true,
+        okButton: {
+          text: "Yes, Remove the Relationship",
+          callbackFunction: doRemove
+        }
+      });
+    };
+
+    const renderRelatedLicences = (relatedLicences: recordTypes.Licence[]) => {
+
+      const relatedLicencesPanelElement = document.querySelector("#panel--relatedLicences");
+
+      // Remove all panel-block s
+
+      const panelBlockElements = relatedLicencesPanelElement.querySelectorAll(".panel-block");
+
+      for (const panelBlockElement of panelBlockElements) {
+        panelBlockElement.remove();
+      }
+
+      // Empty list
+
+      if (relatedLicences.length === 0) {
+        const panelBlockElement = document.createElement("div");
+        panelBlockElement.className = "panel-block is-block";
+
+        panelBlockElement.innerHTML = "<div class=\"message is-small is-info\">" +
+          "<p class=\"message-body\">There are no related " + licenceAliasPlural.toLowerCase() + ".</p>" +
+          "</div>";
+
+        relatedLicencesPanelElement.append(panelBlockElement);
+      }
+
+      // Show related licences
+
+      for (const relatedLicence of relatedLicences) {
+
+        const panelBlockElement = document.createElement("div");
+        panelBlockElement.className = "panel-block is-block";
+        panelBlockElement.dataset.relatedLicenceId = relatedLicence.licenceId.toString();
+
+        panelBlockElement.innerHTML = "<div class=\"columns mb-0\">" +
+          "<div class=\"column\">" +
+          "<a class=\"has-text-weight-bold\" href=\"" + urlPrefix + "/licences/" + relatedLicence.licenceId + "\" target=\"_blank\">" +
+          licenceAlias + " #" + cityssm.escapeHTML(relatedLicence.licenceNumber) +
+          "</a>" +
+          "</div>" +
+          "<div class=\"column is-narrow\">" +
+          "<button class=\"button is-small is-inverted is-danger is-delete-related-licence-button\" type=\"button\" aria-label=\"Delete Related " + licenceAlias + "\">" +
+          "<i class=\"fas fa-trash\" aria-hidden=\"true\"></i>" +
+          "</button>" +
+          "</div>" +
+          "</div>" +
+          "<div class=\"columns is-size-7\">" +
+          ("<div class=\"column\">" +
+            "<span data-tooltip=\"" + licenceAlias + " Category\">" + cityssm.escapeHTML(relatedLicence.licenceCategory) + "</span>" +
+            "</div>") +
+          ("<div class=\"column\">" +
+            "<span data-tooltip=\"" + licenseeAlias + " Name\">" + cityssm.escapeHTML(relatedLicence.licenseeName) + "</span>" +
+            "</div>") +
+          ("<div class=\"column\">" +
+            "<span data-tooltip=\"Start Date\">" + relatedLicence.startDateString + "</span>" +
+            " to " +
+            "<span data-tooltip=\"End Date\">" + relatedLicence.endDateString + "</span>" +
+            "</div>") +
+          ("<div class=\"column is-narrow\">" +
+            (relatedLicence.issueDate
+              ? "<span class=\"tag is-success\">Issued</span>"
+              : "<span class=\"tag is-warning\">Pending</span>") +
+            "</div>") +
+          "</div>";
+
+        panelBlockElement.querySelector(".is-delete-related-licence-button").addEventListener("click", removeRelatedLicence);
+
+        relatedLicencesPanelElement.append(panelBlockElement);
+      }
+    };
+
+    renderRelatedLicences(exports.relatedLicences);
   }
 
   /*

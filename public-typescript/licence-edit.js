@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const glm = exports.glm;
     const urlPrefix = document.querySelector("main").dataset.urlPrefix;
     const licenceAlias = exports.licenceAlias;
+    const licenceAliasPlural = exports.licenceAliasPlural;
+    const licenseeAlias = exports.licenseeAlias;
     const licenceId = document.querySelector("#licenceEdit--licenceId").value;
     const isCreate = (licenceId === "");
     const populateBankName = (bankInstitutionNumberElement, bankTransitNumberElement, bankNameElement) => {
@@ -78,6 +80,85 @@ Object.defineProperty(exports, "__esModule", { value: true });
             clickEvent.preventDefault();
             clickEvent.currentTarget.closest(".message").remove();
         });
+    }
+    if (!isCreate) {
+        const removeRelatedLicence = (clickEvent) => {
+            clickEvent.preventDefault();
+            const relatedLicenceId = clickEvent.currentTarget.closest(".panel-block").dataset.relatedLicenceId;
+            const doRemove = () => {
+                cityssm.postJSON(urlPrefix + "/licences/doDeleteRelatedLicence", {
+                    licenceId,
+                    relatedLicenceId
+                }, (responseJSON) => {
+                    if (responseJSON.success) {
+                        renderRelatedLicences(responseJSON.relatedLicences);
+                    }
+                });
+            };
+            bulmaJS.confirm({
+                title: "Remove Related " + licenceAlias,
+                message: "Are you sure you want to remove this related " + licenceAlias.toLowerCase() + "?<br />" +
+                    "Note that only the relationship will be removed, not the " + licenceAlias.toLowerCase() + " itself.",
+                messageIsHtml: true,
+                okButton: {
+                    text: "Yes, Remove the Relationship",
+                    callbackFunction: doRemove
+                }
+            });
+        };
+        const renderRelatedLicences = (relatedLicences) => {
+            const relatedLicencesPanelElement = document.querySelector("#panel--relatedLicences");
+            const panelBlockElements = relatedLicencesPanelElement.querySelectorAll(".panel-block");
+            for (const panelBlockElement of panelBlockElements) {
+                panelBlockElement.remove();
+            }
+            if (relatedLicences.length === 0) {
+                const panelBlockElement = document.createElement("div");
+                panelBlockElement.className = "panel-block is-block";
+                panelBlockElement.innerHTML = "<div class=\"message is-small is-info\">" +
+                    "<p class=\"message-body\">There are no related " + licenceAliasPlural.toLowerCase() + ".</p>" +
+                    "</div>";
+                relatedLicencesPanelElement.append(panelBlockElement);
+            }
+            for (const relatedLicence of relatedLicences) {
+                const panelBlockElement = document.createElement("div");
+                panelBlockElement.className = "panel-block is-block";
+                panelBlockElement.dataset.relatedLicenceId = relatedLicence.licenceId.toString();
+                panelBlockElement.innerHTML = "<div class=\"columns mb-0\">" +
+                    "<div class=\"column\">" +
+                    "<a class=\"has-text-weight-bold\" href=\"" + urlPrefix + "/licences/" + relatedLicence.licenceId + "\" target=\"_blank\">" +
+                    licenceAlias + " #" + cityssm.escapeHTML(relatedLicence.licenceNumber) +
+                    "</a>" +
+                    "</div>" +
+                    "<div class=\"column is-narrow\">" +
+                    "<button class=\"button is-small is-inverted is-danger is-delete-related-licence-button\" type=\"button\" aria-label=\"Delete Related " + licenceAlias + "\">" +
+                    "<i class=\"fas fa-trash\" aria-hidden=\"true\"></i>" +
+                    "</button>" +
+                    "</div>" +
+                    "</div>" +
+                    "<div class=\"columns is-size-7\">" +
+                    ("<div class=\"column\">" +
+                        "<span data-tooltip=\"" + licenceAlias + " Category\">" + cityssm.escapeHTML(relatedLicence.licenceCategory) + "</span>" +
+                        "</div>") +
+                    ("<div class=\"column\">" +
+                        "<span data-tooltip=\"" + licenseeAlias + " Name\">" + cityssm.escapeHTML(relatedLicence.licenseeName) + "</span>" +
+                        "</div>") +
+                    ("<div class=\"column\">" +
+                        "<span data-tooltip=\"Start Date\">" + relatedLicence.startDateString + "</span>" +
+                        " to " +
+                        "<span data-tooltip=\"End Date\">" + relatedLicence.endDateString + "</span>" +
+                        "</div>") +
+                    ("<div class=\"column is-narrow\">" +
+                        (relatedLicence.issueDate
+                            ? "<span class=\"tag is-success\">Issued</span>"
+                            : "<span class=\"tag is-warning\">Pending</span>") +
+                        "</div>") +
+                    "</div>";
+                panelBlockElement.querySelector(".is-delete-related-licence-button").addEventListener("click", removeRelatedLicence);
+                relatedLicencesPanelElement.append(panelBlockElement);
+            }
+        };
+        renderRelatedLicences(exports.relatedLicences);
     }
     const bankInstitutionNumberElement = document.querySelector("#licenceEdit--bankInstitutionNumber");
     const bankTransitNumberElement = document.querySelector("#licenceEdit--bankTransitNumber");

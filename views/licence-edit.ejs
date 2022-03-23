@@ -112,29 +112,45 @@
         </div>
       </div>
     </div>
-    <div class="column">
-      <% if (isCreate && relatedLicence) { %>
-        <div class="message is-info">
-          <div class="message-body">
-            <input name="relatedLicenceId" type="hidden" value="<%= relatedLicence.licenceId %>" />
-            <p>
-              This new <%= configFunctions.getProperty("settings.licenceAlias").toLowerCase() %> will related to
-              <%= configFunctions.getProperty("settings.licenceAlias").toLowerCase() %> #<%= relatedLicence.licenceNumber %>.
-            </p>
-            <p class="mt-2 has-text-right">
-              <button class="button is-info" id="is-cancel-related-licence-id-button" type="button">
-                <span class="icon is-small">
-                  <i class="fas fa-times" aria-hidden="true"></i>
-                </span>
-                <span>Cancel Relationship</span>
-              </button>
-            </p>
+    <% if (!isCreate || relatedLicence) { %>
+      <div class="column">
+        <% if (isCreate && relatedLicence) { %>
+          <div class="message is-info">
+            <div class="message-body">
+              <input name="relatedLicenceId" type="hidden" value="<%= relatedLicence.licenceId %>" />
+              <p>
+                This new <%= configFunctions.getProperty("settings.licenceAlias").toLowerCase() %> will related to
+                <%= configFunctions.getProperty("settings.licenceAlias").toLowerCase() %> #<%= relatedLicence.licenceNumber %>.
+              </p>
+              <p class="mt-2 has-text-right">
+                <button class="button is-info" id="is-cancel-related-licence-id-button" type="button">
+                  <span class="icon is-small">
+                    <i class="fas fa-times" aria-hidden="true"></i>
+                  </span>
+                  <span>Cancel Relationship</span>
+                </button>
+              </p>
+            </div>
           </div>
-        </div>
-      <% } else if (!isCreate) { %>
-
-      <% } %>
-    </div>
+        <% } else if (!isCreate) { %>
+          <div class="panel" id="panel--relatedLicences">
+            <div class="panel-heading">
+              <div class="level is-mobile">
+                <div class="level-left">
+                  <h2 class="level-item has-text-weight-bold">Related Licences</h2>
+                </div>
+                <div class="level-right">
+                  <button class="button level-item is-success is-small" id="button--addRelatedLicence" type="button">
+                    <span class="icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                    <span>Add Related Licence</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% } %>
+      </div>
+    <% } %>
   </div>
 
   <div class="columns">
@@ -516,6 +532,7 @@
 <% if (!isCreate) { %>
   <script>
     exports.licenceCategory = <%- JSON.stringify(licenceCategories[0]) %>;
+    exports.relatedLicences = <%- JSON.stringify(licence.relatedLicences) %>;
   </script>
 <% } %>
 <script src="<%= urlPrefix %>/javascripts/licence-edit.min.js"></script>

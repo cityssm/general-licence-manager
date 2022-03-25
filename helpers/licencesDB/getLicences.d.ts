@@ -6,6 +6,8 @@ interface GetLicencesFilters {
     startDateMin?: number;
     startDateMax?: number;
     relatedLicenceId?: number | string;
+    notRelatedLicenceId?: number | string;
+    searchString?: string;
 }
 export declare const getLicences: (filters: GetLicencesFilters, options: {
     limit: number;

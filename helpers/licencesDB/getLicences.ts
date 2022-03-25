@@ -16,6 +16,8 @@ interface GetLicencesFilters {
   startDateMin?: number;
   startDateMax?: number;
   relatedLicenceId?: number | string;
+  notRelatedLicenceId?: number | string;
+  searchString?: string;
 }
 
 
@@ -83,12 +85,43 @@ export const getLicences = (filters: GetLicencesFilters, options: {
     sqlParameters.push(filters.relatedLicenceId, filters.relatedLicenceId, filters.relatedLicenceId);
   }
 
+  if (filters.notRelatedLicenceId) {
+    sqlWhereClause +=
+      " and l.licenceId not in (select licenceIdA from RelatedLicences where licenceIdB = ?)" +
+      " and l.licenceId not in (select licenceIdB from RelatedLicences where licenceIdA = ?)" +
+      " and l.licenceId <> ?";
+
+    sqlParameters.push(filters.notRelatedLicenceId, filters.notRelatedLicenceId, filters.notRelatedLicenceId);
+  }
+
+  if (filters.searchString && filters.searchString !== "") {
+
+    const searchStringPieces = filters.searchString.trim().split(" ");
+
+    for (const searchStringPiece of searchStringPieces) {
+      sqlWhereClause += " and (" +
+        " l.licenceNumber like '%' || ? || '%'" +
+        " or c.licenceCategory like '%' || ? || '%'" +
+        " or l.licenseeName like '%' || ? || '%'" +
+        " or l.licenseeBusinessName like '%' || ? || '%'" +
+        " or l.bankAccountNumber like '%' || ? || '%'" +
+        ")";
+
+      sqlParameters.push(searchStringPiece,
+        searchStringPiece,
+        searchStringPiece,
+        searchStringPiece,
+        searchStringPiece);
+    }
+  }
+
   let count = 0;
 
   if (options.limit !== -1) {
 
     count = database.prepare("select ifnull(count(*), 0)" +
       " from Licences l" +
+      " left join LicenceCategories c on l.licenceCategoryKey = c.licenceCategoryKey" +
       sqlWhereClause)
       .pluck()
       .get(sqlParameters);

@@ -13,6 +13,7 @@ import handler_doCreateLicence from "../handlers/licences-post/doCreateLicence.j
 import handler_doUpdateLicence from "../handlers/licences-post/doUpdateLicence.js";
 import handler_doIssueLicence from "../handlers/licences-post/doIssueLicence.js";
 import handler_doDeleteLicence from "../handlers/licences-post/doDeleteLicence.js";
+import handler_doGetRelatableLicences from "../handlers/licences-post/doGetRelatableLicences.js";
 import handler_doDeleteRelatedLicence from "../handlers/licences-post/doDeleteRelatedLicence.js";
 import handler_doGetBankName from "../handlers/licences-post/doGetBankName.js";
 import handler_doAddLicenceTransaction from "../handlers/licences-post/doAddLicenceTransaction.js";
@@ -32,6 +33,7 @@ router.post("/doCreateLicence", permissionHandlers.updatePostHandler, handler_do
 router.post("/doUpdateLicence", permissionHandlers.updatePostHandler, handler_doUpdateLicence);
 router.post("/doIssueLicence", permissionHandlers.updatePostHandler, handler_doIssueLicence);
 router.post("/doDeleteLicence", permissionHandlers.updatePostHandler, handler_doDeleteLicence);
+router.post("/doGetRelatableLicences", permissionHandlers.updatePostHandler, handler_doGetRelatableLicences);
 router.post("/doDeleteRelatedLicence", permissionHandlers.updatePostHandler, handler_doDeleteRelatedLicence);
 router.post("/doGetBankName", permissionHandlers.updatePostHandler, handler_doGetBankName);
 router.post("/doAddLicenceTransaction", permissionHandlers.updatePostHandler, handler_doAddLicenceTransaction);

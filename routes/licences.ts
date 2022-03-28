@@ -22,6 +22,7 @@ import handler_doIssueLicence from "../handlers/licences-post/doIssueLicence.js"
 import handler_doDeleteLicence from "../handlers/licences-post/doDeleteLicence.js";
 
 import handler_doGetRelatableLicences from "../handlers/licences-post/doGetRelatableLicences.js";
+import handler_doAddRelatedLicence from "../handlers/licences-post/doAddRelatedLicence.js";
 import handler_doDeleteRelatedLicence from "../handlers/licences-post/doDeleteRelatedLicence.js";
 
 import handler_doGetBankName from "../handlers/licences-post/doGetBankName.js";
@@ -110,6 +111,11 @@ router.post("/doDeleteLicence",
 router.post("/doGetRelatableLicences",
   permissionHandlers.updatePostHandler,
   handler_doGetRelatableLicences);
+
+
+router.post("/doAddRelatedLicence",
+  permissionHandlers.updatePostHandler,
+  handler_doAddRelatedLicence);
 
 
 router.post("/doDeleteRelatedLicence",

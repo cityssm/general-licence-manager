@@ -139,6 +139,36 @@ declare const bulmaJS: BulmaJS;
 
   if (!isCreate) {
 
+    const getRelatedLicenceHTML = (relatedLicence: recordTypes.Licence) => {
+
+      return "<div class=\"columns mb-0\">" +
+        "<div class=\"column\">" +
+        "<a class=\"has-text-weight-bold\" href=\"" + urlPrefix + "/licences/" + relatedLicence.licenceId + "\" target=\"_blank\">" +
+        licenceAlias + " #" + cityssm.escapeHTML(relatedLicence.licenceNumber) +
+        "</a>" +
+        "</div>" +
+        "<div class=\"column is-narrow is-button-container\"></div>" +
+        "</div>" +
+        "<div class=\"columns is-size-7\">" +
+        ("<div class=\"column\">" +
+          "<span data-tooltip=\"" + licenceAlias + " Category\">" + cityssm.escapeHTML(relatedLicence.licenceCategory) + "</span>" +
+          "</div>") +
+        ("<div class=\"column\">" +
+          "<span data-tooltip=\"" + licenseeAlias + " Name\">" + cityssm.escapeHTML(relatedLicence.licenseeName) + "</span>" +
+          "</div>") +
+        ("<div class=\"column\">" +
+          "<span data-tooltip=\"Start Date\">" + relatedLicence.startDateString + "</span>" +
+          " to " +
+          "<span data-tooltip=\"End Date\">" + relatedLicence.endDateString + "</span>" +
+          "</div>") +
+        ("<div class=\"column is-narrow\">" +
+          (relatedLicence.issueDate
+            ? "<span class=\"tag is-success\">Issued</span>"
+            : "<span class=\"tag is-warning\">Pending</span>") +
+          "</div>") +
+        "</div>";
+    };
+
     const removeRelatedLicence = (clickEvent: Event) => {
 
       clickEvent.preventDefault();
@@ -202,42 +232,123 @@ declare const bulmaJS: BulmaJS;
         panelBlockElement.className = "panel-block is-block";
         panelBlockElement.dataset.relatedLicenceId = relatedLicence.licenceId.toString();
 
-        panelBlockElement.innerHTML = "<div class=\"columns mb-0\">" +
-          "<div class=\"column\">" +
-          "<a class=\"has-text-weight-bold\" href=\"" + urlPrefix + "/licences/" + relatedLicence.licenceId + "\" target=\"_blank\">" +
-          licenceAlias + " #" + cityssm.escapeHTML(relatedLicence.licenceNumber) +
-          "</a>" +
-          "</div>" +
-          "<div class=\"column is-narrow\">" +
-          "<button class=\"button is-small is-inverted is-danger is-delete-related-licence-button\" type=\"button\" aria-label=\"Delete Related " + licenceAlias + "\">" +
-          "<i class=\"fas fa-trash\" aria-hidden=\"true\"></i>" +
-          "</button>" +
-          "</div>" +
-          "</div>" +
-          "<div class=\"columns is-size-7\">" +
-          ("<div class=\"column\">" +
-            "<span data-tooltip=\"" + licenceAlias + " Category\">" + cityssm.escapeHTML(relatedLicence.licenceCategory) + "</span>" +
-            "</div>") +
-          ("<div class=\"column\">" +
-            "<span data-tooltip=\"" + licenseeAlias + " Name\">" + cityssm.escapeHTML(relatedLicence.licenseeName) + "</span>" +
-            "</div>") +
-          ("<div class=\"column\">" +
-            "<span data-tooltip=\"Start Date\">" + relatedLicence.startDateString + "</span>" +
-            " to " +
-            "<span data-tooltip=\"End Date\">" + relatedLicence.endDateString + "</span>" +
-            "</div>") +
-          ("<div class=\"column is-narrow\">" +
-            (relatedLicence.issueDate
-              ? "<span class=\"tag is-success\">Issued</span>"
-              : "<span class=\"tag is-warning\">Pending</span>") +
-            "</div>") +
-          "</div>";
+        panelBlockElement.innerHTML = getRelatedLicenceHTML(relatedLicence);
 
-        panelBlockElement.querySelector(".is-delete-related-licence-button").addEventListener("click", removeRelatedLicence);
+        const deleteButtonElement = document.createElement("button");
+        deleteButtonElement.className = "button is-small is-inverted is-danger";
+        deleteButtonElement.type = "button";
+        deleteButtonElement.ariaLabel = "Delete Related Licence"
+        deleteButtonElement.innerHTML = "<i class=\"fas fa-trash\" aria-hidden=\"true\"></i>";
+        deleteButtonElement.addEventListener("click", removeRelatedLicence);
+
+        panelBlockElement.querySelector(".is-button-container")
+          .append(deleteButtonElement);
 
         relatedLicencesPanelElement.append(panelBlockElement);
       }
     };
+
+    document.querySelector("#button--addRelatedLicence").addEventListener("click", (clickEvent) => {
+      clickEvent.preventDefault();
+
+      const addButtonElement = clickEvent.currentTarget as HTMLButtonElement;
+      let addRelatedLicencesModalElement: HTMLElement;
+
+      const doAdd = (clickEvent: Event) => {
+
+        clickEvent.preventDefault();
+
+        const panelBlockElement = (clickEvent.currentTarget as HTMLButtonElement).closest(".panel-block") as HTMLElement;
+        const relatedLicenceId = panelBlockElement.dataset.licenceId;
+
+        cityssm.postJSON(urlPrefix + "/licences/doAddRelatedLicence", {
+          licenceId,
+          relatedLicenceId
+        }, (responseJSON: { success: boolean; relatedLicences?: recordTypes.Licence[];}) => {
+
+          if (responseJSON.success) {
+            panelBlockElement.remove();
+            renderRelatedLicences(responseJSON.relatedLicences);
+          }
+        });
+      };
+
+      const doSearch = (changeEvent?: Event) => {
+
+        if (changeEvent) {
+          changeEvent.preventDefault();
+        }
+
+        const containerElement = addRelatedLicencesModalElement.querySelector("#container--relatableLicences");
+
+        containerElement.innerHTML = "<div class=\"my-4 has-text-centered has-text-grey-light\">" +
+          "<i class=\"fas fa-4x fa-spinner fa-pulse\"></i><br />" +
+          "<em>Loading " + licenceAliasPlural.toLowerCase() + "...</em>" +
+          "</div>";
+
+        const searchString = (addRelatedLicencesModalElement.querySelector("#addRelatedLicence--searchString") as HTMLInputElement).value;
+
+        cityssm.postJSON(urlPrefix + "/licences/doGetRelatableLicences", {
+          licenceId,
+          searchString
+        }, (responseJSON: { licences: recordTypes.Licence[] }) => {
+
+          if (responseJSON.licences.length === 0) {
+            containerElement.innerHTML = "<div class=\"message is-info\">" +
+              "<p class=\"message-body\">There are no " + licenceAliasPlural.toLowerCase() + " that meet your criteria.</p>" +
+              "</div>";
+
+            return;
+          }
+
+          const panelElement = document.createElement("div");
+          panelElement.className = "panel";
+
+          for (const relatableLicence of responseJSON.licences) {
+
+            const panelBlockElement = document.createElement("div");
+            panelBlockElement.className = "panel-block is-block";
+            panelBlockElement.dataset.licenceId = relatableLicence.licenceId.toString();
+
+            panelBlockElement.innerHTML = getRelatedLicenceHTML(relatableLicence);
+
+            const addButtonElement = document.createElement("button");
+            addButtonElement.className = "button is-small is-success";
+            addButtonElement.type = "button";
+            addButtonElement.ariaLabel = "Add Related Licence"
+            addButtonElement.innerHTML = "<i class=\"fas fa-plus\" aria-hidden=\"true\"></i>";
+            addButtonElement.addEventListener("click", doAdd);
+
+            panelBlockElement.querySelector(".is-button-container")
+              .append(addButtonElement);
+
+            panelElement.append(panelBlockElement);
+          }
+
+          containerElement.innerHTML = "";
+          containerElement.append(panelElement);
+        });
+      };
+
+      cityssm.openHtmlModal("relatedLicence-add", {
+        onshow: (modalElement) => {
+
+          addRelatedLicencesModalElement = modalElement;
+
+          glm.populateAliases(modalElement);
+          document.querySelector("#addRelatedLicence--searchString").addEventListener("change", doSearch);
+          doSearch();
+        },
+        onshown: () => {
+          bulmaJS.toggleHtmlClipped();
+          (document.querySelector("#addRelatedLicence--searchString") as HTMLInputElement).focus();
+        },
+        onremoved: () => {
+          bulmaJS.toggleHtmlClipped();
+          addButtonElement.focus();
+        }
+      });
+    });
 
     renderRelatedLicences(exports.relatedLicences);
   }

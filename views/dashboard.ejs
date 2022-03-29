@@ -36,10 +36,17 @@
             </div>
           </div>
         <% } %>
-        <% if (configFunctions.getProperty("settings.includeBatches")) { %>
+      </div>
+    </div>
+    <% if (configFunctions.getProperty("settings.includeBatches") && user.userProperties.canUpdate) { %>
+      <div class="card mt-5">
+        <div class="card-content">
           <div class="media">
             <div class="media-left">
-              <i class="fas fa-3x fa-fw fa-receipt" aria-hidden="true"></i>
+              <span class="fa-layers fa-fw fa-3x" aria-hidden="true">
+                <i class="fas fa-receipt"></i>
+                <i class="fas fa-pencil-alt" data-fa-glow data-fa-transform="shrink-6 down-4 right-4"></i>
+              </span>
             </div>
             <div class="media-content has-text-black">
               <h2 class="title is-4 is-marginless">
@@ -48,9 +55,9 @@
               <p>Build batches of transactions for later processing.</p>
             </div>
           </div>
-        <% } %>
+        </div>
       </div>
-    </div>
+    <% } %>
     <div class="card mt-5">
       <div class="card-content">
         <div class="media">

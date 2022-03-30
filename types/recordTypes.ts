@@ -158,6 +158,12 @@ export interface LicenceCategoryField extends Record {
   orderNumber?: number;
 }
 
+export interface Batch {
+  batchDate: number;
+  batchDateString: string;
+  transactionCount: number;
+}
+
 /*
  * User
  */

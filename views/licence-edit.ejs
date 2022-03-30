@@ -140,10 +140,26 @@
                   <h2 class="level-item has-text-weight-bold">Related <%= configFunctions.getProperty("settings.licenceAliasPlural") %></h2>
                 </div>
                 <div class="level-right">
-                  <button class="button level-item is-success is-small" id="button--addRelatedLicence" type="button">
-                    <span class="icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
-                    <span>Add Related <%= configFunctions.getProperty("settings.licenceAlias") %></span>
-                  </button>
+                  <div class="dropdown is-right has-text-weight-normal">
+                    <div class="dropdown-trigger">
+                      <button class="button level-item is-success is-small" type="button">
+                        <span>Add Related <%= configFunctions.getProperty("settings.licenceAlias") %></span>
+                        <span class="icon"><i class="fas fa-caret-down" aria-hidden="true"></i></span>
+                      </button>
+                    </div>
+                    <div class="dropdown-menu">
+                      <div class="dropdown-content">
+                        <a id="button--addRelatedLicence" class="dropdown-item" href="#">
+                          <i class="fas fa-fw fa-search" aria-hidden="true"></i>
+                          From Existing <%= configFunctions.getProperty("settings.licenceAlias") %>
+                        </a>
+                        <a class="dropdown-item" href="<%= urlPrefix %>/licences/new?relatedLicenceId=<%= licence.licenceId %>" target="_blank">
+                          <i class="fas fa-fw fa-plus" aria-hidden="true"></i>
+                          Create a New <%= configFunctions.getProperty("settings.licenceAlias") %>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

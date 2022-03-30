@@ -27,7 +27,10 @@
         <% if (user.userProperties.canUpdate) { %>
           <div class="media">
             <div class="media-left">
-              <i class="fas fa-3x fa-fw fa-plus" aria-hidden="true"></i>
+              <span class="fa-layers fa-fw fa-3x" aria-hidden="true">
+                <i class="fas fa-certificate"></i>
+                <i class="fas fa-plus has-text-success" data-fa-glow data-fa-transform="shrink-8 down-5 right-6"></i>
+              </span>
             </div>
             <div class="media-content has-text-black">
               <h2 class="title is-4 is-marginless">
@@ -45,7 +48,7 @@
             <div class="media-left">
               <span class="fa-layers fa-fw fa-3x" aria-hidden="true">
                 <i class="fas fa-receipt"></i>
-                <i class="fas fa-pencil-alt" data-fa-glow data-fa-transform="shrink-6 down-4 right-4"></i>
+                <i class="fas fa-pencil-alt has-text-info" data-fa-glow data-fa-transform="shrink-6 down-4 right-4"></i>
               </span>
             </div>
             <div class="media-content has-text-black">
@@ -55,10 +58,26 @@
               <p>Build batches of transactions for later processing.</p>
             </div>
           </div>
+          <div class="media">
+            <div class="media-left">
+              <span class="fa-layers fa-fw fa-3x" aria-hidden="true">
+                <i class="fas fa-receipt"></i>
+                <i class="fas fa-check has-text-success" data-fa-glow data-fa-transform="shrink-6 down-4 right-4"></i>
+              </span>
+            </div>
+            <div class="media-content has-text-black">
+              <h2 class="title is-4 is-marginless">
+                <a href="<%= urlPrefix %>/batches/reconcile">Batch Reconciler</a>
+              </h2>
+              <p>Mark batch entries as received.</p>
+            </div>
+          </div>
         </div>
       </div>
     <% } %>
-    <div class="card mt-5">
+  </div>
+  <div class="column">
+    <div class="card">
       <div class="card-content">
         <div class="media">
           <div class="media-left">
@@ -73,10 +92,8 @@
         </div>
       </div>
     </div>
-  </div>
-  <div class="column">
     <% if (user.userProperties.isAdmin) { %>
-      <div class="card mb-5">
+      <div class="card mt-5">
         <div class="card-content">
           <div class="media">
             <div class="media-left">
@@ -97,7 +114,7 @@
         </div>
       </div>
     <% } %>
-    <div class="card">
+    <div class="card mt-5">
       <div class="card-content">
         <div class="media">
           <div class="media-left">

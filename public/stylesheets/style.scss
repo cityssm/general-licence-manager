@@ -1,6 +1,19 @@
 @import '@cityssm/bulma-webapp-css/cityssm.min';
 @import '@cityssm/fa-glow/fa-glow';
 
+@font-face {
+  font-family: 'Font Awesome 5 Free';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url("../lib/fa/webfonts/fa-regular-400.eot");
+  src: url("../lib/fa/webfonts/fa-regular-400.eot?#iefix") format("embedded-opentype"),
+    url("../lib/fa/webfonts/fa-regular-400.woff2") format("woff2"),
+    url("../lib/fa/webfonts/fa-regular-400.woff") format("woff"),
+    url("../lib/fa/webfonts/fa-regular-400.ttf") format("truetype"),
+    url("../lib/fa/webfonts/fa-regular-400.svg#fontawesome") format("svg");
+}
+
 .has-min-page-height {
   min-height: 100vh;
 }

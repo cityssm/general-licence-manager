@@ -12,6 +12,73 @@ import type * as recordTypes from "../../types/recordTypes";
 
 export const handler: RequestHandler = (request, response) => {
 
+  let relatedLicence: recordTypes.Licence;
+
+  if (request.query.relatedLicenceId && request.query.relatedLicenceId !== "") {
+    relatedLicence = getLicence(request.query.relatedLicenceId as string);
+  }
+
+  let licenseeName = request.query.licenseeName as string;
+  if ((!licenseeName || licenseeName === "") && relatedLicence) {
+    licenseeName = relatedLicence.licenseeName;
+  }
+
+  let licenseeBusinessName = request.query.licenseeBusinessName as string;
+  if ((!licenseeBusinessName || licenseeBusinessName === "") && relatedLicence) {
+    licenseeBusinessName = relatedLicence.licenseeBusinessName;
+  }
+
+  let licenseeAddress1 = request.query.licenseeAddress1 as string;
+  if ((!licenseeAddress1 || licenseeAddress1 === "") && relatedLicence) {
+    licenseeAddress1 = relatedLicence.licenseeAddress1;
+  }
+
+  let licenseeAddress2 = request.query.licenseeAddress2 as string;
+  if ((!licenseeAddress2 || licenseeAddress2 === "") && relatedLicence) {
+    licenseeAddress2 = relatedLicence.licenseeAddress2;
+  }
+
+  let licenseeCity = request.query.licenseeCity as string;
+  if (!licenseeCity || licenseeCity === "") {
+    licenseeCity = relatedLicence
+      ? relatedLicence.licenseeCity
+      : configFunctions.getProperty("defaults.licenseeCity");
+  }
+
+  let licenseeProvince = request.query.licenseeProvince as string;
+  if (!licenseeProvince || licenseeProvince === "") {
+    licenseeProvince = relatedLicence
+      ? relatedLicence.licenseeProvince
+      : configFunctions.getProperty("defaults.licenseeProvince");
+  }
+
+  let licenseePostalCode = request.query.licenseePostalCode as string;
+  if ((!licenseePostalCode || licenseePostalCode === "") && relatedLicence) {
+    licenseePostalCode = relatedLicence.licenseePostalCode;
+  }
+
+  let bankInstitutionNumber = request.query.bankInstitutionNumber as string;
+  if ((!bankInstitutionNumber || bankInstitutionNumber === "") && relatedLicence) {
+    bankInstitutionNumber = relatedLicence.bankInstitutionNumber;
+  }
+
+  let bankTransitNumber = request.query.bankTransitNumber as string;
+  if ((!bankTransitNumber || bankTransitNumber === "") && relatedLicence) {
+    bankTransitNumber = relatedLicence.bankTransitNumber;
+  }
+
+  let bankAccountNumber = request.query.bankAccountNumber as string;
+  if ((!bankAccountNumber || bankAccountNumber === "") && relatedLicence) {
+    bankAccountNumber = relatedLicence.bankAccountNumber;
+  }
+
+  let bankName: string;
+
+  if (bankInstitutionNumber) {
+    bankName = getCanadianBankName(bankInstitutionNumber, bankTransitNumber);
+  }
+
+
   const licenceCategories = getLicenceCategories();
 
   let startDateString = request.query.startDateString as string;
@@ -24,50 +91,26 @@ export const handler: RequestHandler = (request, response) => {
     startDate = dateTimeFunctions.dateStringToInteger(startDateString);
   }
 
-  let licenseeCity = request.query.licenseeCity as string;
-  if (!licenseeCity || licenseeCity === "") {
-    licenseeCity = configFunctions.getProperty("defaults.licenseeCity");
-  }
-
-  let licenseeProvince = request.query.licenseeProvince as string;
-  if (!licenseeProvince || licenseeProvince === "") {
-    licenseeProvince = configFunctions.getProperty("defaults.licenseeProvince");
-  }
-
-  const bankInstitutionNumber = request.query.bankInstitutionNumber as string;
-  const bankTransitNumber = request.query.bankTransitNumber as string;
-  let bankName: string;
-
-  if (bankInstitutionNumber) {
-    bankName = getCanadianBankName(bankInstitutionNumber, bankTransitNumber);
-  }
-
   let isRenewal = false;
   if (request.query.isRenewal && request.query.isRenewal !== "") {
     isRenewal = true;
-  }
-
-  let relatedLicence: recordTypes.Licence;
-
-  if (request.query.relatedLicenceId && request.query.relatedLicenceId !== "") {
-    relatedLicence = getLicence(request.query.relatedLicenceId as string);
   }
 
   const licence: recordTypes.Licence = {
     licenceId: "",
     licenceCategoryKey: request.query.licenceCategoryKey as string,
     licenceNumber: "",
-    licenseeName: request.query.licenseeName as string,
-    licenseeBusinessName: request.query.licenseeBusinessName as string,
-    licenseeAddress1: request.query.licenseeAddress1 as string,
-    licenseeAddress2: request.query.licenseeAddress2 as string,
+    licenseeName,
+    licenseeBusinessName,
+    licenseeAddress1,
+    licenseeAddress2,
     licenseeCity,
     licenseeProvince,
-    licenseePostalCode: request.query.licenseePostalCode as string,
+    licenseePostalCode,
     bankInstitutionNumber,
     bankTransitNumber,
     bankName,
-    bankAccountNumber: request.query.bankAccountNumber as string,
+    bankAccountNumber,
     isRenewal,
     startDate,
     startDateString,

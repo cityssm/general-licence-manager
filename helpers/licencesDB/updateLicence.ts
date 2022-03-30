@@ -1,6 +1,7 @@
 import sqlite from "better-sqlite3";
 import { licencesDB as databasePath } from "../../data/databasePaths.js";
 
+import * as configFunctions from "../functions.config.js";
 import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
 
 import { saveLicenceFields } from "./saveLicenceFields.js";
@@ -96,6 +97,26 @@ export const updateLicence =
 
       const licenceApprovalKeys = licenceForm.licenceApprovalKeys.split(",");
       saveLicenceApprovals(licenceForm.licenceId, licenceApprovalKeys, licenceForm, database);
+    }
+
+    if (configFunctions.getProperty("settings.includeBatches")) {
+
+      database.prepare("update LicenceTransactions" +
+        " set bankInstitutionNumber = ?," +
+        " bankTransitNumber = ?," +
+        " bankAccountNumber = ?," +
+        " recordUpdate_userName = ?," +
+        " recordUpdate_timeMillis = ?" +
+        " where licenceId = ?" +
+        " and recordDelete_timeMillis is null" +
+        " and batchDate is not null" +
+        " and (externalReceiptNumber is null or externalReceiptNumber = '')")
+        .run(licenceForm.bankInstitutionNumber,
+          licenceForm.bankTransitNumber,
+          licenceForm.bankAccountNumber,
+          requestSession.user.userName,
+          rightNowMillis,
+          licenceForm.licenceId);
     }
 
     database.close();

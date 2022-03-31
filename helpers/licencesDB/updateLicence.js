@@ -51,8 +51,9 @@ export const updateLicence = (licenceForm, requestSession) => {
             " where licenceId = ?" +
             " and recordDelete_timeMillis is null" +
             " and batchDate is not null" +
-            " and (externalReceiptNumber is null or externalReceiptNumber = '')")
-            .run(licenceForm.bankInstitutionNumber, licenceForm.bankTransitNumber, licenceForm.bankAccountNumber, requestSession.user.userName, rightNowMillis, licenceForm.licenceId);
+            " and (externalReceiptNumber is null or externalReceiptNumber = '')" +
+            " and (bankInstitutionNumber <> ? or bankTransitNumber <> ? or bankAccountNumber <> ?)")
+            .run(licenceForm.bankInstitutionNumber, licenceForm.bankTransitNumber, licenceForm.bankAccountNumber, requestSession.user.userName, rightNowMillis, licenceForm.licenceId, licenceForm.bankInstitutionNumber, licenceForm.bankTransitNumber, licenceForm.bankAccountNumber);
     }
     database.close();
     return true;

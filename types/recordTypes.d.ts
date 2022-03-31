@@ -130,6 +130,7 @@ export interface LicenceCategoryField extends Record {
 export interface Batch {
     batchDate: number;
     batchDateString: string;
+    recordUpdate_dateString: string;
     transactionCount: number;
 }
 export interface User {

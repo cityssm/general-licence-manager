@@ -17,7 +17,7 @@ export interface Record {
  * Licence
  */
 
-export interface Licence extends Record {
+export interface Licence extends Partial<LicenceCategory> {
 
   licenceId: number | "";
   licenceCategoryKey: string;
@@ -58,8 +58,7 @@ export interface Licence extends Record {
   licenceTransactions?: LicenceTransaction[];
 }
 
-export interface LicenceField {
-  licenceId?: number;
+export interface LicenceField extends Partial<Licence> {
   licenceFieldKey: string;
   licenceFieldValue: string;
 
@@ -72,8 +71,7 @@ export interface LicenceField {
   printKey?: string;
 }
 
-export interface LicenceApproval {
-  licenceId?: number;
+export interface LicenceApproval extends Partial<Licence> {
   licenceApprovalKey: string;
   isApproved?: boolean;
 
@@ -84,8 +82,7 @@ export interface LicenceApproval {
   printKey?: string;
 }
 
-export interface LicenceTransaction extends Record {
-  licenceId?: number;
+export interface LicenceTransaction extends Partial<Licence> {
   transactionIndex: number;
   transactionDate?: number;
   transactionDateString?: string;
@@ -94,6 +91,7 @@ export interface LicenceTransaction extends Record {
   bankInstitutionNumber?: string;
   bankTransitNumber?: string;
   bankAccountNumber?: string;
+  bankName?: string;
   externalReceiptNumber?: string;
   batchDate?: number;
   batchDateString?: string;

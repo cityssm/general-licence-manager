@@ -1,0 +1,81 @@
+<%- include('_header'); -%>
+
+<nav class="breadcrumb">
+  <ul>
+    <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+    <li><a href="#">Transaction Batches</a></li>
+    <li class="is-active"><a href="#" aria-current="page">
+      <span class="icon is-small"><i class="fas fa-receipt" aria-hidden="true"></i></span>
+      <span>Batch <%= batchTransactions[0].batchDateString %></span>
+    </a></li>
+  </ul>
+</nav>
+
+<h1 class="title is-1">
+  Reconcile Batch <%= batchTransactions[0].batchDateString %>
+</h1>
+
+<div class="box">
+  <input id="batchReconcile--batchDate" type="hidden" value="<%= batchTransactions[0].batchDate %>" />
+  <div class="field">
+    <label class="label" for="batchReconcile--externalReceiptNumber">Batch Receipt Number</label>
+    <div class="control">
+      <input class="input" id="batchReconcile--externalReceiptNumber" type="text" maxlength="20" required />
+    </div>
+  </div>
+</div>
+
+<div class="panel">
+  <% for (const transaction of batchTransactions) { %>
+    <div class="panel-block is-block"
+      data-licence-id="<%= transaction.licenceId %>"
+      data-transaction-index="<%= transaction.transactionIndex %>"
+      data-transaction-amount="<%= transaction.transactionAmount.toFixed(2) %>">
+      <div class="columns">
+        <div class="column">
+          <a class="has-text-weight-bold" href="<%= urlPrefix %>/licences/<%= transaction.licenceId %>" target="_blank"><%= configFunctions.getProperty("settings.licenceAlias") %> #<%= transaction.licenceNumber %></a><br />
+          <%= transaction.licenceCategory %><br />
+          <%= transaction.licenseeName %>
+        </div>
+        <div class="column">
+          <%= transaction.bankName %><br />
+          <%= transaction.bankInstitutionNumber %><br />
+          <%= transaction.bankTransitNumber %><br />
+          <%= transaction.bankAccountNumber %>
+        </div>
+        <div class="column is-narrow has-text-right">
+          $<%= transaction.transactionAmount.toFixed(2) %>
+        </div>
+        <div class="column">
+          <% if (transaction.externalReceiptNumber && transaction.externalReceiptNumber !== "") { %>
+            <div class="message is-info is-small">
+              <p class="message-body">
+                <i class="fas fa-lock" aria-hidden="true"></i>
+                Transaction acknowledged.
+              </p>
+            </div>
+          <% } else { %>
+            <div class="field has-addons">
+              <div class="control">
+                <button class="button is-outlined is-success is-success-transaction-button" type="button">
+                  Received Successfully
+                </button>
+              </div>
+              <div class="control">
+                <button class="button is-outlined is-danger is-fail-transaction-button" type="button">
+                  Not Received
+                </button>
+              </div>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  <% } %>
+</div>
+
+<%- include('_footerA'); -%>
+
+<script src="<%= urlPrefix %>/javascripts/batch-reconcile.min.js"></script>
+
+<%- include('_footerB'); -%>

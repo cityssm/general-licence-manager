@@ -58,20 +58,26 @@
               <p>Build batches of transactions for later processing.</p>
             </div>
           </div>
-          <div class="media">
-            <div class="media-left">
-              <span class="fa-layers fa-fw fa-3x" aria-hidden="true">
-                <i class="fas fa-receipt"></i>
-                <i class="fas fa-check has-text-success" data-fa-glow data-fa-transform="shrink-6 down-4 right-4"></i>
-              </span>
+          <% for (const batch of batches) { %>
+            <div class="media">
+              <div class="media-left">
+                <i class="fas fa-fw fa-3x fa-receipt" aria-hidden="true"></i>
+              </div>
+              <div class="media-content">
+                <strong>Batch <%= batch.batchDateString %></strong><br />
+                <%= batch.transactionCount %> outstanding <%= batch.transactionCount === 1 ? "transaction" : "transactions" %><br />
+                <span class="is-size-7">Last Updated <%= batch.recordUpdate_dateString %></span>
+              </div>
+              <div class="media-right">
+                <a class="button is-link is-light" data-tooltip="Download Batch" href="#" aria-label="Download Batch">
+                  <i class="fa fa-download" aria-hidden="true"></i>
+                </a>
+                <a class="button is-success is-light" data-tooltip="Reconcile Batch" href="<%= urlPrefix %>/batches/reconcile/<%= batch.batchDate %>" aria-label="Download Batch">
+                  <i class="fa fa-check" aria-hidden="true"></i>
+                </a>
+              </div>
             </div>
-            <div class="media-content has-text-black">
-              <h2 class="title is-4 is-marginless">
-                <a href="<%= urlPrefix %>/batches/reconcile">Batch Reconciler</a>
-              </h2>
-              <p>Mark batch entries as received.</p>
-            </div>
-          </div>
+          <% } %>
         </div>
       </div>
     <% } %>

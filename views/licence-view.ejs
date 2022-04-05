@@ -227,7 +227,12 @@
               <% transactionTotal += licenceTransaction.transactionAmount; %>
               <tr data-transaction-index="<%= licenceTransaction.transactionIndex %>">
                 <td>
-                  <%= licenceTransaction.transactionDateString %><br />
+                  <p><%= licenceTransaction.transactionDateString %></p>
+                  <% if (licenceTransaction.transactionNote && licenceTransaction.transactionNote !== "") { %>
+                    <p class="is-size-7">
+                      <%= licenceTransaction.transactionNote %>
+                    </p>
+                  <% } %>
                   <div class="tags">
                     <% if (currentDate < licenceTransaction.transactionDate) { %>
                       <span class="tag is-warning">Upcoming</span>
@@ -240,7 +245,7 @@
                     <% } %>
                   </div>
                 </td>
-                <td class="has-text-right">
+                <td class="has-text-right <%= licenceTransaction.transactionAmount === 0 ? " has-text-danger" : "" %>">
                   $<%= licenceTransaction.transactionAmount.toFixed(2) %>
                 </td>
               </tr>

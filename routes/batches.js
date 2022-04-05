@@ -7,6 +7,7 @@ import handler_doSplitOutstandingBalance from "../handlers/batches-post/doSplitO
 import handler_doClearLicenceBatchTransactions from "../handlers/batches-post/doClearLicenceBatchTransactions.js";
 import handler_reconcile from "../handlers/batches-get/reconcile.js";
 import handler_doMarkBatchTransactionSuccessful from "../handlers/batches-post/doMarkBatchTransactionSuccessful.js";
+import handler_doMarkBatchTransactionFailed from "../handlers/batches-post/doMarkBatchTransactionFailed.js";
 export const router = Router();
 router.get("/builder", permissionHandlers.updateGetHandler, handler_builder);
 router.post("/doCreateOrUpdateBatchTransaction", permissionHandlers.updatePostHandler, handler_doCreateOrUpdateBatchTransaction);
@@ -15,4 +16,5 @@ router.post("/doSplitOutstandingBalance", permissionHandlers.updatePostHandler, 
 router.post("/doClearLicenceBatchTransactions", permissionHandlers.updatePostHandler, handler_doClearLicenceBatchTransactions);
 router.get("/reconcile/:batchDate", permissionHandlers.updateGetHandler, handler_reconcile);
 router.post("/doMarkBatchTransactionSuccessful", permissionHandlers.updatePostHandler, handler_doMarkBatchTransactionSuccessful);
+router.post("/doMarkBatchTransactionFailed", permissionHandlers.updatePostHandler, handler_doMarkBatchTransactionFailed);
 export default router;

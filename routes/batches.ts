@@ -10,6 +10,7 @@ import handler_doClearLicenceBatchTransactions from "../handlers/batches-post/do
 
 import handler_reconcile from "../handlers/batches-get/reconcile.js";
 import handler_doMarkBatchTransactionSuccessful from "../handlers/batches-post/doMarkBatchTransactionSuccessful.js";
+import handler_doMarkBatchTransactionFailed from "../handlers/batches-post/doMarkBatchTransactionFailed.js";
 
 
 export const router = Router();
@@ -48,6 +49,11 @@ router.get("/reconcile/:batchDate",
 router.post("/doMarkBatchTransactionSuccessful",
   permissionHandlers.updatePostHandler,
   handler_doMarkBatchTransactionSuccessful);
+
+
+router.post("/doMarkBatchTransactionFailed",
+  permissionHandlers.updatePostHandler,
+  handler_doMarkBatchTransactionFailed);
 
 
 export default router;

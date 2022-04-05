@@ -79,7 +79,7 @@ declare const bulmaJS: BulmaJS;
         text: "Yes, Received Succesfully",
         callbackFunction: doSuccess
       }
-    })
+    });
   };
 
   const successButtonElements = document.querySelectorAll(".is-success-transaction-button");
@@ -90,6 +90,57 @@ declare const bulmaJS: BulmaJS;
 
   const markTransactionAsFailed = (clickEvent: Event) => {
 
+    clickEvent.preventDefault();
+
+    if (externalReceiptNumberElement.value === "") {
+      bulmaJS.alert({
+        title: "Batch Receipt Number Required",
+        message: "Enter a receipt number for the batch, and try again.",
+        contextualColorName: "warning"
+      });
+
+      return;
+    }
+
+    const transactionDetails = getTransactionDetails(clickEvent);
+
+    const doFailed = () => {
+
+      cityssm.postJSON(urlPrefix + "/batches/doMarkBatchTransactionFailed", {
+        licenceId: transactionDetails.licenceId,
+        transactionIndex: transactionDetails.transactionIndex,
+        transactionAmount: transactionDetails.transactionAmount,
+        batchDate,
+        externalReceiptNumber: externalReceiptNumberElement.value
+      }, (responseJSON: { success: boolean }) => {
+
+        if (!responseJSON.success) {
+          bulmaJS.alert({
+            title: "Transaction Not Updated",
+            message: "Please try again.",
+            contextualColorName: "danger"
+          });
+
+          return;
+        }
+
+        transactionDetails.failButtonElement.disabled = true;
+        transactionDetails.failButtonElement.classList.remove("is-outlined");
+
+        transactionDetails.successButtonElement.disabled = false;
+        transactionDetails.successButtonElement.classList.add("is-outlined");
+      });
+    };
+
+    bulmaJS.confirm({
+      title: "Mark Transaction as Failed",
+      message: "Are you sure you want to mark this transaction as failed?",
+      contextualColorName: "warning",
+      okButton: {
+        text: "Yes, It Failed",
+        callbackFunction: doFailed
+      }
+    });
   };
 
   const failButtonElements = document.querySelectorAll(".is-fail-transaction-button");

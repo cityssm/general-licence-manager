@@ -7,7 +7,7 @@ import { getCanadianBankName } from "@cityssm/get-canadian-bank-name";
 import type * as recordTypes from "../../types/recordTypes";
 
 
-export const getBatchTransactions = (batchDate: number | string): recordTypes.LicenceTransaction[] => {
+export const getBatchTransactions = (batchDate: number | string, includeOutstandingOnly = false): recordTypes.LicenceTransaction[] => {
 
   const database = sqlite(databasePath, {
     readonly: true
@@ -33,6 +33,9 @@ export const getBatchTransactions = (batchDate: number | string): recordTypes.Li
       " where t.recordDelete_timeMillis is null" +
       " and l.recordDelete_timeMillis is null" +
       " and t.batchDate = ?" +
+      (includeOutstandingOnly
+        ? " and (t.externalReceiptNumber is null or t.externalReceiptNumber = '')"
+        : "") +
       " order by l.licenceNumber")
       .all(batchDate);
 

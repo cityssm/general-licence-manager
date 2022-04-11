@@ -22,6 +22,9 @@ export interface Config {
     renewalAlias?: string;
     includeBatches?: boolean;
   };
+  exports?: {
+    batches?: ConfigBatchExport;
+  };
   licenceLengthFunctions?: {
     [licenceLengthFunctionName: string]: LicenceLengthFunction;
   };
@@ -50,11 +53,33 @@ export interface ConfigActiveDirectory {
   password: string;
 }
 
+
 interface ConfigDefaults {
   licenceNumberFunction: LicenceNumberFunction;
   licenseeCity: string;
   licenseeProvince: string;
 }
+
+
+export type ConfigBatchExport = ConfigBatchExport_RBCPreauthorized;
+
+
+export interface ConfigBatchExport_RBCPreauthorized {
+  exportType: "rbcPreauthorized";
+  isTesting: boolean;
+  header: {
+    clientNumber: string;
+    clientName: string;
+    currencyType: "CAD" | "USD";
+  },
+  record: {
+    transactionCode: "430";
+    languageCode: "E" | "F";
+    clientShortName: string;
+    destinationCountry: "CAN" | "USA";
+  }
+}
+
 
 export type LicenceNumberFunction = "year-fourDigits" | "year-fiveDigits" | "year-sixDigits";
 

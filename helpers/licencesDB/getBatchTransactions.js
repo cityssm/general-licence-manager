@@ -2,7 +2,7 @@ import sqlite from "better-sqlite3";
 import { licencesDB as databasePath } from "../../data/databasePaths.js";
 import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
 import { getCanadianBankName } from "@cityssm/get-canadian-bank-name";
-export const getBatchTransactions = (batchDate) => {
+export const getBatchTransactions = (batchDate, includeOutstandingOnly = false) => {
     const database = sqlite(databasePath, {
         readonly: true
     });
@@ -24,6 +24,9 @@ export const getBatchTransactions = (batchDate) => {
         " where t.recordDelete_timeMillis is null" +
         " and l.recordDelete_timeMillis is null" +
         " and t.batchDate = ?" +
+        (includeOutstandingOnly
+            ? " and (t.externalReceiptNumber is null or t.externalReceiptNumber = '')"
+            : "") +
         " order by l.licenceNumber")
         .all(batchDate);
     database.close();

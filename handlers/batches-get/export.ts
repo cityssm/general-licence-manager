@@ -14,7 +14,7 @@ export const handler: RequestHandler = (request, response) => {
   }
 
   response.setHeader("Content-Disposition",
-    "inline; filename=" + batchExport.fileName);
+    "attachment; filename=" + batchExport.fileName);
 
   response.setHeader("Content-Type", batchExport.fileContentType);
 

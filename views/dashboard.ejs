@@ -69,7 +69,7 @@
                 <span class="is-size-7">Last Updated <%= batch.recordUpdate_dateString %></span>
               </div>
               <div class="media-right">
-                <a class="button is-link is-light" data-tooltip="Download Batch" href="<%= urlPrefix %>/batches/export/<%= batch.batchDate %>" aria-label="Download Batch">
+                <a class="button is-link is-light" data-tooltip="Download Batch" href="<%= urlPrefix %>/batches/export/<%= batch.batchDate %>" aria-label="Download Batch" download>
                   <i class="fa fa-download" aria-hidden="true"></i>
                 </a>
                 <a class="button is-success is-light" data-tooltip="Reconcile Batch" href="<%= urlPrefix %>/batches/reconcile/<%= batch.batchDate %>" aria-label="Download Batch">

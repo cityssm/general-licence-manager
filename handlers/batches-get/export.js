@@ -6,7 +6,7 @@ export const handler = (request, response) => {
     if (!batchExport) {
         return response.redirect(configFunctions.getProperty("reverseProxy.urlPrefix") + "/dashboard/?error=batchExportError");
     }
-    response.setHeader("Content-Disposition", "inline; filename=" + batchExport.fileName);
+    response.setHeader("Content-Disposition", "attachment; filename=" + batchExport.fileName);
     response.setHeader("Content-Type", batchExport.fileContentType);
     response.send(batchExport.fileData);
 };

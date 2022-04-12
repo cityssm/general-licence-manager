@@ -92,7 +92,7 @@ export const getBatchExport = (outstandingBatchTransactions) => {
         rightPad(batchExportConfig.header.clientNumber, "0", 10) +
         "0".padEnd(6, "0") +
         "0".padEnd(14, "0") +
-        rightPad(outstandingBatchTransactions.length.toString(), "0", 6) +
+        leftPad(outstandingBatchTransactions.length.toString(), "0", 6) +
         leftPad(Math.round(totalValue * 100).toString(), "0", 14) +
         "0".padEnd(2, "0") +
         "0".padEnd(6, "0") +

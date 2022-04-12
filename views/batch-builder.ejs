@@ -56,7 +56,7 @@
         %>
         <tr data-licence-id="<%= licence.licenceId %>"
             data-licence-number="<%= licence.licenceNumber %>"
-            data-outstanding-balance="<%= licence.outstandingBalance %>">
+            data-outstanding-balance="<%= licence.outstandingBalance.toFixed(2) %>">
           <th class="<%= errorMessage === "" ? "" : "has-background-danger-light" %>">
             <div class="level is-mobile mb-0">
               <div class="level-left">

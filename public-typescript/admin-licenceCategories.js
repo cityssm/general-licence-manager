@@ -116,11 +116,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
             },
             onshown: (modalElement, closeModalFunction) => {
                 editLicenceCategoryFieldModalCloseFunction = closeModalFunction;
+                modalElement.querySelector("#licenceCategoryFieldEdit--licenceField").focus();
                 modalElement.querySelector("#form--licenceCategoryFieldEdit")
                     .addEventListener("submit", updateLicenceCategoryFieldSubmitFunction);
                 modalElement.querySelector(".is-delete-button")
                     .addEventListener("click", confirmDeleteLicenceCategoryFieldFunction);
                 bulmaJS.init(modalElement);
+            },
+            onhidden: () => {
+                document.querySelector("#form--licenceCategoryFieldAdd button[type='submit']").focus();
             }
         });
     };
@@ -621,6 +625,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             },
             onshown: (modalElement, closeModalFunction) => {
                 categoryCloseModalFunction = closeModalFunction;
+                modalElement.querySelector("#licenceCategoryEdit--licenceCategory").focus();
                 modalElement.querySelector("#form--licenceCategoryEdit")
                     .addEventListener("submit", updateLicenceCategorySubmitFunction);
                 modalElement.querySelector("#form--licenceCategoryFieldAdd")
@@ -670,6 +675,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 bulmaJS.toggleHtmlClipped();
                 addLicenceCategoryCloseModalFunction = closeModalFunction;
                 modalElement.querySelector("form").addEventListener("submit", addLicenceCategorySubmitFunction);
+                modalElement.querySelector("#licenceCategoryAdd--licenceCategory").focus();
+            },
+            onhidden: () => {
+                document.querySelector("#button--addLicenceCategory").focus();
             },
             onremoved: () => {
                 bulmaJS.toggleHtmlClipped();

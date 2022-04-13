@@ -177,6 +177,8 @@ declare const bulmaJS: BulmaJS;
       onshown: (modalElement, closeModalFunction) => {
         editLicenceCategoryFieldModalCloseFunction = closeModalFunction;
 
+        (modalElement.querySelector("#licenceCategoryFieldEdit--licenceField") as HTMLInputElement).focus();
+
         modalElement.querySelector("#form--licenceCategoryFieldEdit")
           .addEventListener("submit", updateLicenceCategoryFieldSubmitFunction);
 
@@ -184,6 +186,9 @@ declare const bulmaJS: BulmaJS;
           .addEventListener("click", confirmDeleteLicenceCategoryFieldFunction);
 
         bulmaJS.init(modalElement);
+      },
+      onhidden: () => {
+        (document.querySelector("#form--licenceCategoryFieldAdd button[type='submit']") as HTMLButtonElement).focus();
       }
     });
   };
@@ -891,6 +896,8 @@ declare const bulmaJS: BulmaJS;
 
         categoryCloseModalFunction = closeModalFunction;
 
+        (modalElement.querySelector("#licenceCategoryEdit--licenceCategory") as HTMLInputElement).focus();
+
         modalElement.querySelector("#form--licenceCategoryEdit")
           .addEventListener("submit", updateLicenceCategorySubmitFunction);
 
@@ -957,13 +964,16 @@ declare const bulmaJS: BulmaJS;
 
     cityssm.openHtmlModal("licenceCategory-add", {
       onshow: (modalElement) => {
-
         glm.populateAliases(modalElement)
       },
       onshown: (modalElement, closeModalFunction) => {
         bulmaJS.toggleHtmlClipped();
         addLicenceCategoryCloseModalFunction = closeModalFunction;
         modalElement.querySelector("form").addEventListener("submit", addLicenceCategorySubmitFunction);
+        (modalElement.querySelector("#licenceCategoryAdd--licenceCategory") as HTMLInputElement).focus();
+      },
+      onhidden: () => {
+        (document.querySelector("#button--addLicenceCategory") as HTMLElement).focus();
       },
       onremoved: () => {
         bulmaJS.toggleHtmlClipped();

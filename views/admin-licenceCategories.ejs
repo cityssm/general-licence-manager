@@ -16,13 +16,13 @@
 </h1>
 
 <div class="fixed-container is-fixed-bottom-right mr-4 mb-4 is-hidden-print">
-  <button class="button is-circle is-success has-tooltip-left" id="button--addLicenceCategory" data-tooltip="Add a New Category" type="button">
+  <button class="button is-circle is-success has-tooltip-left" id="button--addLicenceCategory" data-cy="add-licence-category" data-tooltip="Add a New Category" type="button">
     <i class="fas fa-plus" aria-hidden="true"></i>
     <span class="is-sr-only">Add</span>
   </button>
 </div>
 
-<div id="container--licenceCategories"></div>
+<div id="container--licenceCategories" data-cy="results"></div>
 
 <%- include('_footerA'); -%>
 

@@ -34,3 +34,14 @@
   background-color: #f5f5f5;
   border-color: #dbdbdb;
 }
+
+/*
+ * Accessibility
+ */
+
+$black-ter: hsl(0, 0%, 14%);
+
+#is-login-page .control .button.is-static,
+.menu .menu-label {
+  color: $black-ter;
+}

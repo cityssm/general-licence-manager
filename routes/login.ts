@@ -6,6 +6,8 @@ import * as configFunctions from "../helpers/functions.config.js";
 
 import * as authenticationFunctions from "../helpers/functions.authentication.js";
 
+import { useTestDatabases } from "../data/databasePaths.js";
+
 import type * as recordTypes from "../types/recordTypes";
 
 
@@ -50,7 +52,8 @@ router.route("/")
       response.render("login", {
         userName: "",
         message: "",
-        redirect: request.query.redirect
+        redirect: request.query.redirect,
+        useTestDatabases
       });
     }
   })
@@ -63,13 +66,16 @@ router.route("/")
 
     let isAuthenticated = false;
 
-    if (userName.charAt(0) === "*" && userName === passwordPlain) {
-      
-      isAuthenticated = configFunctions.getProperty("users.testing").includes(userName);
+    if (userName.charAt(0) === "*") {
+      if (useTestDatabases && userName === passwordPlain) {
 
-      if (isAuthenticated) {
-        debug("Authenticated testing user: " + userName);
+        isAuthenticated = configFunctions.getProperty("users.testing").includes(userName);
+
+        if (isAuthenticated) {
+          debug("Authenticated testing user: " + userName);
+        }
       }
+
     } else {
 
       isAuthenticated = await authenticationFunctions.authenticate(userName, passwordPlain);
@@ -119,7 +125,8 @@ router.route("/")
       response.render("login", {
         userName,
         message: "Login Failed",
-        redirect: redirectURL
+        redirect: redirectURL,
+        useTestDatabases
       });
     }
   });

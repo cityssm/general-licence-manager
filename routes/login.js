@@ -2,6 +2,7 @@ import { Router } from "express";
 import Debug from "debug";
 import * as configFunctions from "../helpers/functions.config.js";
 import * as authenticationFunctions from "../helpers/functions.authentication.js";
+import { useTestDatabases } from "../data/databasePaths.js";
 const debug = Debug("general-licence-manager:login");
 export const router = Router();
 const getSafeRedirectURL = (possibleRedirectURL = "") => {
@@ -28,7 +29,8 @@ router.route("/")
         response.render("login", {
             userName: "",
             message: "",
-            redirect: request.query.redirect
+            redirect: request.query.redirect,
+            useTestDatabases
         });
     }
 })
@@ -37,10 +39,12 @@ router.route("/")
     const passwordPlain = request.body.password;
     const redirectURL = getSafeRedirectURL(request.body.redirect);
     let isAuthenticated = false;
-    if (userName.charAt(0) === "*" && userName === passwordPlain) {
-        isAuthenticated = configFunctions.getProperty("users.testing").includes(userName);
-        if (isAuthenticated) {
-            debug("Authenticated testing user: " + userName);
+    if (userName.charAt(0) === "*") {
+        if (useTestDatabases && userName === passwordPlain) {
+            isAuthenticated = configFunctions.getProperty("users.testing").includes(userName);
+            if (isAuthenticated) {
+                debug("Authenticated testing user: " + userName);
+            }
         }
     }
     else {
@@ -79,7 +83,8 @@ router.route("/")
         response.render("login", {
             userName,
             message: "Login Failed",
-            redirect: redirectURL
+            redirect: redirectURL,
+            useTestDatabases
         });
     }
 });

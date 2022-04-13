@@ -6,14 +6,21 @@ environment:
     secure: OwGBrbaDuwHTrS9pLwp6YufG5gC8KI8hHkOKnrnIwv0nuZcBjqF9mX71QQ3sTpyR
   CC_TEST_REPORTER_ID:
     secure: U8VBoqpcGdKUeOmJEjvOWa/ZhnaFe4hkZnBsdBnQk4ivOKjFDDxqfok8xmQKmGRoUhsBu6H6IHPda6MFSXxI3DFnkQnhRYahUwJCu9nQris=
+  CYPRESS_RECORD_KEY:
+    secure: xdfP5DfjbkmXa8S6XdXez7IqG2cUAtyYvwg0RbxgahmMu3p2+6pFynF5iMlDGzKY
 
 stack: "node 14"
+
+cache:
+  - node_modules      # local npm modules
+  - $HOME/.cache      # Cypress
+  - $HOME/.npm        # NPM
 
 install:
   - npm install -g npm@7
   # install modules
   - sh: npm ci
-  - sh: npm install -g mocha c8
+  - sh: npm install -g mocha c8 cypress
 
 before_test:
   # Download codeclimate test report
@@ -22,7 +29,7 @@ before_test:
 
 test_script:
   - cp ./data/config.appveyor.js ./data/config.js
-  - c8 --reporter=lcov mocha --timeout 10000 --exit
+  - c8 --reporter=lcov --reporter=text --reporter=text-summary mocha --timeout 10000 --exit
 
 after_test:
   # Send test result to codeclimate
@@ -30,6 +37,12 @@ after_test:
   - sh: ./codeclimate-test-reporter after-build -t lcov --exit-code $?
   # Send test result to Codacy
   - sh: bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r ./coverage/lcov.info
+
+artifacts:
+  - path: cypress\screenshots\**\*.png
+    name: Cypress Screenshots
+  - path: cypress\videos\**\*.mp4
+    name: Cypress Videos
 
 # Don't actually build.
 build: off

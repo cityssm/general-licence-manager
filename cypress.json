@@ -1,0 +1,6 @@
+{
+  "baseUrl": "http://localhost:7000",
+  "pluginsFile": false,
+  "ignoreTestFiles": ["*.d.ts", "*.js"],
+  "projectId": "m93ucs"
+}

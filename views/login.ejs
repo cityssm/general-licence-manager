@@ -47,7 +47,13 @@
                   </span>
                 </div>
               </div>
-
+              <% if (useTestDatabases) { %>
+                <div class="message is-small is-warning">
+                  <p class="message-body has-text-centered">
+                    Testing databases in use!
+                  </p>
+                </div>
+              <% } %>
               <div class="level is-mobile">
                 <div class="level-left has-text-danger">
                     <% if (message !== "") { %>

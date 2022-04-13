@@ -7,9 +7,9 @@ export const config: configTypes.Config = {
     licenceNumberFunction: "year-fourDigits"
   },
   users: {
-    testing: ["*testing"],
-    canLogin: ["*testing"],
-    canUpdate: ["*testing"],
-    isAdmin: ["*testing"]
+    testing: ["*testView", "*testUpdate", "*testAdmin"],
+    canLogin: ["*testView", "*testUpdate", "*testAdmin"],
+    canUpdate: ["*testUpdate"],
+    isAdmin: ["*testAdmin"]
   }
 };

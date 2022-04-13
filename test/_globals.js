@@ -10,6 +10,10 @@ var __asyncGenerator = (this && this.__asyncGenerator) || function (thisArg, _ar
     function reject(value) { resume("throw", value); }
     function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
 };
+export const testView = "*testView";
+export const testUpdate = "*testUpdate";
+export const testAdmin = "*testAdmin";
+export const portNumber = 7000;
 export const fakeViewOnlySession = {
     id: "",
     cookie: undefined,

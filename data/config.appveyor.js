@@ -1,4 +1,7 @@
 export const config = {
+    application: {
+        useTestDatabases: true
+    },
     defaults: {
         licenseeCity: "Sault Ste. Marie",
         licenseeProvince: "ON",

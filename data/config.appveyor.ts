@@ -1,6 +1,9 @@
 import type * as configTypes from "../types/configTypes";
 
 export const config: configTypes.Config = {
+  application: {
+    useTestDatabases: true
+  },
   defaults: {
     licenseeCity: "Sault Ste. Marie",
     licenseeProvince: "ON",

@@ -24,7 +24,7 @@ export const initLicencesDB = (): boolean => {
 
   if (!row) {
 
-    debugSQL("Creating licences.db");
+    debugSQL("Creating " + databasePath);
 
     /*
      * Licence Categories

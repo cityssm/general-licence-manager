@@ -13,6 +13,7 @@ const configFallbackValues = new Map<string, unknown>();
 configFallbackValues.set("application.applicationName", "General Licence Manager");
 configFallbackValues.set("application.logoURL", "/images/stamp.png");
 configFallbackValues.set("application.httpPort", 7000);
+configFallbackValues.set("application.useTestDatabases", false);
 
 configFallbackValues.set("reverseProxy.disableCompression", false);
 configFallbackValues.set("reverseProxy.disableEtag", false);
@@ -50,6 +51,7 @@ export function getProperty(propertyName: "application.applicationName"): string
 export function getProperty(propertyName: "application.logoURL"): string;
 export function getProperty(propertyName: "application.httpPort"): number;
 export function getProperty(propertyName: "application.userDomain"): string;
+export function getProperty(propertyName: "application.useTestDatabases"): boolean;
 
 export function getProperty(propertyName: "activeDirectory"): configTypes.ConfigActiveDirectory;
 

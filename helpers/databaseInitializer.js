@@ -14,7 +14,7 @@ export const initLicencesDB = () => {
         .prepare("select name from sqlite_master where type = 'table' and name = 'LicenceCategories'")
         .get();
     if (!row) {
-        debugSQL("Creating licences.db");
+        debugSQL("Creating " + databasePath);
         licencesDB.prepare("create table if not exists LicenceCategories (" +
             "licenceCategoryKey varchar(50) primary key," +
             " licenceCategory varchar(100) not null," +

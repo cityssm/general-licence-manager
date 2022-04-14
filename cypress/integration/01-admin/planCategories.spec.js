@@ -55,6 +55,10 @@ describe("Admin - Licence Categories", function () {
                 .click();
             cy.get(".modal").should("not.exist");
         });
+        it("Has no detectable accessibility issues", function () {
+            cy.injectAxe();
+            cy.checkA11y();
+        });
         it("Updates Main Details", function () {
             var licenceCategory = uuidV4().slice(-10);
             cy.get(".modal input[name='licenceCategory']")
@@ -87,11 +91,90 @@ describe("Admin - Licence Categories", function () {
             cy.get(".modal #container--licenceCategoryFields")
                 .should("contain.text", licenceField);
         });
-        it.skip("Updates an Additional Field", function () {
+        it("Updates an Additional Field", function () {
+            cy.get(".modal #container--licenceCategoryFields a.panel-block")
+                .first()
+                .click();
+            cy.wait(500);
+            cy.get(".modal")
+                .should("have.length", 2)
+                .last()
+                .should("contain.text", "Field");
+            cy.injectAxe();
+            cy.checkA11y();
+            cy.get(".modal").last()
+                .find("textarea[name='licenceFieldDescription']")
+                .focus()
+                .clear()
+                .clear()
+                .type(uuidV4());
+            cy.get(".modal").last().find("form").submit();
+            cy.wait(500);
+            cy.get(".modal").should("have.length", 1);
         });
-        it.skip("Adds an Approval", function () {
+        it("Adds an Approval", function () {
+            var licenceApproval = uuidV4().slice(-10);
+            cy.get(".modal #licenceCategoryApprovalAdd--licenceApproval")
+                .focus()
+                .type(licenceApproval)
+                .parents("form")
+                .submit();
+            cy.wait(500);
+            cy.get(".modal .modal-card-head")
+                .last()
+                .should("contain.text", "Update Approval");
+            cy.get(".modal .is-close-modal-button")
+                .last()
+                .click();
+            cy.get(".modal #container--licenceCategoryApprovals")
+                .should("contain.text", licenceApproval);
         });
-        it.skip("Adds a Fee", function () {
+        it("Updates an Approval", function () {
+            cy.get(".modal #container--licenceCategoryApprovals a.panel-block")
+                .first()
+                .click();
+            cy.wait(500);
+            cy.injectAxe();
+            cy.checkA11y();
+            cy.get(".modal")
+                .should("have.length", 2)
+                .last()
+                .should("contain.text", "Approval");
+            cy.get(".modal").last()
+                .find("textarea[name='licenceApprovalDescription']")
+                .focus()
+                .clear()
+                .clear()
+                .type(uuidV4());
+            cy.get(".modal").last().find("form").submit();
+            cy.wait(500);
+            cy.get(".modal").should("have.length", 1);
+        });
+        it("Adds a Fee", function () {
+            var currentYear = new Date().getFullYear();
+            cy.get(".modal .is-add-fee-button")
+                .click();
+            cy.wait(500);
+            cy.get(".modal")
+                .should("have.length", 2)
+                .last()
+                .should("contain.text", "Fee");
+            cy.injectAxe();
+            cy.checkA11y();
+            cy.get(".modal input[name='effectiveStartDateString']")
+                .invoke("val", currentYear.toString() + "-01-01");
+            cy.get(".modal input[name='effectiveEndDateString']")
+                .invoke("val", currentYear.toString() + "-12-31");
+            cy.get(".modal input[name='licenceFee']")
+                .clear()
+                .clear()
+                .type("100");
+            cy.get(".modal").last()
+                .find("form")
+                .submit();
+            cy.wait(500);
+            cy.get(".modal")
+                .should("have.length", 1);
         });
     });
 });

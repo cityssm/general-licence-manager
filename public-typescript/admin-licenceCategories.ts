@@ -585,6 +585,8 @@ declare const bulmaJS: BulmaJS;
 
         editLicenceCategoryFeeModalCloseFunction = closeModalFunction;
 
+        (modalElement.querySelector("#licenceCategoryFeeEdit--effectiveStartDateString") as HTMLInputElement).focus();
+
         modalElement.querySelector("#form--licenceCategoryFeeEdit")
           .addEventListener("submit", updateLicenceCategoryFeeSubmitFunction);
 

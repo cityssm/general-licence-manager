@@ -1,10 +1,12 @@
-<div class="modal">
+<div class="modal" role="dialog" aria-labelledby="modal-card-title--licenceCategoryEdit">
   <div class="modal-background"></div>
   <div class="modal-card" style="width:1200px;max-width:100vw">
-    <header class="modal-card-head">
-      <h2 class="modal-card-title">Update <span data-setting="licenceAlias"></span> Category</h2>
+    <div class="modal-card-head">
+      <h2 class="modal-card-title" id="modal-card-title--licenceCategoryEdit">
+        Update <span data-setting="licenceAlias"></span> Category
+      </h2>
       <button class="delete is-close-modal-button" aria-label="close" type="button"></button>
-    </header>
+    </div>
     <div class="modal-card-body">
       <div class="columns">
         <div class="column">
@@ -73,7 +75,7 @@
               <div class="column">
                 <div class="field has-addons">
                   <div class="control">
-                    <input class="input has-text-right" id="licenceCategoryEdit--licenceLengthMonths" name="licenceLengthMonths" type="number" min="0" max="36" step="1" onwheel="return false" required />
+                    <input class="input has-text-right" id="licenceCategoryEdit--licenceLengthMonths" name="licenceLengthMonths" type="number" min="0" max="36" step="1" aria-label="Month Length" onwheel="return false" required />
                   </div>
                   <div class="control">
                     <span class="button is-static">month(s)</span>
@@ -83,7 +85,7 @@
               <div class="column">
                 <div class="field has-addons">
                   <div class="control">
-                    <input class="input has-text-right" id="licenceCategoryEdit--licenceLengthDays" name="licenceLengthDays" type="number" min="0" max="1000" step="1" onwheel="return false" required />
+                    <input class="input has-text-right" id="licenceCategoryEdit--licenceLengthDays" name="licenceLengthDays" type="number" min="0" max="1000" step="1" aria-label="Day Length" onwheel="return false" required />
                   </div>
                   <div class="control">
                     <span class="button is-static">day(s)</span>
@@ -159,7 +161,7 @@
         </div>
       </div>
     </div>
-    <footer class="modal-card-foot is-justify-content-right">
+    <div class="modal-card-foot is-justify-content-right">
       <div class="dropdown is-right is-up">
         <div class="dropdown-trigger">
           <button class="button" type="button">
@@ -177,6 +179,6 @@
         </div>
       </div>
       <button class="button is-close-modal-button ml-2" type="button">Close</button>
-    </footer>
+    </div>
   </div>
 </div>

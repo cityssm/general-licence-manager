@@ -411,6 +411,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             },
             onshown: (modalElement, closeModalFunction) => {
                 editLicenceCategoryFeeModalCloseFunction = closeModalFunction;
+                modalElement.querySelector("#licenceCategoryFeeEdit--effectiveStartDateString").focus();
                 modalElement.querySelector("#form--licenceCategoryFeeEdit")
                     .addEventListener("submit", updateLicenceCategoryFeeSubmitFunction);
                 modalElement.querySelector(".is-delete-button")

@@ -1,11 +1,11 @@
-<div class="modal">
+<div class="modal" role="dialog" aria-labelledby="modal-card-title--licenceCategoryFeeEdit">
   <div class="modal-background"></div>
   <div class="modal-card">
-    <header class="modal-card-head">
-      <h2 class="modal-card-title">Update Fee</h2>
+    <div class="modal-card-head">
+      <h2 class="modal-card-title" id="modal-card-title--licenceCategoryFeeEdit">Update Fee</h2>
       <button class="delete is-close-modal-button" aria-label="close" type="button"></button>
-    </header>
-    <section class="modal-card-body">
+    </div>
+    <div class="modal-card-body">
       <form id="form--licenceCategoryFeeEdit">
         <input id="licenceCategoryFeeEdit--licenceFeeId" name="licenceFeeId" type="hidden" />
         <div class="columns">
@@ -64,8 +64,8 @@
           </div>
         </div>
       </form>
-    </section>
-    <footer class="modal-card-foot is-justify-content-right">
+    </div>
+    <div class="modal-card-foot is-justify-content-right">
       <button class="button is-success" type="submit" form="form--licenceCategoryFeeEdit">Update Fee</button>
       <div class="dropdown is-right is-up">
         <div class="dropdown-trigger">
@@ -84,6 +84,6 @@
         </div>
       </div>
       <button class="button ml-2 is-close-modal-button" type="button">Close</button>
-    </footer>
+    </div>
   </div>
 </div>

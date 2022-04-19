@@ -14,7 +14,7 @@ describe("Admin - Licence Categories", () => {
     login(testAdmin)
   });
 
-  // after(logout);
+  after(logout);
 
   beforeEach("Loads page", () => {
     cy.visit("/admin/licenceCategories");

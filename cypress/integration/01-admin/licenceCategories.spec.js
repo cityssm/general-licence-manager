@@ -6,6 +6,7 @@ describe("Admin - Licence Categories", function () {
         logout();
         login(testAdmin);
     });
+    after(logout);
     beforeEach("Loads page", function () {
         cy.visit("/admin/licenceCategories");
         cy.location("pathname").should("equal", "/admin/licenceCategories");

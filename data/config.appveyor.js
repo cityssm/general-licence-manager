@@ -12,5 +12,8 @@ export const config = {
         canLogin: ["*testView", "*testUpdate", "*testAdmin"],
         canUpdate: ["*testUpdate"],
         isAdmin: ["*testAdmin"]
+    },
+    settings: {
+        includeBatches: true
     }
 };

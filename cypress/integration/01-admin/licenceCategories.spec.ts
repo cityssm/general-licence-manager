@@ -4,7 +4,7 @@ import { v4 as uuidV4 } from "uuid";
 
 import { testAdmin } from "../../../test/_globals.js";
 
-import { logout, login } from "../../support/index.js";
+import { logout, login, ajaxDelayMillis } from "../../support/index.js";
 
 
 describe("Admin - Licence Categories", () => {
@@ -46,7 +46,7 @@ describe("Admin - Licence Categories", () => {
 
     cy.get(".modal form").submit();
 
-    cy.wait(500);
+    cy.wait(ajaxDelayMillis);
 
     // Add modal gone, update modal visible
 
@@ -73,7 +73,7 @@ describe("Admin - Licence Categories", () => {
 
     beforeEach(() => {
 
-      cy.wait(500);
+      cy.wait(ajaxDelayMillis);
 
       cy.get("[data-cy='results'] a.panel-block").first().click();
 
@@ -114,7 +114,7 @@ describe("Admin - Licence Categories", () => {
 
       cy.get(".modal #form--licenceCategoryEdit").submit();
 
-      cy.wait(500);
+      cy.wait(ajaxDelayMillis);
 
       cy.get(".modal").last()
         .should("contain.text", "successful")
@@ -132,7 +132,7 @@ describe("Admin - Licence Categories", () => {
         .parents("form")
         .submit();
 
-      cy.wait(500);
+      cy.wait(1000);
 
       cy.get(".modal .modal-card-head")
         .last()
@@ -152,7 +152,7 @@ describe("Admin - Licence Categories", () => {
         .first()
         .click();
 
-      cy.wait(500);
+      cy.wait(ajaxDelayMillis);
 
       cy.get(".modal")
         .should("have.length", 2)
@@ -172,7 +172,7 @@ describe("Admin - Licence Categories", () => {
 
       cy.get(".modal").last().find("form").submit();
 
-      cy.wait(500);
+      cy.wait(ajaxDelayMillis);
 
       cy.get(".modal").should("have.length", 1);
     });
@@ -187,7 +187,7 @@ describe("Admin - Licence Categories", () => {
         .parents("form")
         .submit();
 
-      cy.wait(500);
+      cy.wait(ajaxDelayMillis);
 
       cy.get(".modal .modal-card-head")
         .last()
@@ -207,7 +207,7 @@ describe("Admin - Licence Categories", () => {
         .first()
         .click();
 
-      cy.wait(500);
+      cy.wait(ajaxDelayMillis);
 
       // Check Accessibility
       cy.injectAxe();
@@ -227,7 +227,7 @@ describe("Admin - Licence Categories", () => {
 
       cy.get(".modal").last().find("form").submit();
 
-      cy.wait(500);
+      cy.wait(ajaxDelayMillis);
 
       cy.get(".modal").should("have.length", 1);
     });
@@ -239,7 +239,7 @@ describe("Admin - Licence Categories", () => {
       cy.get(".modal .is-add-fee-button")
         .click();
 
-      cy.wait(500);
+      cy.wait(ajaxDelayMillis);
 
       cy.get(".modal")
         .should("have.length", 2)
@@ -265,7 +265,7 @@ describe("Admin - Licence Categories", () => {
         .find("form")
         .submit();
 
-      cy.wait(500);
+      cy.wait(ajaxDelayMillis);
 
       cy.get(".modal")
         .should("have.length", 1);

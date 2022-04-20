@@ -1,7 +1,7 @@
 import * as configFunctions from "../../../helpers/functions.config.js";
 import { getCanadianBankName } from "@cityssm/get-canadian-bank-name";
 import { testUpdate } from "../../../test/_globals.js";
-import { logout, login } from "../../support/index.js";
+import { logout, login, ajaxDelayMillis } from "../../support/index.js";
 describe("Update - Licences", function () {
     before(function () {
         logout();
@@ -73,7 +73,7 @@ describe("Update - Licences", function () {
                 cy.get("input[name='bankAccountNumber']")
                     .clear()
                     .type(licenceJSON.bankAccountNumber);
-                cy.wait(500);
+                cy.wait(ajaxDelayMillis);
                 cy.get("#licenceEdit--bankName")
                     .should("have.value", getCanadianBankName(licenceJSON.bankInstitutionNumber, licenceJSON.bankTransitNumber));
             });
@@ -96,28 +96,66 @@ describe("Update - Licences", function () {
         });
         it("Should submit form and create the licence", function () {
             cy.get("#form--licenceEdit").submit();
-            cy.wait(500);
+            cy.wait(ajaxDelayMillis);
             cy.location("pathname")
                 .should("not.contain", "/new")
                 .should("contain", "/edit");
         });
     });
-    describe.only("Update a Licence", function () {
+    describe("Update a Licence", function () {
         before(function () {
             cy.visit("/licences");
-            cy.wait(500);
-            cy.get("#container--searchResults a")
+            cy.wait(ajaxDelayMillis);
+            cy.get("#container--searchResults tr[data-cy='pending'] a")
                 .first()
                 .click();
-            cy.wait(500);
+            cy.wait(ajaxDelayMillis);
             cy.get("a[href$='/edit']")
                 .first()
                 .click();
-            cy.wait(500);
+            cy.wait(ajaxDelayMillis);
+        });
+        it("Can update the licence", function () {
+            cy.get("#form--licenceEdit").submit();
+            cy.get(".modal")
+                .should("contain.text", "Updated Successfully");
+            cy.get(".modal button").click();
         });
         it("Can add a transaction", function () {
             cy.get("#button--addTransaction")
                 .click();
+            cy.get(".modal")
+                .should("exist");
+            cy.injectAxe();
+            cy.checkA11y();
+            cy.get(".modal input[name='bankInstitutionNumber']")
+                .should("not.be.visible");
+            cy.get(".modal .is-more-fields-button")
+                .click();
+            cy.get(".modal .is-more-fields-button")
+                .should("not.exist");
+            cy.injectAxe();
+            cy.checkA11y();
+            cy.get(".modal input[name='bankInstitutionNumber']")
+                .should("be.visible")
+                .should("have.value", "");
+            cy.get(".modal .is-copy-bank-numbers-button")
+                .click();
+            cy.get(".modal input[name='bankInstitutionNumber']")
+                .should("not.have.value", "");
+            cy.get(".modal form").submit();
+            cy.wait(ajaxDelayMillis);
+            cy.get("#table--licenceTransactions tbody tr")
+                .should("have.lengthOf.gt", 0);
+        });
+        it("Can issue the licence", function () {
+            cy.get("#is-issue-licence-button")
+                .click();
+            cy.get(".modal button[data-cy='ok']")
+                .click();
+            cy.wait(ajaxDelayMillis);
+            cy.get("#is-issue-licence-button")
+                .should("not.exist");
         });
     });
 });

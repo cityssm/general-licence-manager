@@ -1,6 +1,6 @@
 import { v4 as uuidV4 } from "uuid";
 import { testAdmin } from "../../../test/_globals.js";
-import { logout, login } from "../../support/index.js";
+import { logout, login, ajaxDelayMillis } from "../../support/index.js";
 describe("Admin - Licence Categories", function () {
     before(function () {
         logout();
@@ -26,7 +26,7 @@ describe("Admin - Licence Categories", function () {
             .should("be.focused")
             .type(licenceCategory);
         cy.get(".modal form").submit();
-        cy.wait(500);
+        cy.wait(ajaxDelayMillis);
         cy.get(".modal").should("be.visible");
         cy.get(".modal .modal-card-title")
             .should("contain.text", "Update")
@@ -42,7 +42,7 @@ describe("Admin - Licence Categories", function () {
     });
     describe("Updates an Existing Licence Category", function () {
         beforeEach(function () {
-            cy.wait(500);
+            cy.wait(ajaxDelayMillis);
             cy.get("[data-cy='results'] a.panel-block").first().click();
             cy.get(".modal").should("be.visible");
             cy.get(".modal .modal-card-title")
@@ -69,7 +69,7 @@ describe("Admin - Licence Categories", function () {
             cy.get(".modal select[name='printEJS']")
                 .select("default");
             cy.get(".modal #form--licenceCategoryEdit").submit();
-            cy.wait(500);
+            cy.wait(ajaxDelayMillis);
             cy.get(".modal").last()
                 .should("contain.text", "successful")
                 .find("button")
@@ -82,7 +82,7 @@ describe("Admin - Licence Categories", function () {
                 .type(licenceField)
                 .parents("form")
                 .submit();
-            cy.wait(500);
+            cy.wait(1000);
             cy.get(".modal .modal-card-head")
                 .last()
                 .should("contain.text", "Update Field");
@@ -96,7 +96,7 @@ describe("Admin - Licence Categories", function () {
             cy.get(".modal #container--licenceCategoryFields a.panel-block")
                 .first()
                 .click();
-            cy.wait(500);
+            cy.wait(ajaxDelayMillis);
             cy.get(".modal")
                 .should("have.length", 2)
                 .last()
@@ -110,7 +110,7 @@ describe("Admin - Licence Categories", function () {
                 .clear()
                 .type(uuidV4());
             cy.get(".modal").last().find("form").submit();
-            cy.wait(500);
+            cy.wait(ajaxDelayMillis);
             cy.get(".modal").should("have.length", 1);
         });
         it("Adds an Approval", function () {
@@ -120,7 +120,7 @@ describe("Admin - Licence Categories", function () {
                 .type(licenceApproval)
                 .parents("form")
                 .submit();
-            cy.wait(500);
+            cy.wait(ajaxDelayMillis);
             cy.get(".modal .modal-card-head")
                 .last()
                 .should("contain.text", "Update Approval");
@@ -134,7 +134,7 @@ describe("Admin - Licence Categories", function () {
             cy.get(".modal #container--licenceCategoryApprovals a.panel-block")
                 .first()
                 .click();
-            cy.wait(500);
+            cy.wait(ajaxDelayMillis);
             cy.injectAxe();
             cy.checkA11y();
             cy.get(".modal")
@@ -148,14 +148,14 @@ describe("Admin - Licence Categories", function () {
                 .clear()
                 .type(uuidV4());
             cy.get(".modal").last().find("form").submit();
-            cy.wait(500);
+            cy.wait(ajaxDelayMillis);
             cy.get(".modal").should("have.length", 1);
         });
         it("Adds a Fee", function () {
             var currentYear = new Date().getFullYear();
             cy.get(".modal .is-add-fee-button")
                 .click();
-            cy.wait(500);
+            cy.wait(ajaxDelayMillis);
             cy.get(".modal")
                 .should("have.length", 2)
                 .last()
@@ -173,7 +173,7 @@ describe("Admin - Licence Categories", function () {
             cy.get(".modal").last()
                 .find("form")
                 .submit();
-            cy.wait(500);
+            cy.wait(ajaxDelayMillis);
             cy.get(".modal")
                 .should("have.length", 1);
         });

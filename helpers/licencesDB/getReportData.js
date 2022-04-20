@@ -66,7 +66,7 @@ export const getReportData = (reportName, reportParameters) => {
             sqlParameters.push(dateTimeFunctions.dateStringToInteger(reportParameters.transactionDateString));
             break;
         default:
-            return [];
+            return undefined;
     }
     const database = sqlite(databasePath, {
         readonly: true

@@ -29,3 +29,6 @@ export const login = (userName: string) => {
   // Logged in pages have a navbar
   cy.get(".navbar").should("have.length", 1);
 };
+
+
+export const ajaxDelayMillis = 800;

@@ -91,7 +91,7 @@ export const getReportData = (reportName: string, reportParameters?: ReportParam
       break;
 
     default:
-      return [];
+      return undefined;
   }
 
   const database = sqlite(databasePath, {

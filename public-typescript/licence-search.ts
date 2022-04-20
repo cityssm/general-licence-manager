@@ -25,7 +25,7 @@ declare const cityssm: cityssmGlobal;
     const currentLimit = Number.parseInt(limitElement.value, 10);
     const currentOffset = Number.parseInt(offsetElement.value, 10);
 
-    searchResultsElement.innerHTML = "<p class=\"has-text-centered has-text-grey-lighter\">" +
+    searchResultsElement.innerHTML = "<p class=\"has-text-centered has-text-grey\">" +
       "<i class=\"fas fa-3x fa-circle-notch fa-spin\" aria-hidden=\"true\"></i><br />" +
       "<em>Loading records...</em>" +
       "</p>";
@@ -91,8 +91,8 @@ declare const cityssm: cityssmGlobal;
               "</td>") +
             ("<td class=\"is-hidden-print has-text-right\">" +
               (licenceObject.issueDate
-                ? "<a class=\"button is-small\" href=\"" + urlPrefix + "/licences/" + licenceObject.licenceId + "/print\" target=\"_blank\" download>" +
-                "<i class=\"fas fa-print\" aria-label=\"Print\"></i>" +
+                ? "<a class=\"button is-small\" href=\"" + urlPrefix + "/licences/" + licenceObject.licenceId + "/print\" target=\"_blank\" aria-label=\"Print\" download>" +
+                "<i class=\"fas fa-print\" aria-hidden=\"true\"></i>" +
                 "</a>"
                 : "") +
               "</td>");

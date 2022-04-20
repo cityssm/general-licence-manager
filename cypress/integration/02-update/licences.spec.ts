@@ -5,7 +5,7 @@ import { getCanadianBankName } from "@cityssm/get-canadian-bank-name";
 
 import { testUpdate } from "../../../test/_globals.js";
 
-import { logout, login } from "../../support/index.js";
+import { logout, login, ajaxDelayMillis } from "../../support/index.js";
 
 
 describe("Update - Licences", () => {
@@ -115,7 +115,7 @@ describe("Update - Licences", () => {
           .clear()
           .type(licenceJSON.bankAccountNumber);
 
-        cy.wait(500);
+        cy.wait(ajaxDelayMillis);
 
         cy.get("#licenceEdit--bankName")
           .should("have.value", getCanadianBankName(licenceJSON.bankInstitutionNumber, licenceJSON.bankTransitNumber));
@@ -149,7 +149,7 @@ describe("Update - Licences", () => {
 
       cy.get("#form--licenceEdit").submit();
 
-      cy.wait(500);
+      cy.wait(ajaxDelayMillis);
 
       cy.location("pathname")
         .should("not.contain", "/new")
@@ -163,20 +163,20 @@ describe("Update - Licences", () => {
 
       cy.visit("/licences");
 
-      cy.wait(500);
+      cy.wait(ajaxDelayMillis);
 
       // Find an unissued licence
       cy.get("#container--searchResults tr[data-cy='pending'] a")
         .first()
         .click();
 
-      cy.wait(500);
+      cy.wait(ajaxDelayMillis);
 
       cy.get("a[href$='/edit']")
         .first()
         .click();
 
-      cy.wait(500);
+      cy.wait(ajaxDelayMillis);
     });
 
     it("Can update the licence", () => {
@@ -224,7 +224,7 @@ describe("Update - Licences", () => {
 
       cy.get(".modal form").submit();
 
-      cy.wait(500);
+      cy.wait(ajaxDelayMillis);
 
       cy.get("#table--licenceTransactions tbody tr")
         .should("have.lengthOf.gt", 0);
@@ -238,7 +238,7 @@ describe("Update - Licences", () => {
       cy.get(".modal button[data-cy='ok']")
         .click();
 
-      cy.wait(500);
+      cy.wait(ajaxDelayMillis);
 
       cy.get("#is-issue-licence-button")
         .should("not.exist");

@@ -21,6 +21,29 @@ interface CreateOrUpdateBatchTransactionReturn {
   batchTransactions?: recordTypes.LicenceTransaction[];
 }
 
+interface BankRecord {
+  bankInstitutionNumber?: string;
+  bankTransitNumber?: string;
+  bankAccountNumber?: string;
+}
+
+const isBankingInformationIncomplete = (bankRecord: BankRecord): boolean => {
+
+  if (!bankRecord.bankInstitutionNumber || bankRecord.bankInstitutionNumber === "") {
+    return true;
+  }
+
+  if (!bankRecord.bankTransitNumber || bankRecord.bankTransitNumber === "") {
+    return true;
+  }
+
+  if (!bankRecord.bankAccountNumber || bankRecord.bankAccountNumber === "") {
+    return true;
+  }
+
+  return false;
+};
+
 export const createOrUpdateBatchTransaction =
   (transactionForm: TransactionForm, requestSession: recordTypes.PartialSession): CreateOrUpdateBatchTransactionReturn => {
 
@@ -30,11 +53,7 @@ export const createOrUpdateBatchTransaction =
 
     let message: string;
 
-    const bankRecord: {
-      bankInstitutionNumber?: string;
-      bankTransitNumber?: string;
-      bankAccountNumber?: string;
-    } = database.prepare("select" +
+    const bankRecord: BankRecord = database.prepare("select" +
       " bankInstitutionNumber, bankTransitNumber, bankAccountNumber" +
       " from Licences" +
       " where recordDelete_timeMillis is null" +
@@ -50,9 +69,7 @@ export const createOrUpdateBatchTransaction =
         success: false,
         message: configFunctions.getProperty("settings.licenceAlias") + " is not available for updates (licenceId = " + transactionForm.licenceId + ")."
       }
-    } else if (!bankRecord.bankInstitutionNumber || bankRecord.bankInstitutionNumber === "" ||
-      !bankRecord.bankTransitNumber || bankRecord.bankTransitNumber === "" ||
-      !bankRecord.bankAccountNumber || bankRecord.bankAccountNumber === "") {
+    } else if (isBankingInformationIncomplete(bankRecord)) {
 
       message = "Banking information is incomplete on the " + configFunctions.getProperty("settings.licenceAlias").toLowerCase() + ".";
     }

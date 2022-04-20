@@ -3,6 +3,18 @@ import { licencesDB as databasePath } from "../../data/databasePaths.js";
 import * as configFunctions from "../functions.config.js";
 import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
 import { getNextLicenceTransactionIndex } from "./getNextLicenceTransactionIndex.js";
+const isBankingInformationIncomplete = (bankRecord) => {
+    if (!bankRecord.bankInstitutionNumber || bankRecord.bankInstitutionNumber === "") {
+        return true;
+    }
+    if (!bankRecord.bankTransitNumber || bankRecord.bankTransitNumber === "") {
+        return true;
+    }
+    if (!bankRecord.bankAccountNumber || bankRecord.bankAccountNumber === "") {
+        return true;
+    }
+    return false;
+};
 export const createOrUpdateBatchTransaction = (transactionForm, requestSession) => {
     const database = sqlite(databasePath);
     let message;
@@ -20,9 +32,7 @@ export const createOrUpdateBatchTransaction = (transactionForm, requestSession) 
             message: configFunctions.getProperty("settings.licenceAlias") + " is not available for updates (licenceId = " + transactionForm.licenceId + ")."
         };
     }
-    else if (!bankRecord.bankInstitutionNumber || bankRecord.bankInstitutionNumber === "" ||
-        !bankRecord.bankTransitNumber || bankRecord.bankTransitNumber === "" ||
-        !bankRecord.bankAccountNumber || bankRecord.bankAccountNumber === "") {
+    else if (isBankingInformationIncomplete(bankRecord)) {
         message = "Banking information is incomplete on the " + configFunctions.getProperty("settings.licenceAlias").toLowerCase() + ".";
     }
     const batchDate = dateTimeFunctions.dateStringToInteger(transactionForm.batchDateString);

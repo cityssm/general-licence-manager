@@ -65,6 +65,7 @@ declare const cityssm: cityssmGlobal;
         for (const licenceObject of licenceList) {
 
           const trElement = document.createElement("tr");
+          trElement.dataset.cy = licenceObject.issueDate ? "issued" : "pending";
 
           let licenseeHTML = cityssm.escapeHTML(licenceObject.licenseeName);
 

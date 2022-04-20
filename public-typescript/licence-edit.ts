@@ -750,8 +750,8 @@ declare const bulmaJS: BulmaJS;
           "</td>") +
         "<td class=\"has-text-right\">$" + licenceTransaction.transactionAmount.toFixed(2) + "</td>" +
         ("<td>" +
-          "<button class=\"button is-small is-danger is-inverted\" type=\"button\">" +
-          "<i class=\"fas fa-trash\" aria-label=\"Delete Transaction\"></i>" +
+          "<button class=\"button is-small is-danger is-inverted\" type=\"button\" aria-label=\"Delete Transaction\">" +
+          "<i class=\"fas fa-trash\" aria-hidden=\"true\"></i>" +
           "</button>" +
           "</td>");
 
@@ -838,6 +838,8 @@ declare const bulmaJS: BulmaJS;
 
         addTransactionModalElement = modalElement;
         addTransactionCloseModalFunction = closeModalFunction;
+
+        (modalElement.querySelector("#transactionAdd--transactionAmount") as HTMLInputElement).focus();
 
         const setTransactionAmountButtonElements = modalElement.querySelectorAll(".is-set-transaction-amount-button");
 

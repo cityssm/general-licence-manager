@@ -41,6 +41,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             const tbodyElement = document.createElement("tbody");
             for (const licenceObject of licenceList) {
                 const trElement = document.createElement("tr");
+                trElement.dataset.cy = licenceObject.issueDate ? "issued" : "pending";
                 let licenseeHTML = cityssm.escapeHTML(licenceObject.licenseeName);
                 if (licenceObject.licenseeBusinessName.trim() !== "") {
                     licenseeHTML = cityssm.escapeHTML(licenceObject.licenseeBusinessName) + "<br />" +

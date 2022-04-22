@@ -13,21 +13,22 @@
     <div class="card">
       <div class="card-content">
         <div class="media">
-          <div class="media-left">
-            <i class="fas fa-3x fa-fw fa-certificate" aria-hidden="true"></i>
+          <div class="media-left" aria-hidden="true">
+            <i class="fas fa-3x fa-fw fa-certificate"></i>
           </div>
           <div class="media-content has-text-black">
+            <% let uid = "uid--" + stringFns.getUID(); %>
             <h2 class="title is-4 is-marginless">
-              <a href="<%= urlPrefix %>/licences">
+              <a href="<%= urlPrefix %>/licences" aria-describedby="<%= uid %>">
               <%= configFunctions.getProperty("settings.licenceAliasPlural") %></a>
             </h2>
-            <p>View and maintain <%= configFunctions.getProperty("settings.licenceAliasPlural").toLowerCase() %>.</p>
+            <p id="<%= uid %>">View and maintain <%= configFunctions.getProperty("settings.licenceAliasPlural").toLowerCase() %>.</p>
           </div>
         </div>
         <% if (user.userProperties.canUpdate) { %>
           <div class="media">
-            <div class="media-left">
-              <span class="fa-layers fa-fw fa-3x" aria-hidden="true">
+            <div class="media-left" aria-hidden="true">
+              <span class="fa-layers fa-fw fa-3x">
                 <i class="fas fa-certificate"></i>
                 <i class="fas fa-plus has-text-success" data-fa-glow data-fa-transform="shrink-8 down-5 right-6"></i>
               </span>
@@ -45,23 +46,24 @@
       <div class="card mt-5">
         <div class="card-content">
           <div class="media">
-            <div class="media-left">
-              <span class="fa-layers fa-fw fa-3x" aria-hidden="true">
+            <div class="media-left" aria-hidden="true">
+              <span class="fa-layers fa-fw fa-3x">
                 <i class="fas fa-receipt"></i>
                 <i class="fas fa-pencil-alt has-text-info" data-fa-glow data-fa-transform="shrink-6 down-4 right-4"></i>
               </span>
             </div>
             <div class="media-content has-text-black">
+              <% let uid = "uid--" + stringFns.getUID(); %>
               <h2 class="title is-4 is-marginless">
-                <a href="<%= urlPrefix %>/batches/builder">Transaction Batch Builder</a>
+                <a href="<%= urlPrefix %>/batches/builder" aria-describedby="<%= uid %>">Transaction Batch Builder</a>
               </h2>
-              <p>Build batches of transactions for later processing.</p>
+              <p id="<%= uid %>">Build batches of transactions for later processing.</p>
             </div>
           </div>
           <% for (const batch of batches) { %>
             <div class="media">
-              <div class="media-left">
-                <i class="fas fa-fw fa-3x fa-receipt" aria-hidden="true"></i>
+              <div class="media-left" aria-hidden="true">
+                <i class="fas fa-fw fa-3x fa-receipt"></i>
               </div>
               <div class="media-content">
                 <strong>Batch <%= batch.batchDateString %></strong><br />
@@ -86,14 +88,15 @@
     <div class="card">
       <div class="card-content">
         <div class="media">
-          <div class="media-left">
-            <i class="fas fa-3x fa-fw fa-file" aria-hidden="true"></i>
+          <div class="media-left" aria-hidden="true">
+            <i class="fas fa-3x fa-fw fa-file"></i>
           </div>
           <div class="media-content has-text-black">
+            <% uid = "uid--" + stringFns.getUID(); %>
             <h2 class="title is-4 is-marginless">
-              <a href="<%= urlPrefix %>/reports">Report Library</a>
+              <a href="<%= urlPrefix %>/reports" aria-describedby="<%= uid %>">Report Library</a>
             </h2>
-            <p>Produce reports and export data.</p>
+            <p id="<%= uid %>">Produce reports and export data.</p>
           </div>
         </div>
       </div>
@@ -102,16 +105,17 @@
       <div class="card mt-5">
         <div class="card-content">
           <div class="media">
-            <div class="media-left">
-              <i class="fas fa-3x fa-fw fa-cogs" aria-hidden="true"></i>
+            <div class="media-left" aria-hidden="true">
+              <i class="fas fa-3x fa-fw fa-cogs"></i>
             </div>
             <div class="media-content has-text-black">
+              <% uid = "uid--" + stringFns.getUID(); %>
               <h2 class="title is-4 is-marginless">
-                <a href="<%= urlPrefix %>/admin/licenceCategories">
+                <a href="<%= urlPrefix %>/admin/licenceCategories" aria-describedby="<%= uid %>">
                   <%= configFunctions.getProperty("settings.licenceAlias") %> Categories
                 </a>
               </h2>
-              <p>
+              <p id="<%= uid %>">
                 Add new <%= configFunctions.getProperty("settings.licenceAlias").toLowerCase() %> types.
                 Maintain existing <%= configFunctions.getProperty("settings.licenceAlias").toLowerCase() %> types.
               </p>
@@ -123,27 +127,29 @@
     <div class="card mt-5">
       <div class="card-content">
         <div class="media">
-          <div class="media-left">
-            <i class="fas fa-3x fa-fw fa-question-circle" aria-hidden="true"></i>
+          <div class="media-left" aria-hidden="true">
+            <i class="fas fa-3x fa-fw fa-question-circle"></i>
           </div>
           <div class="media-content has-text-black">
+            <% uid = "uid--" + stringFns.getUID(); %>
             <h2 class="title is-4 is-marginless">
-              <a href="https://cityssm.github.io/general-licence-manager/docs" target="_blank" rel="noopener noreferrer">Help Documentation</a>
+              <a href="https://cityssm.github.io/general-licence-manager/docs" target="_blank" rel="noopener noreferrer" aria-describedby="<%= uid %>">Help Documentation</a>
             </h2>
-            <p>Instructions on how to use this application.</p>
+            <p id="<%= uid %>">Instructions on how to use this application.</p>
           </div>
         </div>
         <div class="media">
-          <div class="media-left">
-            <i class="fab fa-3x fa-fw fa-github" aria-hidden="true"></i>
+          <div class="media-left" aria-hidden="true">
+            <i class="fab fa-3x fa-fw fa-github"></i>
           </div>
           <div class="media-content has-text-black">
+            <% uid = "uid--" + stringFns.getUID(); %>
             <h2 class="title is-4 is-marginless">
-              <a href="https://github.com/cityssm/general-licence-manager" target="_blank" rel="noopener noreferrer">
+              <a href="https://github.com/cityssm/general-licence-manager" target="_blank" rel="noopener noreferrer" aria-describedby="<%= uid %>">
                 GitHub
               </a>
             </h2>
-            <p>Latest Updates, Issue Tracker, Say Hello.</p>
+            <p id="<%= uid %>">Latest Updates, Issue Tracker, Say Hello.</p>
           </div>
         </div>
       </div>

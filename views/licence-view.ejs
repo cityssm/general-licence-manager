@@ -45,8 +45,8 @@
     <div class="panel">
       <div class="panel-block">
         <p>
-          <strong><%= configFunctions.getProperty("settings.licenceAlias") %> Category</strong><br />
-          <%= licenceCategory.licenceCategory %>
+          <strong id="licenceView--licenceCategory"><%= configFunctions.getProperty("settings.licenceAlias") %> Category</strong><br />
+          <span aria-labelledby="licenceView--licenceCategory"><%= licenceCategory.licenceCategory %></span>
         </p>
       </div>
     </div>
@@ -93,7 +93,7 @@
       <h2 class="panel-heading">
         <%= configFunctions.getProperty("settings.licenseeAlias") %> Information
       </h2>
-      <div class="panel-block is-block">
+      <div class="panel-block is-block" aria-label="Licensee Name and Address">
         <%= licence.licenseeName %><br />
         <% if (licence.licenseeBusinessName !== "") { %>
           <%= licence.licenseeBusinessName %><br />
@@ -109,16 +109,16 @@
         <div class="panel-block">
           <div class="columns">
             <div class="column">
-              <strong>Institution Number</strong><br />
-              <%= licence.bankInstitutionNumber %>
+              <strong id="licenceView--bankInstitutionNumber">Institution Number</strong><br />
+              <span aria-labelledby="licenceView--bankInstitutionNumber"><%= licence.bankInstitutionNumber %></span>
             </div>
             <div class="column">
-              <strong>Transit Number</strong><br />
-              <%= licence.bankTransitNumber %>
+              <strong id="licenceView--bankTransitNumber">Transit Number</strong><br />
+              <span aria-labelledby="licenceView--bankTransitNumber"><%= licence.bankTransitNumber %></span>
             </div>
             <div class="column">
-              <strong>Account Number</strong><br />
-              <%= licence.bankAccountNumber %>
+              <strong id="licenceView--bankAccountNumber">Account Number</strong><br />
+              <span aria-labelledby="licenceView--bankAccountNumber"><%= licence.bankAccountNumber %></span>
             </div>
           </div>
         </div>
@@ -133,9 +133,10 @@
             <div class="panel">
               <h2 class="panel-heading">Fields</h2>
               <% for (const licenceField of licence.licenceFields) { %>
+                <% const uid = stringFns.getUID(); %>
                 <div class="panel-block is-block">
-                  <strong><%= licenceField.licenceField %></strong><br />
-                  <%= licenceField.licenceFieldValue %>
+                  <strong id="<%= uid %>"><%= licenceField.licenceField %></strong><br />
+                  <span aria-labelledby="<%= uid %>"><%= licenceField.licenceFieldValue %></span>
                 </div>
               <% } %>
             </div>
@@ -169,14 +170,14 @@
         <div class="columns">
           <div class="column">
             <p>
-              <strong>Start Date</strong><br />
-              <%= licence.startDateString %>
+              <strong id="licenceView--startDateString">Start Date</strong><br />
+              <span aria-labelledby="licenceView--startDateString"><%= licence.startDateString %></span>
             </p>
           </div>
           <div class="column">
             <p>
-              <strong>End Date</strong><br />
-              <%= licence.endDateString %>
+              <strong id="licenceView--endDateString">End Date</strong><br />
+              <span aria-labelledby="licenceView--endDateString"><%= licence.endDateString %></span>
             </p>
           </div>
         </div>
@@ -184,8 +185,8 @@
       <div class="panel-block is-block">
         <% if (licence.issueDate) { %>
           <p>
-            <strong>Issue Date</strong><br />
-            <%= licence.issueDateString %>
+            <strong id="licenceView--issueDateString">Issue Date</strong><br />
+            <span aria-labelledby="licenceView--issueDateString"><%= licence.issueDateString %></span>
           </p>
         <% } else { %>
           <div class="message is-warning is-small">
@@ -203,12 +204,12 @@
   <div class="panel-block is-block">
     <div class="columns">
       <div class="column">
-        <strong><%= configFunctions.getProperty("settings.licenceAlias") %> Fee</strong><br />
-        $<%= licence.licenceFee ? licence.licenceFee.toFixed(2) : "" %>
+        <strong id="licenceView--licenceFee"><%= configFunctions.getProperty("settings.licenceAlias") %> Fee</strong><br />
+        <span aria-labelledby="licenceView--licenceFee">$<%= licence.licenceFee ? licence.licenceFee.toFixed(2) : "" %></span>
       </div>
       <div class="column">
-        <strong>Replacement Fee</strong><br />
-        $<%= licence.replacementFee ? licence.replacementFee.toFixed(2) : "" %>
+        <strong id="licenceView--replacementFee">Replacement Fee</strong><br />
+        <span aria-labelledby="licenceView--replacementFee">$<%= licence.replacementFee ? licence.replacementFee.toFixed(2) : "" %></span>
       </div>
       <div class="column is-6">
         <table class="table is-fullwidth">

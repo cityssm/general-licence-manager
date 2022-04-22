@@ -23,7 +23,7 @@
         </h1>
 
         <div class="box">
-          <form id="form--filters">
+          <form id="form--filters" role="search" aria-label="<%= configFunctions.getProperty("settings.licenceAlias") %> Category Filters">
             <div class="columns">
               <div class="column">
                 <div class="field">
@@ -74,7 +74,7 @@
           </form>
         </div>
 
-        <div id="container--licenceCategorySummary"></div>
+        <div id="container--licenceCategorySummary" aria-label="<%= configFunctions.getProperty("settings.licenceAlias") %> Category Search Results"></div>
       </div>
       <div class="column is-3 is-hidden-print">
         <%- include('_menu-licences'); -%>

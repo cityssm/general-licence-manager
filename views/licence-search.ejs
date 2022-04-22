@@ -29,7 +29,7 @@
         <% } %>
 
         <div class="box">
-          <form id="form--filters">
+          <form id="form--filters" role="search" aria-label="<%= configFunctions.getProperty("settings.licenceAlias") %> Filters">
             <input id="filter--limit" name="limit" type="hidden" value="50" />
             <input id="filter--offset" name="offset" type="hidden" value="0" />
             <div class="columns">
@@ -89,7 +89,7 @@
           </form>
         </div>
 
-        <div class="is-block-print" id="container--searchResults"></div>
+        <div class="is-block-print" id="container--searchResults" aria-label="<%= configFunctions.getProperty("settings.licenceAlias") %> Search Results"></div>
       </div>
       <div class="column is-3">
         <%- include('_menu-licences'); -%>

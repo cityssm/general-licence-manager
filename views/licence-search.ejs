@@ -3,14 +3,14 @@
 <div class="columns is-variable is-4-mobile is-4-tablet is-block-print" id="is-site-layout">
 
   <div class="column is-block-print">
-    <nav class="breadcrumb">
-      <ul>
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <ol>
         <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
         <li class="is-active"><a href="#" aria-current="page">
           <span class="icon is-small"><i class="fas fa-certificate" aria-hidden="true"></i></span>
           <span><%= configFunctions.getProperty("settings.licenceAliasPlural") %></span>
         </a></li>
-      </ul>
+      </ol>
     </nav>
 
     <div class="columns">

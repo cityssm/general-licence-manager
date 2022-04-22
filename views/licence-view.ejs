@@ -1,7 +1,7 @@
 <%- include('_header'); -%>
 
-<nav class="breadcrumb">
-  <ul>
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <ol>
     <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
     <li><a href="<%= urlPrefix %>/licences">
       <span class="icon is-small"><i class="fas fa-certificate" aria-hidden="true"></i></span>
@@ -10,7 +10,7 @@
     <li class="is-active"><a href="#" aria-current="page">
       <%= configFunctions.getProperty("settings.licenceAlias") %> #<%= licence.licenceNumber %>
     </a></li>
-  </ul>
+  </ol>
 </nav>
 
 <div class="level">

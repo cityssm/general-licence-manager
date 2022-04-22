@@ -1,14 +1,14 @@
 <%- include('_header'); -%>
 
-<nav class="breadcrumb">
-  <ul>
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <ol>
     <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
     <li><a href="#">Transaction Batches</a></li>
     <li class="is-active"><a href="#" aria-current="page">
       <span class="icon is-small"><i class="fas fa-receipt" aria-hidden="true"></i></span>
       <span>Batch <%= batchTransactions[0].batchDateString %></span>
     </a></li>
-  </ul>
+  </ol>
 </nav>
 
 <h1 class="title is-1">

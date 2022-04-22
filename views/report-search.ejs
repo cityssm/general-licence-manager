@@ -24,10 +24,10 @@
       <h2 class="panel-heading"><%= configFunctions.getProperty("settings.licenceAliasPlural") %></h2>
       <div class="panel-block align-items-flex-start">
         <div class="has-text-centered my-2 ml-2 mr-3">
-          <span class="icon has-text-info">
-            <i class="fas fa-2x fa-file" aria-hidden="true"></i>
+          <span class="icon has-text-info" aria-hidden="true">
+            <i class="fas fa-2x fa-file"></i>
           </span><br />
-          <span class="tag is-info">CSV</span>
+          <span class="tag is-info" aria-label="Export Format">CSV</span>
         </div>
         <div>
           <h3 class="title is-5 is-marginless">Daily Transactions</h3>
@@ -35,8 +35,8 @@
             <div class="field has-addons">
               <div class="control has-icons-left">
                 <input class="input" name="transactionDateString" type="date" value="<%= todayDateString %>" max="<%= todayDateString %>" aria-label="Transaction Date" required />
-                <span class="icon is-small is-left">
-                  <i class="fas fa-calendar" aria-hidden="true"></i>
+                <span class="icon is-small is-left" aria-hidden="true">
+                  <i class="fas fa-calendar"></i>
                 </span>
               </div>
               <div class="control">
@@ -48,16 +48,23 @@
           </form>
         </div>
       </div>
-      <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/licences-formatted" download>
+      <% let uid = stringFns.getUID(); %>
+      <a class="panel-block align-items-flex-start"
+        href="<%= urlPrefix %>/reports/licences-formatted"
+        aria-labelledby="h--<%= uid %>"
+        aria-describedby="p--<%= uid %>"
+        download>
         <div class="has-text-centered my-2 ml-2 mr-3">
-          <span class="icon has-text-info">
-            <i class="fas fa-2x fa-file" aria-hidden="true"></i>
+          <span class="icon has-text-info" aria-hidden="true">
+            <i class="fas fa-2x fa-file"></i>
           </span><br />
-          <span class="tag is-info">CSV</span>
+          <span class="tag is-info" aria-label="Export Format">CSV</span>
         </div>
         <div>
-          <h3 class="title is-5 is-marginless">Full <%= configFunctions.getProperty("settings.licenceAlias") %> List</h3>
-          <p>
+          <h3 class="title is-5 is-marginless" id="h--<%= uid %>">
+            Full <%= configFunctions.getProperty("settings.licenceAlias") %> List
+          </h3>
+          <p id="p--<%= uid %>">
             All active <%= configFunctions.getProperty("settings.licenceAliasPlural").toLowerCase() %>.
           </p>
         </div>
@@ -75,30 +82,40 @@
           </p>
         </div>
       </div>
-      <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/licences-all" download>
+      <% uid = stringFns.getUID(); %>
+      <a class="panel-block align-items-flex-start"
+        href="<%= urlPrefix %>/reports/licences-all"
+        aria-labelledby="h--<%= uid %>"
+        aria-describedby="p--<%= uid %>"
+        download>
         <div class="has-text-centered my-2 ml-2 mr-3">
-          <span class="icon has-text-info">
-            <i class="fas fa-2x fa-table" aria-hidden="true"></i>
+          <span class="icon has-text-info" aria-hidden="true">
+            <i class="fas fa-2x fa-table"></i>
           </span><br />
-          <span class="tag is-info">CSV</span>
+          <span class="tag is-info" aria-label="Export Format">CSV</span>
         </div>
         <div>
-          <h3 class="title is-5 is-marginless">Full Licences Table</h3>
-          <p>
+          <h3 class="title is-5 is-marginless" id="h--<%= uid %>">Full Licences Table</h3>
+          <p id="p--<%= uid %>">
             All the data from the Licences table unfiltered.
           </p>
         </div>
       </a>
-      <a class="panel-block align-items-flex-start" href="<%= urlPrefix %>/reports/licenceTransactions-all" download>
+      <% uid = stringFns.getUID(); %>
+      <a class="panel-block align-items-flex-start"
+        href="<%= urlPrefix %>/reports/licenceTransactions-all"
+        aria-labelledby="h--<%= uid %>"
+        aria-describedby="p--<%= uid %>"
+        download>
         <div class="has-text-centered my-2 ml-2 mr-3">
-          <span class="icon has-text-info">
-            <i class="fas fa-2x fa-table" aria-hidden="true"></i>
+          <span class="icon has-text-info" aria-hidden="true">
+            <i class="fas fa-2x fa-table"></i>
           </span><br />
-          <span class="tag is-info">CSV</span>
+          <span class="tag is-info" aria-label="Export Format">CSV</span>
         </div>
         <div>
-          <h3 class="title is-5 is-marginless">Full LicenceTransactions Table</h3>
-          <p>
+          <h3 class="title is-5 is-marginless" id="h--<%= uid %>">Full LicenceTransactions Table</h3>
+          <p id="p--<%= uid %>">
             All the data from the LicenceTransactions table unfiltered.
           </p>
         </div>

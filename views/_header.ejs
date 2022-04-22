@@ -16,7 +16,7 @@
 </head>
 
 <body>
-  <nav class="navbar is-light is-fixed-top is-static-print" id="cityssm-theme--navbar" role="navigation" aria-label="main navigation">
+  <nav class="navbar is-light is-fixed-top is-static-print" id="cityssm-theme--navbar" role="navigation" aria-label="Main Navigation">
     <div class="container">
       <div class="navbar-brand">
         <a class="navbar-item" href="<%= urlPrefix %>/dashboard">
@@ -24,7 +24,7 @@
           <strong><%= configFunctions.getProperty("application.applicationName") %></strong>
         </a>
 
-        <a class="navbar-burger burger is-hidden-print" role="button" aria-label="menu" aria-expanded="false">
+        <a class="navbar-burger burger is-hidden-print" role="button" aria-label="Menu" aria-expanded="false">
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
@@ -83,4 +83,5 @@
     data-session-keep-alive-millis="<%= configFunctions.keepAliveMillis %>"
     data-url-prefix="<%= urlPrefix %>"
     data-can-update="<%= user.userProperties.canUpdate ? "true" : "false" %>"
-    data-is-admin="<%= user.userProperties.isAdmin ? "true" : "false" %>">
+    data-is-admin="<%= user.userProperties.isAdmin ? "true" : "false" %>"
+    aria-label="Main Content">

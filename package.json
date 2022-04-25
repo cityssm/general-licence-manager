@@ -1,6 +1,6 @@
 {
   "name": "general-licence-manager",
-  "version": "1.0.0-beta",
+  "version": "1.0.0-beta.1",
   "type": "module",
   "description": "A tool for managing the licences issued by municipalities.",
   "exports": "./app.js",

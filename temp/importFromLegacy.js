@@ -169,6 +169,9 @@ const importLicences = async () => {
                 ? licenseeCity[1].trim().slice(0, 2)
                 : "ON",
             licenseePostalCode: licenceRow.LGMA_PCODE1 + licenceRow.LGMA_PCODE2.trim(),
+            bankInstitutionNumber: "",
+            bankTransitNumber: "",
+            bankAccountNumber: "",
             isRenewal: isRenewal ? "true" : undefined,
             startDateString,
             endDateString,
@@ -221,6 +224,9 @@ const importLicences = async () => {
                     ? currentYearString + "-01-01"
                     : dateTimeFunctions.dateToString(issueDate),
                 externalReceiptNumber: "",
+                bankInstitutionNumber: "",
+                bankTransitNumber: "",
+                bankAccountNumber: "",
                 transactionNote: ""
             }, session);
         }

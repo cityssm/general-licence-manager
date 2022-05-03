@@ -6,6 +6,17 @@
 
 ![Licence Search](images/licence-search.png)
 
+**[Tips and Tricks](tipsTricks.md)**<br />
+Transform yourself from an average user into a power user. 🦸‍♀️
+
 **[Licence Categories](categories.md)**<br />
 What are licence categories?
 How do I build them?
+
+## Administrator Documentation
+
+**[Getting Started](admin-gettingStarted.md)**<br />
+How to setup and start the application for the first time.
+
+**[config.js file](admin-configJS.md)**<br />
+How to use the configuration file to customize the application.

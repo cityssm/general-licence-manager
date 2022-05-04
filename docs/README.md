@@ -9,6 +9,9 @@
 **[Tips and Tricks](tipsTricks.md)**<br />
 Transform yourself from an average user into a power user. 🦸‍♀️
 
+**[Lottery Licences](licences.md)**<br />
+How do I search licence records? How do I maintain licences?
+
 **[Licence Categories](categories.md)**<br />
 What are licence categories?
 How do I build them?

@@ -55,8 +55,7 @@ declare const cityssm: cityssmGlobal;
           "<th>" + licenseeAlias + "</th>" +
           "<th>Effective Start</th>" +
           "<th>Effective End</th>" +
-          "<th class=\"has-text-centered\">Status</th>" +
-          "<th class=\"is-hidden-print\"></th>" +
+          "<th></th>" +
           "</tr></thead>" +
           "</table>";
 
@@ -86,15 +85,10 @@ declare const cityssm: cityssmGlobal;
             "<td>" + licenceObject.endDateString + "</td>" +
             ("<td class=\"has-text-centered\">" +
               (licenceObject.issueDate
-                ? "<span class=\"tag is-success\">Issued</span>"
-                : "<span class=\"tag is-warning\">Pending</span>") +
-              "</td>") +
-            ("<td class=\"is-hidden-print has-text-right\">" +
-              (licenceObject.issueDate
                 ? "<a class=\"button is-small\" href=\"" + urlPrefix + "/licences/" + licenceObject.licenceId + "/print\" target=\"_blank\" aria-label=\"Print\" download>" +
                 "<i class=\"fas fa-print\" aria-hidden=\"true\"></i>" +
                 "</a>"
-                : "") +
+                : "<span class=\"tag is-warning\">Pending</span>") +
               "</td>");
 
           tbodyElement.append(trElement);

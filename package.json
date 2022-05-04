@@ -33,7 +33,7 @@
     "@cityssm/bulma-js": "^0.3.3",
     "@cityssm/bulma-webapp-js": "^1.5.0",
     "@cityssm/date-diff": "^2.2.3",
-    "@cityssm/expressjs-server-js": "^2.3.1",
+    "@cityssm/expressjs-server-js": "^2.3.2",
     "@cityssm/get-canadian-bank-name": "^0.3.1",
     "@cityssm/modern-julian-date": "^0.1.0",
     "@fortawesome/fontawesome-free": "^5.15.4",
@@ -61,7 +61,7 @@
   "devDependencies": {
     "@cityssm/bulma-webapp-css": "^0.11.0",
     "@cityssm/fa-glow": "^0.1.0",
-    "@cityssm/mssql-multi-pool": "^2.1.4",
+    "@cityssm/mssql-multi-pool": "^2.1.5",
     "@types/activedirectory2": "^1.2.3",
     "@types/better-sqlite3": "^7.5.0",
     "@types/compression": "^1.7.2",

@@ -2,6 +2,7 @@ import { getLicences } from "../../helpers/licencesDB/getLicences.js";
 export const handler = async (request, response) => {
     const licencesResponse = getLicences({
         licenceCategoryKey: request.body.licenceCategoryKey,
+        licenceDetails: request.body.licenceDetails,
         licensee: request.body.licensee,
         licenceStatus: request.body.licenceStatus
     }, {

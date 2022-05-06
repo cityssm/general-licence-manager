@@ -7,6 +7,7 @@ export const handler: RequestHandler = async (request, response) => {
 
   const licencesResponse = getLicences({
     licenceCategoryKey: request.body.licenceCategoryKey,
+    licenceDetails: request.body.licenceDetails,
     licensee: request.body.licensee,
     licenceStatus: request.body.licenceStatus
   }, {

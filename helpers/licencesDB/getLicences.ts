@@ -11,6 +11,7 @@ import type * as recordTypes from "../../types/recordTypes";
 
 interface GetLicencesFilters {
   licenceCategoryKey?: string;
+  licenceDetails?: string;
   licensee?: string;
   licenceStatus?: "" | "active" | "past",
   startDateMin?: number;
@@ -44,6 +45,20 @@ export const getLicences = (filters: GetLicencesFilters, options: {
   if (filters.licenceCategoryKey && filters.licenceCategoryKey !== "") {
     sqlWhereClause += " and l.licenceCategoryKey = ?";
     sqlParameters.push(filters.licenceCategoryKey);
+  }
+
+  if (filters.licenceDetails && filters.licenceDetails !== "") {
+    const licenceDetailsPieces = filters.licenceDetails.trim().split(" ");
+
+    for (const licenceDetailsPiece of licenceDetailsPieces) {
+      sqlWhereClause += " and (" +
+        "c.licenceCategory like '%' || ? || '%'" +
+        " or l.licenseeName like '%' || ? || '%'" +
+        " or l.licenseeBusinessName like '%' || ? || '%'" +
+        " or l.licenceId in (select licenceId from LicenceFields where licenceFieldValue like '%' || ? || '%')" +
+        ")";
+      sqlParameters.push(licenceDetailsPiece, licenceDetailsPiece, licenceDetailsPiece, licenceDetailsPiece);
+    }
   }
 
   if (filters.licensee && filters.licensee !== "") {

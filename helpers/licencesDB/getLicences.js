@@ -14,6 +14,18 @@ export const getLicences = (filters, options) => {
         sqlWhereClause += " and l.licenceCategoryKey = ?";
         sqlParameters.push(filters.licenceCategoryKey);
     }
+    if (filters.licenceDetails && filters.licenceDetails !== "") {
+        const licenceDetailsPieces = filters.licenceDetails.trim().split(" ");
+        for (const licenceDetailsPiece of licenceDetailsPieces) {
+            sqlWhereClause += " and (" +
+                "c.licenceCategory like '%' || ? || '%'" +
+                " or l.licenseeName like '%' || ? || '%'" +
+                " or l.licenseeBusinessName like '%' || ? || '%'" +
+                " or l.licenceId in (select licenceId from LicenceFields where licenceFieldValue like '%' || ? || '%')" +
+                ")";
+            sqlParameters.push(licenceDetailsPiece, licenceDetailsPiece, licenceDetailsPiece, licenceDetailsPiece);
+        }
+    }
     if (filters.licensee && filters.licensee !== "") {
         const licenseePieces = filters.licensee.trim().split(" ");
         for (const licenseePiece of licenseePieces) {

@@ -33,7 +33,6 @@
             <input id="filter--limit" name="limit" type="hidden" value="50" />
             <input id="filter--offset" name="offset" type="hidden" value="0" />
             <div class="columns">
-
               <div class="column">
                 <div class="field">
                   <label class="label" for="filter--licenceCategoryKey">
@@ -56,6 +55,19 @@
                   </div>
                 </div>
               </div>
+              <div class="column">
+                <div class="field">
+                  <label class="label" for="filter--licenceDetails"><%= configFunctions.getProperty("settings.licenceAlias") %> Details</label>
+                  <div class="control has-icons-left">
+                    <input class="input" id="filter--licenceDetails" name="licenceDetails" type="text" />
+                    <span class="icon is-small is-left">
+                      <i class="fas fa-filter" aria-hidden="true"></i>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="columns">
               <div class="column">
                 <div class="field">
                   <label class="label" for="filter--licensee"><%= configFunctions.getProperty("settings.licenseeAlias") %></label>

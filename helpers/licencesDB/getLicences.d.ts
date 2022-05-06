@@ -1,6 +1,7 @@
 import type * as recordTypes from "../../types/recordTypes";
 interface GetLicencesFilters {
     licenceCategoryKey?: string;
+    licenceDetails?: string;
     licensee?: string;
     licenceStatus?: "" | "active" | "past";
     startDateMin?: number;

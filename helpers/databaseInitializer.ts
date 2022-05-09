@@ -111,7 +111,7 @@ export const initLicencesDB = (): boolean => {
 
       " bankInstitutionNumber varchar(10)," +
       " bankTransitNumber varchar(10)," +
-      " bankAccountNumber varchar(10)," +
+      " bankAccountNumber varchar(20)," +
 
       recordColumns + "," +
 
@@ -148,7 +148,7 @@ export const initLicencesDB = (): boolean => {
       " transactionTime integer not null," +
       " bankInstitutionNumber varchar(10)," +
       " bankTransitNumber varchar(10)," +
-      " bankAccountNumber varchar(10)," +
+      " bankAccountNumber varchar(20)," +
       " externalReceiptNumber varchar(20)," +
       " transactionAmount decimal(10, 2) not null," +
       " transactionNote text," +

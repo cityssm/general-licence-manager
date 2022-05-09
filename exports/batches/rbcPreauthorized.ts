@@ -69,6 +69,7 @@ export const getBatchExport = (outstandingBatchTransactions: recordTypes.Licence
     " ".padEnd(9) +
     " ".padEnd(46) +
     " ".padEnd(2) +
+    " ".padEnd(8) +
     " " +
     NEWLINE;
 
@@ -116,6 +117,7 @@ export const getBatchExport = (outstandingBatchTransactions: recordTypes.Licence
       " ".padEnd(2) +
       " ".padEnd(2) +
       "N" +
+      " ".padEnd(8) +
       NEWLINE;
 
     totalValue += batchTransaction.transactionAmount;
@@ -142,6 +144,7 @@ export const getBatchExport = (outstandingBatchTransactions: recordTypes.Licence
     " ".padEnd(63) +
     " ".padEnd(2) +
     " " +
+    " ".padEnd(8) +
     NEWLINE;
 
   return {

@@ -47,6 +47,7 @@ export const getBatchExport = (outstandingBatchTransactions) => {
         " ".padEnd(9) +
         " ".padEnd(46) +
         " ".padEnd(2) +
+        " ".padEnd(8) +
         " " +
         NEWLINE;
     let totalValue = 0;
@@ -84,6 +85,7 @@ export const getBatchExport = (outstandingBatchTransactions) => {
             " ".padEnd(2) +
             " ".padEnd(2) +
             "N" +
+            " ".padEnd(8) +
             NEWLINE;
         totalValue += batchTransaction.transactionAmount;
     }
@@ -105,6 +107,7 @@ export const getBatchExport = (outstandingBatchTransactions) => {
         " ".padEnd(63) +
         " ".padEnd(2) +
         " " +
+        " ".padEnd(8) +
         NEWLINE;
     return {
         fileContentType: "text/plain",

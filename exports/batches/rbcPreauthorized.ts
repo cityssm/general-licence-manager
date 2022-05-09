@@ -8,8 +8,12 @@ import type * as recordTypes from "../../types/recordTypes";
 import type { GetBatchExportReturn } from "../batchExport";
 
 
+const batchExportConfig = configFunctions.getProperty("exports.batches");
+
 const NEWLINE = "\n";
-const HEADER_LINE1 = "$$AAPASTD0152[PROD[80$$";
+const HEADER_LINE1 = "$$AAPASTD0152[" +
+  (batchExportConfig.isTesting ? "TEST" : "PROD") +
+  "[80$$";
 
 
 const leftPad = (unpaddedString: string, paddingCharacter: string, finalLength: number): string => {
@@ -37,8 +41,6 @@ const calculateCustomerNumber = (transaction: recordTypes.LicenceTransaction): s
 };
 
 export const getBatchExport = (outstandingBatchTransactions: recordTypes.LicenceTransaction[]): GetBatchExportReturn => {
-
-  const batchExportConfig = configFunctions.getProperty("exports.batches");
 
   const batchDate = dateTimeFunctions.dateStringToDate(outstandingBatchTransactions[0].batchDateString);
 

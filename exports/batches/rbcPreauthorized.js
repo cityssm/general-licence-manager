@@ -2,8 +2,11 @@ import * as configFunctions from "../../helpers/functions.config.js";
 import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
 import * as modernJulianDate from "@cityssm/modern-julian-date";
 import stringHash from "string-hash";
+const batchExportConfig = configFunctions.getProperty("exports.batches");
 const NEWLINE = "\n";
-const HEADER_LINE1 = "$$AAPASTD0152[PROD[80$$";
+const HEADER_LINE1 = "$$AAPASTD0152[" +
+    (batchExportConfig.isTesting ? "TEST" : "PROD") +
+    "[80$$";
 const leftPad = (unpaddedString, paddingCharacter, finalLength) => {
     return unpaddedString.padStart(finalLength, paddingCharacter).slice(-1 * finalLength);
 };
@@ -23,7 +26,6 @@ const calculateCustomerNumber = (transaction) => {
     return rightPad(stringHash(textToHash).toString(), " ", 19);
 };
 export const getBatchExport = (outstandingBatchTransactions) => {
-    const batchExportConfig = configFunctions.getProperty("exports.batches");
     const batchDate = dateTimeFunctions.dateStringToDate(outstandingBatchTransactions[0].batchDateString);
     const customerNumberMap = new Map();
     let output = HEADER_LINE1 + NEWLINE;

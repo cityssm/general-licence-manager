@@ -15,5 +15,22 @@ export const config = {
     },
     settings: {
         includeBatches: true
+    },
+    exports: {
+        batches: {
+            exportType: "rbcPreauthorized",
+            isTesting: true,
+            header: {
+                clientName: "TESTING",
+                clientNumber: "0000",
+                currencyType: "CAD"
+            },
+            record: {
+                clientShortName: "TEST",
+                destinationCountry: "CAN",
+                languageCode: "E",
+                transactionCode: "430"
+            }
+        }
     }
 };

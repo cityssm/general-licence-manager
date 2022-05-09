@@ -51,10 +51,13 @@ export const getReportData = (reportName, reportParameters) => {
                 " userFn_dateIntegerToString(t.transactionDate) as transactionDateString," +
                 " userFn_timeIntegerToString(t.transactionTime) as transactionTimeString," +
                 " t.transactionAmount," +
-                " userFn_getCanadianBankName(t.bankInstitutionNumber, t.bankTransitNumber) as bankName," +
-                " t.bankInstitutionNumber," +
-                " t.bankTransitNumber," +
-                " t.bankAccountNumber," +
+                (configFunctions.getProperty("settings.includeBatches") ?
+                    " userFn_dateIntegerToString(t.batchDate) as batchDateString," +
+                        " userFn_getCanadianBankName(t.bankInstitutionNumber, t.bankTransitNumber) as bankName," +
+                        " t.bankInstitutionNumber," +
+                        " t.bankTransitNumber," +
+                        " t.bankAccountNumber,"
+                    : "") +
                 " t.externalReceiptNumber," +
                 " t.transactionNote" +
                 " from LicenceTransactions t" +

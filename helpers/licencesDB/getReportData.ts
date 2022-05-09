@@ -5,7 +5,7 @@ import camelCase from "camelcase";
 
 import * as configFunctions from "../functions.config.js";
 import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
-import { getCanadianBankName} from "@cityssm/get-canadian-bank-name";
+import { getCanadianBankName } from "@cityssm/get-canadian-bank-name";
 
 interface ReportParameters {
   [parameterName: string]: string | number;
@@ -43,7 +43,7 @@ export const getReportData = (reportName: string, reportParameters?: ReportParam
     case "licences-formatted":
 
       sql = "select l.licenceId as " + licenceId + "," +
-        " c.licenceCategory as " + licenceCategory  + "," +
+        " c.licenceCategory as " + licenceCategory + "," +
         " l.licenceNumber as " + licenceNumber + "," +
         " l.licenseeName as " + licenseeName + "," +
         " l.licenseeBusinessName as " + licenseeBusinessName + "," +
@@ -73,10 +73,15 @@ export const getReportData = (reportName: string, reportParameters?: ReportParam
         " userFn_dateIntegerToString(t.transactionDate) as transactionDateString," +
         " userFn_timeIntegerToString(t.transactionTime) as transactionTimeString," +
         " t.transactionAmount," +
-        " userFn_getCanadianBankName(t.bankInstitutionNumber, t.bankTransitNumber) as bankName," +
-        " t.bankInstitutionNumber," +
-        " t.bankTransitNumber," +
-        " t.bankAccountNumber," +
+
+        (configFunctions.getProperty("settings.includeBatches") ?
+          " userFn_dateIntegerToString(t.batchDate) as batchDateString," +
+          " userFn_getCanadianBankName(t.bankInstitutionNumber, t.bankTransitNumber) as bankName," +
+          " t.bankInstitutionNumber," +
+          " t.bankTransitNumber," +
+          " t.bankAccountNumber,"
+          : "") +
+
         " t.externalReceiptNumber," +
         " t.transactionNote" +
         " from LicenceTransactions t" +

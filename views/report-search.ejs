@@ -15,7 +15,11 @@
 </h1>
 
 <%
-  const todayDateString = dateTimeFns.dateToString(new Date());
+  const todayDate = new Date();
+  const todayDateString = dateTimeFns.dateToString(todayDate);
+
+  const nearFutureDate = new Date(todayDate.getTime() + (86400 * 1000 * 7));
+  const nearFutureDateString = dateTimeFns.dateToString(nearFutureDate);
 %>
 
 <div class="columns">
@@ -34,7 +38,7 @@
           <form class="mt-2" action="<%= urlPrefix %>/reports/licenceTransactions-byDate" method="get">
             <div class="field has-addons">
               <div class="control has-icons-left">
-                <input class="input" name="transactionDateString" type="date" value="<%= todayDateString %>" max="<%= todayDateString %>" aria-label="Transaction Date" required />
+                <input class="input" name="transactionDateString" type="date" value="<%= todayDateString %>" max="<%= nearFutureDateString %>" aria-label="Transaction Date" required />
                 <span class="icon is-small is-left" aria-hidden="true">
                   <i class="fas fa-calendar"></i>
                 </span>

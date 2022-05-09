@@ -70,6 +70,7 @@ export const getReportData = (reportName: string, reportParameters?: ReportParam
       sql = "select" +
         " c.licenceCategory as " + licenceCategory + "," +
         " l.licenceNumber as " + licenceNumber + "," +
+        " l.licenseeName, l.licenseeBusinessName," +
         " userFn_dateIntegerToString(t.transactionDate) as transactionDateString," +
         " userFn_timeIntegerToString(t.transactionTime) as transactionTimeString," +
         " t.transactionAmount," +

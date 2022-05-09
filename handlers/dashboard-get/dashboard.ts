@@ -4,14 +4,16 @@ import * as configFunctions from "../../helpers/functions.config.js";
 import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
 
 import { getOutstandingBatches } from "../../helpers/licencesDB/getOutstandingBatches.js";
-
+import { getLicenceCategories } from "../../helpers/functions.cache.js";
 
 const batchUpcomingDays = 5;
 
 
-export const handler: RequestHandler = (_request, response) => {
+export const handler: RequestHandler = (request, response) => {
 
-  const unfilteredBatches = configFunctions.getProperty("settings.includeBatches")
+  // Batches
+
+  const unfilteredBatches = configFunctions.getProperty("settings.includeBatches") && request.session.user.userProperties.canUpdate
     ? getOutstandingBatches()
     : [];
 
@@ -21,9 +23,14 @@ export const handler: RequestHandler = (_request, response) => {
     return batch.batchDate <= batchUpcomingDateNumber;
   });
 
+  // Licence Categories
+
+  const licenceCategories = getLicenceCategories();
+
   response.render("dashboard", {
     headTitle: "Dashboard",
-    batches
+    batches,
+    licenceCategories
   });
 };
 

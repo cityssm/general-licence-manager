@@ -8,6 +8,14 @@
   </div>
 </div>
 
+<% if (licenceCategories.length === 0) { %>
+  <div class="message is-warning">
+    <p class="message-body">
+      <strong>There are no active <%= configFunctions.getProperty("settings.licenceAlias").toLowerCase() %> categories available.</strong>
+    </p>
+  </div>
+<% } %>
+
 <div class="columns">
   <div class="column">
     <div class="card">

@@ -22,6 +22,11 @@ export const getLicenceFieldByPrintKey = (licence, printKey) => {
         return currentLicenceField.printKey === printKey;
     });
 };
+export const getLicenceFieldsByPrintKeyPiece = (licence, printKeyPiece) => {
+    return licence.licenceFields.filter((currentLicenceField) => {
+        return currentLicenceField.printKey.includes(printKeyPiece);
+    });
+};
 export const getLicenceApprovalByPrintKey = (licence, printKey) => {
     return licence.licenceApprovals.find((currentLicenceApproval) => {
         return currentLicenceApproval.printKey === printKey;

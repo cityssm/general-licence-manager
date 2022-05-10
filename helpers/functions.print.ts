@@ -40,6 +40,12 @@ export const getLicenceFieldByPrintKey = (licence: recordTypes.Licence, printKey
   });
 };
 
+export const getLicenceFieldsByPrintKeyPiece = (licence: recordTypes.Licence, printKeyPiece: string): recordTypes.LicenceField[] => {
+  return licence.licenceFields.filter((currentLicenceField) => {
+    return currentLicenceField.printKey.includes(printKeyPiece);
+  });
+};
+
 
 export const getLicenceApprovalByPrintKey = (licence: recordTypes.Licence, printKey: string): recordTypes.LicenceApproval => {
   return licence.licenceApprovals.find((currentLicenceApproval) => {

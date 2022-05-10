@@ -150,12 +150,14 @@
         </tr>
       </table>
       <%
-        const specialProvisionsField = printFunctions.getLicenceFieldByPrintKey(licence, "special-provisions");
-        if (specialProvisionsField && specialProvisionsField.licenceFieldValue && specialProvisionsField.licenceFieldValue !== "") {
+        const specialProvisionsFields = printFunctions.getLicenceFieldsByPrintKeyPiece(licence, "special-provisions");
+        if (specialProvisionsFields && specialProvisionsFields.length > 0) {
       %>
         <p>
           <strong>Additional Description or Special Provisions</strong><br />
-          <%= specialProvisionsField.licenceFieldValue %>
+          <% for (const specialProvisionsField of specialProvisionsFields) { %>
+            <%= specialProvisionsField.licenceFieldValue %><br />
+          <% } %>
         </p>
       <%
         }

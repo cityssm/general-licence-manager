@@ -12,7 +12,7 @@ const batchExportConfig = configFunctions.getProperty("exports.batches");
 
 const NEWLINE = "\n";
 const HEADER_LINE1 = "$$AAPASTD0152[" +
-  (batchExportConfig.isTesting ? "TEST" : "PROD") +
+  (!batchExportConfig || batchExportConfig.isTesting ? "TEST" : "PROD") +
   "[80$$";
 
 

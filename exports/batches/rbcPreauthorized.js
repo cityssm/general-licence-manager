@@ -5,7 +5,7 @@ import stringHash from "string-hash";
 const batchExportConfig = configFunctions.getProperty("exports.batches");
 const NEWLINE = "\n";
 const HEADER_LINE1 = "$$AAPASTD0152[" +
-    (batchExportConfig.isTesting ? "TEST" : "PROD") +
+    (!batchExportConfig || batchExportConfig.isTesting ? "TEST" : "PROD") +
     "[80$$";
 const leftPad = (unpaddedString, paddingCharacter, finalLength) => {
     return unpaddedString.padStart(finalLength, paddingCharacter).slice(-1 * finalLength);

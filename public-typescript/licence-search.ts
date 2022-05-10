@@ -55,7 +55,7 @@ declare const cityssm: cityssmGlobal;
           "<th>" + licenseeAlias + "</th>" +
           "<th>Effective</th>" +
           "<th>Fields</th>" +
-          "<th></th>" +
+          "<th aria-label=\"Issued Status\"></th>" +
           "</tr></thead>" +
           "</table>";
 

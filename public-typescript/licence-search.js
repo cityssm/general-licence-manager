@@ -34,7 +34,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 "<th>" + licenseeAlias + "</th>" +
                 "<th>Effective</th>" +
                 "<th>Fields</th>" +
-                "<th></th>" +
+                "<th aria-label=\"Issued Status\"></th>" +
                 "</tr></thead>" +
                 "</table>";
             const tbodyElement = document.createElement("tbody");

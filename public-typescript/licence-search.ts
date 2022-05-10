@@ -53,8 +53,8 @@ declare const cityssm: cityssmGlobal;
           "<th>" + licenceAlias + " Number</th>" +
           "<th>Category</th>" +
           "<th>" + licenseeAlias + "</th>" +
-          "<th>Effective Start</th>" +
-          "<th>Effective End</th>" +
+          "<th>Effective</th>" +
+          "<th>Fields</th>" +
           "<th></th>" +
           "</tr></thead>" +
           "</table>";
@@ -73,19 +73,33 @@ declare const cityssm: cityssmGlobal;
               "<span class=\"is-size-7\">" + licenseeHTML + "</span>";
           }
 
+          let fieldsHTML = "";
+
+          for (const licenceField of licenceObject.licenceFields) {
+            if (licenceField.licenceFieldValue && licenceField.licenceFieldValue !== "") {
+              fieldsHTML += cityssm.escapeHTML(licenceField.licenceField) + ": " +
+                cityssm.escapeHTML(licenceField.licenceFieldValue) + "<br />";
+            }
+          }
+
           trElement.innerHTML =
             ("<td>" +
               "<a href=\"" + urlPrefix + "/licences/" + licenceObject.licenceId.toString() + "\">" +
               cityssm.escapeHTML(licenceObject.licenceNumber) +
-              "</a>" +
+              "</a><br />" +
               "</td>") +
             "<td>" + cityssm.escapeHTML(licenceObject.licenceCategory) + "</td>" +
             "<td>" + licenseeHTML + "</td>" +
-            "<td>" + licenceObject.startDateString + "</td>" +
-            "<td>" + licenceObject.endDateString + "</td>" +
+            ("<td>" +
+              "<span class=\"has-tooltip-right\" data-tooltip=\"Start Date\" aria-label=\"Start Date\"><i class=\"fas fa-fw fa-play\" aria-hidden=\"true\"></i> " + licenceObject.startDateString + "</span><br />" +
+              "<span class=\"has-tooltip-right\" data-tooltip=\"End Date\" aria-label=\"End Date\"><i class=\"fas fa-fw fa-stop\" aria-hidden=\"true\"></i> " + licenceObject.endDateString + "</span>" +
+              "</td>") +
+            ("<td>" +
+              "<span class=\"is-size-7\">" + fieldsHTML + "</span>" +
+              "</td>") +
             ("<td class=\"has-text-centered\">" +
               (licenceObject.issueDate
-                ? "<a class=\"button is-small\" href=\"" + urlPrefix + "/licences/" + licenceObject.licenceId + "/print\" target=\"_blank\" aria-label=\"Print\" download>" +
+                ? "<a class=\"button is-small\" href=\"" + urlPrefix + "/licences/" + licenceObject.licenceId + "/print\" data-tooltip=\"Print " + licenceAlias + "\" target=\"_blank\" aria-label=\"Print\" download>" +
                 "<i class=\"fas fa-print\" aria-hidden=\"true\"></i>" +
                 "</a>"
                 : "<span class=\"tag is-warning\">Pending</span>") +

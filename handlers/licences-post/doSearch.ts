@@ -12,7 +12,8 @@ export const handler: RequestHandler = async (request, response) => {
     licenceStatus: request.body.licenceStatus
   }, {
       limit: Number.parseInt(request.body.limit || "-1"),
-      offset: Number.parseInt(request.body.offset || "0")
+      offset: Number.parseInt(request.body.offset || "0"),
+      includeFields: true
     });
 
   response.json(licencesResponse);

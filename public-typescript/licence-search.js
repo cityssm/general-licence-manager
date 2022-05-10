@@ -62,15 +62,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         "<td>" + cityssm.escapeHTML(licenceObject.licenceCategory) + "</td>" +
                         "<td>" + licenseeHTML + "</td>" +
                         ("<td>" +
-                            "<span class=\"has-tooltip-right\" data-tooltip=\"Start Date\" aria-label=\"Start Date\"><i class=\"fas fa-fw fa-play\" aria-hidden=\"true\"></i> " + licenceObject.startDateString + "</span><br />" +
-                            "<span class=\"has-tooltip-right\" data-tooltip=\"End Date\" aria-label=\"End Date\"><i class=\"fas fa-fw fa-stop\" aria-hidden=\"true\"></i> " + licenceObject.endDateString + "</span>" +
+                            "<span class=\"is-nowrap has-tooltip-right\" data-tooltip=\"Start Date\" aria-label=\"Start Date\"><i class=\"fas fa-fw fa-play\" aria-hidden=\"true\"></i> " + licenceObject.startDateString + "</span><br />" +
+                            "<span class=\"is-nowrap has-tooltip-right\" data-tooltip=\"End Date\" aria-label=\"End Date\"><i class=\"fas fa-fw fa-stop\" aria-hidden=\"true\"></i> " + licenceObject.endDateString + "</span>" +
                             "</td>") +
                         ("<td>" +
                             "<span class=\"is-size-7\">" + fieldsHTML + "</span>" +
                             "</td>") +
                         ("<td class=\"has-text-centered\">" +
                             (licenceObject.issueDate
-                                ? "<a class=\"button is-small\" href=\"" + urlPrefix + "/licences/" + licenceObject.licenceId + "/print\" data-tooltip=\"Print " + licenceAlias + "\" target=\"_blank\" aria-label=\"Print\" download>" +
+                                ? "<a class=\"button is-small\" href=\"" + urlPrefix + "/licences/" + licenceObject.licenceId + "/print\" data-tooltip=\"Print " + licenceAlias + "\" target=\"_blank\" aria-label=\"Print\">" +
                                     "<i class=\"fas fa-print\" aria-hidden=\"true\"></i>" +
                                     "</a>"
                                 : "<span class=\"tag is-warning\">Pending</span>") +

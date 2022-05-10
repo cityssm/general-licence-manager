@@ -100,9 +100,6 @@
             <p>
               <strong>Issued To</strong><br />
               <%= licence.licenseeName %><br />
-              <% if (licence.licenseeBusinessName !== "") { %>
-                <%= licence.licenseeBusinessName %><br />
-              <% } %>
               <%= licence.licenseeAddress1 %><br />
               <% if (licence.licenseeAddress2 !== "") { %>
                 <%= licence.licenseeAddress2 %><br />
@@ -111,14 +108,22 @@
               <%= licence.licenseePostalCode %>
             </p>
           </td>
-          <td>
-            <p>
-              For carrying on business, trade, or occupation as a(n):<br />
-              <%= licenceCategory.licenceCategory %>
-            </p>
-          </td>
+          <% if (licence.licenseeBusinessName !== "") { %>
+            <td style="width:50%">
+              <p>
+                <strong>Business Name</strong><br />
+                <%= licence.licenseeBusinessName %>
+              </p>
+            </td>
+          <% } %>
         </tr>
       </table>
+      <p class="has-text-centered">
+        <strong>
+          For carrying on business, trade, or occupation as a(n):<br />
+          <%= licenceCategory.licenceCategory %>
+        </strong>
+      </p>
       <p>
         Within the city limits for the period and on the conditions herein mentioned.
         The licence must observe all applicable rules and regulations enacted from time to time

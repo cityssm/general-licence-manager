@@ -178,8 +178,11 @@
         <div class="panel-block is-block">
           <div class="field">
             <label class="label" for="licenceEdit--licenseeName"><%= configFunctions.getProperty("settings.licenseeAlias") %> Name</label>
-            <div class="control">
+            <div class="control has-icons-right">
               <input class="input" id="licenceEdit--licenseeName" name="licenseeName" type="text" value="<%= licence.licenseeName %>" maxlength="100" required />
+              <span class="icon is-right" aria-hidden="true">
+                <i class="fas fa-asterisk"></i>
+              </span>
             </div>
           </div>
           <div class="field">
@@ -282,7 +285,7 @@
                 <label class="label" for="licenceFieldEdit--<%= licenceField.licenceFieldKey %>">
                   <%= licenceField.licenceField %>
                 </label>
-                <div class="control">
+                <div class="control <%= (licenceField.isRequired ? " has-icons-right" : "") %>">
                   <input class="input"
                     id="licenceFieldEdit--<%= licenceField.licenceFieldKey %>"
                     name="field--<%= licenceField.licenceFieldKey %>"
@@ -293,6 +296,11 @@
                     <% if (licenceField.pattern !== "") { %>pattern="<%= licenceField.pattern %>"<% } %>
                     <%= licenceField.isRequired ? "required" : "" %>
                     />
+                    <% if (licenceField.isRequired) { %>
+                      <span class="icon is-right" aria-hidden="true">
+                        <i class="fas fa-asterisk"></i>
+                      </span>
+                    <% } %>
                 </div>
                 <% if (licenceField.licenceFieldDescription !== "") { %>
                   <p class="help">
@@ -341,8 +349,11 @@
             <div class="column">
               <div class="field">
                 <label class="label" for="licenceEdit--startDateString">Start Date</label>
-                <div class="control">
+                <div class="control has-icons-right">
                   <input class="input" id="licenceEdit--startDateString" name="startDateString" type="date" value="<%= licence.startDateString %>" required />
+                  <span class="icon is-right" aria-hidden="true">
+                    <i class="fas fa-asterisk"></i>
+                  </span>
                 </div>
               </div>
             </div>

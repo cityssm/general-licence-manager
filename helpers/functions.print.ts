@@ -2,7 +2,6 @@ import fs from "fs/promises";
 import path from "path";
 
 import * as cacheFunctions from "./functions.cache.js";
-import * as configFunctions from "./functions.config.js";
 import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
 
 import type * as recordTypes from "../types/recordTypes";

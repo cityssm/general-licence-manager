@@ -24,11 +24,11 @@ describe("general-licence-manager", () => {
     });
     describe("Cypress tests", () => {
         it("should run Cypress tests", (done) => {
-            let cypresssCommand = "cypress run";
+            let cypressCommand = "cypress run";
             if (process.env.CYPRESS_RECORD_KEY && process.env.CYPRESS_RECORD_KEY !== "") {
-                cypresssCommand += " --record";
+                cypressCommand += " --record";
             }
-            const childProcess = exec(cypresssCommand);
+            const childProcess = exec(cypressCommand);
             childProcess.stdout.on("data", (data) => {
                 console.log(data);
             });

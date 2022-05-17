@@ -14,7 +14,9 @@ const rightPad = (unpaddedString, paddingCharacter, finalLength) => {
     return unpaddedString.padEnd(finalLength, paddingCharacter).slice(0, finalLength);
 };
 const calculateFileCreationNumber = (batchDate) => {
-    const dayCount = ((batchDate.getFullYear() - 2022) * 366) + modernJulianDate.getDayOfYear(batchDate, true);
+    const dayCount = Math.abs(((batchDate.getFullYear() - 2022) * 366) +
+        modernJulianDate.getDayOfYear(batchDate, true) +
+        (batchExportConfig.header.fileCreationNumberOffset || 0));
     return leftPad(dayCount.toString(), "0", 4);
 };
 const calculateCustomerNumber = (transaction) => {

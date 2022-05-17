@@ -25,6 +25,7 @@ export const config: configTypes.Config = {
       header: {
         clientName: "TESTING",
         clientNumber: "0000",
+        fileCreationNumberOffset: 0,
         currencyType: "CAD"
       },
       record: {

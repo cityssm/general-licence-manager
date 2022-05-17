@@ -71,6 +71,7 @@ export interface ConfigBatchExport_RBCPreauthorized {
   header: {
     clientNumber: string;
     clientName: string;
+    fileCreationNumberOffset: number;
     currencyType: "CAD" | "USD";
   },
   record: {

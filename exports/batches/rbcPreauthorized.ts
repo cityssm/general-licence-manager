@@ -25,7 +25,12 @@ const rightPad = (unpaddedString: string, paddingCharacter: string, finalLength:
 };
 
 const calculateFileCreationNumber = (batchDate: Date): string => {
-  const dayCount = ((batchDate.getFullYear() - 2022) * 366) + modernJulianDate.getDayOfYear(batchDate, true);
+
+  const dayCount = Math.abs(
+    ((batchDate.getFullYear() - 2022) * 366) +
+    modernJulianDate.getDayOfYear(batchDate, true) +
+    (batchExportConfig.header.fileCreationNumberOffset || 0));
+
   return leftPad(dayCount.toString(), "0", 4);
 };
 

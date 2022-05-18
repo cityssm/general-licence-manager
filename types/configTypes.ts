@@ -21,6 +21,7 @@ export interface Config {
     licenseeAliasPlural?: string;
     renewalAlias?: string;
     includeBatches?: boolean;
+    includeReplacementFee?: boolean;
   };
   exports?: {
     batches?: ConfigBatchExport;

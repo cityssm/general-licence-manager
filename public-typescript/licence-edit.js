@@ -514,7 +514,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         : "") +
                     "</div>" +
                     "</td>") +
-                    "<td class=\"has-text-right\">$" + licenceTransaction.transactionAmount.toFixed(2) + "</td>" +
+                    ("<td class=\"has-text-right" + (licenceTransaction.transactionAmount === 0 ? " has-text-danger" : "") + "\">" +
+                        "$" + licenceTransaction.transactionAmount.toFixed(2) +
+                        "</td>") +
                     ("<td>" +
                         "<button class=\"button is-small is-danger is-inverted\" type=\"button\" aria-label=\"Delete Transaction\">" +
                         "<i class=\"fas fa-trash\" aria-hidden=\"true\"></i>" +

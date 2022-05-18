@@ -264,7 +264,7 @@ declare const bulmaJS: BulmaJS;
         cityssm.postJSON(urlPrefix + "/licences/doAddRelatedLicence", {
           licenceId,
           relatedLicenceId
-        }, (responseJSON: { success: boolean; relatedLicences?: recordTypes.Licence[];}) => {
+        }, (responseJSON: { success: boolean; relatedLicences?: recordTypes.Licence[]; }) => {
 
           if (responseJSON.success) {
             panelBlockElement.remove();
@@ -735,7 +735,10 @@ declare const bulmaJS: BulmaJS;
 
       trElement.innerHTML =
         ("<td>" +
-          licenceTransaction.transactionDateString + "<br />" +
+          "<p>" + licenceTransaction.transactionDateString + "<p>" +
+          (licenceTransaction.transactionNote && licenceTransaction.transactionNote !== ""
+            ? "<p class=\"is-size-7\">" + cityssm.escapeHTML(licenceTransaction.transactionNote) + "</p>"
+            : "") +
           "<div class=\"tags\">" +
           (currentDateString < licenceTransaction.transactionDateString
             ? "<span class=\"tag is-warning\">Upcoming</span>"

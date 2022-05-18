@@ -269,7 +269,7 @@ declare const bulmaJS: BulmaJS;
 
       totalElement.classList.remove("has-background-success-light", "has-background-danger-light");
 
-      if (outstandingBalance === licenceTotal) {
+      if (outstandingBalance.toFixed(2) === licenceTotal.toFixed(2)) {
         totalElement.classList.add("has-background-success-light");
       } else if (outstandingBalance < licenceTotal) {
         totalElement.classList.add("has-background-danger-light");

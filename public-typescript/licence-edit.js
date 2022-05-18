@@ -83,10 +83,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     }
     if (!isCreate) {
+        const currentDateString = cityssm.dateToString(new Date());
         const getRelatedLicenceHTML = (relatedLicence) => {
+            const licenceURL = urlPrefix + "/licences/" + relatedLicence.licenceId +
+                (relatedLicence.endDateString >= currentDateString
+                    ? "/edit"
+                    : "");
             return "<div class=\"columns mb-0\">" +
                 "<div class=\"column\">" +
-                "<a class=\"has-text-weight-bold\" href=\"" + urlPrefix + "/licences/" + relatedLicence.licenceId + "\" target=\"_blank\">" +
+                "<a class=\"has-text-weight-bold\" href=\"" + licenceURL + "\" target=\"_blank\">" +
                 licenceAlias + " #" + cityssm.escapeHTML(relatedLicence.licenceNumber) +
                 "</a>" +
                 "</div>" +

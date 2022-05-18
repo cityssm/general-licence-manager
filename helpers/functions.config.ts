@@ -94,7 +94,7 @@ export function getProperty(propertyName: string): unknown {
 
   for (const propertyNamePiece of propertyNameSplit) {
 
-    if (currentObject[propertyNamePiece]) {
+    if (Object.prototype.hasOwnProperty.call(currentObject, propertyNamePiece)) {
       currentObject = currentObject[propertyNamePiece];
       continue;
     }

@@ -15,6 +15,8 @@ declare const bulmaJS: BulmaJS;
 
   const urlPrefix = document.querySelector("main").dataset.urlPrefix;
 
+  const includeReplacementFee = exports.includeReplacementFee as boolean;
+
   let licenceCategories: recordTypes.LicenceCategory[] = exports.licenceCategories;
 
   const licenceCategoriesContainerElement = document.querySelector("#container--licenceCategories") as HTMLElement;
@@ -580,6 +582,9 @@ declare const bulmaJS: BulmaJS;
           (modalElement.querySelector("#licenceCategoryFeeEdit--replacementFee") as HTMLInputElement).value = licenceCategoryFee.replacementFee.toFixed(2);
         }
 
+        if (!includeReplacementFee) {
+          modalElement.querySelector("#licenceCategoryFeeEdit--replacementFee").closest(".column").classList.add("is-hidden");
+        }
       },
       onshown: (modalElement, closeModalFunction) => {
 

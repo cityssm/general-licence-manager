@@ -423,17 +423,21 @@
             </div>
           </div>
         </div>
-        <div class="column">
-          <label class="label" for="licenceEdit--replacementFee">Replacement Fee</label>
-          <div class="field has-addons">
-            <div class="control">
-              <span class="button is-static">$</span>
-            </div>
-            <div class="control is-expanded">
-              <input class="input has-text-right" id="licenceEdit--replacementFee" name="replacementFee" type="text" value="<%= licence.replacementFee ? licence.replacementFee.toFixed(2) : "" %>" readonly required />
+        <% if (configFunctions.getProperty("settings.includeReplacementFee")) { %>
+          <div class="column">
+            <label class="label" for="licenceEdit--replacementFee">Replacement Fee</label>
+            <div class="field has-addons">
+              <div class="control">
+                <span class="button is-static">$</span>
+              </div>
+              <div class="control is-expanded">
+                <input class="input has-text-right" id="licenceEdit--replacementFee" name="replacementFee" type="text" value="<%= licence.replacementFee ? licence.replacementFee.toFixed(2) : "" %>" readonly required />
+              </div>
             </div>
           </div>
-        </div>
+        <% } else { %>
+          <input id="licenceEdit--replacementFee" name="replacementFee" type="hidden" value="<%= licence.replacementFee ? licence.replacementFee.toFixed(2) : "" %>" readonly required />
+        <% } %>
         <div class="column is-6">
           <% if (isCreate) { %>
             <div class="message is-info is-small">

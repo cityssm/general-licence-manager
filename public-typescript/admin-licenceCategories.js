@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const glm = exports.glm;
     const urlPrefix = document.querySelector("main").dataset.urlPrefix;
+    const includeReplacementFee = exports.includeReplacementFee;
     let licenceCategories = exports.licenceCategories;
     const licenceCategoriesContainerElement = document.querySelector("#container--licenceCategories");
     const renderLicenceCategories = () => {
@@ -407,6 +408,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 if (licenceCategoryFee.replacementFee) {
                     modalElement.querySelector("#licenceCategoryFeeEdit--replacementFee").value = licenceCategoryFee.replacementFee.toFixed(2);
+                }
+                if (!includeReplacementFee) {
+                    modalElement.querySelector("#licenceCategoryFeeEdit--replacementFee").closest(".column").classList.add("is-hidden");
                 }
             },
             onshown: (modalElement, closeModalFunction) => {

@@ -207,10 +207,12 @@
         <strong id="licenceView--licenceFee"><%= configFunctions.getProperty("settings.licenceAlias") %> Fee</strong><br />
         <span aria-labelledby="licenceView--licenceFee">$<%= licence.licenceFee ? licence.licenceFee.toFixed(2) : "" %></span>
       </div>
-      <div class="column">
-        <strong id="licenceView--replacementFee">Replacement Fee</strong><br />
-        <span aria-labelledby="licenceView--replacementFee">$<%= licence.replacementFee ? licence.replacementFee.toFixed(2) : "" %></span>
-      </div>
+      <% if (configFunctions.getProperty("settings.includeReplacementFee")) { %>
+        <div class="column">
+          <strong id="licenceView--replacementFee">Replacement Fee</strong><br />
+          <span aria-labelledby="licenceView--replacementFee">$<%= licence.replacementFee ? licence.replacementFee.toFixed(2) : "" %></span>
+        </div>
+      <% } %>
       <div class="column is-6">
         <table class="table is-fullwidth">
           <thead>

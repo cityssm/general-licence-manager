@@ -18,6 +18,7 @@ declare const bulmaJS: BulmaJS;
   const licenceAlias = exports.licenceAlias as string;
   const licenceAliasPlural = exports.licenceAliasPlural as string;
   const licenseeAlias = exports.licenseeAlias as string;
+  const includeReplacementFee = exports.includeReplacementFee as boolean;
 
   const licenceId = (document.querySelector("#licenceEdit--licenceId") as HTMLInputElement).value;
 
@@ -827,15 +828,19 @@ declare const bulmaJS: BulmaJS;
 
         modalElement.querySelector("#transactionAdd--licenceFee").textContent = licenceFeeString;
 
-        modalElement.querySelector("#transactionAdd--replacementFee").textContent =
-          (document.querySelector("#licenceEdit--replacementFee") as HTMLInputElement).value;
+        if (includeReplacementFee) {
+          modalElement.querySelector("#transactionAdd--replacementFee").textContent =
+            (document.querySelector("#licenceEdit--replacementFee") as HTMLInputElement).value;
+        } else {
+          modalElement.querySelector("#transactionAdd--replacementFee").closest("tr").remove();
+        }
 
         const outstandingBalance = getOutstandingBalance();
 
         modalElement.querySelector("#transactionAdd--outstandingBalance").textContent = outstandingBalance.toFixed(2);
 
         (modalElement.querySelector("#transactionAdd--transactionAmount") as HTMLInputElement).value =
-          (outstandingBalance > 0
+          (outstandingBalance > 0 || !includeReplacementFee
             ? outstandingBalance.toFixed(2)
             : (document.querySelector("#licenceEdit--replacementFee") as HTMLInputElement).value);
       },

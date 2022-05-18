@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const licenceAlias = exports.licenceAlias;
     const licenceAliasPlural = exports.licenceAliasPlural;
     const licenseeAlias = exports.licenseeAlias;
+    const includeReplacementFee = exports.includeReplacementFee;
     const licenceId = document.querySelector("#licenceEdit--licenceId").value;
     const isCreate = (licenceId === "");
     const populateBankName = (bankInstitutionNumberElement, bankTransitNumberElement, bankNameElement) => {
@@ -563,12 +564,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 modalElement.querySelector("#transactionAdd--licenceId").value = licenceId;
                 const licenceFeeString = document.querySelector("#licenceEdit--licenceFee").value;
                 modalElement.querySelector("#transactionAdd--licenceFee").textContent = licenceFeeString;
-                modalElement.querySelector("#transactionAdd--replacementFee").textContent =
-                    document.querySelector("#licenceEdit--replacementFee").value;
+                if (includeReplacementFee) {
+                    modalElement.querySelector("#transactionAdd--replacementFee").textContent =
+                        document.querySelector("#licenceEdit--replacementFee").value;
+                }
+                else {
+                    modalElement.querySelector("#transactionAdd--replacementFee").closest("tr").remove();
+                }
                 const outstandingBalance = getOutstandingBalance();
                 modalElement.querySelector("#transactionAdd--outstandingBalance").textContent = outstandingBalance.toFixed(2);
                 modalElement.querySelector("#transactionAdd--transactionAmount").value =
-                    (outstandingBalance > 0
+                    (outstandingBalance > 0 || !includeReplacementFee
                         ? outstandingBalance.toFixed(2)
                         : document.querySelector("#licenceEdit--replacementFee").value);
             },

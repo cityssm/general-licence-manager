@@ -686,7 +686,7 @@ declare const bulmaJS: BulmaJS;
 
     const licenceFeeString = (document.querySelector("#licenceEdit--licenceFee") as HTMLInputElement).value;
 
-    const transactionAmountTotalString = licenceTransactionsTableElement.querySelectorAll("tfoot th")[1].textContent.slice(1);
+    const transactionAmountTotalString = licenceTransactionsTableElement.querySelector("#transactions--total").textContent.slice(1);
 
     const outstandingBalance = Math.max(Number.parseFloat(licenceFeeString) - Number.parseFloat(transactionAmountTotalString), 0);
 
@@ -775,8 +775,23 @@ declare const bulmaJS: BulmaJS;
       transactionTotal += licenceTransaction.transactionAmount;
     }
 
-    licenceTransactionsTableElement.querySelectorAll("tfoot th")[1].textContent =
-      "$" + transactionTotal.toFixed(2);
+    const tfootElement = licenceTransactionsTableElement.querySelector("tfoot");
+
+    tfootElement.innerHTML = "<tr>" +
+      "<th>Total</th>" +
+      "<th id=\"transactions--total\" class=\"has-text-right\">$" + transactionTotal.toFixed(2) + "</th>" +
+      "<th></th>" +
+      "</tr>";
+
+    const outstandingBalance = getOutstandingBalance();
+
+    if (outstandingBalance > 0) {
+      tfootElement.insertAdjacentHTML("beforeend", "<tr class=\"has-background-danger-light\">" +
+        "<th>Outstanding Balance</th>"+
+        "<th class=\"has-text-right\">$" + outstandingBalance.toFixed(2) + "</th>" +
+        "<th></th>" +
+        "</tr>");
+    }
   };
 
 

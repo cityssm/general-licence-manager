@@ -12,6 +12,9 @@ export const handler = async (request, response, next) => {
         return next(configFunctions.getProperty("settings.licenceAlias") + " not available for printing.");
     }
     const licenceCategory = getLicenceCategory(licence.licenceCategoryKey);
+    if (!licenceCategory.printEJS || licenceCategory.printEJS === "") {
+        return next(configFunctions.getProperty("settings.licenceAlias") + " does not have a print template set.");
+    }
     const reportPath = path.join(".", "print", licenceCategory.printEJS + ".ejs");
     const pdfCallbackFunction = (pdf) => {
         response.setHeader("Content-Disposition", "attachment;" +

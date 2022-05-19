@@ -24,6 +24,10 @@ export const handler: RequestHandler = async (request, response, next) => {
 
   const licenceCategory = getLicenceCategory(licence.licenceCategoryKey);
 
+  if (!licenceCategory.printEJS || licenceCategory.printEJS === "") {
+    return next(configFunctions.getProperty("settings.licenceAlias") + " does not have a print template set.");
+  }
+
   const reportPath = path.join(".", "print", licenceCategory.printEJS + ".ejs");
 
   const pdfCallbackFunction = (pdf: Buffer) => {

@@ -31,7 +31,8 @@ export const getLicenceTransactions = (licenceId: number | string, database?: sq
       " externalReceiptNumber, transactionAmount, transactionNote" +
       " from LicenceTransactions" +
       " where recordDelete_timeMillis is null" +
-      " and licenceId = ?")
+      " and licenceId = ?" +
+      " order by transactionDate, transactionTime, transactionIndex")
       .all(licenceId);
 
   if (doCloseDatabase) {

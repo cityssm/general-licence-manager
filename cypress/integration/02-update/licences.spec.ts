@@ -1,4 +1,4 @@
-/* eslint-disable unicorn/filename-case, promise/catch-or-return, promise/always-return */
+/* eslint-disable unicorn/filename-case, promise/catch-or-return, promise/always-return, promise/no-nesting */
 
 import * as configFunctions from "../../../helpers/functions.config.js";
 import { getCanadianBankName } from "@cityssm/get-canadian-bank-name";
@@ -104,21 +104,28 @@ describe("Update - Licences", () => {
           .type(licenceJSON.licenseePostalCode);
 
         cy.get("input[name='bankInstitutionNumber']")
-          .clear()
-          .type(licenceJSON.bankInstitutionNumber);
+          .invoke("attr", "type")
+          .then((attributeType) => {
+            if (attributeType !== "hidden") {
 
-        cy.get("input[name='bankTransitNumber']")
-          .clear()
-          .type(licenceJSON.bankTransitNumber);
+              cy.get("input[name='bankInstitutionNumber']")
+                .clear()
+                .type(licenceJSON.bankInstitutionNumber);
 
-        cy.get("input[name='bankAccountNumber']")
-          .clear()
-          .type(licenceJSON.bankAccountNumber);
+              cy.get("input[name='bankTransitNumber']")
+                .clear()
+                .type(licenceJSON.bankTransitNumber);
 
-        cy.wait(ajaxDelayMillis);
+              cy.get("input[name='bankAccountNumber']")
+                .clear()
+                .type(licenceJSON.bankAccountNumber);
 
-        cy.get("#licenceEdit--bankName")
-          .should("have.value", getCanadianBankName(licenceJSON.bankInstitutionNumber, licenceJSON.bankTransitNumber));
+              cy.wait(ajaxDelayMillis);
+
+              cy.get("#licenceEdit--bankName")
+                .should("have.value", getCanadianBankName(licenceJSON.bankInstitutionNumber, licenceJSON.bankTransitNumber));
+            }
+          });
       });
     });
 
@@ -212,15 +219,21 @@ describe("Update - Licences", () => {
       cy.injectAxe();
       cy.checkA11y();
 
-      cy.get(".modal input[name='bankInstitutionNumber']")
-        .should("be.visible")
-        .should("have.value", "");
-
       cy.get(".modal .is-copy-bank-numbers-button")
-        .click();
+      .then(($copyBankButton) => {
 
-      cy.get(".modal input[name='bankInstitutionNumber']")
-        .should("not.have.value", "");
+        if (!$copyBankButton.hasClass("is-hidden")) {
+
+          cy.get(".modal input[name='bankInstitutionNumber']")
+          .should("be.visible")
+          .should("have.value", "");
+
+          cy.wrap($copyBankButton).click();
+
+          cy.get(".modal input[name='bankInstitutionNumber']")
+          .should("not.have.value", "");
+        }
+      });
 
       cy.get(".modal form").submit();
 

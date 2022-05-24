@@ -65,17 +65,23 @@ describe("Update - Licences", function () {
                     .clear()
                     .type(licenceJSON.licenseePostalCode);
                 cy.get("input[name='bankInstitutionNumber']")
-                    .clear()
-                    .type(licenceJSON.bankInstitutionNumber);
-                cy.get("input[name='bankTransitNumber']")
-                    .clear()
-                    .type(licenceJSON.bankTransitNumber);
-                cy.get("input[name='bankAccountNumber']")
-                    .clear()
-                    .type(licenceJSON.bankAccountNumber);
-                cy.wait(ajaxDelayMillis);
-                cy.get("#licenceEdit--bankName")
-                    .should("have.value", getCanadianBankName(licenceJSON.bankInstitutionNumber, licenceJSON.bankTransitNumber));
+                    .invoke("attr", "type")
+                    .then(function (attributeType) {
+                    if (attributeType !== "hidden") {
+                        cy.get("input[name='bankInstitutionNumber']")
+                            .clear()
+                            .type(licenceJSON.bankInstitutionNumber);
+                        cy.get("input[name='bankTransitNumber']")
+                            .clear()
+                            .type(licenceJSON.bankTransitNumber);
+                        cy.get("input[name='bankAccountNumber']")
+                            .clear()
+                            .type(licenceJSON.bankAccountNumber);
+                        cy.wait(ajaxDelayMillis);
+                        cy.get("#licenceEdit--bankName")
+                            .should("have.value", getCanadianBankName(licenceJSON.bankInstitutionNumber, licenceJSON.bankTransitNumber));
+                    }
+                });
             });
         });
         it("Should use the default licensee city and province", function () {
@@ -136,13 +142,17 @@ describe("Update - Licences", function () {
                 .should("not.exist");
             cy.injectAxe();
             cy.checkA11y();
-            cy.get(".modal input[name='bankInstitutionNumber']")
-                .should("be.visible")
-                .should("have.value", "");
             cy.get(".modal .is-copy-bank-numbers-button")
-                .click();
-            cy.get(".modal input[name='bankInstitutionNumber']")
-                .should("not.have.value", "");
+                .then(function ($copyBankButton) {
+                if (!$copyBankButton.hasClass("is-hidden")) {
+                    cy.get(".modal input[name='bankInstitutionNumber']")
+                        .should("be.visible")
+                        .should("have.value", "");
+                    cy.wrap($copyBankButton).click();
+                    cy.get(".modal input[name='bankInstitutionNumber']")
+                        .should("not.have.value", "");
+                }
+            });
             cy.get(".modal form").submit();
             cy.wait(ajaxDelayMillis);
             cy.get("#table--licenceTransactions tbody tr")

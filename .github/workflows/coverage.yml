@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
 jobs:
-  testCSV:
+  Coverage:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
@@ -23,7 +23,7 @@ jobs:
       - name: Code Climate
         run: |
           curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./codeclimate-test-reporter
-          chmod +x ./codeclimate-test-reporter\
+          chmod +x codeclimate-test-reporter
           ./codeclimate-test-reporter before-build
           ./codeclimate-test-reporter after-build -t lcov --exit-code $?
         env:

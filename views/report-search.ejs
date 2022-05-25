@@ -77,8 +77,23 @@
   </div>
   <div class="column">
     <div class="panel">
-      <h2 class="panel-heading">Table Exports</h2>
-      <div class="panel-block">
+      <div class="panel-heading">
+        <div class="level">
+          <div class="level-left">
+            <h2 class="level-item has-text-weight-bold">Table Exports</h2>
+          </div>
+          <div class="level-right">
+            <div class="level-item">
+              <button class="button is-small is-white is-panel-toggle-button" aria-label="Show/Hide Exports">
+                <span class="icon" aria-hidden="true">
+                  <i class="fas fa-angle-down"></i>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-block is-hidden">
         <div class="message is-info">
           <p class="message-body is-size-7">
             Note that table exports are full, unfiltered, and unformatted exports.
@@ -87,7 +102,7 @@
         </div>
       </div>
       <% uid = stringFns.getUID(); %>
-      <a class="panel-block align-items-flex-start"
+      <a class="panel-block is-hidden align-items-flex-start"
         href="<%= urlPrefix %>/reports/licences-all"
         aria-labelledby="h--<%= uid %>"
         aria-describedby="p--<%= uid %>"
@@ -106,7 +121,7 @@
         </div>
       </a>
       <% uid = stringFns.getUID(); %>
-      <a class="panel-block align-items-flex-start"
+      <a class="panel-block is-hidden align-items-flex-start"
         href="<%= urlPrefix %>/reports/licenceTransactions-all"
         aria-labelledby="h--<%= uid %>"
         aria-describedby="p--<%= uid %>"
@@ -129,4 +144,5 @@
 </div>
 
 <%- include('_footerA'); -%>
+<script src="<%= urlPrefix %>/javascripts/report-search.min.js"></script>
 <%- include('_footerB'); -%>

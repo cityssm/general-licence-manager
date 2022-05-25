@@ -5,7 +5,7 @@
 [![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/cityssm/general-licence-manager)](https://codeclimate.com/github/cityssm/general-licence-manager)
 [![Code Climate coverage](https://img.shields.io/codeclimate/coverage/cityssm/general-licence-manager)](https://codeclimate.com/github/cityssm/general-licence-manager)
 [![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/cityssm/general-licence-manager)](https://app.snyk.io/org/cityssm/project/9324a6c8-ab05-4ede-a6a7-aecb822dc75f)
-[![AppVeyor](https://img.shields.io/appveyor/build/dangowans/general-licence-manager)](https://ci.appveyor.com/project/dangowans/general-licence-manager)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/cityssm/general-licence-manager/Coverage%20Testing)](https://github.com/cityssm/general-licence-manager/actions/workflows/coverage.yml)
 [![general-licence-manager](https://img.shields.io/endpoint?url=https://dashboard.cypress.io/badge/simple/m93ucs&style=flat&logo=cypress)](https://dashboard.cypress.io/projects/m93ucs/runs)
 
 ![Licence Search](docs/images/licence-search.png)

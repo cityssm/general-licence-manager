@@ -90,12 +90,7 @@
           <td>
             Municipal Licence<br />
             Expires<br />
-            <% const licenceLengthEndDateString = printFunctions.getLicenceLengthEndDateString(licence); %>
-            <% if (licence.startDate !== licence.issueDate || licenceLengthEndDateString.includes("-")) { %>
-              <%= licence.endDateString %>
-            <% } else { %>
-              <%= licenceLengthEndDateString %> from date of issuance
-            <% } %>
+            <%= licence.endDateString %>
           </td>
         </tr>
       </table>

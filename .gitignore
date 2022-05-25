@@ -13,7 +13,7 @@ data/*.db
 data/*.db-journal
 data/*.min.js
 data/config.*
-!data/config.appveyor.*
+!data/config.testing.*
 !data/config.example.*
 handlers/*.min.js
 helpers/*.min.js

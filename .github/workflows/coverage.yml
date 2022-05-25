@@ -16,7 +16,7 @@ jobs:
           npm ci
           npm install -g mocha c8 cypress
       - name: Copy Test Config
-        run: cp ./data/config.appveyor.js ./data/config.js
+        run: cp ./data/config.testing.js ./data/config.js
       - name: Run Coverage Testing
         run: c8 --reporter=lcov --reporter=text --reporter=text-summary mocha --timeout 10000 --exit
         env:

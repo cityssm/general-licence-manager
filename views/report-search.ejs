@@ -33,11 +33,11 @@
           </span><br />
           <span class="tag is-info" aria-label="Export Format">CSV</span>
         </div>
-        <div>
+        <div class="is-flex-grow-1">
           <h3 class="title is-5 is-marginless">Daily Transactions</h3>
           <form class="mt-2" action="<%= urlPrefix %>/reports/licenceTransactions-byDate" method="get">
             <div class="field has-addons">
-              <div class="control has-icons-left">
+              <div class="control is-expanded has-icons-left">
                 <input class="input" name="transactionDateString" type="date" value="<%= todayDateString %>" max="<%= nearFutureDateString %>" aria-label="Transaction Date" required />
                 <span class="icon is-small is-left" aria-hidden="true">
                   <i class="fas fa-calendar"></i>
@@ -80,13 +80,13 @@
           </span><br />
           <span class="tag is-info" aria-label="Export Format">CSV</span>
         </div>
-        <div>
+        <div class="is-flex-grow-1">
           <h3 class="title is-5 is-marginless"><%= configFunctions.getProperty("settings.licenceAlias") %> Details by <%= configFunctions.getProperty("settings.licenceAlias") %> Category</h3>
           <form class="mt-2" action="<%= urlPrefix %>/reports/licences-byLicenceCategory" method="get">
             <div class="field has-addons">
-              <div class="control">
-                <div class="select">
-                  <select name="licenceCategoryKey">
+              <div class="control is-expanded">
+                <div class="select is-fullwidth">
+                  <select name="licenceCategoryKey" aria-label="<%= configFunctions.getProperty("settings.licenceAlias") %> Category">
                     <% for (const licenceCategory of licenceCategories) { %>
                       <option value="<%= licenceCategory.licenceCategoryKey %>">
                         <%= licenceCategory.licenceCategory %>

@@ -2,6 +2,7 @@ name: Coverage Testing
 on:
   workflow_dispatch:
   push:
+permissions: read-all
 jobs:
   Coverage:
     runs-on: ubuntu-18.04

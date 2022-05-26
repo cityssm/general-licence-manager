@@ -1,6 +1,10 @@
 name: Coverage Testing (Pull)
+
 on:
   pull_request:
+
+permissions: read-all
+
 jobs:
   Coverage:
     runs-on: ubuntu-18.04

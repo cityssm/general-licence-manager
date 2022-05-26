@@ -40,8 +40,24 @@ const getLicencesByLicenceCategorySQL = (licenceCategoryKey: string): {
 
   let fieldsSql = "";
 
+  const fieldColumnNames = new Set<string>();
+
   for (const licenceField of licenceCategory.licenceCategoryFields) {
-    fieldsSql += " max(case when f.licenceFieldKey = ? then f.licenceFieldValue else null end) as " + camelCase(licenceField.licenceField) + ",";
+
+    let fieldColumnName = "";
+
+    for (let fieldColumnNameIndex = 0; fieldColumnNameIndex <= 100; fieldColumnNameIndex += 1) {
+
+      fieldColumnName = "field_" + camelCase(licenceField.licenceField) +
+        (fieldColumnNameIndex === 0 ? "" : "_" + fieldColumnNameIndex);
+
+      if (!fieldColumnNames.has(fieldColumnName)) {
+        fieldColumnNames.add(fieldColumnName);
+        break;
+      }
+    }
+
+    fieldsSql += " max(case when f.licenceFieldKey = ? then f.licenceFieldValue else null end) as " + fieldColumnName + ",";
     sqlParameters.push(licenceField.licenceFieldKey);
   }
 

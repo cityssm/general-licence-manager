@@ -8,12 +8,12 @@ Cypress.Cookies.defaults({
 });
 
 
-export const logout = () => {
+export const logout = (): void => {
   cy.visit("/logout");
 };
 
 
-export const login = (userName: string) => {
+export const login = (userName: string): void => {
   cy.visit("/login");
 
   cy.get(".message")

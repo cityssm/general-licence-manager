@@ -57,7 +57,7 @@ export const getLicenceApprovalByPrintKey = (licence: recordTypes.Licence, print
 };
 
 
-export const getLicenceLengthEndDateString = (licence: recordTypes.Licence) => {
+export const getLicenceLengthEndDateString = (licence: recordTypes.Licence): string => {
 
   const licenceCategory = cacheFunctions.getLicenceCategory(licence.licenceCategoryKey);
 

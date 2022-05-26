@@ -24,9 +24,17 @@ describe("Reports", function () {
         cy.injectAxe();
         cy.checkA11y();
     });
-    it("Exports all reports", function () {
+    it("Exports all reports without parameters", function () {
         cy.get("a:not(.is-hidden)[download][href*='/reports/']").each(function ($reportLink) {
             cy.wrap($reportLink).click();
+            cy.wait(ajaxDelayMillis);
+        });
+    });
+    it("Exports all reports with parameters", function () {
+        cy.get("form[action*='/reports/']").each(function ($reportLink) {
+            cy.wrap($reportLink)
+                .invoke("attr", "target", "_blank")
+                .submit();
             cy.wait(ajaxDelayMillis);
         });
     });

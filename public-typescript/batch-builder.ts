@@ -308,10 +308,12 @@ declare const bulmaJS: BulmaJS;
 
     const doSplit = () => {
 
-      cityssm.postJSON(urlPrefix + "/batches/doSplitOutstandingBalance", {
-        licenceId,
+      cityssm.postJSON(urlPrefix + "/batches/doSplitOutstandingBalances", {
+        licenceOutstandingBalances: [{
+          licenceId,
+          outstandingBalance
+        }],
         batchDateStrings,
-        outstandingBalance
       }, (responseJSON: { success: boolean; batchTransactions?: recordTypes.LicenceTransaction[]; }) => {
         if (responseJSON.success) {
           batchTransactions = responseJSON.batchTransactions;
@@ -336,11 +338,58 @@ declare const bulmaJS: BulmaJS;
     }
   };
 
+  const splitOutstandingBalances = (clickEvent: Event) => {
+
+    clickEvent.preventDefault();
+
+    const licenceTrElements = transactionBatchesTableElement.querySelectorAll("tbody tr") as NodeListOf<HTMLTableRowElement>;
+
+    const licenceOutstandingBalances = [];
+
+    for (const licenceTrElement of licenceTrElements) {
+
+      licenceOutstandingBalances.push({
+        licenceId: licenceTrElement.dataset.licenceId,
+        outstandingBalance: licenceTrElement.dataset.outstandingBalance
+      });
+    }
+
+    const doSplit = () => {
+
+      cityssm.postJSON(urlPrefix + "/batches/doSplitOutstandingBalances", {
+        licenceOutstandingBalances,
+        batchDateStrings,
+      }, (responseJSON: { success: boolean; batchTransactions?: recordTypes.LicenceTransaction[]; }) => {
+        if (responseJSON.success) {
+          batchTransactions = responseJSON.batchTransactions;
+          renderBatchTransactions();
+        }
+      });
+    };
+
+    if (batchDateStrings.length === 0) {
+      bulmaJS.alert({
+        message: "There are no batches available."
+      });
+    } else {
+      bulmaJS.confirm({
+        title: "Split Balances Across Batches",
+        message: "Are you sure you want to evenly split the outstanding balances across " + batchDateStrings.length + " batch" + (batchDateStrings.length === 1 ? "" : "es") + "?",
+        okButton: {
+          text: "Yes, Split the Balance",
+          callbackFunction: doSplit
+        }
+      });
+    }
+  };
+
   const splitOutstandingBalanceButtons = document.querySelectorAll(".is-split-outstanding-balance-button");
 
   for (const splitOutstandingBalanceButton of splitOutstandingBalanceButtons) {
     splitOutstandingBalanceButton.addEventListener("click", splitOutstandingBalance);
   }
+
+  document.querySelector(".is-split-outstanding-balances-button").addEventListener("click", splitOutstandingBalances);
 
   /*
    * Clear Licence Amounts
@@ -355,7 +404,7 @@ declare const bulmaJS: BulmaJS;
     const doClear = () => {
 
       cityssm.postJSON(urlPrefix + "/batches/doClearLicenceBatchTransactions", {
-        licenceId
+        licenceIds: [licenceId],
       }, (responseJSON: { success: boolean; batchTransactions: recordTypes.LicenceTransaction[]; }) => {
 
         if (responseJSON.success) {
@@ -370,11 +419,46 @@ declare const bulmaJS: BulmaJS;
       message: "Are you sure you want to clear all transaction amounts in this row?",
       contextualColorName: "warning",
       okButton: {
-        text: "Yes, Clear All Trasnactions",
+        text: "Yes, Clear All Transactions",
         callbackFunction: doClear
       }
     });
+  };
 
+  const clearAllLicenceTransactions = (clickEvent: Event) => {
+
+    clickEvent.preventDefault();
+
+    const licenceTrElements = transactionBatchesTableElement.querySelectorAll("tbody tr") as NodeListOf<HTMLTableRowElement>;
+
+    const licenceIds = [];
+
+    for (const licenceTrElement of licenceTrElements) {
+      licenceIds.push(licenceTrElement.dataset.licenceId);
+    }
+
+    const doClear = () => {
+
+      cityssm.postJSON(urlPrefix + "/batches/doClearLicenceBatchTransactions", {
+        licenceIds,
+      }, (responseJSON: { success: boolean; batchTransactions: recordTypes.LicenceTransaction[]; }) => {
+
+        if (responseJSON.success) {
+          batchTransactions = responseJSON.batchTransactions;
+          renderBatchTransactions();
+        }
+      });
+    };
+
+    bulmaJS.confirm({
+      title: "Clear All Transactions",
+      message: "Are you sure you want to clear all transaction amounts?",
+      contextualColorName: "warning",
+      okButton: {
+        text: "Yes, Clear All Transactions",
+        callbackFunction: doClear
+      }
+    });
   };
 
   const clearLicenceButtonElements = document.querySelectorAll(".is-clear-licence-button");
@@ -382,6 +466,8 @@ declare const bulmaJS: BulmaJS;
   for (const clearLicenceButtonElement of clearLicenceButtonElements) {
     clearLicenceButtonElement.addEventListener("click", clearLicenceTransactions);
   }
+
+  document.querySelector(".is-clear-licences-button").addEventListener("click", clearAllLicenceTransactions);
 
   /*
    * Add Batch

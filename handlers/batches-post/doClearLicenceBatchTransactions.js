@@ -1,10 +1,14 @@
 import { clearBatchTransactionsByLicence } from "../../helpers/licencesDB/clearBatchTransactionsByLicence.js";
 import { getOutstandingBatchTransactions } from "../../helpers/licencesDB/getOutstandingBatchTransactions.js";
 export const handler = async (request, response) => {
-    const success = clearBatchTransactionsByLicence(request.body.licenceId, request.session);
+    const licenceIds = request.body.licenceIds;
+    let success = 1;
+    for (const licenceId of licenceIds) {
+        success = Math.min(success, clearBatchTransactionsByLicence(licenceId, request.session) ? 1 : 0);
+    }
     const batchTransactions = getOutstandingBatchTransactions();
     response.json({
-        success,
+        success: success === 1 ? true : false,
         batchTransactions
     });
 };

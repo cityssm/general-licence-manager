@@ -5,7 +5,7 @@ import * as permissionHandlers from "../handlers/permissions.js";
 import handler_builder from "../handlers/batches-get/builder.js";
 import handler_doCreateOrUpdateBatchTransaction from "../handlers/batches-post/doCreateOrUpdateBatchTransaction.js";
 import handler_doClearBatchTransactions from "../handlers/batches-post/doClearBatchTransactions.js";
-import handler_doSplitOutstandingBalance from "../handlers/batches-post/doSplitOutstandingBalance.js";
+import handler_doSplitOutstandingBalances from "../handlers/batches-post/doSplitOutstandingBalances.js";
 import handler_doClearLicenceBatchTransactions from "../handlers/batches-post/doClearLicenceBatchTransactions.js";
 
 import handler_reconcile from "../handlers/batches-get/reconcile.js";
@@ -33,9 +33,9 @@ router.post("/doClearBatchTransactions",
   handler_doClearBatchTransactions);
 
 
-router.post("/doSplitOutstandingBalance",
+router.post("/doSplitOutstandingBalances",
   permissionHandlers.updatePostHandler,
-  handler_doSplitOutstandingBalance);
+  handler_doSplitOutstandingBalances);
 
 
 router.post("/doClearLicenceBatchTransactions",

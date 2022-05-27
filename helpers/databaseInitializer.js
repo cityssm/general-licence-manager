@@ -44,7 +44,8 @@ export const initLicencesDB = () => {
             " additionalFeeType varchar(10) not null," +
             " additionalFeeNumber decimal(10, 2) not null default 0," +
             " additionalFeeFunction varchar(50) not null default ''," +
-            "	isRequired bit not null default 0," +
+            " isRequired bit not null default 0," +
+            " orderNumber smallint not null default 0," +
             recordColumns + "," +
             " foreign key (licenceCategoryKey) references LicenceCategories (licenceCategoryKey)" +
             ") without rowid").run();

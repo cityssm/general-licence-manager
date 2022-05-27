@@ -96,6 +96,7 @@ export interface LicenceCategory extends Record {
     printEJS?: string;
     licenceCategoryApprovals?: LicenceCategoryApproval[];
     licenceCategoryFees?: LicenceCategoryFee[];
+    licenceCategoryAdditionalFees?: LicenceCategoryAdditionalFee[];
     licenceCategoryFields?: LicenceCategoryField[];
     hasEffectiveFee?: boolean;
 }
@@ -128,6 +129,7 @@ export interface LicenceCategoryAdditionalFee extends Record {
     additionalFeeNumber?: number;
     additionalFeeFunction?: string;
     isRequired: boolean;
+    orderNumber?: number;
 }
 export interface LicenceCategoryField extends Record {
     licenceFieldKey: string;

@@ -3,7 +3,8 @@ export const handler = async (request, response) => {
     const licenceCategory = getLicenceCategory(request.body.licenceCategoryKey, {
         includeApprovals: true,
         includeFees: "all",
-        includeFields: true
+        includeFields: true,
+        includeAdditionalFees: true
     });
     response.json({
         success: true,

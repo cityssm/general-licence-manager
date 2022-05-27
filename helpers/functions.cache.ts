@@ -29,7 +29,8 @@ export const getLicenceCategory = (licenceCategoryKey: string): recordTypes.Lice
     licenceCategoriesMap.set(licenceCategoryKey, database_getLicenceCategory(licenceCategoryKey, {
       includeFields: true,
       includeFees: "current",
-      includeApprovals: true
+      includeApprovals: true,
+      includeAdditionalFees: true
     }));
   }
 

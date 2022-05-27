@@ -17,7 +17,8 @@ export const getLicenceCategory = (licenceCategoryKey) => {
         licenceCategoriesMap.set(licenceCategoryKey, database_getLicenceCategory(licenceCategoryKey, {
             includeFields: true,
             includeFees: "current",
-            includeApprovals: true
+            includeApprovals: true,
+            includeAdditionalFees: true
         }));
     }
     return licenceCategoriesMap.get(licenceCategoryKey);

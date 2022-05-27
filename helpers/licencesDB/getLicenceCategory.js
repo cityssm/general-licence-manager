@@ -3,6 +3,7 @@ import { licencesDB as databasePath } from "../../data/databasePaths.js";
 import { getLicenceCategoryFields } from "./getLicenceCategoryFields.js";
 import { getLicenceCategoryApprovals } from "./getLicenceCategoryApprovals.js";
 import { getLicenceCategoryFees } from "./getLicenceCategoryFees.js";
+import { getLicenceCategoryAdditionalFees } from "./getLicenceCategoryAdditionalFees.js";
 export const getLicenceCategory = (licenceCategoryKey, options) => {
     const database = sqlite(databasePath, {
         readonly: true
@@ -19,6 +20,10 @@ export const getLicenceCategory = (licenceCategoryKey, options) => {
     if (licenceCategory && options.includeFees) {
         licenceCategory.licenceCategoryFees =
             getLicenceCategoryFees(licenceCategoryKey, options.includeFees, database);
+    }
+    if (licenceCategory && options.includeAdditionalFees) {
+        licenceCategory.licenceCategoryAdditionalFees =
+            getLicenceCategoryAdditionalFees(licenceCategoryKey, database);
     }
     if (licenceCategory && options.includeFields) {
         licenceCategory.licenceCategoryFields =

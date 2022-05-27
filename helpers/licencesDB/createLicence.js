@@ -20,11 +20,12 @@ export const createLicence = (licenceForm, requestSession) => {
         " licenseeCity, licenseeProvince, licenseePostalCode," +
         " bankInstitutionNumber, bankTransitNumber, bankAccountNumber," +
         " isRenewal, startDate, endDate," +
+        " baseLicenceFee, baseReplacementFee," +
         " licenceFee, replacementFee," +
         " recordCreate_userName, recordCreate_timeMillis," +
         " recordUpdate_userName, recordUpdate_timeMillis)" +
-        " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
-        .run(licenceForm.licenceCategoryKey, licenceNumber, licenceForm.licenseeName, licenceForm.licenseeBusinessName, licenceForm.licenseeAddress1, licenceForm.licenseeAddress2, licenceForm.licenseeCity, licenceForm.licenseeProvince, licenceForm.licenseePostalCode, licenceForm.bankInstitutionNumber, licenceForm.bankTransitNumber, licenceForm.bankAccountNumber, licenceForm.isRenewal ? 1 : 0, dateTimeFunctions.dateStringToInteger(licenceForm.startDateString), dateTimeFunctions.dateStringToInteger(licenceForm.endDateString), licenceForm.licenceFee, licenceForm.replacementFee, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
+        " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+        .run(licenceForm.licenceCategoryKey, licenceNumber, licenceForm.licenseeName, licenceForm.licenseeBusinessName, licenceForm.licenseeAddress1, licenceForm.licenseeAddress2, licenceForm.licenseeCity, licenceForm.licenseeProvince, licenceForm.licenseePostalCode, licenceForm.bankInstitutionNumber, licenceForm.bankTransitNumber, licenceForm.bankAccountNumber, licenceForm.isRenewal ? 1 : 0, dateTimeFunctions.dateStringToInteger(licenceForm.startDateString), dateTimeFunctions.dateStringToInteger(licenceForm.endDateString), licenceForm.licenceFee, licenceForm.replacementFee, licenceForm.licenceFee, licenceForm.replacementFee, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
     const licenceId = result.lastInsertRowid;
     if (licenceForm.relatedLicenceId) {
         addRelatedLicence(licenceId, licenceForm.relatedLicenceId, database);

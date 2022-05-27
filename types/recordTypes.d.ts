@@ -30,6 +30,8 @@ export interface Licence extends Partial<LicenceCategory> {
     issueDateString?: string;
     issueTime?: number;
     issueTimeString?: string;
+    baseLicenceFee: number | "";
+    baseReplacementFee: number | "";
     licenceFee: number | "";
     replacementFee: number | "";
     bankInstitutionNumber?: string;
@@ -61,6 +63,11 @@ export interface LicenceApproval extends Partial<Licence> {
     isRequiredForNew?: boolean;
     isRequiredForRenewal?: boolean;
     printKey?: string;
+}
+export interface LicenceAdditionalFee extends Partial<Licence> {
+    licenceAdditionalFeeKey: string;
+    additionalFeeAmount: number;
+    additionalFee?: string;
 }
 export interface LicenceTransaction extends Partial<Licence> {
     transactionIndex: number;
@@ -112,6 +119,15 @@ export interface LicenceCategoryFee extends Record {
     licenceFee: number;
     renewalFee?: number;
     replacementFee?: number;
+}
+export interface LicenceCategoryAdditionalFee extends Record {
+    licenceAdditionalFeeKey: string;
+    licenceCategoryKey?: string;
+    additionalFee: string;
+    additionalFeeType: "flat" | "percent" | "function";
+    additionalFeeNumber?: number;
+    additionalFeeFunction?: string;
+    isRequired: boolean;
 }
 export interface LicenceCategoryField extends Record {
     licenceFieldKey: string;

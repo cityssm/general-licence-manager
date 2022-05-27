@@ -57,6 +57,18 @@ export const initLicencesDB = (): boolean => {
       " foreign key (licenceCategoryKey) references LicenceCategories (licenceCategoryKey)" +
       ")").run();
 
+    licencesDB.prepare("create table LicenceCategoryAdditionalFees (" +
+      "licenceAdditionalFeeKey varchar(80) not null primary key," +
+      " licenceCategoryKey varchar(50) not null," +
+      " additionalFee varchar(100) not null," +
+      " additionalFeeType varchar(10) not null," +
+      " additionalFeeNumber decimal(10, 2) not null default 0," +
+      " additionalFeeFunction varchar(50) not null default ''," +
+      "	isRequired bit not null default 0," +
+      recordColumns + "," +
+      " foreign key (licenceCategoryKey) references LicenceCategories (licenceCategoryKey)" +
+      ") without rowid").run();
+
     licencesDB.prepare("create table if not exists LicenceCategoryFields (" +
       "licenceFieldKey varchar(80) not null primary key," +
       " licenceCategoryKey varchar(50) not null," +
@@ -106,6 +118,8 @@ export const initLicencesDB = (): boolean => {
       " startDate integer, endDate integer," +
       " issueDate integer, issueTime integer," +
 
+      " baseLicenceFee decimal(10, 2) not null," +
+      " baseReplacementFee decimal(10, 2) not null," +
       " licenceFee decimal(10, 2) not null," +
       " replacementFee decimal(10, 2) not null," +
 
@@ -138,6 +152,14 @@ export const initLicencesDB = (): boolean => {
       "licenceId integer not null," +
       " licenceApprovalKey varchar(80) not null," +
       " primary key (licenceId, licenceApprovalKey)" +
+      " foreign key (licenceId) references Licences (licenceId)" +
+      ") without rowid").run();
+
+    licencesDB.prepare("create table if not exists LicenceAdditionalFees (" +
+      "licenceId integer not null," +
+      " licenceAdditionalFeeKey varchar(80) not null," +
+      " additionalFeeAmount decimal(10, 2) not null default 0," +
+      " primary key (licenceId, licenceAdditionalFeeKey)," +
       " foreign key (licenceId) references Licences (licenceId)" +
       ") without rowid").run();
 

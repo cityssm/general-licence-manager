@@ -479,6 +479,177 @@ Object.defineProperty(exports, "__esModule", { value: true });
             feesContainerElement.append(feesPanelElement);
         }
     };
+    let licenceCategoryAdditionalFees;
+    const openEditLicenceCategoryAdditionalFeeModal = (licenceAdditionalFeeKey) => {
+        let editLicenceCategoryAdditionalFeeModalElement;
+        let editLicenceCategoryAdditionalFeeModalCloseFunction;
+        const updateLicenceCategoryAdditionalFeeSubmitFunction = (formEvent) => {
+            formEvent.preventDefault();
+            cityssm.postJSON(urlPrefix + "/admin/doUpdateLicenceCategoryAdditionalFee", formEvent.currentTarget, (responseJSON) => {
+                if (responseJSON.success) {
+                    licenceCategoryAdditionalFees = responseJSON.licenceCategoryAdditionalFees;
+                    editLicenceCategoryAdditionalFeeModalCloseFunction();
+                    renderLicenceCategoryAdditionalFees();
+                    doRefreshOnClose = true;
+                }
+            });
+        };
+        const deleteLicenceCategoryAdditionalFeeFunction = () => {
+            cityssm.postJSON(urlPrefix + "/admin/doDeleteLicenceCategoryAdditionalFee", {
+                licenceAdditionalFeeKey
+            }, (responseJSON) => {
+                if (responseJSON.success) {
+                    licenceCategoryAdditionalFees = responseJSON.licenceCategoryAdditionalFees;
+                    renderLicenceCategoryAdditionalFees();
+                    editLicenceCategoryAdditionalFeeModalCloseFunction();
+                    doRefreshOnClose = true;
+                }
+            });
+        };
+        const confirmDeleteLicenceCategoryAdditionalFeeFunction = (clickEvent) => {
+            clickEvent.preventDefault();
+            bulmaJS.confirm({
+                title: "Delete Additional Fee",
+                message: "Are you sure you want to delete this additional fee?",
+                contextualColorName: "warning",
+                okButton: {
+                    text: "Yes, Delete It",
+                    callbackFunction: deleteLicenceCategoryAdditionalFeeFunction
+                }
+            });
+        };
+        const updateAdditionalFeeTypeFields = () => {
+            const additionalFeeType = editLicenceCategoryAdditionalFeeModalElement.querySelector("#licenceCategoryAdditionalFeeEdit--additionalFeeType").value;
+            const additionalFeeFlatIconElement = editLicenceCategoryAdditionalFeeModalElement.querySelector(".control[data-additional-fee-type='flat']");
+            const additionalFeePercentIconElement = editLicenceCategoryAdditionalFeeModalElement.querySelector(".control[data-additional-fee-type='percent']");
+            const additionalFeeFunctionElement = editLicenceCategoryAdditionalFeeModalElement.querySelector("#licenceCategoryAdditionalFeeEdit--additionalFeeFunction");
+            switch (additionalFeeType) {
+                case "percent":
+                    additionalFeePercentIconElement.classList.remove("is-hidden");
+                    additionalFeeFlatIconElement.classList.add("is-hidden");
+                    break;
+                default:
+                    additionalFeeFlatIconElement.classList.remove("is-hidden");
+                    additionalFeePercentIconElement.classList.add("is-hidden");
+            }
+            switch (additionalFeeType) {
+                case "function":
+                    additionalFeeFunctionElement.disabled = false;
+                    break;
+                default:
+                    additionalFeeFunctionElement.value = "";
+                    additionalFeeFunctionElement.disabled = true;
+                    break;
+            }
+        };
+        const licenceCategoryAdditionalFee = licenceCategoryAdditionalFees.find((possibleAdditionalFee) => {
+            return possibleAdditionalFee.licenceAdditionalFeeKey === licenceAdditionalFeeKey;
+        });
+        cityssm.openHtmlModal("licenceCategoryAdditionalFee-edit", {
+            onshow: (modalElement) => {
+                glm.populateAliases(modalElement);
+                editLicenceCategoryAdditionalFeeModalElement = modalElement;
+                modalElement.querySelector("#licenceCategoryAdditionalFeeEdit--licenceAdditionalFeeKey").value = licenceAdditionalFeeKey;
+                modalElement.querySelector("#licenceCategoryAdditionalFeeEdit--additionalFee").value = licenceCategoryAdditionalFee.additionalFee;
+                modalElement.querySelector("#licenceCategoryAdditionalFeeEdit--additionalFeeType").value = licenceCategoryAdditionalFee.additionalFeeType;
+                modalElement.querySelector("#licenceCategoryAdditionalFeeEdit--additionalFeeNumber").value = licenceCategoryAdditionalFee.additionalFeeNumber.toFixed(2);
+                modalElement.querySelector("#licenceCategoryAdditionalFeeEdit--additionalFeeFunction").value = licenceCategoryAdditionalFee.additionalFeeFunction;
+                updateAdditionalFeeTypeFields();
+                if (licenceCategoryAdditionalFee.isRequired) {
+                    modalElement.querySelector("#licenceCategoryApprovalEdit--isRequired").checked = true;
+                }
+            },
+            onshown: (modalElement, closeModalFunction) => {
+                editLicenceCategoryAdditionalFeeModalCloseFunction = closeModalFunction;
+                modalElement.querySelector("#licenceCategoryAdditionalFeeEdit--additionalFeeType").addEventListener("change", updateAdditionalFeeTypeFields);
+                modalElement.querySelector("#form--licenceCategoryAdditionalFeeEdit")
+                    .addEventListener("submit", updateLicenceCategoryAdditionalFeeSubmitFunction);
+                modalElement.querySelector(".is-delete-button")
+                    .addEventListener("click", confirmDeleteLicenceCategoryAdditionalFeeFunction);
+                bulmaJS.init(modalElement);
+            }
+        });
+    };
+    const openEditLicenceCategoryAdditionalFeeModalByClick = (clickEvent) => {
+        clickEvent.preventDefault();
+        const licenceAdditionalFeeKey = clickEvent.currentTarget.dataset.licenceAdditionalFeeKey;
+        openEditLicenceCategoryAdditionalFeeModal(licenceAdditionalFeeKey);
+    };
+    const licenceCategoryAdditionalFee_dragDataPrefix = "licenceAdditionalFeeKey:";
+    const licenceCategoryAdditionalFee_dragstart = (dragEvent) => {
+        dragEvent.dataTransfer.dropEffect = "move";
+        const data = licenceCategoryAdditionalFee_dragDataPrefix + dragEvent.target.dataset.licenceAdditionalFeeKey;
+        dragEvent.dataTransfer.setData("text/plain", data);
+    };
+    const licenceCategoryAdditionalFee_dragover = (dragEvent) => {
+        if (dragEvent.dataTransfer.getData("text/plain").startsWith(licenceCategoryAdditionalFee_dragDataPrefix)) {
+            const licenceAdditionalFeeKey_drag = dragEvent.dataTransfer.getData("text/plain").slice(licenceCategoryAdditionalFee_dragDataPrefix.length);
+            const dropElement = dragEvent.currentTarget;
+            const licenceAdditionalFeeKey_drop = dropElement.dataset.licenceAdditionalFeeKey;
+            if (licenceAdditionalFeeKey_drag !== licenceAdditionalFeeKey_drop) {
+                dragEvent.preventDefault();
+                dragEvent.dataTransfer.dropEffect = "move";
+                dropElement.style.borderTop = "20px solid #ededed";
+            }
+        }
+    };
+    const licenceCategoryAdditionalFee_dragleave = (dragEvent) => {
+        const dropElement = dragEvent.currentTarget;
+        dropElement.style.borderTopWidth = "0px";
+    };
+    const licenceCategoryAdditionalFee_drop = (dragEvent) => {
+        dragEvent.preventDefault();
+        const licenceAdditionalFeeKey_from = dragEvent.dataTransfer.getData("text/plain").slice(licenceCategoryAdditionalFee_dragDataPrefix.length);
+        const licenceAdditionalFeeKey_to = dragEvent.currentTarget.dataset.licenceAdditionalFeeKey;
+        cityssm.postJSON(urlPrefix + "/admin/doMoveLicenceCategoryAdditionalFee", {
+            licenceAdditionalFeeKey_from,
+            licenceAdditionalFeeKey_to
+        }, (responseJSON) => {
+            licenceCategoryAdditionalFees = responseJSON.licenceCategoryAdditionalFees;
+            renderLicenceCategoryAdditionalFees();
+            doRefreshOnClose = true;
+        });
+    };
+    const renderLicenceCategoryAdditionalFees = () => {
+        const additionalFeesContainerElement = editModalElement.querySelector("#container--licenceCategoryAdditionalFees");
+        if (licenceCategoryAdditionalFees.length === 0) {
+            additionalFeesContainerElement.innerHTML = "<div class=\"message is-info\">" +
+                "<p class=\"message-body\">There are no additional fees associated with this category.</p>" +
+                "</div>";
+        }
+        else {
+            const additionalFeesPanelElement = document.createElement("div");
+            additionalFeesPanelElement.className = "panel";
+            for (const categoryAdditionalFee of licenceCategoryAdditionalFees) {
+                const panelBlockElement = document.createElement("a");
+                panelBlockElement.className = "panel-block is-block";
+                panelBlockElement.dataset.licenceAdditionalFeeKey = categoryAdditionalFee.licenceAdditionalFeeKey;
+                panelBlockElement.setAttribute("role", "button");
+                panelBlockElement.innerHTML = "<div class=\"columns is-mobile\">" +
+                    ("<div class=\"column\">" +
+                        "<h4>" + cityssm.escapeHTML(categoryAdditionalFee.additionalFee) + "</h4>" +
+                        "<p class=\"is-size-7\">" + cityssm.escapeHTML(categoryAdditionalFee.additionalFeeType) + "</p>" +
+                        "</div>") +
+                    (categoryAdditionalFee.isRequired
+                        ? "<div class=\"column is-narrow\">" +
+                            "<i class=\"fas fa-asterisk\" aria-hidden=\"true\"</i>" +
+                            "</div>"
+                        : "") +
+                    "</div>";
+                panelBlockElement.addEventListener("click", openEditLicenceCategoryAdditionalFeeModalByClick);
+                if (licenceCategoryAdditionalFees.length > 1) {
+                    panelBlockElement.draggable = true;
+                    panelBlockElement.addEventListener("dragstart", licenceCategoryAdditionalFee_dragstart);
+                    panelBlockElement.addEventListener("dragover", licenceCategoryAdditionalFee_dragover);
+                    panelBlockElement.addEventListener("dragleave", licenceCategoryAdditionalFee_dragleave);
+                    panelBlockElement.addEventListener("drop", licenceCategoryAdditionalFee_drop);
+                }
+                additionalFeesPanelElement.append(panelBlockElement);
+            }
+            additionalFeesContainerElement.innerHTML = "";
+            additionalFeesContainerElement.append(additionalFeesPanelElement);
+        }
+    };
     const openEditLicenceCategoryModal = (licenceCategoryKey) => {
         let categoryCloseModalFunction;
         const deleteLicenceCategoryFunction = () => {
@@ -564,6 +735,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
             });
         };
+        const addLicenceCategoryAdditionalFeeFunction = (formEvent) => {
+            formEvent.preventDefault();
+            const formElement = formEvent.currentTarget;
+            cityssm.postJSON(urlPrefix + "/admin/doAddLicenceCategoryAdditionalFee", formElement, (responseJSON) => {
+                if (responseJSON.success) {
+                    doRefreshOnClose = true;
+                    licenceCategoryAdditionalFees = responseJSON.licenceCategoryAdditionalFees;
+                    renderLicenceCategoryAdditionalFees();
+                    openEditLicenceCategoryAdditionalFeeModal(responseJSON.licenceAdditionalFeeKey);
+                }
+            });
+        };
         const renderEditLicenceCategory = (responseJSON) => {
             if (!responseJSON.success) {
                 bulmaJS.alert({
@@ -601,6 +784,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             renderLicenceCategoryApprovals();
             licenceCategoryFees = licenceCategory.licenceCategoryFees;
             renderLicenceCategoryFees();
+            licenceCategoryAdditionalFees = licenceCategory.licenceCategoryAdditionalFees;
+            renderLicenceCategoryAdditionalFees();
         };
         doRefreshOnClose = false;
         cityssm.openHtmlModal("licenceCategory-edit", {
@@ -610,6 +795,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 modalElement.querySelector("#licenceCategoryEdit--licenceCategoryKey").value = licenceCategoryKey;
                 modalElement.querySelector("#licenceCategoryFieldAdd--licenceCategoryKey").value = licenceCategoryKey;
                 modalElement.querySelector("#licenceCategoryApprovalAdd--licenceCategoryKey").value = licenceCategoryKey;
+                modalElement.querySelector("#licenceCategoryAdditionalFeeAdd--licenceCategoryKey").value = licenceCategoryKey;
                 const printEJSElement = modalElement.querySelector("#licenceCategoryEdit--printEJS");
                 for (const printEJS of exports.printEJSList) {
                     const optionElement = document.createElement("option");
@@ -639,6 +825,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     .addEventListener("submit", addLicenceCategoryApprovalSubmitFunction);
                 modalElement.querySelector(".is-add-fee-button")
                     .addEventListener("click", addLicenceCategoryFeeFunction);
+                modalElement.querySelector("#form--licenceCategoryAdditionalFeeAdd")
+                    .addEventListener("submit", addLicenceCategoryAdditionalFeeFunction);
                 modalElement.querySelector(".is-delete-button")
                     .addEventListener("click", deleteLicenceCategoryConfirmFunction);
                 bulmaJS.toggleHtmlClipped();

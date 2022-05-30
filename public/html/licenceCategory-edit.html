@@ -100,8 +100,7 @@
               </button>
             </div>
           </form>
-        </div>
-        <div class="column">
+          <hr />
           <section>
             <h3 class="title is-5">Additional Fields</h3>
             <form id="form--licenceCategoryFieldAdd">
@@ -123,6 +122,7 @@
             </form>
             <div class="my-4" id="container--licenceCategoryFields"></div>
           </section>
+          <hr />
           <section>
             <h3 class="title is-5">Approvals</h3>
             <form id="form--licenceCategoryApprovalAdd">
@@ -144,10 +144,13 @@
             </form>
             <div class="my-4" id="container--licenceCategoryApprovals"></div>
           </section>
-          <section class="mt-4">
+        </div>
+        <div class="column">
+          <hr class="is-hidden-tablet" />
+          <section>
             <div class="columns">
               <div class="column">
-                <h3 class="title is-5">Fees</h3>
+                <h3 class="title is-5">Main Fee</h3>
               </div>
               <div class="column is-narrow has-text-right">
                 <button class="button is-small is-success is-add-fee-button" type="button">
@@ -157,6 +160,28 @@
               </div>
             </div>
             <div class="my-4" id="container--licenceCategoryFees"></div>
+          </section>
+          <hr />
+          <section>
+            <h3 class="title is-5">Additional Fees</h3>
+            <form id="form--licenceCategoryAdditionalFeeAdd">
+              <input id="licenceCategoryAdditionalFeeAdd--licenceCategoryKey" name="licenceCategoryKey" type="hidden" value="" />
+              <div class="field has-addons">
+                <div class="control">
+                  <label class="button is-small is-static" for="licenceCategoryAdditionalFeeAdd--additionalFee">New Additional Fee</label>
+                </div>
+                <div class="control is-expanded">
+                  <input class="input is-small" id="licenceCategoryAdditionalFeeAdd--additionalFee" name="additionalFee" type="text" maxlength="100" required />
+                </div>
+                <div class="control">
+                  <button class="button is-small is-success" type="submit">
+                    <span class="icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                    <span>Add</span>
+                  </button>
+                </div>
+              </div>
+            </form>
+            <div class="my-4" id="container--licenceCategoryAdditionalFees"></div>
           </section>
         </div>
       </div>

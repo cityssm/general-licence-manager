@@ -29,6 +29,9 @@ export interface Config {
     licenceLengthFunctions?: {
         [licenceLengthFunctionName: string]: LicenceLengthFunction;
     };
+    additionalFeeFunctions?: {
+        [additionalFeeFunctionName: string]: AdditionalFeeFunction;
+    };
 }
 interface ConfigApplication {
     applicationName?: string;
@@ -73,4 +76,5 @@ export interface ConfigBatchExport_RBCPreauthorized {
 }
 export declare type LicenceNumberFunction = "year-fourDigits" | "year-fiveDigits" | "year-sixDigits";
 export declare type LicenceLengthFunction = (startDate: Date) => Date;
+export declare type AdditionalFeeFunction = (baseLicenceFee: number) => number;
 export {};

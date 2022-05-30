@@ -26,6 +26,7 @@ configFallbackValues.set("settings.renewalAlias", "Renewal");
 configFallbackValues.set("settings.includeBatches", false);
 configFallbackValues.set("settings.includeReplacementFee", true);
 configFallbackValues.set("licenceLengthFunctions", {});
+configFallbackValues.set("additionalFeeFunctions", {});
 export function getProperty(propertyName) {
     const propertyNameSplit = propertyName.split(".");
     let currentObject = config;
@@ -46,4 +47,10 @@ export const getLicenceLengthFunctionNames = () => {
 };
 export const getLicenceLengthFunction = (licenceLengthFunctionName) => {
     return getProperty("licenceLengthFunctions")[licenceLengthFunctionName];
+};
+export const getAdditionalFeeFunctionNames = () => {
+    return Object.keys(getProperty("additionalFeeFunctions"));
+};
+export const getAdditionalFeeFunction = (additionalFeeFunctionName) => {
+    return getProperty("additionalFeeFunctions")[additionalFeeFunctionName];
 };

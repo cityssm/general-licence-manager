@@ -17,6 +17,9 @@ import handler_doDeleteLicenceCategoryApproval from "../handlers/admin-post/doDe
 import handler_doAddLicenceCategoryFee from "../handlers/admin-post/doAddLicenceCategoryFee.js";
 import handler_doUpdateLicenceCategoryFee from "../handlers/admin-post/doUpdateLicenceCategoryFee.js";
 import handler_doDeleteLicenceCategoryFee from "../handlers/admin-post/doDeleteLicenceCategoryFee.js";
+import handler_doAddLicenceCategoryAdditionalFee from "../handlers/admin-post/doAddLicenceCategoryAdditionalFee.js";
+import handler_doUpdateLicenceCategoryAdditionalFee from "../handlers/admin-post/doUpdateLicenceCategoryAdditionalFee.js";
+import handler_doMoveLicenceCategoryAdditionalFee from "../handlers/admin-post/doMoveLicenceCategoryAdditionalFee.js";
 export const router = Router();
 router.get("/licenceCategories", permissionHandlers.adminGetHandler, handler_licenceCategories);
 router.post("/doGetLicenceCategories", permissionHandlers.adminPostHandler, handler_doGetLicenceCategories);
@@ -35,4 +38,7 @@ router.post("/doDeleteLicenceCategoryApproval", permissionHandlers.adminPostHand
 router.post("/doAddLicenceCategoryFee", permissionHandlers.adminPostHandler, handler_doAddLicenceCategoryFee);
 router.post("/doUpdateLicenceCategoryFee", permissionHandlers.adminPostHandler, handler_doUpdateLicenceCategoryFee);
 router.post("/doDeleteLicenceCategoryFee", permissionHandlers.adminPostHandler, handler_doDeleteLicenceCategoryFee);
+router.post("/doAddLicenceCategoryAdditionalFee", permissionHandlers.adminPostHandler, handler_doAddLicenceCategoryAdditionalFee);
+router.post("/doUpdateLicenceCategoryAdditionalFee", permissionHandlers.adminPostHandler, handler_doUpdateLicenceCategoryAdditionalFee);
+router.post("/doMoveLicenceCategoryAdditionalFee", permissionHandlers.adminPostHandler, handler_doMoveLicenceCategoryAdditionalFee);
 export default router;

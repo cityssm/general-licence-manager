@@ -65,3 +65,13 @@ export const getUnusedLicenceApprovalKey = (licenceCategoryKey, licenceApproval)
     database.close();
     return licenceApprovalKey;
 };
+export const getUnusedLicenceAdditionalFeeKey = (licenceCategoryKey, additionalFee) => {
+    const database = sqlite(databasePath, {
+        readonly: true
+    });
+    const licenceAdditionalFeeKey = getUnusedKey(database, licenceCategoryKey + " " + additionalFee, 80, "select licenceAdditionalFeeKey" +
+        " from LicenceCategoryAdditionalFees" +
+        " where licenceAdditionalFeeKey = ?");
+    database.close();
+    return licenceAdditionalFeeKey;
+};

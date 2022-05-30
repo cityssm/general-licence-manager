@@ -42,6 +42,7 @@ configFallbackValues.set("settings.includeBatches", false);
 configFallbackValues.set("settings.includeReplacementFee", true);
 
 configFallbackValues.set("licenceLengthFunctions", {});
+configFallbackValues.set("additionalFeeFunctions", {});
 
 
 /*
@@ -77,6 +78,10 @@ export function getProperty(propertyName: "exports.batches"): configTypes.Config
 
 export function getProperty(propertyName: "licenceLengthFunctions"): {
   [licenceLengthFunctionName: string]: configTypes.LicenceLengthFunction;
+};
+
+export function getProperty(propertyName: "additionalFeeFunctions"): {
+  [additonalFeeFunctionName: string]: configTypes.AdditionalFeeFunction;
 };
 
 export function getProperty(propertyName: "reverseProxy.disableCompression"): boolean;
@@ -122,4 +127,12 @@ export const getLicenceLengthFunctionNames = (): string[] => {
 
 export const getLicenceLengthFunction = (licenceLengthFunctionName: string): configTypes.LicenceLengthFunction => {
   return getProperty("licenceLengthFunctions")[licenceLengthFunctionName];
+};
+
+export const getAdditionalFeeFunctionNames = (): string[] => {
+  return Object.keys(getProperty("additionalFeeFunctions"));
+};
+
+export const getAdditionalFeeFunction = (additionalFeeFunctionName: string): configTypes.AdditionalFeeFunction => {
+  return getProperty("additionalFeeFunctions")[additionalFeeFunctionName];
 };

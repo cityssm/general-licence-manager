@@ -111,3 +111,22 @@ export const getUnusedLicenceApprovalKey = (licenceCategoryKey: string, licenceA
 
   return licenceApprovalKey;
 };
+
+
+export const getUnusedLicenceAdditionalFeeKey = (licenceCategoryKey: string, additionalFee: string): string => {
+
+  const database = sqlite(databasePath, {
+    readonly: true
+  });
+
+  const licenceAdditionalFeeKey = getUnusedKey(database,
+    licenceCategoryKey + " " + additionalFee,
+    80,
+    "select licenceAdditionalFeeKey" +
+    " from LicenceCategoryAdditionalFees" +
+    " where licenceAdditionalFeeKey = ?");
+
+  database.close();
+
+  return licenceAdditionalFeeKey;
+};

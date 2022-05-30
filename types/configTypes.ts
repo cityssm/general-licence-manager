@@ -29,6 +29,9 @@ export interface Config {
   licenceLengthFunctions?: {
     [licenceLengthFunctionName: string]: LicenceLengthFunction;
   };
+  additionalFeeFunctions?: {
+    [additionalFeeFunctionName: string]: AdditionalFeeFunction;
+  };
 }
 
 interface ConfigApplication {
@@ -88,3 +91,6 @@ export type LicenceNumberFunction = "year-fourDigits" | "year-fiveDigits" | "yea
 
 
 export type LicenceLengthFunction = (startDate: Date) => Date;
+
+
+export type AdditionalFeeFunction = (baseLicenceFee: number) => number;

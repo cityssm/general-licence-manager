@@ -1,6 +1,8 @@
 import sqlite from "better-sqlite3";
 import { licencesDB as databasePath } from "../../data/databasePaths.js";
 import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
+import * as cacheFunctions from "../functions.cache.js";
+import * as configFunctions from "../functions.config.js";
 import { getNextLicenceNumber } from "./getNextLicenceNumber.js";
 import { addRelatedLicence } from "./addRelatedLicence.js";
 import { saveLicenceFields } from "./saveLicenceFields.js";
@@ -25,7 +27,7 @@ export const createLicence = (licenceForm, requestSession) => {
         " recordCreate_userName, recordCreate_timeMillis," +
         " recordUpdate_userName, recordUpdate_timeMillis)" +
         " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
-        .run(licenceForm.licenceCategoryKey, licenceNumber, licenceForm.licenseeName, licenceForm.licenseeBusinessName, licenceForm.licenseeAddress1, licenceForm.licenseeAddress2, licenceForm.licenseeCity, licenceForm.licenseeProvince, licenceForm.licenseePostalCode, licenceForm.bankInstitutionNumber, licenceForm.bankTransitNumber, licenceForm.bankAccountNumber, licenceForm.isRenewal ? 1 : 0, dateTimeFunctions.dateStringToInteger(licenceForm.startDateString), dateTimeFunctions.dateStringToInteger(licenceForm.endDateString), licenceForm.licenceFee, licenceForm.replacementFee, licenceForm.licenceFee, licenceForm.replacementFee, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
+        .run(licenceForm.licenceCategoryKey, licenceNumber, licenceForm.licenseeName, licenceForm.licenseeBusinessName, licenceForm.licenseeAddress1, licenceForm.licenseeAddress2, licenceForm.licenseeCity, licenceForm.licenseeProvince, licenceForm.licenseePostalCode, licenceForm.bankInstitutionNumber, licenceForm.bankTransitNumber, licenceForm.bankAccountNumber, licenceForm.isRenewal ? 1 : 0, dateTimeFunctions.dateStringToInteger(licenceForm.startDateString), dateTimeFunctions.dateStringToInteger(licenceForm.endDateString), licenceForm.baseLicenceFee, licenceForm.baseReplacementFee, licenceForm.baseLicenceFee, licenceForm.baseReplacementFee, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
     const licenceId = result.lastInsertRowid;
     if (licenceForm.relatedLicenceId) {
         addRelatedLicence(licenceId, licenceForm.relatedLicenceId, database);
@@ -37,6 +39,29 @@ export const createLicence = (licenceForm, requestSession) => {
     if (licenceForm.licenceApprovalKeys) {
         const licenceApprovalKeys = licenceForm.licenceApprovalKeys.split(",");
         saveLicenceApprovals(licenceId, licenceApprovalKeys, licenceForm, database);
+    }
+    const licenceCategory = cacheFunctions.getLicenceCategory(licenceForm.licenceCategoryKey);
+    for (const licenceCategoryAdditionalFee of licenceCategory.licenceCategoryAdditionalFees) {
+        if (!licenceCategoryAdditionalFee.isRequired) {
+            continue;
+        }
+        let additionalFeeAmount = licenceCategoryAdditionalFee.additionalFeeNumber;
+        switch (licenceCategoryAdditionalFee.additionalFeeType) {
+            case "percent":
+                additionalFeeAmount = Number.parseFloat(licenceForm.baseLicenceFee) * (additionalFeeAmount / 100);
+                break;
+            case "function":
+                additionalFeeAmount = configFunctions.getAdditionalFeeFunction(licenceCategoryAdditionalFee.additionalFeeFunction)(Number.parseFloat(licenceForm.baseLicenceFee));
+                break;
+        }
+        database.prepare("insert into LicenceAdditionalFees" +
+            " (licenceId, licenceAdditionalFeeKey, additionalFeeAmount)" +
+            " values (?, ?, ?)")
+            .run(licenceId, licenceCategoryAdditionalFee.licenceAdditionalFeeKey, additionalFeeAmount.toFixed(2));
+        database.prepare("update Licences" +
+            " set licenceFee = licenceFee + ?" +
+            " where licenceId = ?")
+            .run(additionalFeeAmount.toFixed(2), licenceId);
     }
     database.close();
     return licenceId;

@@ -204,15 +204,43 @@
   <div class="panel-block is-block">
     <div class="columns">
       <div class="column">
-        <strong id="licenceView--licenceFee"><%= configFunctions.getProperty("settings.licenceAlias") %> Fee</strong><br />
-        <span aria-labelledby="licenceView--licenceFee">$<%= licence.licenceFee ? licence.licenceFee.toFixed(2) : "" %></span>
+
+        <table class="table is-fullwidth">
+          <thead>
+            <tr>
+              <th colspan="2">Fee</th>
+              <th class="has-text-right">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (licence.baseLicenceFee !== licence.licenceFee || licence.licenceAdditionalFees.length > 0) { %>
+              <tr>
+                <td class="has-text-weight-bold" colspan="2">Base <%= configFunctions.getProperty("settings.licenceAlias") %> Fee</td>
+                <td class="has-text-right">$<%= licence.baseLicenceFee ? licence.baseLicenceFee.toFixed(2) : "" %></td>
+              </tr>
+            <% } %>
+            <% for (const additionalFee of licence.licenceAdditionalFees) { %>
+              <tr>
+                <td class="has-width-1"><i class="fas fa-plus" aria-label="Plus"></i></td>
+                <td><%= additionalFee.additionalFee %></td>
+                <td class="has-text-right">$<%= additionalFee.additionalFeeAmount.toFixed(2) %></td>
+              </tr>
+            <% } %>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td class="has-text-weight-bold" colspan="2">Total <%= configFunctions.getProperty("settings.licenceAlias") %> Fee</td>
+              <td class="has-text-weight-bold has-text-right">$<%= licence.licenceFee ? licence.licenceFee.toFixed(2) : "" %></td>
+            </tr>
+            <% if (configFunctions.getProperty("settings.includeReplacementFee")) { %>
+              <tr>
+                <td colspan="2">Replacement Fee</td>
+                <td class="has-text-right">$<%= licence.replacementFee ? licence.replacementFee.toFixed(2) : "" %></td>
+              </tr>
+              <% } %>
+          </tfoot>
+        </table>
       </div>
-      <% if (configFunctions.getProperty("settings.includeReplacementFee")) { %>
-        <div class="column">
-          <strong id="licenceView--replacementFee">Replacement Fee</strong><br />
-          <span aria-labelledby="licenceView--replacementFee">$<%= licence.replacementFee ? licence.replacementFee.toFixed(2) : "" %></span>
-        </div>
-      <% } %>
       <div class="column is-6">
         <table class="table is-fullwidth">
           <thead>
@@ -256,7 +284,7 @@
           </tbody>
           <tfoot>
             <tr>
-              <th>Total</th>
+              <th>Total Transactions</th>
               <th class="has-text-right">$<%= transactionTotal.toFixed(2) %></th>
             </tr>
             <% if (licence.licenceFee - transactionTotal > 0) { %>

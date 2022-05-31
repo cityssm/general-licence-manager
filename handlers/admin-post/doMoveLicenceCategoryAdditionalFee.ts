@@ -9,7 +9,7 @@ import * as cacheFunctions from "../../helpers/functions.cache.js";
 export const handler: RequestHandler = async (request, response) => {
 
   const licenceAdditionalFeeKey_from = request.body.licenceAdditionalFeeKey_from as string;
-  const licenceAdditionalFeeKey_to = request.body.licenceApprovalKey_to as string;
+  const licenceAdditionalFeeKey_to = request.body.licenceAdditionalFeeKey_to as string;
 
   const licenceCategoryKey = moveLicenceCategoryAdditionalFee(licenceAdditionalFeeKey_from, licenceAdditionalFeeKey_to, request.session);
 

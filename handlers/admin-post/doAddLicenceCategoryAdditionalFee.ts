@@ -8,7 +8,7 @@ import * as cacheFunctions from "../../helpers/functions.cache.js";
 
 export const handler: RequestHandler = async (request, response) => {
 
-  const licenceApprovalKey = addLicenceCategoryAdditionalFee(request.body, request.session);
+  const licenceAdditionalFeeKey = addLicenceCategoryAdditionalFee(request.body, request.session);
 
   cacheFunctions.clearAll();
 
@@ -17,7 +17,7 @@ export const handler: RequestHandler = async (request, response) => {
   response.json({
     success: true,
     licenceCategoryAdditionalFees,
-    licenceApprovalKey
+    licenceAdditionalFeeKey
   });
 };
 

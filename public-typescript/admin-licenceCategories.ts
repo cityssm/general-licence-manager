@@ -876,10 +876,26 @@ declare const bulmaJS: BulmaJS;
         panelBlockElement.dataset.licenceAdditionalFeeKey = categoryAdditionalFee.licenceAdditionalFeeKey;
         panelBlockElement.setAttribute("role", "button");
 
+        let additionalFeeDescriptionHTML = "";
+
+        switch (categoryAdditionalFee.additionalFeeType) {
+          case "flat":
+            additionalFeeDescriptionHTML = "$" + categoryAdditionalFee.additionalFeeNumber.toFixed(2);
+            break;
+
+          case "percent":
+            additionalFeeDescriptionHTML = categoryAdditionalFee.additionalFeeNumber.toPrecision(2) + "%";
+            break;
+
+          case "function":
+            additionalFeeDescriptionHTML = "Function: " + categoryAdditionalFee.additionalFeeFunction;
+            break;
+        }
+
         panelBlockElement.innerHTML = "<div class=\"columns is-mobile\">" +
           ("<div class=\"column\">" +
             "<h4>" + cityssm.escapeHTML(categoryAdditionalFee.additionalFee) + "</h4>" +
-            "<p class=\"is-size-7\">" + cityssm.escapeHTML(categoryAdditionalFee.additionalFeeType) + "</p>" +
+            "<p class=\"is-size-7\">" + additionalFeeDescriptionHTML + "</p>" +
             "</div>") +
           (categoryAdditionalFee.isRequired
             ? "<div class=\"column is-narrow\">" +
@@ -1052,6 +1068,8 @@ declare const bulmaJS: BulmaJS;
           if (responseJSON.success) {
             doRefreshOnClose = true;
 
+            formElement.reset();
+
             licenceCategoryAdditionalFees = responseJSON.licenceCategoryAdditionalFees;
             renderLicenceCategoryAdditionalFees();
 
@@ -1192,7 +1210,6 @@ declare const bulmaJS: BulmaJS;
       }
     });
   };
-
 
   const openEditLicenceCategoryModalByClick = (clickEvent: Event) => {
     clickEvent.preventDefault();

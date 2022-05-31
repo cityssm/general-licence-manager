@@ -18,7 +18,8 @@ export const handler: RequestHandler = (request, response) => {
   const licenceCategory = getLicenceCategory(licence.licenceCategoryKey, {
     includeApprovals: false,
     includeFields: false,
-    includeFees: "current"
+    includeFees: "current",
+    includeAdditionalFees: true
   });
 
   response.render("licence-edit", {

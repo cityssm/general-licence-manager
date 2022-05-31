@@ -600,20 +600,20 @@ declare const bulmaJS: BulmaJS;
 
   const refreshLicenceCategoryFees = () => {
 
-    const licenceFeeElement = document.querySelector("#licenceEdit--licenceFee") as HTMLInputElement;
-    const replacementFeeElement = document.querySelector("#licenceEdit--replacementFee") as HTMLInputElement;
+    const baseLicenceFeeElement = document.querySelector("#licenceEdit--baseLicenceFee") as HTMLInputElement;
+    const baseReplacementFeeElement = document.querySelector("#licenceEdit--baseReplacementFee") as HTMLInputElement;
 
     if (!licenceCategory || licenceCategory.licenceCategoryFees.length === 0) {
-      licenceFeeElement.value = "";
-      replacementFeeElement.value = "";
+      baseLicenceFeeElement.value = "";
+      baseReplacementFeeElement.value = "";
       return;
     }
 
-    licenceFeeElement.value = (isRenewalElement.checked
+    baseLicenceFeeElement.value = (isRenewalElement.checked
       ? licenceCategory.licenceCategoryFees[0].renewalFee.toFixed(2)
       : licenceCategory.licenceCategoryFees[0].licenceFee.toFixed(2));
 
-    replacementFeeElement.value = licenceCategory.licenceCategoryFees[0].replacementFee.toFixed(2);
+    baseReplacementFeeElement.value = licenceCategory.licenceCategoryFees[0].replacementFee.toFixed(2);
   };
 
   const renderLicenceCategory = () => {

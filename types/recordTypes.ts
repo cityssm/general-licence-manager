@@ -57,6 +57,7 @@ export interface Licence extends Partial<LicenceCategory> {
   licenceCategory?: string;
   licenceFields?: LicenceField[];
   licenceApprovals?: LicenceApproval[];
+  licenceAdditionalFees?: LicenceAdditionalFee[];
   licenceTransactions?: LicenceTransaction[];
 }
 

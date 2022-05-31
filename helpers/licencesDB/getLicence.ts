@@ -32,6 +32,7 @@ export const getLicence = (licenceId: number | string): recordTypes.Licence => {
       " endDate, userFn_dateIntegerToString(endDate) as endDateString," +
       " issueDate, userFn_dateIntegerToString(issueDate) as issueDateString," +
       " issueTime, userFn_timeIntegerToString(issueTime) as issueTimeString," +
+      " baseLicenceFee, baseReplacementFee," +
       " licenceFee, replacementFee," +
       " bankInstitutionNumber, bankTransitNumber, bankAccountNumber," +
       " userFn_getCanadianBankName(bankInstitutionNumber, bankTransitNumber) as bankName," +
@@ -47,9 +48,9 @@ export const getLicence = (licenceId: number | string): recordTypes.Licence => {
     licence.relatedLicences = getLicences({
       relatedLicenceId: licenceId
     }, {
-      limit: -1,
-      offset: 0
-    }).licences;
+        limit: -1,
+        offset: 0
+      }).licences;
 
     licence.licenceFields = getLicenceFields(licenceId, licence.licenceCategoryKey, database);
 
@@ -71,6 +72,14 @@ export const getLicence = (licenceId: number | string): recordTypes.Licence => {
       " order by c.orderNumber, c.licenceApproval")
       .all(licenceId,
         licence.licenceCategoryKey, licenceId);
+
+    licence.licenceAdditionalFees = database.prepare(
+      "select l.licenceAdditionalFeeKey, l.additionalFeeAmount, f.additionalFee" +
+      " from LicenceAdditionalFees l" +
+      " left join LicenceCategoryAdditionalFees f on l.licenceAdditionalFeeKey = f.licenceAdditionalFeeKey" +
+      " where l.licenceId = ?" +
+      " order by f.orderNumber, f.additionalFee")
+      .all(licenceId);
 
     licence.licenceTransactions = getLicenceTransactions(licenceId, database);
   }

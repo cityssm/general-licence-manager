@@ -45,11 +45,13 @@ describe("Update - Licences", () => {
       cy.get("select[name='licenceCategoryKey']")
         .select(0);
 
-      cy.get("input[name='licenceFee']")
+      cy.get("input[name='baseLicenceFee']")
         .should("have.value", "");
 
-      cy.get("input[name='replacementFee']")
-        .should("have.value", "");
+      if (configFunctions.getProperty("settings.includeReplacementFee")) {
+        cy.get("input[name='baseReplacementFee']")
+          .should("have.value", "");
+      }
 
       cy.get("select[name='licenceCategoryKey'] option")
         .should("have.lengthOf.gt", 1);
@@ -57,11 +59,13 @@ describe("Update - Licences", () => {
       cy.get("select[name='licenceCategoryKey']")
         .select(1);
 
-      cy.get("input[name='licenceFee']")
+      cy.get("input[name='baseLicenceFee']")
         .should("not.have.value", "");
 
-      cy.get("input[name='replacementFee']")
-        .should("not.have.value", "");
+      if (configFunctions.getProperty("settings.includeReplacementFee")) {
+        cy.get("input[name='baseReplacementFee']")
+          .should("not.have.value", "");
+      }
     });
 
     // Licence Number
@@ -220,20 +224,20 @@ describe("Update - Licences", () => {
       cy.checkA11y();
 
       cy.get(".modal .is-copy-bank-numbers-button")
-      .then(($copyBankButton) => {
+        .then(($copyBankButton) => {
 
-        if (!$copyBankButton.hasClass("is-hidden")) {
+          if (!$copyBankButton.hasClass("is-hidden")) {
 
-          cy.get(".modal input[name='bankInstitutionNumber']")
-          .should("be.visible")
-          .should("have.value", "");
+            cy.get(".modal input[name='bankInstitutionNumber']")
+              .should("be.visible")
+              .should("have.value", "");
 
-          cy.wrap($copyBankButton).click();
+            cy.wrap($copyBankButton).click();
 
-          cy.get(".modal input[name='bankInstitutionNumber']")
-          .should("not.have.value", "");
-        }
-      });
+            cy.get(".modal input[name='bankInstitutionNumber']")
+              .should("not.have.value", "");
+          }
+        });
 
       cy.get(".modal form").submit();
 

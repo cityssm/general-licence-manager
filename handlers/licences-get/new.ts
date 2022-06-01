@@ -115,8 +115,11 @@ export const handler: RequestHandler = (request, response) => {
     startDate,
     startDateString,
     endDateString: "",
+    baseLicenceFee: "",
+    baseReplacementFee: "",
     licenceFee: "",
-    replacementFee: ""
+    replacementFee: "",
+    licenceAdditionalFees: []
   };
 
   response.render("licence-edit", {

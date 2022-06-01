@@ -90,8 +90,11 @@ export const handler = (request, response) => {
         startDate,
         startDateString,
         endDateString: "",
+        baseLicenceFee: "",
+        baseReplacementFee: "",
         licenceFee: "",
-        replacementFee: ""
+        replacementFee: "",
+        licenceAdditionalFees: []
     };
     response.render("licence-edit", {
         headTitle: configFunctions.getProperty("settings.licenceAlias") + " Create",

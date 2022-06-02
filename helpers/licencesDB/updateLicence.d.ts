@@ -15,6 +15,8 @@ interface UpdateLicenceForm {
     isRenewal?: string;
     startDateString: string;
     endDateString: string;
+    baseLicenceFee: string;
+    baseReplacementFee: string;
     licenceFee: string;
     replacementFee: string;
     licenceFieldKeys?: string;

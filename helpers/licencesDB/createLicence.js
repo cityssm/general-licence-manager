@@ -2,7 +2,7 @@ import sqlite from "better-sqlite3";
 import { licencesDB as databasePath } from "../../data/databasePaths.js";
 import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
 import * as cacheFunctions from "../functions.cache.js";
-import * as configFunctions from "../functions.config.js";
+import * as licenceFunctions from "../functions.licence.js";
 import { getNextLicenceNumber } from "./getNextLicenceNumber.js";
 import { addRelatedLicence } from "./addRelatedLicence.js";
 import { saveLicenceFields } from "./saveLicenceFields.js";
@@ -45,15 +45,7 @@ export const createLicence = (licenceForm, requestSession) => {
         if (!licenceCategoryAdditionalFee.isRequired) {
             continue;
         }
-        let additionalFeeAmount = licenceCategoryAdditionalFee.additionalFeeNumber;
-        switch (licenceCategoryAdditionalFee.additionalFeeType) {
-            case "percent":
-                additionalFeeAmount = Number.parseFloat(licenceForm.baseLicenceFee) * (additionalFeeAmount / 100);
-                break;
-            case "function":
-                additionalFeeAmount = configFunctions.getAdditionalFeeFunction(licenceCategoryAdditionalFee.additionalFeeFunction)(Number.parseFloat(licenceForm.baseLicenceFee));
-                break;
-        }
+        const additionalFeeAmount = licenceFunctions.calculateAdditionalFeeAmount(licenceCategoryAdditionalFee, licenceForm.baseLicenceFee);
         database.prepare("insert into LicenceAdditionalFees" +
             " (licenceId, licenceAdditionalFeeKey, additionalFeeAmount)" +
             " values (?, ?, ?)")

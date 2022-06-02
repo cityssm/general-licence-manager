@@ -8,7 +8,8 @@ export const handler: RequestHandler = async (request, response) => {
   const success = updateLicence(request.body, request.session);
 
   response.json({
-    success
+    success,
+    licenceId: request.body.licenceId
   });
 };
 

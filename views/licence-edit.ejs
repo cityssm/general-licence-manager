@@ -400,6 +400,17 @@
         </div>
         <% if (!isCreate) { %>
           <div class="level-right">
+            <%
+              const optionalAdditionalFee = licenceCategories[0].licenceCategoryAdditionalFees.find((additionalFee) => {
+                return !additionalFee.isRequired;
+              });
+            %>
+            <% if (optionalAdditionalFee) { %>
+              <button class="level-item button is-success is-small" id="button--addAdditionalFee" type="button">
+                <span class="icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
+                <span>Add Additional Fee</span>
+              </button>
+            <% } %>
             <button class="level-item button is-success is-small" id="button--addTransaction" type="button">
               <span class="icon"><i class="fas fa-plus" aria-hidden="true"></i></span>
               <span>Add Transaction</span>
@@ -411,7 +422,7 @@
     <div class="panel-block is-block">
       <div class="columns">
         <div class="column">
-          <table class="table is-fullwidth">
+          <table class="table is-fullwidth" id="table--licenceAdditionalFees">
             <thead>
               <tr>
                 <th colspan="2">Fee</th>
@@ -419,42 +430,14 @@
               </tr>
             </thead>
             <tbody>
-              <% if (licenceCategories[0].licenceCategoryAdditionalFees.length > 0) { %>
+              <% if (isCreate || licenceCategories[0].licenceCategoryAdditionalFees.length > 0) { %>
                 <tr>
-                  <td class="has-text-weight-bold" colspan="2">Base <%= configFunctions.getProperty("settings.licenceAlias") %> Fee</td>
-                  <td class="has-text-right">$<%= licence.baseLicenceFee ? licence.baseLicenceFee.toFixed(2) : "" %></td>
-                </tr>
-              <% } %>
-              <% for (const additionalFee of licence.licenceAdditionalFees) { %>
-                <tr>
-                  <td class="has-width-1"><i class="fas fa-plus" aria-label="Plus"></i></td>
-                  <td><%= additionalFee.additionalFee %></td>
-                  <td class="has-text-right">$<%= additionalFee.additionalFeeAmount.toFixed(2) %></td>
-                </tr>
-              <% } %>
-            </tbody>
-            <tfoot>
-              <tr>
-                <td class="is-vcentered has-text-weight-bold" colspan="2">
-                  <label for="licenceEdit--licenceFee">Total <%= configFunctions.getProperty("settings.licenceAlias") %> Fee</label>
-                </td>
-                <td class="has-text-weight-bold has-text-right">
-                  <div class="control has-icons-left">
-                    <input class="input has-text-right" id="licenceEdit--licenceFee" name="licenceFee" type="text" value="<%= licence.licenceFee ? licence.licenceFee.toFixed(2) : "" %>" readonly required />
-                    <span class="icon is-small is-left">
-                      <i class="fas fa-dollar-sign" aria-hidden="true"></i>
-                    </span>
-                  </div>
-                </td>
-              </tr>
-              <% if (configFunctions.getProperty("settings.includeReplacementFee")) { %>
-                <tr>
-                  <td class="is-vcentered" colspan="2">
-                    <label for="licenceEdit--replacementFee">Replacement Fee</label>
+                  <td class="is-vcentered has-text-weight-bold" colspan="2">
+                    <label for="licenceEdit--baseLicenceFee">Base <%= configFunctions.getProperty("settings.licenceAlias") %> Fee</label>
                   </td>
                   <td class="has-text-right">
                     <div class="control has-icons-left">
-                      <input class="input has-text-right" id="licenceEdit--replacementFee" name="replacementFee" type="text" value="<%= licence.replacementFee ? licence.replacementFee.toFixed(2) : "" %>" readonly required />
+                      <input class="input has-text-right" id="licenceEdit--baseLicenceFee" name="baseLicenceFee" type="text" value="<%= licence.baseLicenceFee ? licence.baseLicenceFee.toFixed(2) : "" %>" readonly required />
                       <span class="icon is-small is-left">
                         <i class="fas fa-dollar-sign" aria-hidden="true"></i>
                       </span>
@@ -462,10 +445,50 @@
                   </td>
                 </tr>
               <% } %>
-            </tfoot>
+              <% for (const additionalFee of licence.licenceAdditionalFees) { %>
+                <tr data-licence-additional-fee-key="<%= additionalFee.licenceAdditionalFeeKey %>">
+                  <td class="has-width-1"><i class="fas fa-plus" aria-label="Plus"></i></td>
+                  <td><%= additionalFee.additionalFee %></td>
+                  <td class="has-text-right">$<%= additionalFee.additionalFeeAmount.toFixed(2) %></td>
+                </tr>
+              <% } %>
+            </tbody>
+            <% if (!isCreate) { %>
+              <tfoot>
+                <tr>
+                  <td class="is-vcentered has-text-weight-bold" colspan="2">
+                    <label for="licenceEdit--licenceFee">Total <%= configFunctions.getProperty("settings.licenceAlias") %> Fee</label>
+                  </td>
+                  <td class="has-text-weight-bold has-text-right">
+                    <div class="control has-icons-left">
+                      <input class="input has-text-right" id="licenceEdit--licenceFee" name="licenceFee" type="text" value="<%= licence.licenceFee ? licence.licenceFee.toFixed(2) : "" %>" readonly required />
+                      <span class="icon is-small is-left">
+                        <i class="fas fa-dollar-sign" aria-hidden="true"></i>
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+                <% if (configFunctions.getProperty("settings.includeReplacementFee")) { %>
+                  <tr>
+                    <td class="is-vcentered" colspan="2">
+                      <label for="licenceEdit--replacementFee">Replacement Fee</label>
+                    </td>
+                    <td class="has-text-right">
+                      <div class="control has-icons-left">
+                        <input class="input has-text-right" id="licenceEdit--replacementFee" name="replacementFee" type="text" value="<%= licence.replacementFee ? licence.replacementFee.toFixed(2) : "" %>" readonly required />
+                        <span class="icon is-small is-left">
+                          <i class="fas fa-dollar-sign" aria-hidden="true"></i>
+                        </span>
+                      </div>
+                    </td>
+                  </tr>
+                <% } %>
+              </tfoot>
+            <% } %>
           </table>
+          <input id="licenceEdit--baseReplacementFee" name="baseReplacementFee" type="hidden" value="<%= licence.baseReplacementFee ? licence.baseReplacementFee.toFixed(2) : "" %>" />
           <% if (!configFunctions.getProperty("settings.includeReplacementFee")) { %>
-            <input id="licenceEdit--replacementFee" name="replacementFee" type="hidden" value="<%= licence.replacementFee ? licence.replacementFee.toFixed(2) : "" %>" readonly required />
+            <input id="licenceEdit--replacementFee" name="replacementFee" type="hidden" value="<%= licence.replacementFee ? licence.replacementFee.toFixed(2) : "" %>" />
           <% } %>
 
           <% if (isCreate) { %>
@@ -480,7 +503,6 @@
               <p class="message-body">Transaction tracking will become available after saving.</p>
             </div>
           <% } else { %>
-            <h2 class="title is-3">Transaction History</h2>
             <table class="table is-fullwidth" id="table--licenceTransactions">
               <thead>
                 <tr>

@@ -24,6 +24,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     };
     let hasUnsavedChanges = false;
+    let refreshAfterSave = false;
     const setUnsavedChanges = () => {
         hasUnsavedChanges = true;
         cityssm.enableNavBlocker();
@@ -39,8 +40,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             if (responseJSON.success) {
                 hasUnsavedChanges = false;
                 cityssm.disableNavBlocker();
-                if (isCreate) {
-                    window.location.href = urlPrefix + "/licences/" + responseJSON.licenceId.toString() + "/edit";
+                if (isCreate || refreshAfterSave) {
+                    window.location.href = urlPrefix + "/licences/" + responseJSON.licenceId.toString() + "/edit?t=" + Date.now();
                 }
                 else {
                     bulmaJS.alert({
@@ -414,13 +415,31 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const baseReplacementFeeElement = document.querySelector("#licenceEdit--baseReplacementFee");
         if (!licenceCategory || licenceCategory.licenceCategoryFees.length === 0) {
             baseLicenceFeeElement.value = "";
-            baseReplacementFeeElement.value = "";
+            if (baseReplacementFeeElement) {
+                baseReplacementFeeElement.value = "";
+            }
             return;
         }
         baseLicenceFeeElement.value = (isRenewalElement.checked
             ? licenceCategory.licenceCategoryFees[0].renewalFee.toFixed(2)
             : licenceCategory.licenceCategoryFees[0].licenceFee.toFixed(2));
-        baseReplacementFeeElement.value = licenceCategory.licenceCategoryFees[0].replacementFee.toFixed(2);
+        if (baseReplacementFeeElement) {
+            baseReplacementFeeElement.value = licenceCategory.licenceCategoryFees[0].replacementFee.toFixed(2);
+        }
+        if (!isCreate) {
+            const feeTableElement = baseLicenceFeeElement.closest("table");
+            if (!feeTableElement.classList.contains("is-hidden")) {
+                feeTableElement.classList.add("is-hidden");
+                feeTableElement.insertAdjacentHTML("beforebegin", "<div class=\"message is-warning\">" +
+                    "<p class=\"message-body\">Fees will be recalculated after saving.</p>" +
+                    "</div>");
+                feeTableElement.closest(".panel")
+                    .querySelector(".panel-heading .level-right")
+                    .classList
+                    .add("is-hidden");
+                refreshAfterSave = true;
+            }
+        }
     };
     const renderLicenceCategory = () => {
         renderLicenceCategoryFields();
@@ -460,6 +479,67 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         refreshLicenceCategoryFees();
     });
+    let optionalAdditionalFees;
+    const additionalFeeTableElement = document.querySelector("#table--licenceAdditionalFees");
+    const openAddAdditionalFeeModal = (clickEvent) => {
+        clickEvent.preventDefault();
+        let addAdditionalFeeCloseModalFunction;
+        const submitFunction_addAdditionalFee = (formEvent) => {
+            formEvent.preventDefault();
+            cityssm.postJSON(urlPrefix + "/licences/doAddAdditionalFee", formEvent.currentTarget, (responseJSON) => {
+                if (!responseJSON.success) {
+                    bulmaJS.alert({
+                        title: "Error Adding Additional Fee",
+                        message: "Please try again.",
+                        contextualColorName: "danger"
+                    });
+                    return;
+                }
+                document.querySelector("#licenceEdit--licenceFee").value = responseJSON.licenceFee.toFixed(2);
+                addAdditionalFeeCloseModalFunction();
+                renderLicenceTransactions();
+            });
+        };
+        cityssm.openHtmlModal("additionalFee-add", {
+            onshown: (modalElement, closeModalFunction) => {
+                addAdditionalFeeCloseModalFunction = closeModalFunction;
+                bulmaJS.toggleHtmlClipped();
+                modalElement.querySelector("#additionalFeeAdd--licenceId").value = licenceId;
+                const availableAdditionalFees = optionalAdditionalFees.filter((additionalFee) => {
+                    if (additionalFeeTableElement.querySelector("tbody tr[data-licence-additional-fee-key='" + additionalFee.additionalFeeType + "']")) {
+                        return false;
+                    }
+                    return true;
+                });
+                if (availableAdditionalFees.length === 0) {
+                    closeModalFunction();
+                    bulmaJS.alert({
+                        title: "No Additional Fees Available",
+                        message: "All available additional fees are already included.",
+                        contextualColorName: "info"
+                    });
+                    return;
+                }
+                const licenceAdditionalFeeKeyElement = modalElement.querySelector("#additionalFeeAdd--licenceAdditionalFeeKey");
+                for (const availableAdditionalFee of availableAdditionalFees) {
+                    const optionElement = document.createElement("option");
+                    optionElement.value = availableAdditionalFee.licenceAdditionalFeeKey;
+                    optionElement.textContent = availableAdditionalFee.additionalFee;
+                    licenceAdditionalFeeKeyElement.append(optionElement);
+                }
+                modalElement.querySelector("#form--additionalFeeAdd").addEventListener("submit", submitFunction_addAdditionalFee);
+            }
+        });
+    };
+    if (!isCreate) {
+        const addAdditionalFeeButtonElement = document.querySelector("#button--addAdditionalFee");
+        if (addAdditionalFeeButtonElement) {
+            optionalAdditionalFees = licenceCategory.licenceCategoryAdditionalFees.filter((additionalFee) => {
+                return !additionalFee.isRequired;
+            });
+            addAdditionalFeeButtonElement.addEventListener("click", openAddAdditionalFeeModal);
+        }
+    }
     const licenceTransactionsTableElement = document.querySelector("#table--licenceTransactions");
     let licenceTransactions;
     const getOutstandingBalance = () => {
@@ -649,7 +729,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 licenceId
             }, (responseJSON) => {
                 if (responseJSON.success) {
-                    window.location.reload();
+                    window.location.href = urlPrefix + "/licences/" + licenceId + "/edit?t=" + Date.now();
                 }
             });
         };

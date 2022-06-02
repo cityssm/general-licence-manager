@@ -50,6 +50,7 @@ declare const bulmaJS: BulmaJS;
    */
 
   let hasUnsavedChanges = false;
+  let refreshAfterSave = false;
 
   const setUnsavedChanges = () => {
     hasUnsavedChanges = true;
@@ -75,8 +76,8 @@ declare const bulmaJS: BulmaJS;
           hasUnsavedChanges = false;
           cityssm.disableNavBlocker();
 
-          if (isCreate) {
-            window.location.href = urlPrefix + "/licences/" + responseJSON.licenceId.toString() + "/edit";
+          if (isCreate || refreshAfterSave) {
+            window.location.href = urlPrefix + "/licences/" + responseJSON.licenceId.toString() + "/edit?t=" + Date.now();
           } else {
             bulmaJS.alert({
               message: licenceAlias + " Updated Successfully",
@@ -605,7 +606,11 @@ declare const bulmaJS: BulmaJS;
 
     if (!licenceCategory || licenceCategory.licenceCategoryFees.length === 0) {
       baseLicenceFeeElement.value = "";
-      baseReplacementFeeElement.value = "";
+
+      if (baseReplacementFeeElement) {
+        baseReplacementFeeElement.value = "";
+      }
+
       return;
     }
 
@@ -613,7 +618,28 @@ declare const bulmaJS: BulmaJS;
       ? licenceCategory.licenceCategoryFees[0].renewalFee.toFixed(2)
       : licenceCategory.licenceCategoryFees[0].licenceFee.toFixed(2));
 
-    baseReplacementFeeElement.value = licenceCategory.licenceCategoryFees[0].replacementFee.toFixed(2);
+    if (baseReplacementFeeElement) {
+      baseReplacementFeeElement.value = licenceCategory.licenceCategoryFees[0].replacementFee.toFixed(2);
+    }
+
+    if (!isCreate) {
+      const feeTableElement = baseLicenceFeeElement.closest("table");
+
+      if (!feeTableElement.classList.contains("is-hidden")) {
+
+        feeTableElement.classList.add("is-hidden");
+        feeTableElement.insertAdjacentHTML("beforebegin", "<div class=\"message is-warning\">" +
+          "<p class=\"message-body\">Fees will be recalculated after saving.</p>" +
+          "</div>");
+
+        feeTableElement.closest(".panel")
+          .querySelector(".panel-heading .level-right")
+          .classList
+          .add("is-hidden");
+
+        refreshAfterSave = true;
+      }
+    }
   };
 
   const renderLicenceCategory = () => {
@@ -673,6 +699,101 @@ declare const bulmaJS: BulmaJS;
 
     refreshLicenceCategoryFees();
   });
+
+  /*
+   * Additional Fees
+   */
+
+  let optionalAdditionalFees: recordTypes.LicenceCategoryAdditionalFee[];
+
+  const additionalFeeTableElement = document.querySelector("#table--licenceAdditionalFees") as HTMLTableElement;
+
+  const openAddAdditionalFeeModal = (clickEvent: Event) => {
+    clickEvent.preventDefault();
+
+    let addAdditionalFeeCloseModalFunction: () => void;
+
+    const submitFunction_addAdditionalFee = (formEvent: Event) => {
+      formEvent.preventDefault();
+
+      cityssm.postJSON(urlPrefix + "/licences/doAddAdditionalFee",
+        formEvent.currentTarget,
+        (responseJSON: { success: boolean; additionalFee?: recordTypes.LicenceAdditionalFee; licenceFee?: number; }) => {
+
+          if (!responseJSON.success) {
+            bulmaJS.alert({
+              title: "Error Adding Additional Fee",
+              message: "Please try again.",
+              contextualColorName: "danger"
+            });
+            return;
+          }
+
+          (document.querySelector("#licenceEdit--licenceFee") as HTMLInputElement).value = responseJSON.licenceFee.toFixed(2);
+
+          addAdditionalFeeCloseModalFunction();
+
+          renderLicenceTransactions();
+        });
+    };
+
+    cityssm.openHtmlModal("additionalFee-add", {
+      onshown: (modalElement, closeModalFunction) => {
+
+        addAdditionalFeeCloseModalFunction = closeModalFunction;
+
+        bulmaJS.toggleHtmlClipped();
+
+        (modalElement.querySelector("#additionalFeeAdd--licenceId") as HTMLInputElement).value = licenceId;
+
+        const availableAdditionalFees = optionalAdditionalFees.filter((additionalFee) => {
+
+          if (additionalFeeTableElement.querySelector("tbody tr[data-licence-additional-fee-key='" + additionalFee.additionalFeeType + "']")) {
+            return false;
+          }
+          return true;
+        });
+
+        if (availableAdditionalFees.length === 0) {
+
+          closeModalFunction();
+
+          bulmaJS.alert({
+            title: "No Additional Fees Available",
+            message: "All available additional fees are already included.",
+            contextualColorName: "info"
+          });
+
+          return;
+        }
+
+        const licenceAdditionalFeeKeyElement = modalElement.querySelector("#additionalFeeAdd--licenceAdditionalFeeKey") as HTMLSelectElement;
+
+        for (const availableAdditionalFee of availableAdditionalFees) {
+          const optionElement = document.createElement("option");
+          optionElement.value = availableAdditionalFee.licenceAdditionalFeeKey;
+          optionElement.textContent = availableAdditionalFee.additionalFee;
+          licenceAdditionalFeeKeyElement.append(optionElement);
+        }
+
+        modalElement.querySelector("#form--additionalFeeAdd").addEventListener("submit", submitFunction_addAdditionalFee);
+      }
+    });
+  };
+
+  if (!isCreate) {
+
+    const addAdditionalFeeButtonElement = document.querySelector("#button--addAdditionalFee") as HTMLButtonElement;
+
+    if (addAdditionalFeeButtonElement) {
+
+      optionalAdditionalFees = licenceCategory.licenceCategoryAdditionalFees.filter((additionalFee) => {
+        return !additionalFee.isRequired;
+      });
+
+      addAdditionalFeeButtonElement.addEventListener("click", openAddAdditionalFeeModal);
+    }
+  }
 
   /*
    * Transactions
@@ -787,7 +908,7 @@ declare const bulmaJS: BulmaJS;
 
     if (outstandingBalance > 0) {
       tfootElement.insertAdjacentHTML("beforeend", "<tr class=\"has-background-danger-light\">" +
-        "<th>Outstanding Balance</th>"+
+        "<th>Outstanding Balance</th>" +
         "<th class=\"has-text-right\">$" + outstandingBalance.toFixed(2) + "</th>" +
         "<th></th>" +
         "</tr>");
@@ -948,7 +1069,7 @@ declare const bulmaJS: BulmaJS;
         (responseJSON: { success: boolean }) => {
 
           if (responseJSON.success) {
-            window.location.reload();
+            window.location.href = urlPrefix + "/licences/" + licenceId + "/edit?t=" + Date.now();
           }
         });
     };

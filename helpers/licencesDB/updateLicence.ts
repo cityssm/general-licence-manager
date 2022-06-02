@@ -3,11 +3,13 @@ import { licencesDB as databasePath } from "../../data/databasePaths.js";
 
 import * as configFunctions from "../functions.config.js";
 import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
+import * as licenceFunctions from "../functions.licence.js";
 
 import { saveLicenceFields } from "./saveLicenceFields.js";
 import { saveLicenceApprovals } from "./saveLicenceApprovals.js";
 
 import type * as expressSession from "express-session";
+import type * as recordTypes from "../../types/recordTypes";
 
 interface UpdateLicenceForm {
   licenceId: string;
@@ -25,6 +27,8 @@ interface UpdateLicenceForm {
   isRenewal?: string;
   startDateString: string;
   endDateString: string;
+  baseLicenceFee: string;
+  baseReplacementFee: string;
   licenceFee: string;
   replacementFee: string;
   licenceFieldKeys?: string;
@@ -55,6 +59,8 @@ export const updateLicence =
         " isRenewal = ?," +
         " startDate = ?," +
         " endDate = ?," +
+        " baseLicenceFee = ?," +
+        " baseReplacementFee = ?," +
         " licenceFee = ?," +
         " replacementFee = ?," +
         " recordUpdate_userName = ?," +
@@ -74,6 +80,8 @@ export const updateLicence =
         licenceForm.isRenewal ? 1 : 0,
         dateTimeFunctions.dateStringToInteger(licenceForm.startDateString),
         dateTimeFunctions.dateStringToInteger(licenceForm.endDateString),
+        licenceForm.baseLicenceFee,
+        licenceForm.baseReplacementFee,
         licenceForm.licenceFee,
         licenceForm.replacementFee,
         requestSession.user.userName,
@@ -98,6 +106,42 @@ export const updateLicence =
       const licenceApprovalKeys = licenceForm.licenceApprovalKeys.split(",");
       saveLicenceApprovals(licenceForm.licenceId, licenceApprovalKeys, licenceForm, database);
     }
+
+    // Check for additional fees to update
+
+    const currentAdditionalFees: recordTypes.LicenceCategoryAdditionalFee[] = database.prepare("select" +
+      " licenceAdditionalFeeKey, additionalFeeType, additionalFeeNumber, additionalFeeFunction" +
+      " from LicenceCategoryAdditionalFees" +
+      " where licenceAdditionalFeeKey in (select licenceAdditionalFeeKey from LicenceAdditionalFees where licenceId = ?)")
+      .all(licenceForm.licenceId);
+
+    if (currentAdditionalFees.length > 0) {
+
+      database.prepare("update Licences" +
+        " set licenceFee = baseLicenceFee," +
+        " replacementFee = baseReplacementFee" +
+        " where licenceId = ?")
+        .run(licenceForm.licenceId);
+
+      for (const currentAdditionalFee of currentAdditionalFees) {
+
+        const additionalFeeAmount = licenceFunctions.calculateAdditionalFeeAmount(currentAdditionalFee, licenceForm.baseLicenceFee);
+
+        database.prepare("update LicenceAdditionalFees" +
+          " set additionalFeeAmount = ?" +
+          " where licenceId = ?" +
+          " and licenceAdditionalFeeKey = ?")
+          .run(additionalFeeAmount, licenceForm.licenceId, currentAdditionalFee.licenceAdditionalFeeKey);
+
+        database.prepare("update Licences" +
+          " set licenceFee = licenceFee + ?" +
+          " where licenceId = ?")
+          .run(additionalFeeAmount.toFixed(2),
+            licenceForm.licenceId);
+      }
+    }
+
+    // Update bank information on outstanding batch entries
 
     if (configFunctions.getProperty("settings.includeBatches")) {
 

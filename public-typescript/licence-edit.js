@@ -426,19 +426,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
         if (baseReplacementFeeElement) {
             baseReplacementFeeElement.value = licenceCategory.licenceCategoryFees[0].replacementFee.toFixed(2);
         }
-        if (!isCreate) {
-            const feeTableElement = baseLicenceFeeElement.closest("table");
-            if (!feeTableElement.classList.contains("is-hidden")) {
-                feeTableElement.classList.add("is-hidden");
-                feeTableElement.insertAdjacentHTML("beforebegin", "<div class=\"message is-warning\">" +
-                    "<p class=\"message-body\">Fees will be recalculated after saving.</p>" +
-                    "</div>");
-                feeTableElement.closest(".panel")
-                    .querySelector(".panel-heading .level-right")
-                    .classList
-                    .add("is-hidden");
-                refreshAfterSave = true;
-            }
+        if (!isCreate && !additionalFeeTableElement.classList.contains("is-hidden")) {
+            additionalFeeTableElement.classList.add("is-hidden");
+            additionalFeeTableElement.insertAdjacentHTML("beforebegin", "<div class=\"message is-warning\">" +
+                "<p class=\"message-body\">Fees will be recalculated after saving.</p>" +
+                "</div>");
+            additionalFeeTableElement.closest(".panel")
+                .querySelector(".panel-heading .level-right")
+                .classList
+                .add("is-hidden");
+            refreshAfterSave = true;
         }
     };
     const renderLicenceCategory = () => {

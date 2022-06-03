@@ -27,8 +27,8 @@ interface UpdateLicenceForm {
   isRenewal?: string;
   startDateString: string;
   endDateString: string;
-  baseLicenceFee: string;
-  baseReplacementFee: string;
+  baseLicenceFee?: string;
+  baseReplacementFee?: string;
   licenceFee: string;
   replacementFee: string;
   licenceFieldKeys?: string;
@@ -82,8 +82,8 @@ export const updateLicence =
         dateTimeFunctions.dateStringToInteger(licenceForm.endDateString),
         licenceForm.baseLicenceFee,
         licenceForm.baseReplacementFee,
-        licenceForm.licenceFee,
-        licenceForm.replacementFee,
+        licenceForm.baseLicenceFee, // replace and recalculate
+        licenceForm.baseReplacementFee, // replace and recalculate
         requestSession.user.userName,
         rightNowMillis,
         licenceForm.licenceId);
@@ -115,31 +115,23 @@ export const updateLicence =
       " where licenceAdditionalFeeKey in (select licenceAdditionalFeeKey from LicenceAdditionalFees where licenceId = ?)")
       .all(licenceForm.licenceId);
 
-    if (currentAdditionalFees.length > 0) {
+    for (const currentAdditionalFee of currentAdditionalFees) {
+
+      const additionalFeeAmount = licenceFunctions.calculateAdditionalFeeAmount(currentAdditionalFee, licenceForm.baseLicenceFee);
+
+      database.prepare("update LicenceAdditionalFees" +
+        " set additionalFeeAmount = ?" +
+        " where licenceId = ?" +
+        " and licenceAdditionalFeeKey = ?")
+        .run(additionalFeeAmount, licenceForm.licenceId, currentAdditionalFee.licenceAdditionalFeeKey);
 
       database.prepare("update Licences" +
-        " set licenceFee = baseLicenceFee," +
-        " replacementFee = baseReplacementFee" +
+        " set licenceFee = licenceFee + ?" +
         " where licenceId = ?")
-        .run(licenceForm.licenceId);
-
-      for (const currentAdditionalFee of currentAdditionalFees) {
-
-        const additionalFeeAmount = licenceFunctions.calculateAdditionalFeeAmount(currentAdditionalFee, licenceForm.baseLicenceFee);
-
-        database.prepare("update LicenceAdditionalFees" +
-          " set additionalFeeAmount = ?" +
-          " where licenceId = ?" +
-          " and licenceAdditionalFeeKey = ?")
-          .run(additionalFeeAmount, licenceForm.licenceId, currentAdditionalFee.licenceAdditionalFeeKey);
-
-        database.prepare("update Licences" +
-          " set licenceFee = licenceFee + ?" +
-          " where licenceId = ?")
-          .run(additionalFeeAmount.toFixed(2),
-            licenceForm.licenceId);
-      }
+        .run(additionalFeeAmount.toFixed(2),
+          licenceForm.licenceId);
     }
+
 
     // Update bank information on outstanding batch entries
 

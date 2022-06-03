@@ -31,7 +31,7 @@ export const updateLicence = (licenceForm, requestSession) => {
         " recordUpdate_userName = ?," +
         " recordUpdate_timeMillis = ?" +
         " where licenceId = ?")
-        .run(licenceForm.licenceNumber, licenceForm.licenseeName, licenceForm.licenseeBusinessName, licenceForm.licenseeAddress1, licenceForm.licenseeAddress2, licenceForm.licenseeCity, licenceForm.licenseeProvince, licenceForm.licenseePostalCode, licenceForm.bankInstitutionNumber, licenceForm.bankTransitNumber, licenceForm.bankAccountNumber, licenceForm.isRenewal ? 1 : 0, dateTimeFunctions.dateStringToInteger(licenceForm.startDateString), dateTimeFunctions.dateStringToInteger(licenceForm.endDateString), licenceForm.baseLicenceFee, licenceForm.baseReplacementFee, licenceForm.licenceFee, licenceForm.replacementFee, requestSession.user.userName, rightNowMillis, licenceForm.licenceId);
+        .run(licenceForm.licenceNumber, licenceForm.licenseeName, licenceForm.licenseeBusinessName, licenceForm.licenseeAddress1, licenceForm.licenseeAddress2, licenceForm.licenseeCity, licenceForm.licenseeProvince, licenceForm.licenseePostalCode, licenceForm.bankInstitutionNumber, licenceForm.bankTransitNumber, licenceForm.bankAccountNumber, licenceForm.isRenewal ? 1 : 0, dateTimeFunctions.dateStringToInteger(licenceForm.startDateString), dateTimeFunctions.dateStringToInteger(licenceForm.endDateString), licenceForm.baseLicenceFee, licenceForm.baseReplacementFee, licenceForm.baseLicenceFee, licenceForm.baseReplacementFee, requestSession.user.userName, rightNowMillis, licenceForm.licenceId);
     if (licenceForm.licenceFieldKeys) {
         database.prepare("delete from LicenceFields where licenceId = ?")
             .run(licenceForm.licenceId);
@@ -49,24 +49,17 @@ export const updateLicence = (licenceForm, requestSession) => {
         " from LicenceCategoryAdditionalFees" +
         " where licenceAdditionalFeeKey in (select licenceAdditionalFeeKey from LicenceAdditionalFees where licenceId = ?)")
         .all(licenceForm.licenceId);
-    if (currentAdditionalFees.length > 0) {
+    for (const currentAdditionalFee of currentAdditionalFees) {
+        const additionalFeeAmount = licenceFunctions.calculateAdditionalFeeAmount(currentAdditionalFee, licenceForm.baseLicenceFee);
+        database.prepare("update LicenceAdditionalFees" +
+            " set additionalFeeAmount = ?" +
+            " where licenceId = ?" +
+            " and licenceAdditionalFeeKey = ?")
+            .run(additionalFeeAmount, licenceForm.licenceId, currentAdditionalFee.licenceAdditionalFeeKey);
         database.prepare("update Licences" +
-            " set licenceFee = baseLicenceFee," +
-            " replacementFee = baseReplacementFee" +
+            " set licenceFee = licenceFee + ?" +
             " where licenceId = ?")
-            .run(licenceForm.licenceId);
-        for (const currentAdditionalFee of currentAdditionalFees) {
-            const additionalFeeAmount = licenceFunctions.calculateAdditionalFeeAmount(currentAdditionalFee, licenceForm.baseLicenceFee);
-            database.prepare("update LicenceAdditionalFees" +
-                " set additionalFeeAmount = ?" +
-                " where licenceId = ?" +
-                " and licenceAdditionalFeeKey = ?")
-                .run(additionalFeeAmount, licenceForm.licenceId, currentAdditionalFee.licenceAdditionalFeeKey);
-            database.prepare("update Licences" +
-                " set licenceFee = licenceFee + ?" +
-                " where licenceId = ?")
-                .run(additionalFeeAmount.toFixed(2), licenceForm.licenceId);
-        }
+            .run(additionalFeeAmount.toFixed(2), licenceForm.licenceId);
     }
     if (configFunctions.getProperty("settings.includeBatches")) {
         database.prepare("update LicenceTransactions" +

@@ -481,6 +481,32 @@ Object.defineProperty(exports, "__esModule", { value: true });
     });
     let optionalAdditionalFees;
     const additionalFeeTableElement = document.querySelector("#table--licenceAdditionalFees");
+    const deleteAdditionalFee = (clickEvent) => {
+        clickEvent.preventDefault();
+        const additionalFeeRowElement = clickEvent.currentTarget.closest("tr");
+        const licenceAdditionalFeeKey = additionalFeeRowElement.dataset.licenceAdditionalFeeKey;
+        const doDelete = () => {
+            cityssm.postJSON(urlPrefix + "/licences/doDeleteAdditionalFee", {
+                licenceId,
+                licenceAdditionalFeeKey
+            }, (responseJSON) => {
+                if (responseJSON.success) {
+                    additionalFeeRowElement.remove();
+                    document.querySelector("#licenceEdit--licenceFee").value = responseJSON.licenceFee.toFixed(2);
+                    renderLicenceTransactions();
+                }
+            });
+        };
+        bulmaJS.confirm({
+            title: "Delete Additional Fee",
+            message: "Are you sure you want to remove this additional fee?",
+            contextualColorName: "warning",
+            okButton: {
+                text: "Yes, Remove the Fee",
+                callbackFunction: doDelete
+            }
+        });
+    };
     const openAddAdditionalFeeModal = (clickEvent) => {
         clickEvent.preventDefault();
         let addAdditionalFeeCloseModalFunction;
@@ -495,6 +521,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     });
                     return;
                 }
+                const additionalFeeRowElement = document.createElement("tr");
+                additionalFeeRowElement.dataset.licenceAdditionalFeeKey = responseJSON.additionalFee.licenceAdditionalFeeKey;
+                additionalFeeRowElement.innerHTML = "<td class=\"has-width-1\"><i class=\"fas fa-plus\" aria-label=\"Plus\"></i></td>" +
+                    "<td>" + cityssm.escapeHTML(responseJSON.additionalFee.additionalFee) + "</td>" +
+                    "<td class=\"has-text-right\">$" + responseJSON.additionalFee.additionalFeeAmount.toFixed(2) + "</td>" +
+                    ("<td class=\"has-width-1\">" +
+                        "<button class=\"button is-small is-danger is-inverted\" type=\"button\" aria-label=\"Delete Additional Fee\">" +
+                        "<i class=\"fas fa-trash\" aria-hidden=\"true\"></i>" +
+                        "</td>");
+                additionalFeeRowElement.querySelector("button").addEventListener("click", deleteAdditionalFee);
+                additionalFeeTableElement.querySelector("tbody").append(additionalFeeRowElement);
                 document.querySelector("#licenceEdit--licenceFee").value = responseJSON.licenceFee.toFixed(2);
                 addAdditionalFeeCloseModalFunction();
                 renderLicenceTransactions();
@@ -506,7 +543,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 bulmaJS.toggleHtmlClipped();
                 modalElement.querySelector("#additionalFeeAdd--licenceId").value = licenceId;
                 const availableAdditionalFees = optionalAdditionalFees.filter((additionalFee) => {
-                    if (additionalFeeTableElement.querySelector("tbody tr[data-licence-additional-fee-key='" + additionalFee.additionalFeeType + "']")) {
+                    if (additionalFeeTableElement.querySelector("tbody tr[data-licence-additional-fee-key='" + additionalFee.licenceAdditionalFeeKey + "']")) {
                         return false;
                     }
                     return true;
@@ -539,9 +576,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
             });
             addAdditionalFeeButtonElement.addEventListener("click", openAddAdditionalFeeModal);
         }
+        const deleteAdditionalFeeButtonElements = additionalFeeTableElement.querySelectorAll(".is-delete-additional-fee-button");
+        for (const deleteAdditionalFeeButtonElement of deleteAdditionalFeeButtonElements) {
+            deleteAdditionalFeeButtonElement.addEventListener("click", deleteAdditionalFee);
+        }
     }
     const licenceTransactionsTableElement = document.querySelector("#table--licenceTransactions");
-    let licenceTransactions;
+    let licenceTransactions = exports.licenceTransactions;
     const getOutstandingBalance = () => {
         const licenceFeeString = document.querySelector("#licenceEdit--licenceFee").value;
         const transactionAmountTotalString = licenceTransactionsTableElement.querySelector("#transactions--total").textContent.slice(1);
@@ -716,6 +757,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     };
     if (!isCreate) {
+        renderLicenceTransactions();
         document.querySelector("#button--addTransaction").addEventListener("click", openAddTransactionModal);
         const deleteTransactionButtonElements = document.querySelectorAll(".is-delete-transaction-button");
         for (const deleteTransactionButtonElement of deleteTransactionButtonElements) {

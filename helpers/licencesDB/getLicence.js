@@ -56,7 +56,7 @@ export const getLicence = (licenceId) => {
             " and c.licenceApprovalKey not in (select licenceApprovalKey from LicenceApprovals where licenceId = ?)" +
             " order by c.orderNumber, c.licenceApproval")
             .all(licenceId, licence.licenceCategoryKey, licenceId);
-        licence.licenceAdditionalFees = database.prepare("select l.licenceAdditionalFeeKey, l.additionalFeeAmount, f.additionalFee" +
+        licence.licenceAdditionalFees = database.prepare("select l.licenceAdditionalFeeKey, l.additionalFeeAmount, f.additionalFee, f.isRequired" +
             " from LicenceAdditionalFees l" +
             " left join LicenceCategoryAdditionalFees f on l.licenceAdditionalFeeKey = f.licenceAdditionalFeeKey" +
             " where l.licenceId = ?" +

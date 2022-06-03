@@ -38,6 +38,26 @@ export const getLicenceCategory = (licenceCategoryKey: string): recordTypes.Lice
 };
 
 
+export const getLicenceCategoryAdditionalFee = (licenceAdditionalFeeKey: string): recordTypes.LicenceCategoryAdditionalFee => {
+
+  const licenceCategories = getLicenceCategories();
+
+  for (const licenceCategory of licenceCategories) {
+
+    const licenceCategoryAdditionalFees = getLicenceCategory(licenceCategory.licenceCategoryKey).licenceCategoryAdditionalFees;
+
+    for (const licenceCategoryAdditionalFee of licenceCategoryAdditionalFees) {
+
+      if (licenceCategoryAdditionalFee.licenceAdditionalFeeKey === licenceAdditionalFeeKey) {
+        return licenceCategoryAdditionalFee;
+      }
+    }
+  }
+
+  return undefined;
+};
+
+
 export const clearAll = (): void => {
   licenceCategoriesList = undefined;
   licenceCategoriesMap.clear();

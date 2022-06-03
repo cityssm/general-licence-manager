@@ -708,6 +708,41 @@ declare const bulmaJS: BulmaJS;
 
   const additionalFeeTableElement = document.querySelector("#table--licenceAdditionalFees") as HTMLTableElement;
 
+  const deleteAdditionalFee = (clickEvent: Event) => {
+
+    clickEvent.preventDefault();
+
+    const additionalFeeRowElement = (clickEvent.currentTarget as HTMLButtonElement).closest("tr");
+    const licenceAdditionalFeeKey = additionalFeeRowElement.dataset.licenceAdditionalFeeKey;
+
+    const doDelete = () => {
+
+      cityssm.postJSON(urlPrefix + "/licences/doDeleteAdditionalFee", {
+        licenceId,
+        licenceAdditionalFeeKey
+      }, (responseJSON: { success: boolean; licenceFee?: number }) => {
+
+        if (responseJSON.success) {
+          additionalFeeRowElement.remove();
+
+          (document.querySelector("#licenceEdit--licenceFee") as HTMLInputElement).value = responseJSON.licenceFee.toFixed(2);
+
+          renderLicenceTransactions();
+        }
+      });
+    };
+
+    bulmaJS.confirm({
+      title: "Delete Additional Fee",
+      message: "Are you sure you want to remove this additional fee?",
+      contextualColorName: "warning",
+      okButton: {
+        text: "Yes, Remove the Fee",
+        callbackFunction: doDelete
+      }
+    })
+  };
+
   const openAddAdditionalFeeModal = (clickEvent: Event) => {
     clickEvent.preventDefault();
 
@@ -729,6 +764,21 @@ declare const bulmaJS: BulmaJS;
             return;
           }
 
+          const additionalFeeRowElement = document.createElement("tr");
+          additionalFeeRowElement.dataset.licenceAdditionalFeeKey = responseJSON.additionalFee.licenceAdditionalFeeKey;
+
+          additionalFeeRowElement.innerHTML = "<td class=\"has-width-1\"><i class=\"fas fa-plus\" aria-label=\"Plus\"></i></td>" +
+            "<td>" + cityssm.escapeHTML(responseJSON.additionalFee.additionalFee) + "</td>" +
+            "<td class=\"has-text-right\">$" + responseJSON.additionalFee.additionalFeeAmount.toFixed(2) + "</td>" +
+            ("<td class=\"has-width-1\">" +
+              "<button class=\"button is-small is-danger is-inverted\" type=\"button\" aria-label=\"Delete Additional Fee\">" +
+              "<i class=\"fas fa-trash\" aria-hidden=\"true\"></i>" +
+              "</td>");
+
+          additionalFeeRowElement.querySelector("button").addEventListener("click", deleteAdditionalFee);
+
+          additionalFeeTableElement.querySelector("tbody").append(additionalFeeRowElement);
+
           (document.querySelector("#licenceEdit--licenceFee") as HTMLInputElement).value = responseJSON.licenceFee.toFixed(2);
 
           addAdditionalFeeCloseModalFunction();
@@ -748,7 +798,7 @@ declare const bulmaJS: BulmaJS;
 
         const availableAdditionalFees = optionalAdditionalFees.filter((additionalFee) => {
 
-          if (additionalFeeTableElement.querySelector("tbody tr[data-licence-additional-fee-key='" + additionalFee.additionalFeeType + "']")) {
+          if (additionalFeeTableElement.querySelector("tbody tr[data-licence-additional-fee-key='" + additionalFee.licenceAdditionalFeeKey + "']")) {
             return false;
           }
           return true;
@@ -793,6 +843,12 @@ declare const bulmaJS: BulmaJS;
 
       addAdditionalFeeButtonElement.addEventListener("click", openAddAdditionalFeeModal);
     }
+
+    const deleteAdditionalFeeButtonElements = additionalFeeTableElement.querySelectorAll(".is-delete-additional-fee-button");
+
+    for (const deleteAdditionalFeeButtonElement of deleteAdditionalFeeButtonElements) {
+      deleteAdditionalFeeButtonElement.addEventListener("click", deleteAdditionalFee);
+    }
   }
 
   /*
@@ -801,7 +857,7 @@ declare const bulmaJS: BulmaJS;
 
   const licenceTransactionsTableElement = document.querySelector("#table--licenceTransactions") as HTMLTableElement;
 
-  let licenceTransactions: recordTypes.LicenceTransaction[];
+  let licenceTransactions: recordTypes.LicenceTransaction[] = exports.licenceTransactions;
 
   const getOutstandingBalance = () => {
 
@@ -915,7 +971,6 @@ declare const bulmaJS: BulmaJS;
     }
   };
 
-
   const addTransaction_getBankNameFunction = (changeEvent: Event) => {
 
     changeEvent.preventDefault();
@@ -928,7 +983,6 @@ declare const bulmaJS: BulmaJS;
 
     populateBankName(bankInstitutionNumberElement, bankTransitNumberElement, bankNameElement);
   };
-
 
   const openAddTransactionModal = (clickEvent: Event) => {
 
@@ -1044,6 +1098,8 @@ declare const bulmaJS: BulmaJS;
   };
 
   if (!isCreate) {
+    renderLicenceTransactions();
+
     document.querySelector("#button--addTransaction").addEventListener("click", openAddTransactionModal);
 
     const deleteTransactionButtonElements = document.querySelectorAll(".is-delete-transaction-button");

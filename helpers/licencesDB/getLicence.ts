@@ -74,7 +74,7 @@ export const getLicence = (licenceId: number | string): recordTypes.Licence => {
         licence.licenceCategoryKey, licenceId);
 
     licence.licenceAdditionalFees = database.prepare(
-      "select l.licenceAdditionalFeeKey, l.additionalFeeAmount, f.additionalFee" +
+      "select l.licenceAdditionalFeeKey, l.additionalFeeAmount, f.additionalFee, f.isRequired" +
       " from LicenceAdditionalFees l" +
       " left join LicenceCategoryAdditionalFees f on l.licenceAdditionalFeeKey = f.licenceAdditionalFeeKey" +
       " where l.licenceId = ?" +

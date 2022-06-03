@@ -19,6 +19,8 @@ import handler_doDeleteRelatedLicence from "../handlers/licences-post/doDeleteRe
 import handler_doGetBankName from "../handlers/licences-post/doGetBankName.js";
 import handler_doAddLicenceTransaction from "../handlers/licences-post/doAddLicenceTransaction.js";
 import handler_doDeleteLicenceTransaction from "../handlers/licences-post/doDeleteLicenceTransaction.js";
+import handler_doAddAdditionalFee from "../handlers/licences-post/doAddAdditionalFee.js";
+import handler_doDeleteAdditionalFee from "../handlers/licences-post/doDeleteAdditionalFee.js";
 import handler_print from "../handlers/licences-get/print.js";
 export const router = Router();
 router.get("/", handler_search);
@@ -38,6 +40,8 @@ router.post("/doGetRelatableLicences", permissionHandlers.updatePostHandler, han
 router.post("/doAddRelatedLicence", permissionHandlers.updatePostHandler, handler_doAddRelatedLicence);
 router.post("/doDeleteRelatedLicence", permissionHandlers.updatePostHandler, handler_doDeleteRelatedLicence);
 router.post("/doGetBankName", permissionHandlers.updatePostHandler, handler_doGetBankName);
+router.post("/doAddAdditionalFee", permissionHandlers.updatePostHandler, handler_doAddAdditionalFee);
+router.post("/doDeleteAdditionalFee", permissionHandlers.updatePostHandler, handler_doDeleteAdditionalFee);
 router.post("/doAddLicenceTransaction", permissionHandlers.updatePostHandler, handler_doAddLicenceTransaction);
 router.post("/doDeleteLicenceTransaction", permissionHandlers.updatePostHandler, handler_doDeleteLicenceTransaction);
 router.get("/:licenceId/print", handler_print);

@@ -427,6 +427,7 @@
               <tr>
                 <th colspan="2">Fee</th>
                 <th class="has-text-right">Amount</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -443,6 +444,7 @@
                       </span>
                     </div>
                   </td>
+                  <td></td>
                 </tr>
               <% } %>
               <% for (const additionalFee of licence.licenceAdditionalFees) { %>
@@ -450,6 +452,13 @@
                   <td class="has-width-1"><i class="fas fa-plus" aria-label="Plus"></i></td>
                   <td><%= additionalFee.additionalFee %></td>
                   <td class="has-text-right">$<%= additionalFee.additionalFeeAmount.toFixed(2) %></td>
+                  <td class="has-width-1">
+                    <% if (!additionalFee.isRequired) { %>
+                      <button class="button is-small is-danger is-inverted is-delete-additional-fee-button" type="button" aria-label="Delete Fee">
+                        <i class="fas fa-trash" aria-hidden="true"></i>
+                      </button>
+                    <% } %>
+                  </td>
                 </tr>
               <% } %>
             </tbody>
@@ -467,6 +476,7 @@
                       </span>
                     </div>
                   </td>
+                  <td></td>
                 </tr>
                 <% if (configFunctions.getProperty("settings.includeReplacementFee")) { %>
                   <tr>
@@ -481,6 +491,7 @@
                         </span>
                       </div>
                     </td>
+                    <td></td>
                   </tr>
                 <% } %>
               </tfoot>
@@ -511,58 +522,8 @@
                   <th class="has-width-1"></th>
                 </tr>
               </thead>
-              <tbody>
-                <%
-                  let transactionTotal = 0;
-                  const currentDate = dateTimeFns.dateToInteger(new Date());
-                %>
-                <% for (const licenceTransaction of licence.licenceTransactions) { %>
-                  <% transactionTotal += licenceTransaction.transactionAmount; %>
-                  <tr data-transaction-index="<%= licenceTransaction.transactionIndex %>">
-                    <td>
-                      <p><%= licenceTransaction.transactionDateString %><br /></p>
-                      <% if (licenceTransaction.transactionNote && licenceTransaction.transactionNote !== "") { %>
-                        <p class="is-size-7">
-                          <%= licenceTransaction.transactionNote %>
-                        </p>
-                      <% } %>
-                      <div class="tags">
-                        <% if (currentDate < licenceTransaction.transactionDate) { %>
-                          <span class="tag is-warning">Upcoming</span>
-                        <% } %>
-                        <% if (licenceTransaction.batchDate) { %>
-                          <span class="tag is-info">Batch Transaction</span>
-                        <% } %>
-                        <% if (licenceTransaction.batchDate && (!licenceTransaction.externalReceiptNumber || licenceTransaction.externalReceiptNumber === "")) { %>
-                          <span class="tag is-warning">Unconfirmed</span>
-                        <% } %>
-                      </div>
-                    </td>
-                    <td class="has-text-right <%= licenceTransaction.transactionAmount === 0 ? " has-text-danger" : "" %>">
-                      $<%= licenceTransaction.transactionAmount.toFixed(2) %>
-                    </td>
-                    <td>
-                      <button class="button is-small is-danger is-inverted is-delete-transaction-button" type="button" aria-label="Delete Transaction">
-                        <i class="fas fa-trash" aria-hidden="true"></i>
-                      </button>
-                    </td>
-                  </tr>
-                <% } %>
-              </tbody>
-              <tfoot>
-                <tr>
-                  <th>Total</th>
-                  <th id="transactions--total" class="has-text-right">$<%= transactionTotal.toFixed(2) %></th>
-                  <th></th>
-                </tr>
-                <% if (licence.licenceFee - transactionTotal > 0) { %>
-                  <tr class="has-background-danger-light">
-                    <th>Outstanding Balance</th>
-                    <th class="has-text-right">$<%= (licence.licenceFee - transactionTotal).toFixed(2) %></th>
-                    <th></th>
-                  </tr
-                <% } %>
-              </tfoot>
+              <tbody></tbody>
+              <tfoot></tfoot>
             </table>
           <% } %>
         </div>
@@ -634,6 +595,7 @@
   <script>
     exports.licenceCategory = <%- JSON.stringify(licenceCategories[0]) %>;
     exports.relatedLicences = <%- JSON.stringify(licence.relatedLicences) %>;
+    exports.licenceTransactions = <%- JSON.stringify(licence.licenceTransactions) %>;
   </script>
 <% } %>
 <script src="<%= urlPrefix %>/javascripts/licence-edit.min.js"></script>

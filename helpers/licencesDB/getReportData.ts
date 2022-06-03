@@ -34,7 +34,7 @@ const getLicencesByLicenceCategorySQL = (licenceCategoryKey: string): {
   sqlParameters: string[];
 } => {
 
-  const licenceCategory = cacheFunctions.getLicenceCategory(licenceCategoryKey);
+  const licenceCategoryDefinition = cacheFunctions.getLicenceCategory(licenceCategoryKey);
 
   const sqlParameters = [];
 
@@ -42,7 +42,7 @@ const getLicencesByLicenceCategorySQL = (licenceCategoryKey: string): {
 
   const fieldColumnNames = new Set<string>();
 
-  for (const licenceField of licenceCategory.licenceCategoryFields) {
+  for (const licenceField of licenceCategoryDefinition.licenceCategoryFields) {
 
     let fieldColumnName = "";
 

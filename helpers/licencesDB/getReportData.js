@@ -18,11 +18,11 @@ const licenseeCity = licenseeAliasSQL + "City";
 const licenseeProvince = licenseeAliasSQL + "Province";
 const licenseePostalCode = licenseeAliasSQL + "PostalCode";
 const getLicencesByLicenceCategorySQL = (licenceCategoryKey) => {
-    const licenceCategory = cacheFunctions.getLicenceCategory(licenceCategoryKey);
+    const licenceCategoryDefinition = cacheFunctions.getLicenceCategory(licenceCategoryKey);
     const sqlParameters = [];
     let fieldsSql = "";
     const fieldColumnNames = new Set();
-    for (const licenceField of licenceCategory.licenceCategoryFields) {
+    for (const licenceField of licenceCategoryDefinition.licenceCategoryFields) {
         let fieldColumnName = "";
         for (let fieldColumnNameIndex = 0; fieldColumnNameIndex <= 100; fieldColumnNameIndex += 1) {
             fieldColumnName = "field_" + camelCase(licenceField.licenceField) +

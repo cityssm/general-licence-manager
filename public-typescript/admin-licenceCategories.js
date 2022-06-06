@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const includeReplacementFee = exports.includeReplacementFee;
     let licenceCategories = exports.licenceCategories;
     const licenceCategoriesContainerElement = document.querySelector("#container--licenceCategories");
+    const licenceCategorySearchElement = document.querySelector("#searchFilter--licenceCategory");
     const renderLicenceCategories = () => {
         if (licenceCategories.length === 0) {
             licenceCategoriesContainerElement.innerHTML = "<div class=\"message is-warning\">" +
@@ -13,9 +14,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 "</div>";
             return;
         }
+        let displayCount = 0;
+        const searchStringPieces = licenceCategorySearchElement.value.toLowerCase().split(" ");
         const panelElement = document.createElement("div");
         panelElement.className = "panel";
         for (const licenceCategory of licenceCategories) {
+            let displayCategory = true;
+            for (const searchStringPiece of searchStringPieces) {
+                if (!licenceCategory.licenceCategory.toLowerCase().includes(searchStringPiece)) {
+                    displayCategory = false;
+                    break;
+                }
+            }
+            if (!displayCategory) {
+                continue;
+            }
+            displayCount += 1;
             const panelBlockElement = document.createElement("a");
             panelBlockElement.className = "panel-block is-block";
             panelBlockElement.dataset.licenceCategoryKey = licenceCategory.licenceCategoryKey;
@@ -40,8 +54,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
             panelBlockElement.addEventListener("click", openEditLicenceCategoryModalByClick);
             panelElement.append(panelBlockElement);
         }
-        licenceCategoriesContainerElement.innerHTML = "";
-        licenceCategoriesContainerElement.append(panelElement);
+        if (displayCount > 0) {
+            licenceCategoriesContainerElement.innerHTML = "";
+            licenceCategoriesContainerElement.append(panelElement);
+        }
+        else {
+            licenceCategoriesContainerElement.innerHTML = "<div class=\"message is-info\">" +
+                "<p class=\"message-body\">There are no categories available that meet the search criteria.</p>" +
+                "</div>";
+        }
     };
     const getLicenceCategories = () => {
         licenceCategoriesContainerElement.innerHTML = "<p class=\"has-text-centered has-text-grey-lighter\">" +
@@ -53,6 +74,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             renderLicenceCategories();
         });
     };
+    licenceCategorySearchElement.addEventListener("keyup", renderLicenceCategories);
     let doRefreshOnClose = false;
     let editModalElement;
     let licenceCategoryFields;

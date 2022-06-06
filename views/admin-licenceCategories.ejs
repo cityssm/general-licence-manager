@@ -22,6 +22,17 @@
   </button>
 </div>
 
+<div class="box">
+  <div class="field">
+    <div class="control has-icons-left">
+      <input class="input" id="searchFilter--licenceCategory" type="text" placeholder="Filter <%= configFunctions.getProperty("settings.licenceAlias") %> Categories" aria-label="<%= configFunctions.getProperty("settings.licenceAlias") %> Category" />
+      <span class="icon is-small is-left">
+        <i class="fas fa-filter" aria-hidden="true"></i>
+      </span>
+    </div>
+  </div>
+</div>
+
 <div id="container--licenceCategories" data-cy="results"></div>
 
 <%- include('_footerA'); -%>

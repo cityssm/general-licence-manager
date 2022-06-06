@@ -21,6 +21,8 @@ declare const bulmaJS: BulmaJS;
 
   const licenceCategoriesContainerElement = document.querySelector("#container--licenceCategories") as HTMLElement;
 
+  const licenceCategorySearchElement = document.querySelector("#searchFilter--licenceCategory") as HTMLInputElement;
+
   const renderLicenceCategories = () => {
 
     if (licenceCategories.length === 0) {
@@ -31,10 +33,29 @@ declare const bulmaJS: BulmaJS;
       return;
     }
 
+    let displayCount = 0;
+
+    const searchStringPieces = licenceCategorySearchElement.value.toLowerCase().split(" ");
+
     const panelElement = document.createElement("div");
     panelElement.className = "panel";
 
     for (const licenceCategory of licenceCategories) {
+
+      let displayCategory = true;
+
+      for (const searchStringPiece of searchStringPieces) {
+        if (!licenceCategory.licenceCategory.toLowerCase().includes(searchStringPiece)) {
+          displayCategory = false;
+          break;
+        }
+      }
+
+      if (!displayCategory) {
+        continue;
+      }
+
+      displayCount += 1;
 
       const panelBlockElement = document.createElement("a");
       panelBlockElement.className = "panel-block is-block";
@@ -64,8 +85,14 @@ declare const bulmaJS: BulmaJS;
       panelElement.append(panelBlockElement);
     }
 
-    licenceCategoriesContainerElement.innerHTML = "";
-    licenceCategoriesContainerElement.append(panelElement);
+    if (displayCount > 0) {
+      licenceCategoriesContainerElement.innerHTML = "";
+      licenceCategoriesContainerElement.append(panelElement);
+    } else {
+      licenceCategoriesContainerElement.innerHTML = "<div class=\"message is-info\">" +
+        "<p class=\"message-body\">There are no categories available that meet the search criteria.</p>" +
+        "</div>";
+    }
   };
 
   const getLicenceCategories = () => {
@@ -81,6 +108,8 @@ declare const bulmaJS: BulmaJS;
         renderLicenceCategories();
       });
   };
+
+  licenceCategorySearchElement.addEventListener("keyup", renderLicenceCategories);
 
   /*
    * Edit Licence Category

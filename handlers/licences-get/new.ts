@@ -10,6 +10,18 @@ import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js"
 import type * as recordTypes from "../../types/recordTypes";
 
 
+const getFirstPopulatedValue = (...values: string[]): string => {
+
+  for (const value of values) {
+    if (value && value !== "") {
+      return value;
+    }
+  }
+
+  return;
+};
+
+
 export const handler: RequestHandler = (request, response) => {
 
   let relatedLicence: recordTypes.Licence;
@@ -18,59 +30,45 @@ export const handler: RequestHandler = (request, response) => {
     relatedLicence = getLicence(request.query.relatedLicenceId as string);
   }
 
-  let licenseeName = request.query.licenseeName as string;
-  if ((!licenseeName || licenseeName === "") && relatedLicence) {
-    licenseeName = relatedLicence.licenseeName;
-  }
+  const licenseeName = getFirstPopulatedValue(request.query.licenseeName as string,
+    relatedLicence ?.licenseeName,
+    "");
 
-  let licenseeBusinessName = request.query.licenseeBusinessName as string;
-  if ((!licenseeBusinessName || licenseeBusinessName === "") && relatedLicence) {
-    licenseeBusinessName = relatedLicence.licenseeBusinessName;
-  }
+  const licenseeBusinessName = getFirstPopulatedValue(request.query.licenseeBusinessName as string,
+    relatedLicence ?.licenseeBusinessName,
+    "");
 
-  let licenseeAddress1 = request.query.licenseeAddress1 as string;
-  if ((!licenseeAddress1 || licenseeAddress1 === "") && relatedLicence) {
-    licenseeAddress1 = relatedLicence.licenseeAddress1;
-  }
+  const licenseeAddress1 = getFirstPopulatedValue(request.query.licenseeAddress1 as string,
+    relatedLicence ?.licenseeAddress1,
+    "");
 
-  let licenseeAddress2 = request.query.licenseeAddress2 as string;
-  if ((!licenseeAddress2 || licenseeAddress2 === "") && relatedLicence) {
-    licenseeAddress2 = relatedLicence.licenseeAddress2;
-  }
+  const licenseeAddress2 = getFirstPopulatedValue(request.query.licenseeAddress2 as string,
+    relatedLicence ?.licenseeAddress2,
+    "");
 
-  let licenseeCity = request.query.licenseeCity as string;
-  if (!licenseeCity || licenseeCity === "") {
-    licenseeCity = relatedLicence
-      ? relatedLicence.licenseeCity
-      : configFunctions.getProperty("defaults.licenseeCity");
-  }
+  const licenseeCity = getFirstPopulatedValue(request.query.licenseeCity as string,
+    relatedLicence ?.licenseeCity,
+    configFunctions.getProperty("defaults.licenseeCity"));
 
-  let licenseeProvince = request.query.licenseeProvince as string;
-  if (!licenseeProvince || licenseeProvince === "") {
-    licenseeProvince = relatedLicence
-      ? relatedLicence.licenseeProvince
-      : configFunctions.getProperty("defaults.licenseeProvince");
-  }
+  const licenseeProvince = getFirstPopulatedValue(request.query.licenseeProvince as string,
+    relatedLicence ?.licenseeProvince,
+    configFunctions.getProperty("defaults.licenseeProvince"));
 
-  let licenseePostalCode = request.query.licenseePostalCode as string;
-  if ((!licenseePostalCode || licenseePostalCode === "") && relatedLicence) {
-    licenseePostalCode = relatedLicence.licenseePostalCode;
-  }
+  const licenseePostalCode = getFirstPopulatedValue(request.query.licenseePostalCode as string,
+    relatedLicence ?.licenseePostalCode,
+    "");
 
-  let bankInstitutionNumber = request.query.bankInstitutionNumber as string;
-  if ((!bankInstitutionNumber || bankInstitutionNumber === "") && relatedLicence) {
-    bankInstitutionNumber = relatedLicence.bankInstitutionNumber;
-  }
+  const bankInstitutionNumber = getFirstPopulatedValue(request.query.bankInstitutionNumber as string,
+    relatedLicence ?.bankInstitutionNumber,
+    "");
 
-  let bankTransitNumber = request.query.bankTransitNumber as string;
-  if ((!bankTransitNumber || bankTransitNumber === "") && relatedLicence) {
-    bankTransitNumber = relatedLicence.bankTransitNumber;
-  }
+  const bankTransitNumber = getFirstPopulatedValue(request.query.bankTransitNumber as string,
+    relatedLicence ?.bankTransitNumber,
+    "");
 
-  let bankAccountNumber = request.query.bankAccountNumber as string;
-  if ((!bankAccountNumber || bankAccountNumber === "") && relatedLicence) {
-    bankAccountNumber = relatedLicence.bankAccountNumber;
-  }
+  const bankAccountNumber = getFirstPopulatedValue(request.query.bankAccountNumber as string,
+    relatedLicence ?.bankAccountNumber,
+    "");
 
   let bankName: string;
 

@@ -1198,10 +1198,13 @@ declare const bulmaJS: BulmaJS;
       url.searchParams.append("licenseeCity", (document.querySelector("#licenceEdit--licenseeCity") as HTMLInputElement).value);
       url.searchParams.append("licenseeProvince", (document.querySelector("#licenceEdit--licenseeProvince") as HTMLInputElement).value);
       url.searchParams.append("licenseePostalCode", (document.querySelector("#licenceEdit--licenseePostalCode") as HTMLInputElement).value);
-      url.searchParams.append("bankInstitutionNumber", bankInstitutionNumberElement.value);
-      url.searchParams.append("bankTransitNumber", bankTransitNumberElement.value);
-      url.searchParams.append("bankAccountNumber", (document.querySelector("#licenceEdit--bankAccountNumber") as HTMLInputElement).value);
 
+      if (bankInstitutionNumberElement) {
+        url.searchParams.append("bankInstitutionNumber", bankInstitutionNumberElement.value);
+        url.searchParams.append("bankTransitNumber", bankTransitNumberElement.value);
+        url.searchParams.append("bankAccountNumber", (document.querySelector("#licenceEdit--bankAccountNumber") as HTMLInputElement).value);
+      }
+      
       let newStartDate = endDateStringElement.valueAsDate;
       newStartDate.setDate(newStartDate.getDate() + 1);
 

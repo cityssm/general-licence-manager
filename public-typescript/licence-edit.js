@@ -830,9 +830,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
             url.searchParams.append("licenseeCity", document.querySelector("#licenceEdit--licenseeCity").value);
             url.searchParams.append("licenseeProvince", document.querySelector("#licenceEdit--licenseeProvince").value);
             url.searchParams.append("licenseePostalCode", document.querySelector("#licenceEdit--licenseePostalCode").value);
-            url.searchParams.append("bankInstitutionNumber", bankInstitutionNumberElement.value);
-            url.searchParams.append("bankTransitNumber", bankTransitNumberElement.value);
-            url.searchParams.append("bankAccountNumber", document.querySelector("#licenceEdit--bankAccountNumber").value);
+            if (bankInstitutionNumberElement) {
+                url.searchParams.append("bankInstitutionNumber", bankInstitutionNumberElement.value);
+                url.searchParams.append("bankTransitNumber", bankTransitNumberElement.value);
+                url.searchParams.append("bankAccountNumber", document.querySelector("#licenceEdit--bankAccountNumber").value);
+            }
             let newStartDate = endDateStringElement.valueAsDate;
             newStartDate.setDate(newStartDate.getDate() + 1);
             if (newStartDate.getTime() < Date.now()) {

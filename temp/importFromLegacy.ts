@@ -282,6 +282,9 @@ const importLicences = async () => {
       endDateString = dateTimeFunctions.dateToString(endDate);
     }
 
+    const licenceFee = isRenewal
+      ? licenceCategory.licenceCategoryFees[0].renewalFee.toFixed(2)
+      : licenceCategory.licenceCategoryFees[0].licenceFee.toFixed(2);
 
     const licenceId = createLicence({
       licenceCategoryKey: licenceRow.LGMA_CAT,
@@ -301,9 +304,9 @@ const importLicences = async () => {
       isRenewal: isRenewal ? "true" : undefined,
       startDateString,
       endDateString,
-      licenceFee: isRenewal
-        ? licenceCategory.licenceCategoryFees[0].renewalFee.toFixed(2)
-        : licenceCategory.licenceCategoryFees[0].licenceFee.toFixed(2),
+      baseLicenceFee: licenceFee,
+      licenceFee: licenceFee,
+      baseReplacementFee: licenceCategory.licenceCategoryFees[0].replacementFee.toFixed(2),
       replacementFee: licenceCategory.licenceCategoryFees[0].replacementFee.toFixed(2)
     }, session);
 

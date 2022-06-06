@@ -47,6 +47,8 @@ Something missing?
 
 ⭐ **This application is under development and not ready for production use.** ⭐
 
+**Expected Launch June 2022**
+
 Although the system is quite niche, it's being released in an open source environment
 in hopes to pool developer resources from other municipalities
 looking to move away from older, legacy systems.

@@ -14,7 +14,9 @@ jobs:
         with:
           node-version: '16'
       - name: Install Application
-        run: npm ci
+        run: |
+          npm ci
+          npm install -g mocha c8
       - name: Copy Test Config
         run: cp ./data/config.testing.js ./data/config.js
       - name: Run Coverage Testing

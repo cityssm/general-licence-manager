@@ -4,8 +4,13 @@ import { licencesDB as databasePath } from "../../data/databasePaths.js";
 import type * as recordTypes from "../../types/recordTypes";
 
 
+interface DeleteLicenceAdditionalFeeReturn {
+  licenceFee: number;
+}
+
+
 export const deleteLicenceAdditionalFee =
-  (licenceId: string | number, licenceAdditionalFeeKey: string, requestSession: recordTypes.PartialSession) => {
+  (licenceId: string | number, licenceAdditionalFeeKey: string, requestSession: recordTypes.PartialSession): DeleteLicenceAdditionalFeeReturn => {
 
     const database = sqlite(databasePath);
 

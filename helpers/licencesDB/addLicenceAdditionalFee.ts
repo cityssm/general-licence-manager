@@ -7,8 +7,15 @@ import * as licenceFunctions from "../functions.licence.js";
 import type * as recordTypes from "../../types/recordTypes";
 
 
+interface AddLicenceAdditionalFeeReturn {
+  licenceFee: number;
+  additionalFeeAmount: number;
+  licenceCategoryAdditionalFee: recordTypes.LicenceCategoryAdditionalFee;
+}
+
+
 export const addLicenceAdditionalFee =
-  (licenceId: string | number, licenceAdditionalFeeKey: string, requestSession: recordTypes.PartialSession) => {
+  (licenceId: string | number, licenceAdditionalFeeKey: string, requestSession: recordTypes.PartialSession): AddLicenceAdditionalFeeReturn => {
 
     const database = sqlite(databasePath);
 

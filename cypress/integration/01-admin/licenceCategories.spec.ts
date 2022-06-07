@@ -270,5 +270,65 @@ describe("Admin - Licence Categories", () => {
       cy.get(".modal")
         .should("have.length", 1);
     });
+
+    it("Adds an Additional Fee", () => {
+
+      const additionalFee = uuidV4().slice(-10);
+
+      cy.get(".modal #licenceCategoryAdditionalFeeAdd--additionalFee")
+        .focus()
+        .type(additionalFee)
+        .parents("form")
+        .submit();
+
+      cy.wait(1000);
+
+      cy.get(".modal .modal-card-head")
+        .last()
+        .should("contain.text", "Update Additional Fee");
+
+      cy.get(".modal .is-close-modal-button")
+        .last()
+        .click();
+
+      cy.get(".modal #container--licenceCategoryAdditionalFees")
+        .should("contain.text", additionalFee);
+    });
+
+    it("Updates an Additional Fee", () => {
+
+      cy.get(".modal #container--licenceCategoryAdditionalFees a.panel-block")
+        .first()
+        .click();
+
+      cy.wait(ajaxDelayMillis);
+
+      cy.get(".modal")
+        .should("have.length", 2)
+        .last()
+        .should("contain.text", "Additional Fee");
+
+      // Check Accessibility
+      cy.injectAxe();
+      cy.checkA11y();
+
+      cy.get(".modal").last()
+        .find("select[name='additionalFeeType']")
+        .focus()
+        .select("percent");
+
+      cy.get(".modal").last()
+        .find("input[name='additionalFeeNumber']")
+        .focus()
+        .clear()
+        .clear()
+        .type("13");
+
+      cy.get(".modal").last().find("form").submit();
+
+      cy.wait(ajaxDelayMillis);
+
+      cy.get(".modal").should("have.length", 1);
+    });
   });
 });

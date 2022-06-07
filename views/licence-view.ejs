@@ -136,7 +136,13 @@
                 <% const uid = stringFns.getUID(); %>
                 <div class="panel-block is-block">
                   <strong id="<%= uid %>"><%= licenceField.licenceField %></strong><br />
-                  <span aria-labelledby="<%= uid %>"><%= licenceField.licenceFieldValue %></span>
+                  <span aria-labelledby="<%= uid %>">
+                    <% if (licenceField.licenceFieldValue && licenceField.licenceFieldValue !== "") { %>
+                      <%= licenceField.licenceFieldValue %>
+                    <% } else { %>
+                      <span class="has-text-grey">(Blank)</span>
+                    <% } %>
+                  </span>
                 </div>
               <% } %>
             </div>

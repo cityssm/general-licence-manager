@@ -18,7 +18,7 @@ const getFirstPopulatedValue = (...values: string[]): string => {
     }
   }
 
-  return;
+  return "";
 };
 
 
@@ -31,20 +31,16 @@ export const handler: RequestHandler = (request, response) => {
   }
 
   const licenseeName = getFirstPopulatedValue(request.query.licenseeName as string,
-    relatedLicence ?.licenseeName,
-    "");
+    relatedLicence ?.licenseeName);
 
   const licenseeBusinessName = getFirstPopulatedValue(request.query.licenseeBusinessName as string,
-    relatedLicence ?.licenseeBusinessName,
-    "");
+    relatedLicence ?.licenseeBusinessName);
 
   const licenseeAddress1 = getFirstPopulatedValue(request.query.licenseeAddress1 as string,
-    relatedLicence ?.licenseeAddress1,
-    "");
+    relatedLicence ?.licenseeAddress1);
 
   const licenseeAddress2 = getFirstPopulatedValue(request.query.licenseeAddress2 as string,
-    relatedLicence ?.licenseeAddress2,
-    "");
+    relatedLicence ?.licenseeAddress2);
 
   const licenseeCity = getFirstPopulatedValue(request.query.licenseeCity as string,
     relatedLicence ?.licenseeCity,
@@ -55,20 +51,16 @@ export const handler: RequestHandler = (request, response) => {
     configFunctions.getProperty("defaults.licenseeProvince"));
 
   const licenseePostalCode = getFirstPopulatedValue(request.query.licenseePostalCode as string,
-    relatedLicence ?.licenseePostalCode,
-    "");
+    relatedLicence ?.licenseePostalCode);
 
   const bankInstitutionNumber = getFirstPopulatedValue(request.query.bankInstitutionNumber as string,
-    relatedLicence ?.bankInstitutionNumber,
-    "");
+    relatedLicence ?.bankInstitutionNumber);
 
   const bankTransitNumber = getFirstPopulatedValue(request.query.bankTransitNumber as string,
-    relatedLicence ?.bankTransitNumber,
-    "");
+    relatedLicence ?.bankTransitNumber);
 
   const bankAccountNumber = getFirstPopulatedValue(request.query.bankAccountNumber as string,
-    relatedLicence ?.bankAccountNumber,
-    "");
+    relatedLicence ?.bankAccountNumber);
 
   let bankName: string;
 

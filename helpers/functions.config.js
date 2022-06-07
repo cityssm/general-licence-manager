@@ -49,7 +49,7 @@ export const getLicenceLengthFunction = (licenceLengthFunctionName) => {
     return getProperty("licenceLengthFunctions")[licenceLengthFunctionName];
 };
 export const getAdditionalFeeFunctionNames = () => {
-    return Object.keys(getProperty("additionalFeeFunctions"));
+    return Object.keys(getProperty("additionalFeeFunctions")) || [];
 };
 export const getAdditionalFeeFunction = (additionalFeeFunctionName) => {
     return getProperty("additionalFeeFunctions")[additionalFeeFunctionName];

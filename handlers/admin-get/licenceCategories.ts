@@ -11,8 +11,8 @@ export const handler: RequestHandler = async (_request, response) => {
 
   const licenceCategories = cacheFunctions.getLicenceCategories();
 
-  const licenceLengthFunctionNames = getLicenceLengthFunctionNames();
-  const additionalFeeFunctionNames = getAdditionalFeeFunctionNames();
+  const licenceLengthFunctionNames = getLicenceLengthFunctionNames() || [];
+  const additionalFeeFunctionNames = getAdditionalFeeFunctionNames() || [];
 
   const printEJSList = await getPrintEJSList();
 

@@ -5,8 +5,8 @@ import { getPrintEJSList } from "../../helpers/functions.print.js";
 export const handler = async (_request, response) => {
     cacheFunctions.clearAll();
     const licenceCategories = cacheFunctions.getLicenceCategories();
-    const licenceLengthFunctionNames = getLicenceLengthFunctionNames();
-    const additionalFeeFunctionNames = getAdditionalFeeFunctionNames();
+    const licenceLengthFunctionNames = getLicenceLengthFunctionNames() || [];
+    const additionalFeeFunctionNames = getAdditionalFeeFunctionNames() || [];
     const printEJSList = await getPrintEJSList();
     response.render("admin-licenceCategories", {
         headTitle: configFunctions.getProperty("settings.licenceAlias") + " Categories",

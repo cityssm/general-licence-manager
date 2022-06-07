@@ -130,7 +130,7 @@ export const getLicenceLengthFunction = (licenceLengthFunctionName: string): con
 };
 
 export const getAdditionalFeeFunctionNames = (): string[] => {
-  return Object.keys(getProperty("additionalFeeFunctions"));
+  return Object.keys(getProperty("additionalFeeFunctions")) || [];
 };
 
 export const getAdditionalFeeFunction = (additionalFeeFunctionName: string): configTypes.AdditionalFeeFunction => {

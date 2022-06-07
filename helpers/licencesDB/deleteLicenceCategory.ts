@@ -7,6 +7,7 @@ import type * as expressSession from "express-session";
 const tablesToPurge = ["LicenceCategoryFields",
   "LicenceCategoryApprovals",
   "LicenceCategoryFees",
+  "LicenceCategoryAdditionalFees",
   "LicenceCategories"];
 
 

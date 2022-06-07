@@ -3,6 +3,7 @@ import { licencesDB as databasePath } from "../../data/databasePaths.js";
 const tablesToPurge = ["LicenceCategoryFields",
     "LicenceCategoryApprovals",
     "LicenceCategoryFees",
+    "LicenceCategoryAdditionalFees",
     "LicenceCategories"];
 export const deleteLicenceCategory = (licenceCategoryKey, requestSession) => {
     const database = sqlite(databasePath);

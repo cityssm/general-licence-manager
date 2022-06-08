@@ -3,6 +3,7 @@ import { sqlConfig } from "./sqlConfig.js";
 import * as sqlPool from "@cityssm/mssql-multi-pool";
 import * as cacheFunctions from "../helpers/functions.cache.js";
 import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
+import { getCategorySlug } from "../helpers/licencesDB/getNextLicenceNumber.js";
 import sqlite from "better-sqlite3";
 import { licencesDB as databasePath } from "../data/databasePaths.js";
 import { initLicencesDB } from "../helpers/databaseInitializer.js";
@@ -154,10 +155,10 @@ const importLicences = async () => {
         .query("select * from Replicator.LCMAST");
     const rows = result.recordset;
     for (const licenceRow of rows) {
-        const licenceNumber = currentYearString + "-" + licenceRow.LGMA_SEQ;
+        const licenceCategory = cacheFunctions.getLicenceCategory(licenceRow.LGMA_CAT);
+        const licenceNumber = getCategorySlug(licenceCategory.licenceCategory) + "-" + licenceRow.LGMA_SEQ;
         debug("- Importing " + licenceNumber);
         const licenseeCity = licenceRow.LGMA_CITY.split(",");
-        const licenceCategory = cacheFunctions.getLicenceCategory(licenceRow.LGMA_CAT);
         const isRenewal = !(licenceRow.LGMA_AMOUNT === licenceCategory.licenceCategoryFees[0].licenceFee);
         const issueDate = new Date(licenceRow.LGMA_ISS_YR, licenceRow.LGMA_ISS_MN - 1, licenceRow.LGMA_ISS_DY);
         const startDateString = licenceRow.LGMA_ISS_YR > 0

@@ -75,7 +75,7 @@ export interface ConfigBatchExport_RBCPreauthorized {
         destinationCountry: "CAN" | "USA";
     };
 }
-export declare type LicenceNumberFunction = "year-fourDigits" | "year-fiveDigits" | "year-sixDigits" | "category-fourDigits" | "category-fiveDigits" | "category-sixDigits";
+export declare type LicenceNumberFunction = "year-fourDigits" | "year-fiveDigits" | "year-sixDigits" | "category-fourDigits" | "category-fiveDigits" | "category-sixDigits" | "category-distinctFourDigits" | "category-distinctFiveDigits" | "category-distinctSixDigits";
 export declare type LicenceLengthFunction = (startDate: Date) => Date;
 export declare type AdditionalFeeFunction = (baseLicenceFee: number) => number;
 export {};

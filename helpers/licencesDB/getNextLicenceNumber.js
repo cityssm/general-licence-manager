@@ -15,22 +15,34 @@ export const getCategorySlug = (licenceCategory, maxLength = 10) => {
     }
     return categorySlug.slice(0, Math.max(0, maxLength));
 };
-const getCategoryNDigitsLicenceNumber = (database, licenceCategory, digits) => {
+const getCategoryNDigitsLicenceNumber = (database, licenceCategory, digits, distinctDigits) => {
     const categorySlug = getCategorySlug(licenceCategory, 10);
     const licenceNumberLength = categorySlug.length + 1 + digits;
     database.function("userFn_matchesFormat", (licenceNumber) => {
         return licenceNumber.startsWith(categorySlug + "-") ? 1 : 0;
     });
-    const licenceNumber = database.prepare("select licenceNumber from Licences" +
-        " where length(licenceNumber) = ?" +
-        " and userFn_matchesFormat(licenceNumber) = 1" +
-        " order by licenceNumber desc")
-        .pluck()
-        .get(licenceNumberLength);
+    database.function("userFn_digits", (licenceNumber) => {
+        return licenceNumber.slice(Math.max(0, licenceNumber.lastIndexOf("-") + 1));
+    });
+    let licenceNumber;
+    if (distinctDigits) {
+        licenceNumber = database.prepare("select licenceNumber from Licences" +
+            " order by userFn_digits(licenceNumber) desc")
+            .pluck()
+            .get();
+    }
+    else {
+        licenceNumber = database.prepare("select licenceNumber from Licences" +
+            " where length(licenceNumber) = ?" +
+            " and userFn_matchesFormat(licenceNumber) = 1" +
+            " order by licenceNumber desc")
+            .pluck()
+            .get(licenceNumberLength);
+    }
     if (!licenceNumber) {
         return categorySlug + "-" + "1".padStart(digits, "0");
     }
-    const licenceNumberIndex = Number.parseInt(licenceNumber.split("-")[1]) + 1;
+    const licenceNumberIndex = Number.parseInt(licenceNumber.slice(Math.max(0, licenceNumber.lastIndexOf("-") + 1)), 10) + 1;
     return categorySlug + "-" + licenceNumberIndex.toString().padStart(digits, "0");
 };
 const getNextYearNDigitsLicenceNumber = (database, digits) => {
@@ -63,13 +75,22 @@ export const getNextLicenceNumber = (licenceDetails, database) => {
     let licenceNumber = "";
     switch (configFunctions.getProperty("defaults.licenceNumberFunction")) {
         case "category-fourDigits":
-            licenceNumber = getCategoryNDigitsLicenceNumber(database, licenceDetails.licenceCategory, 4);
+            licenceNumber = getCategoryNDigitsLicenceNumber(database, licenceDetails.licenceCategory, 4, false);
             break;
         case "category-fiveDigits":
-            licenceNumber = getCategoryNDigitsLicenceNumber(database, licenceDetails.licenceCategory, 5);
+            licenceNumber = getCategoryNDigitsLicenceNumber(database, licenceDetails.licenceCategory, 5, false);
             break;
         case "category-sixDigits":
-            licenceNumber = getCategoryNDigitsLicenceNumber(database, licenceDetails.licenceCategory, 6);
+            licenceNumber = getCategoryNDigitsLicenceNumber(database, licenceDetails.licenceCategory, 6, false);
+            break;
+        case "category-distinctFourDigits":
+            licenceNumber = getCategoryNDigitsLicenceNumber(database, licenceDetails.licenceCategory, 4, true);
+            break;
+        case "category-distinctFiveDigits":
+            licenceNumber = getCategoryNDigitsLicenceNumber(database, licenceDetails.licenceCategory, 5, true);
+            break;
+        case "category-distinctSixDigits":
+            licenceNumber = getCategoryNDigitsLicenceNumber(database, licenceDetails.licenceCategory, 6, true);
             break;
         case "year-fourDigits":
             licenceNumber = getNextYearNDigitsLicenceNumber(database, 4);

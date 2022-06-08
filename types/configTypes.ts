@@ -89,7 +89,8 @@ export interface ConfigBatchExport_RBCPreauthorized {
 
 
 export type LicenceNumberFunction = "year-fourDigits" | "year-fiveDigits" | "year-sixDigits" |
-  "category-fourDigits" | "category-fiveDigits" | "category-sixDigits";
+  "category-fourDigits" | "category-fiveDigits" | "category-sixDigits" |
+  "category-distinctFourDigits" | "category-distinctFiveDigits" | "category-distinctSixDigits";
 
 
 export type LicenceLengthFunction = (startDate: Date) => Date;

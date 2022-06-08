@@ -19,7 +19,7 @@ export const initLicencesDB = (): boolean => {
   const licencesDB = sqlite(databasePath);
 
   const row = licencesDB
-    .prepare("select name from sqlite_master where type = 'table' and name = 'LicenceCategories'")
+    .prepare("select name from sqlite_master where type = 'table' and name = 'Licences'")
     .get();
 
   if (!row) {

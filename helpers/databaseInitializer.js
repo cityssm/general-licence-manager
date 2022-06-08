@@ -11,7 +11,7 @@ const recordColumns = " recordCreate_userName varchar(30) not null," +
 export const initLicencesDB = () => {
     const licencesDB = sqlite(databasePath);
     const row = licencesDB
-        .prepare("select name from sqlite_master where type = 'table' and name = 'LicenceCategories'")
+        .prepare("select name from sqlite_master where type = 'table' and name = 'Licences'")
         .get();
     if (!row) {
         debugSQL("Creating " + databasePath);

@@ -105,21 +105,40 @@ const session: recordTypes.PartialSession = {
 };
 
 
-const recreateDatabase = () => {
+const recreateDatabase = (preserveConfiguration = true) => {
 
-  debug("Deleting " + databasePath);
+  if (preserveConfiguration) {
 
-  try {
-    fs.unlinkSync(databasePath);
+    const tablesToPurge = ["LicenceAdditionalFees", "LicenceApprovals", "LicenceFields", "LicenceTransactions",
+      "RelatedLicences",
+      "Licences"];
 
-  } catch (error) {
-    console.error(error);
-    return false;
+    const licencesDB = sqlite(databasePath);
+
+    for (const tableName of tablesToPurge) {
+
+      licencesDB.prepare("delete from " + tableName).run();
+      licencesDB.prepare("delete from SQLITE_SEQUENCE where name = ?").run(tableName);
+    }
+
+    licencesDB.close();
+
+  } else {
+
+    debug("Deleting " + databasePath);
+
+    try {
+      fs.unlinkSync(databasePath);
+
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+
+    debug("Deleted successfully.");
   }
 
-  debug("Deleted successfully.");
-
-  debug("Creating " + databasePath);
+  debug("Initializing " + databasePath);
 
   initLicencesDB();
 
@@ -401,10 +420,10 @@ const cleanupLicences = () => {
   database.close();
 };
 
+// Preserve configuration
+recreateDatabase(true);
 
-recreateDatabase();
-
-await importLicenceCategories();
+// await importLicenceCategories();
 
 await importLicences();
 cleanupLicences();

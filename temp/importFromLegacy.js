@@ -37,17 +37,30 @@ const session = {
         }
     }
 };
-const recreateDatabase = () => {
-    debug("Deleting " + databasePath);
-    try {
-        fs.unlinkSync(databasePath);
+const recreateDatabase = (preserveConfiguration = true) => {
+    if (preserveConfiguration) {
+        const tablesToPurge = ["LicenceAdditionalFees", "LicenceApprovals", "LicenceFields", "LicenceTransactions",
+            "RelatedLicences",
+            "Licences"];
+        const licencesDB = sqlite(databasePath);
+        for (const tableName of tablesToPurge) {
+            licencesDB.prepare("delete from " + tableName).run();
+            licencesDB.prepare("delete from SQLITE_SEQUENCE where name = ?").run(tableName);
+        }
+        licencesDB.close();
     }
-    catch (error) {
-        console.error(error);
-        return false;
+    else {
+        debug("Deleting " + databasePath);
+        try {
+            fs.unlinkSync(databasePath);
+        }
+        catch (error) {
+            console.error(error);
+            return false;
+        }
+        debug("Deleted successfully.");
     }
-    debug("Deleted successfully.");
-    debug("Creating " + databasePath);
+    debug("Initializing " + databasePath);
     initLicencesDB();
     debug("Created successfully.");
     return true;
@@ -248,8 +261,7 @@ const cleanupLicences = () => {
         .run();
     database.close();
 };
-recreateDatabase();
-await importLicenceCategories();
+recreateDatabase(true);
 await importLicences();
 cleanupLicences();
 sqlPool.releaseAll();

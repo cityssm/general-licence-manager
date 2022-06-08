@@ -83,7 +83,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             clickEvent.currentTarget.closest(".message").remove();
         });
     }
-    if (!isCreate) {
+    if (!isCreate && document.querySelector("#panel--relatedLicences")) {
         const currentDateString = cityssm.dateToString(new Date());
         const getRelatedLicenceHTML = (relatedLicence) => {
             const licenceURL = urlPrefix + "/licences/" + relatedLicence.licenceId +

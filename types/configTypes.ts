@@ -20,6 +20,7 @@ export interface Config {
     licenseeAlias?: string;
     licenseeAliasPlural?: string;
     renewalAlias?: string;
+    includeRelated?: boolean;
     includeBatches?: boolean;
     includeReplacementFee?: boolean;
   };

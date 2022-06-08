@@ -23,6 +23,7 @@ configFallbackValues.set("settings.licenceAliasPlural", "Licences");
 configFallbackValues.set("settings.licenseeAlias", "Licensee");
 configFallbackValues.set("settings.licenseeAliasPlural", "Licensees");
 configFallbackValues.set("settings.renewalAlias", "Renewal");
+configFallbackValues.set("settings.includeRelated", true);
 configFallbackValues.set("settings.includeBatches", false);
 configFallbackValues.set("settings.includeReplacementFee", true);
 configFallbackValues.set("licenceLengthFunctions", {});

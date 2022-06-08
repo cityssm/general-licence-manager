@@ -112,7 +112,7 @@
         </div>
       </div>
     </div>
-    <% if (!isCreate || relatedLicence) { %>
+    <% if ((!isCreate && (configFunctions.getProperty("settings.includeRelated") || licence.relatedLicences.length > 0)) || (isCreate && relatedLicence)) { %>
       <div class="column">
         <% if (isCreate && relatedLicence) { %>
           <div class="message is-info">

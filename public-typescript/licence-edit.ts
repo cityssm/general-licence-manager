@@ -139,7 +139,7 @@ declare const bulmaJS: BulmaJS;
    * Related Licences
    */
 
-  if (!isCreate) {
+  if (!isCreate && document.querySelector("#panel--relatedLicences")) {
 
     const currentDateString = cityssm.dateToString(new Date());
 
@@ -1204,7 +1204,7 @@ declare const bulmaJS: BulmaJS;
         url.searchParams.append("bankTransitNumber", bankTransitNumberElement.value);
         url.searchParams.append("bankAccountNumber", (document.querySelector("#licenceEdit--bankAccountNumber") as HTMLInputElement).value);
       }
-      
+
       let newStartDate = endDateStringElement.valueAsDate;
       newStartDate.setDate(newStartDate.getDate() + 1);
 

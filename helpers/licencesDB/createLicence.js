@@ -10,8 +10,11 @@ import { saveLicenceApprovals } from "./saveLicenceApprovals.js";
 export const createLicence = (licenceForm, requestSession) => {
     const database = sqlite(databasePath);
     let licenceNumber = licenceForm.licenceNumber;
+    const licenceCategory = cacheFunctions.getLicenceCategory(licenceForm.licenceCategoryKey);
     if (licenceNumber === "") {
-        licenceNumber = getNextLicenceNumber(database);
+        licenceNumber = getNextLicenceNumber({
+            licenceCategory: licenceCategory.licenceCategory
+        }, database);
     }
     const rightNowMillis = Date.now();
     const result = database
@@ -40,7 +43,6 @@ export const createLicence = (licenceForm, requestSession) => {
         const licenceApprovalKeys = licenceForm.licenceApprovalKeys.split(",");
         saveLicenceApprovals(licenceId, licenceApprovalKeys, licenceForm, database);
     }
-    const licenceCategory = cacheFunctions.getLicenceCategory(licenceForm.licenceCategoryKey);
     for (const licenceCategoryAdditionalFee of licenceCategory.licenceCategoryAdditionalFees) {
         if (!licenceCategoryAdditionalFee.isRequired) {
             continue;

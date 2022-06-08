@@ -43,8 +43,12 @@ export const createLicence =
 
     let licenceNumber = licenceForm.licenceNumber;
 
+    const licenceCategory = cacheFunctions.getLicenceCategory(licenceForm.licenceCategoryKey);
+
     if (licenceNumber === "") {
-      licenceNumber = getNextLicenceNumber(database);
+      licenceNumber = getNextLicenceNumber({
+        licenceCategory: licenceCategory.licenceCategory
+      }, database);
     }
 
     const rightNowMillis = Date.now();
@@ -101,8 +105,6 @@ export const createLicence =
       const licenceApprovalKeys = licenceForm.licenceApprovalKeys.split(",");
       saveLicenceApprovals(licenceId, licenceApprovalKeys, licenceForm, database);
     }
-
-    const licenceCategory = cacheFunctions.getLicenceCategory(licenceForm.licenceCategoryKey);
 
     for (const licenceCategoryAdditionalFee of licenceCategory.licenceCategoryAdditionalFees) {
 

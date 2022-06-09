@@ -20,6 +20,7 @@ export declare function getProperty(propertyName: "settings.renewalAlias"): stri
 export declare function getProperty(propertyName: "settings.includeRelated"): boolean;
 export declare function getProperty(propertyName: "settings.includeBatches"): boolean;
 export declare function getProperty(propertyName: "settings.includeReplacementFee"): boolean;
+export declare function getProperty(propertyName: "settings.includeYearEnd"): boolean;
 export declare function getProperty(propertyName: "exports.batches"): configTypes.ConfigBatchExport;
 export declare function getProperty(propertyName: "licenceLengthFunctions"): {
     [licenceLengthFunctionName: string]: configTypes.LicenceLengthFunction;

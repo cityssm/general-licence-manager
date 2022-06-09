@@ -41,6 +41,7 @@ configFallbackValues.set("settings.renewalAlias", "Renewal");
 configFallbackValues.set("settings.includeRelated", true);
 configFallbackValues.set("settings.includeBatches", false);
 configFallbackValues.set("settings.includeReplacementFee", true);
+configFallbackValues.set("settings.includeYearEnd", false);
 
 configFallbackValues.set("licenceLengthFunctions", {});
 configFallbackValues.set("additionalFeeFunctions", {});
@@ -75,6 +76,7 @@ export function getProperty(propertyName: "settings.renewalAlias"): string;
 export function getProperty(propertyName: "settings.includeRelated"): boolean;
 export function getProperty(propertyName: "settings.includeBatches"): boolean;
 export function getProperty(propertyName: "settings.includeReplacementFee"): boolean;
+export function getProperty(propertyName: "settings.includeYearEnd"): boolean;
 
 export function getProperty(propertyName: "exports.batches"): configTypes.ConfigBatchExport;
 

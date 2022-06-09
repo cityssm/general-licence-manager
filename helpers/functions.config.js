@@ -26,6 +26,7 @@ configFallbackValues.set("settings.renewalAlias", "Renewal");
 configFallbackValues.set("settings.includeRelated", true);
 configFallbackValues.set("settings.includeBatches", false);
 configFallbackValues.set("settings.includeReplacementFee", true);
+configFallbackValues.set("settings.includeYearEnd", false);
 configFallbackValues.set("licenceLengthFunctions", {});
 configFallbackValues.set("additionalFeeFunctions", {});
 export function getProperty(propertyName) {

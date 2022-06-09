@@ -23,6 +23,7 @@ export interface Config {
         includeRelated?: boolean;
         includeBatches?: boolean;
         includeReplacementFee?: boolean;
+        includeYearEnd?: boolean;
     };
     exports?: {
         batches?: ConfigBatchExport;

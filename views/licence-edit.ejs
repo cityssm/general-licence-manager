@@ -328,7 +328,6 @@
                   data-is-required-for-renewal="<%= licenceApproval.isRequiredForRenewal ? "true" : "false" %>"
                   type="checkbox"
                   <%= licenceApproval.isApproved ? "checked" : "" %>
-                  <%= (licence.isRenewal && licenceApproval.isRequiredForRenewal) || (!licence.isRenewal && licenceApproval.isRequiredForNew) ? "required" : "" %>
                   />
                 <label for="licenceApprovalEdit--<%=licenceApproval.licenceApprovalKey %>"><%= licenceApproval.licenceApproval %></label>
               </div>

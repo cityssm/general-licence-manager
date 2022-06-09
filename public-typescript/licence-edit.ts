@@ -385,12 +385,35 @@ declare const bulmaJS: BulmaJS;
   }
 
   /*
+   * Licence Approvals
+   */
+
+  const isRenewalElement = document.querySelector("#licenceEdit--isRenewal") as HTMLInputElement;
+
+  const hasOutstandingRequiredApprovals = () => {
+
+    const isRenewal = isRenewalElement.checked;
+
+    const approvalCheckboxElements = document.querySelectorAll("#container--licenceApprovals input[type='checkbox']") as NodeListOf<HTMLInputElement>;
+
+    for (const approvalCheckboxElement of approvalCheckboxElements) {
+
+      if (!approvalCheckboxElement.checked && (
+        (isRenewal && approvalCheckboxElement.dataset.isRequiredForRenewal === "true") ||
+        (!isRenewal && approvalCheckboxElement.dataset.isRequiredForNew === "true")
+      )) {
+        return true;
+      }
+    }
+
+    return false;
+  };
+
+  /*
    * End Date
    */
 
   const licenceCategoryKeyElement = document.querySelector("#licenceEdit--licenceCategoryKey") as HTMLSelectElement;
-
-  const isRenewalElement = document.querySelector("#licenceEdit--isRenewal") as HTMLInputElement;
 
   const startDateStringElement = document.querySelector("#licenceEdit--startDateString") as HTMLInputElement;
   const endDateStringElement = document.querySelector("#licenceEdit--endDateString") as HTMLInputElement;
@@ -574,11 +597,6 @@ declare const bulmaJS: BulmaJS;
       inputElement.dataset.isRequiredForNew = licenceCategoryApproval.isRequiredForNew ? "true" : "false";
       inputElement.dataset.isRequiredForRenewal = licenceCategoryApproval.isRequiredForRenewal ? "true" : "false";
 
-      if ((isRenewalElement.checked && licenceCategoryApproval.isRequiredForRenewal) ||
-        (!isRenewalElement.checked && licenceCategoryApproval.isRequiredForNew)) {
-        inputElement.required = true;
-      }
-
       if (licenceCategoryApproval.licenceApprovalDescription !== "") {
         const helpElement = document.createElement("p");
         helpElement.className = "help";
@@ -679,21 +697,7 @@ declare const bulmaJS: BulmaJS;
 
   isRenewalElement.addEventListener("change", () => {
 
-    // Approvals
-
-    const approvalInputElements = document.querySelector("#container--licenceApprovals").querySelectorAll("input");
-
-    for (const approvalInputElement of approvalInputElements) {
-
-      approvalInputElement.required =
-        (isRenewalElement.checked && approvalInputElement.dataset.isRequiredForRenewal === "true") ||
-          (!isRenewalElement.checked && approvalInputElement.dataset.isRequiredForNew === "true")
-          ? true
-          : false;
-    }
-
     // Fees
-
     refreshLicenceCategoryFees();
   });
 
@@ -1134,6 +1138,13 @@ declare const bulmaJS: BulmaJS;
         bulmaJS.alert({
           title: licenceAlias + " Has Unsaved Changes",
           message: "Please save your " + licenceAlias.toLowerCase() + " changes before issuing the " + licenceAlias.toLowerCase() + ".",
+          contextualColorName: "warning"
+        });
+
+      } else if (hasOutstandingRequiredApprovals()) {
+        bulmaJS.alert({
+          title: licenceAlias + " Has Outstanding Required Approvals",
+          message: "Please ensure that all requirements have been met.",
           contextualColorName: "warning"
         });
 

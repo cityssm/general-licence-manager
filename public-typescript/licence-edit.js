@@ -260,8 +260,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
         bankInstitutionNumberElement.addEventListener("change", refreshBankName);
         bankTransitNumberElement.addEventListener("change", refreshBankName);
     }
-    const licenceCategoryKeyElement = document.querySelector("#licenceEdit--licenceCategoryKey");
     const isRenewalElement = document.querySelector("#licenceEdit--isRenewal");
+    const hasOutstandingRequiredApprovals = () => {
+        const isRenewal = isRenewalElement.checked;
+        const approvalCheckboxElements = document.querySelectorAll("#container--licenceApprovals input[type='checkbox']");
+        for (const approvalCheckboxElement of approvalCheckboxElements) {
+            if (!approvalCheckboxElement.checked && ((isRenewal && approvalCheckboxElement.dataset.isRequiredForRenewal === "true") ||
+                (!isRenewal && approvalCheckboxElement.dataset.isRequiredForNew === "true"))) {
+                return true;
+            }
+        }
+        return false;
+    };
+    const licenceCategoryKeyElement = document.querySelector("#licenceEdit--licenceCategoryKey");
     const startDateStringElement = document.querySelector("#licenceEdit--startDateString");
     const endDateStringElement = document.querySelector("#licenceEdit--endDateString");
     const refreshEndDate = () => {
@@ -391,10 +402,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
             inputElement.name = "approval--" + licenceCategoryApproval.licenceApprovalKey;
             inputElement.dataset.isRequiredForNew = licenceCategoryApproval.isRequiredForNew ? "true" : "false";
             inputElement.dataset.isRequiredForRenewal = licenceCategoryApproval.isRequiredForRenewal ? "true" : "false";
-            if ((isRenewalElement.checked && licenceCategoryApproval.isRequiredForRenewal) ||
-                (!isRenewalElement.checked && licenceCategoryApproval.isRequiredForNew)) {
-                inputElement.required = true;
-            }
             if (licenceCategoryApproval.licenceApprovalDescription !== "") {
                 const helpElement = document.createElement("p");
                 helpElement.className = "help";
@@ -466,14 +473,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
         licenceCategory = exports.licenceCategory;
     }
     isRenewalElement.addEventListener("change", () => {
-        const approvalInputElements = document.querySelector("#container--licenceApprovals").querySelectorAll("input");
-        for (const approvalInputElement of approvalInputElements) {
-            approvalInputElement.required =
-                (isRenewalElement.checked && approvalInputElement.dataset.isRequiredForRenewal === "true") ||
-                    (!isRenewalElement.checked && approvalInputElement.dataset.isRequiredForNew === "true")
-                    ? true
-                    : false;
-        }
         refreshLicenceCategoryFees();
     });
     let optionalAdditionalFees;
@@ -778,6 +777,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 bulmaJS.alert({
                     title: licenceAlias + " Has Unsaved Changes",
                     message: "Please save your " + licenceAlias.toLowerCase() + " changes before issuing the " + licenceAlias.toLowerCase() + ".",
+                    contextualColorName: "warning"
+                });
+            }
+            else if (hasOutstandingRequiredApprovals()) {
+                bulmaJS.alert({
+                    title: licenceAlias + " Has Outstanding Required Approvals",
+                    message: "Please ensure that all requirements have been met.",
                     contextualColorName: "warning"
                 });
             }

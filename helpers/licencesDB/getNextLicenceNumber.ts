@@ -39,24 +39,17 @@ const getCategoryNDigitsLicenceNumber = (database: sqlite.Database, licenceCateg
     return licenceNumber.slice(Math.max(0, licenceNumber.lastIndexOf("-") + 1));
   });
 
-  let licenceNumber: string;
-
-  if (distinctDigits) {
-
-    licenceNumber = database.prepare("select licenceNumber from Licences" +
+  const licenceNumber: string = distinctDigits
+    ? database.prepare("select licenceNumber from Licences" +
       " order by userFn_digits(licenceNumber) desc")
       .pluck()
-      .get();
-
-  } else {
-
-    licenceNumber = database.prepare("select licenceNumber from Licences" +
+      .get()
+    : database.prepare("select licenceNumber from Licences" +
       " where length(licenceNumber) = ?" +
       " and userFn_matchesFormat(licenceNumber) = 1" +
       " order by licenceNumber desc")
       .pluck()
       .get(licenceNumberLength);
-  }
 
   if (!licenceNumber) {
     return categorySlug + "-" + "1".padStart(digits, "0");

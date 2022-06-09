@@ -22,6 +22,11 @@
       padding: 20px;
     }
 
+    hr {
+      border: 1px solid #ccc;
+      border-width: 1px 0 0 0;
+    }
+
     table {
       width: 100%;
     }
@@ -76,10 +81,10 @@
       </h1>
       <table class="mt-2">
         <tr>
-          <td style="width:100px;padding-right:20px">
+          <td style="width:150px;padding-right:20px">
             <img src="http://localhost:<%= configFunctions.getProperty("application.httpPort") %><%= urlPrefix %>/_private/ssm-shield.svg" alt="" style="width:100%" />
           </td>
-          <td style="width:50%">
+          <td style="width:50%;vertical-align:middle">
             Clerk's Department<br />
             Civic Centre<br />
             99 Foster Drive<br />
@@ -87,13 +92,14 @@
             P6A 5X6<br />
             Telephone 705-759-2684
           </td>
-          <td>
+          <td style="vertical-align:middle">
             Municipal Licence<br />
             Expires<br />
             <%= licence.endDateString %>
           </td>
         </tr>
       </table>
+      <hr />
       <table class="mt-2">
         <tr>
           <td>
@@ -118,7 +124,7 @@
           <% } %>
         </tr>
       </table>
-      <p class="has-text-centered">
+      <p class="box has-text-centered">
         <strong>
           For carrying on business, trade, or occupation as a(n):<br />
           <%= licenceCategory.licenceCategory %>
@@ -132,6 +138,7 @@
       <p class="has-text-centered">
         Display this licence in a prominent place.
       </p>
+      <hr />
       <table>
         <tr>
           <td style="width:25%">

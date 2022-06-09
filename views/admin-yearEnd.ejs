@@ -1,0 +1,46 @@
+<%- include('_header'); -%>
+
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+    <li><a href="#">Admin</a></li>
+    <li class="is-active"><a href="#" aria-current="page">
+      <span class="icon is-small"><i class="fas fa-calendar" aria-hidden="true"></i></span>
+      <span>Year-End Process</span>
+    </a></li>
+  </ol>
+</nav>
+
+<h1 class="title is-1">
+  Year-End Process
+</h1>
+
+<div class="panel">
+  <h2 class="panel-heading">
+    Step 1: Backup Current <%= configFunctions.getProperty("settings.licenceAliasPlural") %>
+  </h2>
+  <div class="panel-block is-block">
+    <div class="message is-warning">
+      <div class="message-body">
+        <p class="has-text-weight-bold">Please consider backing up your database before proceeding.</p>
+        <p>A backup can make rolling back a lot easier in the event of an error.</p>
+      </div>
+    </div>
+  </div>
+  <div class="panel-block is-block">
+    <div class="columns">
+      <div class="column">
+        <h3 class="title is-4">Reports</h3>
+      </div>
+      <div class="column">
+        <h3 class="title is-4">Backup</h3>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('_footerA'); -%>
+
+<script src="<%= urlPrefix %>/javascripts/admin-yearEnd.min.js"></script>
+
+<%- include('_footerB'); -%>

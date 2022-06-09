@@ -1,5 +1,6 @@
 import { Router } from "express";
 import * as permissionHandlers from "../handlers/permissions.js";
+import * as configFunctions from "../helpers/functions.config.js";
 import handler_licenceCategories from "../handlers/admin-get/licenceCategories.js";
 import handler_doGetLicenceCategories from "../handlers/admin-post/doGetLicenceCategories.js";
 import handler_doGetLicenceCategory from "../handlers/admin-post/doGetLicenceCategory.js";
@@ -21,6 +22,7 @@ import handler_doAddLicenceCategoryAdditionalFee from "../handlers/admin-post/do
 import handler_doUpdateLicenceCategoryAdditionalFee from "../handlers/admin-post/doUpdateLicenceCategoryAdditionalFee.js";
 import handler_doMoveLicenceCategoryAdditionalFee from "../handlers/admin-post/doMoveLicenceCategoryAdditionalFee.js";
 import handler_doDeleteLicenceCategoryAdditionalFee from "../handlers/admin-post/doDeleteLicenceCategoryAdditionalFee.js";
+import handler_yearEnd from "../handlers/admin-get/yearEnd.js";
 export const router = Router();
 router.get("/licenceCategories", permissionHandlers.adminGetHandler, handler_licenceCategories);
 router.post("/doGetLicenceCategories", permissionHandlers.adminPostHandler, handler_doGetLicenceCategories);
@@ -43,4 +45,7 @@ router.post("/doAddLicenceCategoryAdditionalFee", permissionHandlers.adminPostHa
 router.post("/doUpdateLicenceCategoryAdditionalFee", permissionHandlers.adminPostHandler, handler_doUpdateLicenceCategoryAdditionalFee);
 router.post("/doMoveLicenceCategoryAdditionalFee", permissionHandlers.adminPostHandler, handler_doMoveLicenceCategoryAdditionalFee);
 router.post("/doDeleteLicenceCategoryAdditionalFee", permissionHandlers.adminPostHandler, handler_doDeleteLicenceCategoryAdditionalFee);
+if (configFunctions.getProperty("settings.includeYearEnd")) {
+    router.get("/yearEnd", permissionHandlers.adminGetHandler, handler_yearEnd);
+}
 export default router;

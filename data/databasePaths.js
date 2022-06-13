@@ -10,3 +10,4 @@ export const licencesDB_testing = "data/licences-testing.db";
 export const licencesDB = useTestDatabases
     ? licencesDB_testing
     : licencesDB_live;
+export const backupFolder = "data/backups";

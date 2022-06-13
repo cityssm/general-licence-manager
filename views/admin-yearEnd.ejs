@@ -20,20 +20,33 @@
     Step 1: Backup Current <%= configFunctions.getProperty("settings.licenceAliasPlural") %>
   </h2>
   <div class="panel-block is-block">
-    <div class="message is-warning">
-      <div class="message-body">
-        <p class="has-text-weight-bold">Please consider backing up your database before proceeding.</p>
-        <p>A backup can make rolling back a lot easier in the event of an error.</p>
-      </div>
-    </div>
-  </div>
-  <div class="panel-block is-block">
     <div class="columns">
       <div class="column">
         <h3 class="title is-4">Reports</h3>
       </div>
       <div class="column">
         <h3 class="title is-4">Backup</h3>
+        <div class="message is-warning">
+          <div class="message-body">
+            <p class="has-text-weight-bold">Please consider backing up your database before proceeding.</p>
+            <p>A backup can make rolling back a lot easier in the event of an error.</p>
+          </div>
+        </div>
+        <div class="media">
+          <div class="media-left" aria-hidden="true">
+            <span class="fa-layers fa-fw fa-2x">
+              <i class="fas fa-database" data-fa-transform="shrink-6 up-4 left-4"></i>
+              <i class="fas fa-archive" data-fa-glow data-fa-transform="shrink-6 down-4 right-4"></i>
+              <i class="fas fa-long-arrow-alt-down has-text-info" data-fa-glow data-fa-transform="shrink-7 up-1 left-1 rotate--45"></i>
+            </span>
+          </div>
+          <div class="media-content">
+            <h4 class="title is-5 is-marginless">
+              <a href="#" id="yearEnd--backupDatabase">Backup Database</a>
+            </h4>
+            <p>Take a snapshot of the database as it is right now, and archive it on the server.</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>

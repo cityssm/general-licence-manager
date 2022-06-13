@@ -32,6 +32,8 @@ import handler_doDeleteLicenceCategoryAdditionalFee from "../handlers/admin-post
 
 import handler_yearEnd from "../handlers/admin-get/yearEnd.js";
 
+import handler_doBackupDatabase from "../handlers/admin-post/doBackupDatabase.js";
+
 export const router = Router();
 
 
@@ -132,6 +134,10 @@ router.post("/doDeleteLicenceCategoryAdditionalFee",
 /*
  * Year-End
  */
+
+router.post("/doBackupDatabase",
+  permissionHandlers.adminPostHandler,
+  handler_doBackupDatabase);
 
 if (configFunctions.getProperty("settings.includeYearEnd")) {
 

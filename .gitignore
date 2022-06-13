@@ -1,8 +1,8 @@
 .nyc_output/
 coverage/
-cypress/downloads
-cypress/screenshots
-cypress/videos
+cypress/downloads/
+cypress/screenshots/
+cypress/videos/
 data/sessions/
 node_modules/
 
@@ -15,6 +15,8 @@ data/*.min.js
 data/config.*
 !data/config.testing.*
 !data/config.example.*
+data/backups/*
+!data/backups/README.md
 handlers/*.min.js
 helpers/*.min.js
 routes/*.min.js

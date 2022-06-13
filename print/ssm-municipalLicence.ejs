@@ -11,10 +11,15 @@
 
     html {
       font-family: Arial, sans-serif;
+      background-image: url('http://localhost:<%= configFunctions.getProperty("application.httpPort") %><%= urlPrefix %>/_private/ssm-shield.svg');
+      background-position: center 150px;
+      background-repeat: no-repeat;
+      background-size: 600px;
     }
 
     .page {
       margin: 20px 30px;
+      background-color: rgba(255, 255, 255, 0.9);
     }
 
     .box {
@@ -67,6 +72,10 @@
       margin-top: 20px;
     }
 
+    .mb-2 {
+      margin-bottom: 20px;
+    }
+
     .pt-2 {
       padding-top: 20px;
     }
@@ -79,10 +88,10 @@
         The Corporation of<br />
         <span class="is-20pt">The City of Sault Ste. Marie</span>
       </h1>
-      <table class="mt-2">
+      <table class="mt-2 mb-2">
         <tr>
           <td style="width:150px;padding-right:20px">
-            <img src="http://localhost:<%= configFunctions.getProperty("application.httpPort") %><%= urlPrefix %>/_private/ssm-shield.svg" alt="" style="width:100%" />
+            <img src="http://localhost:<%= configFunctions.getProperty("application.httpPort") %><%= urlPrefix %>/_private/ssm-shield-color.svg" alt="" style="width:100%" />
           </td>
           <td style="width:50%;vertical-align:middle">
             Clerk's Department<br />

@@ -77,6 +77,12 @@ export const getReportData = (reportName, reportParameters) => {
             sqlParameters = report.sqlParameters;
             break;
         case "licences-formatted":
+            let issuedFilter = "";
+            if (reportParameters.issued) {
+                issuedFilter = (reportParameters.issued === "true"
+                    ? " and l.issueDate is not null"
+                    : " and l.issueDate is null");
+            }
             sql = "select l.licenceId as " + licenceId + "," +
                 " c.licenceCategory as " + licenceCategory + "," +
                 " l.licenceNumber as " + licenceNumber + "," +
@@ -93,6 +99,7 @@ export const getReportData = (reportName, reportParameters) => {
                 " from Licences l" +
                 " left join LicenceCategories c on l.licenceCategoryKey = c.licenceCategoryKey" +
                 " where l.recordDelete_timeMillis is null" +
+                issuedFilter +
                 " order by startDate desc, endDate desc, licenceId";
             break;
         case "licenceAdditionalFees-all":

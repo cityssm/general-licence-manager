@@ -18,12 +18,12 @@
     }
 
     .page {
-      margin: 20px 30px;
+      margin: 30px;
       background-color: rgba(255, 255, 255, 0.9);
     }
 
     .box {
-      border: 1px solid #ccc;
+      border: 1px solid #666;
       padding: 20px;
     }
 
@@ -83,7 +83,7 @@
 </head>
 <body>
   <div class="page">
-    <div class="box">
+    <div class="box" style="min-height:990px">
       <h1 class="has-text-centered">
         The Corporation of<br />
         <span class="is-20pt">The City of Sault Ste. Marie</span>
@@ -108,7 +108,6 @@
           </td>
         </tr>
       </table>
-      <hr />
       <table class="mt-2">
         <tr>
           <td>
@@ -133,7 +132,7 @@
           <% } %>
         </tr>
       </table>
-      <p class="box has-text-centered">
+      <p class="has-text-centered">
         <strong>
           For carrying on business, trade, or occupation as a(n):<br />
           <%= licenceCategory.licenceCategory %>
@@ -147,7 +146,6 @@
       <p class="has-text-centered">
         Display this licence in a prominent place.
       </p>
-      <hr />
       <table>
         <tr>
           <td style="width:25%">

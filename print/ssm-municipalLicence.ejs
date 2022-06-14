@@ -76,6 +76,14 @@
       margin-bottom: 20px;
     }
 
+    .mt-4 {
+      margin-top: 40px;
+    }
+
+    .mb-4 {
+      margin-bottom: 40px;
+    }
+
     .pt-2 {
       padding-top: 20px;
     }
@@ -132,56 +140,59 @@
           <% } %>
         </tr>
       </table>
-      <p class="has-text-centered">
+      <p class="has-text-centered mt-4 mb-4">
         <strong>
           For carrying on business, trade, or occupation as a(n):<br />
           <%= licenceCategory.licenceCategory %>
         </strong>
       </p>
-      <p>
+      <p class="has-text-centered">
         Within the city limits for the period and on the conditions herein mentioned.
-        The licence must observe all applicable rules and regulations enacted from time to time
-        by the City Council.
       </p>
       <p class="has-text-centered">
+        The licence must observe all applicable rules and regulations enacted<br />
+        from time to time by the City Council.
+      </p>
+      <p class="has-text-centered mb-4">
         Display this licence in a prominent place.
       </p>
-      <table>
-        <tr>
-          <td style="width:25%">
-            <p>
-              <strong>Issue Date</strong><br />
-              <%= licence.issueDateString %>
-            </p>
-          </td>
-          <td style="width:50%">
-            <p>
-              <strong>Licence Account Number</strong><br />
-              <%= licence.licenceNumber %>
-            </p>
-          </td>
-          <td>
-            <p>
-              <strong>Amount</strong><br />
-              $<%= licence.licenceFee.toFixed(2) %>
-            </p>
-          </td>
-        </tr>
-      </table>
-      <%
-        const specialProvisionsFields = printFunctions.getLicenceFieldsByPrintKeyPiece(licence, "special-provisions");
-        if (specialProvisionsFields && specialProvisionsFields.length > 0) {
-      %>
-        <p>
-          <strong>Additional Description or Special Provisions</strong><br />
-          <% for (const specialProvisionsField of specialProvisionsFields) { %>
-            <%= specialProvisionsField.licenceFieldValue %><br />
-          <% } %>
-        </p>
-      <%
-        }
-      %>
-
+      <div style="min-height:265px">
+        <table>
+          <tr>
+            <td style="width:25%">
+              <p>
+                <strong>Issue Date</strong><br />
+                <%= licence.issueDateString %>
+              </p>
+            </td>
+            <td style="width:50%">
+              <p>
+                <strong>Licence Account Number</strong><br />
+                <%= licence.licenceNumber %>
+              </p>
+            </td>
+            <td>
+              <p>
+                <strong>Amount</strong><br />
+                $<%= licence.licenceFee.toFixed(2) %>
+              </p>
+            </td>
+          </tr>
+        </table>
+        <%
+          const specialProvisionsFields = printFunctions.getLicenceFieldsByPrintKeyPiece(licence, "special-provisions");
+          if (specialProvisionsFields && specialProvisionsFields.length > 0) {
+        %>
+          <p class="mt-4">
+            <strong>Additional Description or Special Provisions</strong><br />
+            <% for (const specialProvisionsField of specialProvisionsFields) { %>
+              <%= specialProvisionsField.licenceFieldValue %><br />
+            <% } %>
+          </p>
+        <%
+          }
+        %>
+      </div>
       <p class="has-text-centered">This licence is your receipt.</p>
     </div>
   </div>

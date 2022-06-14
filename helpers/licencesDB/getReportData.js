@@ -92,6 +92,7 @@ export const getReportData = (reportName, reportParameters) => {
                 " userFn_dateIntegerToString(l.issueDate) as issueDateString" +
                 " from Licences l" +
                 " left join LicenceCategories c on l.licenceCategoryKey = c.licenceCategoryKey" +
+                " where l.recordDelete_timeMillis is null" +
                 " order by startDate desc, endDate desc, licenceId";
             break;
         case "licenceAdditionalFees-all":

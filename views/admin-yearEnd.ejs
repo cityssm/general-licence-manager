@@ -22,10 +22,8 @@
   <div class="panel-block is-block">
     <div class="columns">
       <div class="column">
-        <h3 class="title is-4">Reports</h3>
       </div>
       <div class="column">
-        <h3 class="title is-4">Backup</h3>
         <div class="message is-warning">
           <div class="message-body">
             <p class="has-text-weight-bold">Please consider backing up your database before proceeding.</p>
@@ -34,17 +32,69 @@
         </div>
         <div class="media">
           <div class="media-left" aria-hidden="true">
-            <span class="fa-layers fa-fw fa-2x">
-              <i class="fas fa-database" data-fa-transform="shrink-6 up-4 left-4"></i>
+            <span class="fa-layers fa-fw fa-3x">
+              <i class="fas fa-database" data-fa-transform="shrink-6 up-2 left-4"></i>
               <i class="fas fa-archive" data-fa-glow data-fa-transform="shrink-6 down-4 right-4"></i>
-              <i class="fas fa-long-arrow-alt-down has-text-info" data-fa-glow data-fa-transform="shrink-7 up-1 left-1 rotate--45"></i>
+              <i class="fas fa-long-arrow-alt-down has-text-info" data-fa-glow data-fa-transform="shrink-7 down-1 left-1 rotate--45"></i>
             </span>
           </div>
           <div class="media-content">
-            <h4 class="title is-5 is-marginless">
+            <h3 class="title is-4 is-marginless">
               <a href="#" id="yearEnd--backupDatabase">Backup Database</a>
-            </h4>
+            </h3>
             <p>Take a snapshot of the database as it is right now, and archive it on the server.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="panel">
+  <h2 class="panel-heading">
+    Step 2: Refresh <%= configFunctions.getProperty("settings.licenceAlias") %> Records
+  </h2>
+  <div class="panel-block is-block">
+    <div class="columns">
+      <div class="column">
+        <div class="message is-info">
+          <div class="message-body content">
+            <p>
+              Refreshing the database is a <strong>destructive operation</strong>
+              that consists of the following steps.
+            </p>
+            <ol>
+              <li><strong>Delete all</strong> non-issued <%= configFunctions.getProperty("settings.licenceAliasPlural").toLowerCase() %>.</li>
+              <li><strong>Purge all</strong> approvals, additional fees, and transactions.</li>
+              <li>Mark all <%= configFunctions.getProperty("settings.licenceAliasPlural").toLowerCase() %> as renewals.</li>
+              <li>Update all fees with their current rates.</li>
+              <li>Apply all mandatory additional fees.</li>
+              <li><strong>Unissue all licences.</strong></li>
+            </ol>
+          </div>
+        </div>
+        <div class="message is-warning">
+          <p class="message-body">
+            Be sure to update all applicable <%= configFunctions.getProperty("settings.licenceAlias").toLowerCase() %>
+            prior to refreshing to ensure the proper amounts are applied.
+          </p>
+        </div>
+      </div>
+      <div class="column">
+        <div class="media">
+          <div class="media-left" aria-hidden="true">
+            <span class="fa-layers fa-fw fa-3x">
+              <i class="fas fa-database"></i>
+              <i class="fas fa-redo has-text-danger" data-fa-glow data-fa-transform="shrink-8 down-5 right-4"></i>
+            </span>
+          </div>
+          <div class="media-content">
+            <h3 class="title is-4 is-marginless">
+              <a class="has-text-danger" href="#" id="yearEnd--refreshDatabase">Refresh Database</a>
+            </h3>
+            <p>
+              This process cannot be undone without restoring from backups.
+            </p>
           </div>
         </div>
       </div>

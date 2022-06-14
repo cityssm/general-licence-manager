@@ -129,6 +129,27 @@
               </p>
             </div>
           </div>
+          <% if (configFunctions.getProperty("settings.includeYearEnd")) { %>
+            <div class="media">
+              <div class="media-left" aria-hidden="true">
+                <span class="fa-layers fa-fw fa-3x">
+                  <i class="fas fa-calendar"></i>
+                  <i class="fas fa-share has-text-info" data-fa-glow data-fa-transform="shrink-8 down-5 right-6"></i>
+                </span>
+              </div>
+              <div class="media-content has-text-black">
+                <% uid = "uid--" + stringFns.getUID(); %>
+                <h2 class="title is-4 is-marginless">
+                  <a href="<%= urlPrefix %>/admin/yearEnd" aria-describedby="<%= uid %>">
+                    Year-End Process
+                  </a>
+                </h2>
+                <p id="<%= uid %>">
+                  Resets <%= configFunctions.getProperty("settings.licenceAliasPlural").toLowerCase() %> to prepare for the next year.
+                </p>
+              </div>
+            </div>
+          <% } %>
         </div>
       </div>
     <% } %>

@@ -26,6 +26,7 @@ const getSafeRedirectURL = (possibleRedirectURL = "") => {
 
   switch (urlToCheck) {
     case "/admin/licenceCategories":
+    case "/admin/yearEnd":
     case "/licences":
     case "/reports":
 

@@ -9,6 +9,8 @@ declare const bulmaJS: BulmaJS;
 (() => {
   const urlPrefix = document.querySelector("main").dataset.urlPrefix;
 
+  let backupRanSuccessfully = false;
+
   document.querySelector("#yearEnd--backupDatabase").addEventListener("click", (clickEvent) => {
     clickEvent.preventDefault();
 
@@ -23,7 +25,9 @@ declare const bulmaJS: BulmaJS;
               message: "Database backed up as <strong>" + cityssm.escapeHTML(responseJSON.fileName) + "</strong>.",
               messageIsHtml: true,
               contextualColorName: "success"
-            })
+            });
+
+            backupRanSuccessfully = true;
           }
         });
     };
@@ -38,5 +42,69 @@ declare const bulmaJS: BulmaJS;
         callbackFunction: doBackup
       }
     });
-  })
+  });
+
+  let refreshRanSuccessfully = false;
+
+  document.querySelector("#yearEnd--refreshDatabase").addEventListener("click", (clickEvent) => {
+    clickEvent.preventDefault();
+
+    const doRefresh = () => {
+
+      cityssm.postJSON(urlPrefix + "/admin/doRefreshDatabase", {},
+        (responseJSON: { success: boolean; }) => {
+
+          if (responseJSON.success) {
+
+            bulmaJS.alert({
+              title: "Database Refreshed Successfully",
+              message: "Be sure to verify your data before making significant changes.",
+              contextualColorName: "success"
+            });
+
+            refreshRanSuccessfully = true;
+          }
+        });
+    };
+
+    const doConfirm = () => {
+      bulmaJS.confirm({
+        title: "Refresh Database",
+        message: "Are you sure you are ready to refresh the database?",
+        contextualColorName: "warning",
+        okButton: {
+          text: "Yes, Refresh the Database Now",
+          callbackFunction: doRefresh
+        }
+      });
+    };
+
+    if (refreshRanSuccessfully) {
+
+      bulmaJS.confirm({
+        title: "Refresh Already Ran",
+        message: "Refreshing again will delete all of the records from the database.  Are you sure you want to refresh again?",
+        contextualColorName: "danger",
+        okButton: {
+          text: "Yes, Refresh Again",
+          callbackFunction: doConfirm
+        }
+      });
+
+    } else if (backupRanSuccessfully) {
+      doConfirm();
+
+    } else {
+
+      bulmaJS.confirm({
+        title: "No Backup Detected",
+        message: "Are you sure you want to proceed without backing up the database first?",
+        contextualColorName: "danger",
+        okButton: {
+          text: "Yes, Proceed Without a Backup",
+          callbackFunction: doConfirm
+        }
+      });
+    }
+  });
 })();

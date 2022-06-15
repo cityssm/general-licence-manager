@@ -9,7 +9,8 @@ export const getLicenceCategory = (licenceCategoryKey, options) => {
         readonly: true
     });
     const licenceCategory = database.prepare("select licenceCategoryKey, licenceCategory, bylawNumber, printEJS," +
-        " licenceLengthFunction, licenceLengthYears, licenceLengthMonths, licenceLengthDays" +
+        " licenceLengthFunction, licenceLengthYears, licenceLengthMonths, licenceLengthDays," +
+        " recordDelete_timeMillis" +
         " from LicenceCategories" +
         " where licenceCategoryKey = ?")
         .get(licenceCategoryKey);

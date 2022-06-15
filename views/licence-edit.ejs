@@ -70,6 +70,7 @@
                           value="<%= licenceCategory.licenceCategoryKey %>"
                           <%= (licence.licenceCategoryKey === licenceCategory.licenceCategoryKey) ? "selected" : "" %>>
                           <%= licenceCategory.licenceCategory %>
+                          <%= (licenceCategory.recordDelete_timeMillis ? " (Inactive)" : "") %>
                         </option>
                       <% } %>
                     </select>

@@ -63,6 +63,16 @@
               <p>After the refresh process, these <%= configFunctions.getProperty("settings.licenceAliasPlural").toLowerCase() %> will still exists, but will no longer be issued.</p>
             </div>
           </div>
+          <div class="media">
+            <div class="media-left" aria-hidden="true">
+              <i class="fas fa-fw fa-3x fa-file-csv" aria-hidden="true"></i>
+            </div>
+            <div class="media-content">
+              <h3 class="title is-4 is-marginless">
+                <a href="<%- urlPrefix %>/reports/licenceTransactions-byDate">Full Transaction Log</a>
+              </h3>
+              <p>After the refresh process, these transactions will be deleted.</p>
+            </div>
           </div>
         </div>
         <div class="column">

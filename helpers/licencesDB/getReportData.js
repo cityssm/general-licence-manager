@@ -130,6 +130,11 @@ export const getReportData = (reportName, reportParameters) => {
             sql = "select * from LicenceTransactions";
             break;
         case "licenceTransactions-byDate":
+            let dateFilter = "";
+            if (reportParameters.transactionDateString && reportParameters.transactionDateString !== "") {
+                dateFilter = " and t.transactionDate = ?";
+                sqlParameters.push(dateTimeFunctions.dateStringToInteger(reportParameters.transactionDateString));
+            }
             sql = "select" +
                 " c.licenceCategory as " + licenceCategory + "," +
                 " l.licenceNumber as " + licenceNumber + "," +
@@ -150,9 +155,8 @@ export const getReportData = (reportName, reportParameters) => {
                 " left join Licences l on t.licenceId = l.licenceId" +
                 " left join LicenceCategories c on l.licenceCategoryKey = c.licenceCategoryKey" +
                 " where t.recordDelete_timeMillis is null" +
-                " and t.transactionDate = ?" +
-                " order by t.transactionTime";
-            sqlParameters.push(dateTimeFunctions.dateStringToInteger(reportParameters.transactionDateString));
+                dateFilter +
+                " order by t.transactionDate, t.transactionTime";
             break;
         case "relatedLicences-all":
             sql = "select * from RelatedLicences";

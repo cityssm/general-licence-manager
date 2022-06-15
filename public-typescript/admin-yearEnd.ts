@@ -9,6 +9,17 @@ declare const bulmaJS: BulmaJS;
 (() => {
   const urlPrefix = document.querySelector("main").dataset.urlPrefix;
 
+  const showProcessButtonElement = document.querySelector("#yearEnd--showProcess");
+
+  if (showProcessButtonElement) {
+    showProcessButtonElement.addEventListener("click", (clickEvent) => {
+      clickEvent.preventDefault();
+
+      showProcessButtonElement.closest(".message").remove();
+      document.querySelector("#yearEnd--process").classList.remove("is-hidden");
+    });
+  }
+
   let backupRanSuccessfully = false;
 
   document.querySelector("#yearEnd--backupDatabase").addEventListener("click", (clickEvent) => {

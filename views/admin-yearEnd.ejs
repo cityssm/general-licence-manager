@@ -15,108 +15,129 @@
   Year-End Process
 </h1>
 
-<div class="panel">
-  <h2 class="panel-heading">
-    Step 1: Backup Current <%= configFunctions.getProperty("settings.licenceAliasPlural") %>
-  </h2>
-  <div class="panel-block is-block">
-    <div class="columns">
-      <div class="column">
-        <div class="media">
-          <div class="media-left" aria-hidden="true">
-            <i class="fas fa-fw fa-3x fa-file-csv" aria-hidden="true"></i>
+<% const isJanuary = (new Date().getMonth() === 0); %>
+
+<% if (!isJanuary) { %>
+  <div class="message is-warning">
+    <div class="message-body">
+      <p>
+        <strong>It is recommended to run the year-end process in January.</strong><br />
+        Are you sure you want to proceed?
+      </p>
+      <p class="has-text-right">
+        <button class="button is-warning" id="yearEnd--showProcess" type="button">
+          Proceed to Year-End Process
+        </button>
+      </p>
+    </div>
+  </div>
+<% } %>
+
+<div <%- (isJanuary ? "" : "class='is-hidden'") %> id="yearEnd--process">
+  <div class="panel">
+    <h2 class="panel-heading">
+      Step 1: Backup Current <%= configFunctions.getProperty("settings.licenceAliasPlural") %>
+    </h2>
+    <div class="panel-block is-block">
+      <div class="columns">
+        <div class="column">
+          <div class="media">
+            <div class="media-left" aria-hidden="true">
+              <i class="fas fa-fw fa-3x fa-file-csv" aria-hidden="true"></i>
+            </div>
+            <div class="media-content">
+              <h3 class="title is-4 is-marginless">
+                <a href="<%- urlPrefix %>/reports/licences-formatted?issued=false">All Unissued <%= configFunctions.getProperty("settings.licenceAliasPlural") %></a>
+              </h3>
+              <p>After the refresh process, these <%= configFunctions.getProperty("settings.licenceAliasPlural").toLowerCase() %> will be deleted.</p>
+            </div>
           </div>
-          <div class="media-content">
-            <h3 class="title is-4 is-marginless">
-              <a href="<%- urlPrefix %>/reports/licences-formatted?issued=false">All Unissued <%= configFunctions.getProperty("settings.licenceAliasPlural") %></a>
-            </h3>
-            <p>After the refresh process, these licences will be deleted.</p>
+          <div class="media">
+            <div class="media-left" aria-hidden="true">
+              <i class="fas fa-fw fa-3x fa-file-csv" aria-hidden="true"></i>
+            </div>
+            <div class="media-content">
+              <h3 class="title is-4 is-marginless">
+                <a href="<%- urlPrefix %>/reports/licences-formatted?issued=true">All Issued <%= configFunctions.getProperty("settings.licenceAliasPlural") %></a>
+              </h3>
+              <p>After the refresh process, these <%= configFunctions.getProperty("settings.licenceAliasPlural").toLowerCase() %> will still exists, but will no longer be issued.</p>
+            </div>
+          </div>
           </div>
         </div>
-        <div class="media">
-          <div class="media-left" aria-hidden="true">
-            <i class="fas fa-fw fa-3x fa-file-csv" aria-hidden="true"></i>
+        <div class="column">
+          <div class="message is-warning">
+            <div class="message-body">
+              <p class="has-text-weight-bold">Please consider backing up your database before proceeding.</p>
+              <p>A backup can make rolling back a lot easier in the event of an error.</p>
+            </div>
           </div>
-          <div class="media-content">
-            <h3 class="title is-4 is-marginless">
-              <a href="<%- urlPrefix %>/reports/licences-formatted?issued=true">All Issued <%= configFunctions.getProperty("settings.licenceAliasPlural") %></a>
-            </h3>
-            <p>After the refresh process, these licences will still exists, but will no longer be issued.</p>
-          </div>
-        </div>
-      </div>
-      <div class="column">
-        <div class="message is-warning">
-          <div class="message-body">
-            <p class="has-text-weight-bold">Please consider backing up your database before proceeding.</p>
-            <p>A backup can make rolling back a lot easier in the event of an error.</p>
-          </div>
-        </div>
-        <div class="media">
-          <div class="media-left" aria-hidden="true">
-            <span class="fa-layers fa-fw fa-3x">
-              <i class="fas fa-database" data-fa-transform="shrink-6 up-2 left-4"></i>
-              <i class="fas fa-archive" data-fa-glow data-fa-transform="shrink-6 down-4 right-4"></i>
-              <i class="fas fa-long-arrow-alt-down has-text-info" data-fa-glow data-fa-transform="shrink-7 down-1 left-1 rotate--45"></i>
-            </span>
-          </div>
-          <div class="media-content">
-            <h3 class="title is-4 is-marginless">
-              <a href="#" id="yearEnd--backupDatabase">Backup Database</a>
-            </h3>
-            <p>Take a snapshot of the database as it is right now, and archive it on the server.</p>
+          <div class="media">
+            <div class="media-left" aria-hidden="true">
+              <span class="fa-layers fa-fw fa-3x">
+                <i class="fas fa-database" data-fa-transform="shrink-6 up-2 left-4"></i>
+                <i class="fas fa-archive" data-fa-glow data-fa-transform="shrink-6 down-4 right-4"></i>
+                <i class="fas fa-long-arrow-alt-down has-text-info" data-fa-glow data-fa-transform="shrink-7 down-1 left-1 rotate--45"></i>
+              </span>
+            </div>
+            <div class="media-content">
+              <h3 class="title is-4 is-marginless">
+                <a href="#" id="yearEnd--backupDatabase">Backup Database</a>
+              </h3>
+              <p>Take a snapshot of the database as it is right now, and archive it on the server.</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<div class="panel">
-  <h2 class="panel-heading">
-    Step 2: Refresh <%= configFunctions.getProperty("settings.licenceAlias") %> Records
-  </h2>
-  <div class="panel-block is-block">
-    <div class="columns">
-      <div class="column">
-        <div class="message is-info">
-          <div class="message-body content">
-            <p>
-              Refreshing the database is a <strong>destructive operation</strong>
-              that consists of the following steps.
+  <div class="panel">
+    <h2 class="panel-heading">
+      Step 2: Refresh <%= configFunctions.getProperty("settings.licenceAlias") %> Records
+    </h2>
+    <div class="panel-block is-block">
+      <div class="columns">
+        <div class="column">
+          <div class="message is-info">
+            <div class="message-body content">
+              <p>
+                Refreshing the database is a <strong>destructive operation</strong>
+                that consists of the following steps.
+              </p>
+              <ol>
+                <li><strong>Delete all</strong> non-issued <%= configFunctions.getProperty("settings.licenceAliasPlural").toLowerCase() %>.</li>
+                <li><strong>Purge all</strong> approvals, additional fees, and transactions.</li>
+                <li>Mark all <%= configFunctions.getProperty("settings.licenceAliasPlural").toLowerCase() %> as renewals.</li>
+                <li>Update all fees with their current rates.</li>
+                <li>Apply all mandatory additional fees.</li>
+                <li><strong>Unissue all licences.</strong></li>
+              </ol>
+            </div>
+          </div>
+          <div class="message is-warning">
+            <p class="message-body">
+              Be sure to update all applicable <%= configFunctions.getProperty("settings.licenceAlias").toLowerCase() %>
+              prior to refreshing to ensure the proper amounts are applied.
             </p>
-            <ol>
-              <li><strong>Delete all</strong> non-issued <%= configFunctions.getProperty("settings.licenceAliasPlural").toLowerCase() %>.</li>
-              <li><strong>Purge all</strong> approvals, additional fees, and transactions.</li>
-              <li>Mark all <%= configFunctions.getProperty("settings.licenceAliasPlural").toLowerCase() %> as renewals.</li>
-              <li>Update all fees with their current rates.</li>
-              <li>Apply all mandatory additional fees.</li>
-              <li><strong>Unissue all licences.</strong></li>
-            </ol>
           </div>
         </div>
-        <div class="message is-warning">
-          <p class="message-body">
-            Be sure to update all applicable <%= configFunctions.getProperty("settings.licenceAlias").toLowerCase() %>
-            prior to refreshing to ensure the proper amounts are applied.
-          </p>
-        </div>
-      </div>
-      <div class="column">
-        <div class="media">
-          <div class="media-left" aria-hidden="true">
-            <span class="fa-layers fa-fw fa-3x">
-              <i class="fas fa-database"></i>
-              <i class="fas fa-redo has-text-danger" data-fa-glow data-fa-transform="shrink-8 down-5 right-4"></i>
-            </span>
-          </div>
-          <div class="media-content">
-            <h3 class="title is-4 is-marginless">
-              <a class="has-text-danger" href="#" id="yearEnd--refreshDatabase">Refresh Database</a>
-            </h3>
-            <p>
-              This process cannot be undone without restoring from backups.
-            </p>
+        <div class="column">
+          <div class="media">
+            <div class="media-left" aria-hidden="true">
+              <span class="fa-layers fa-fw fa-3x">
+                <i class="fas fa-database"></i>
+                <i class="fas fa-redo has-text-danger" data-fa-glow data-fa-transform="shrink-8 down-5 right-4"></i>
+              </span>
+            </div>
+            <div class="media-content">
+              <h3 class="title is-4 is-marginless">
+                <a class="has-text-danger" href="#" id="yearEnd--refreshDatabase">Refresh Database</a>
+              </h3>
+              <p>
+                This process cannot be undone without restoring from backups.
+              </p>
+            </div>
           </div>
         </div>
       </div>

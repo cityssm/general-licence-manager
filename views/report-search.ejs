@@ -51,26 +51,39 @@
           </form>
         </div>
       </div>
-      <% let uid = stringFns.getUID(); %>
-      <a class="panel-block align-items-flex-start"
-        href="<%= urlPrefix %>/reports/licences-formatted"
-        aria-labelledby="h--<%= uid %>"
-        aria-describedby="p--<%= uid %>"
-        download>
+      <div class="panel-block align-items-flex-start">
         <div class="has-text-centered my-2 ml-2 mr-4">
           <span class="icon has-text-info" title="CSV">
             <i class="fas fa-fw fa-2x fa-file-csv" aria-hidden="true"></i>
           </span>
         </div>
-        <div>
-          <h3 class="title is-5 is-marginless" id="h--<%= uid %>">
+        <div class="is-flex-grow-1">
+          <h3 class="title is-5 is-marginless">
             Full <%= configFunctions.getProperty("settings.licenceAlias") %> List
           </h3>
-          <p id="p--<%= uid %>">
+          <p>
             All active <%= configFunctions.getProperty("settings.licenceAliasPlural").toLowerCase() %>.
           </p>
+          <form class="mt-2" action="<%= urlPrefix %>/reports/licences-formatted" method="get">
+            <div class="field has-addons">
+              <div class="control is-expanded">
+                <div class="select is-fullwidth">
+                  <select name="issued" aria-label="Issued Status">
+                    <option value="">(All Licences)</option>
+                    <option value="true">Issued <%= configFunctions.getProperty("settings.licenceAliasPlural") %> Only</option>
+                    <option value="false">Unissued <%= configFunctions.getProperty("settings.licenceAliasPlural") %></option>
+                  </select>
+                </div>
+              </div>
+              <div class="control">
+                <button class="button is-primary" type="submit">
+                  Export
+                </button>
+              </div>
+            </div>
+          </form>
         </div>
-      </a>
+      </div>
       <div class="panel-block align-items-flex-start">
         <div class="has-text-centered my-2 ml-2 mr-4">
           <span class="icon has-text-info" title="CSV">

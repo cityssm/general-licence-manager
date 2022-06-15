@@ -121,10 +121,10 @@ export const getReportData = (reportName: string, reportParameters?: ReportParam
 
       let issuedFilter = "";
 
-      if (reportParameters.issued) {
-        issuedFilter = (reportParameters.issued === "true"
-          ? " and l.issueDate is not null"
-          : " and l.issueDate is null");
+      if (reportParameters.issued && reportParameters.issued !== "") {
+        issuedFilter = (reportParameters.issued === "false"
+          ? " and l.issueDate is null"
+          : " and l.issueDate is not null");
       }
 
       sql = "select l.licenceId as " + licenceId + "," +

@@ -78,10 +78,10 @@ export const getReportData = (reportName, reportParameters) => {
             break;
         case "licences-formatted":
             let issuedFilter = "";
-            if (reportParameters.issued) {
-                issuedFilter = (reportParameters.issued === "true"
-                    ? " and l.issueDate is not null"
-                    : " and l.issueDate is null");
+            if (reportParameters.issued && reportParameters.issued !== "") {
+                issuedFilter = (reportParameters.issued === "false"
+                    ? " and l.issueDate is null"
+                    : " and l.issueDate is not null");
             }
             sql = "select l.licenceId as " + licenceId + "," +
                 " c.licenceCategory as " + licenceCategory + "," +

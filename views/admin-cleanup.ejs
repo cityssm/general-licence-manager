@@ -1,0 +1,70 @@
+<%- include('_header'); -%>
+
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
+    <li><a href="#">Admin</a></li>
+    <li class="is-active"><a href="#" aria-current="page">
+      <span class="icon is-small"><i class="fas fa-broom" aria-hidden="true"></i></span>
+      <span>Database Cleanup</span>
+    </a></li>
+  </ol>
+</nav>
+
+<h1 class="title is-1">
+  Database Cleanup
+</h1>
+
+
+<div class="columns">
+  <div class="column">
+    <div class="message is-info">
+      <div class="message-body">
+        <p>
+          When most records are deleted in this application, they are simply hidden.
+          Having a significant number of hidden records may cause performance issues.
+        </p>
+        <p>
+          This tool can permanently remove those hidden records.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="column">
+    <div class="media">
+      <div class="media-left" aria-hidden="true">
+        <span class="fa-layers fa-fw fa-3x">
+          <i class="fas fa-database" data-fa-transform="shrink-6 up-2 left-4"></i>
+          <i class="fas fa-archive" data-fa-glow data-fa-transform="shrink-6 down-4 right-4"></i>
+          <i class="fas fa-long-arrow-alt-down has-text-info" data-fa-glow data-fa-transform="shrink-7 down-1 left-1 rotate--45"></i>
+        </span>
+      </div>
+      <div class="media-content">
+        <h3 class="title is-4 is-marginless">
+          <a href="#" id="cleanup--backupDatabase">Backup Database</a>
+        </h3>
+        <p>Take a snapshot of the database as it is right now, and archive it on the server.</p>
+      </div>
+    </div>
+    <div class="media">
+      <div class="media-left" aria-hidden="true">
+        <span class="fa-layers fa-fw fa-3x">
+          <i class="fas fa-database" data-fa-transform="shrink-5 down-2 left-4"></i>
+          <i class="fas fa-broom has-text-info" data-fa-glow data-fa-transform="shrink-7 up-3 right-2"></i>
+        </span>
+      </div>
+      <div class="media-content">
+        <h3 class="title is-4 is-marginless">
+          <a href="#" id="cleanup--cleanupDatabase">Cleanup Database</a>
+        </h3>
+        <p>Permanently delete hidden records that can be safely deleted.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('_footerA'); -%>
+
+<script src="<%= urlPrefix %>/javascripts/admin-cleanup.min.js"></script>
+
+<%- include('_footerB'); -%>

@@ -30,10 +30,15 @@ import handler_doUpdateLicenceCategoryAdditionalFee from "../handlers/admin-post
 import handler_doMoveLicenceCategoryAdditionalFee from "../handlers/admin-post/doMoveLicenceCategoryAdditionalFee.js";
 import handler_doDeleteLicenceCategoryAdditionalFee from "../handlers/admin-post/doDeleteLicenceCategoryAdditionalFee.js";
 
+import handler_doBackupDatabase from "../handlers/admin-post/doBackupDatabase.js";
+
 import handler_yearEnd from "../handlers/admin-get/yearEnd.js";
 
-import handler_doBackupDatabase from "../handlers/admin-post/doBackupDatabase.js";
 import handler_doRefreshDatabase from "../handlers/admin-post/doRefreshDatabase.js";
+
+import handler_cleanup from "../handlers/admin-get/cleanup.js";
+
+import handler_doCleanupDatabase from "../handlers/admin-post/doCleanupDatabase.js";
 
 export const router = Router();
 
@@ -133,12 +138,16 @@ router.post("/doDeleteLicenceCategoryAdditionalFee",
   handler_doDeleteLicenceCategoryAdditionalFee);
 
 /*
- * Year-End
+ * Backup Database
  */
 
 router.post("/doBackupDatabase",
   permissionHandlers.adminPostHandler,
   handler_doBackupDatabase);
+
+/*
+ * Year-End
+ */
 
 if (configFunctions.getProperty("settings.includeYearEnd")) {
 
@@ -150,6 +159,18 @@ if (configFunctions.getProperty("settings.includeYearEnd")) {
     permissionHandlers.adminPostHandler,
     handler_doRefreshDatabase);
 }
+
+/*
+ * Database Cleanup
+ */
+
+router.get("/cleanup",
+  permissionHandlers.adminGetHandler,
+  handler_cleanup);
+
+router.post("/doCleanupDatabase",
+  permissionHandlers.adminPostHandler,
+  handler_doCleanupDatabase);
 
 
 export default router;

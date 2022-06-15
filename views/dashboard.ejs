@@ -150,6 +150,22 @@
               </div>
             </div>
           <% } %>
+          <div class="media">
+            <div class="media-left" aria-hidden="true">
+              <i class="fas fa-3x fa-fw fa-broom"></i>
+            </div>
+            <div class="media-content has-text-black">
+              <% uid = "uid--" + stringFns.getUID(); %>
+              <h2 class="title is-4 is-marginless">
+                <a href="<%= urlPrefix %>/admin/cleanup" aria-describedby="<%= uid %>">
+                  Database Cleanup
+                </a>
+              </h2>
+              <p id="<%= uid %>">
+                Permanently remove deleted records from the database.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     <% } %>

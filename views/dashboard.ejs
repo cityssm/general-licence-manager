@@ -97,7 +97,11 @@
       <div class="card-content">
         <div class="media">
           <div class="media-left" aria-hidden="true">
-            <i class="fas fa-3x fa-fw fa-file"></i>
+            <span class="fa-layers fa-fw fa-3x">
+              <i class="fas fa-file" data-fa-transform="shrink-8 up-3 left-6"></i>
+              <i class="fas fa-file" data-fa-glow data-fa-transform="shrink-8 down-1"></i>
+              <i class="fas fa-file" data-fa-glow data-fa-transform="shrink-8 down-5 right-6"></i>
+            </span>
           </div>
           <div class="media-content has-text-black">
             <% uid = "uid--" + stringFns.getUID(); %>

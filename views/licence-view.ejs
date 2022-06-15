@@ -46,7 +46,10 @@
       <div class="panel-block">
         <p>
           <strong id="licenceView--licenceCategory"><%= configFunctions.getProperty("settings.licenceAlias") %> Category</strong><br />
-          <span aria-labelledby="licenceView--licenceCategory"><%= licenceCategory.licenceCategory %></span>
+          <span aria-labelledby="licenceView--licenceCategory">
+            <%= licenceCategory.licenceCategory %>
+            <%= (licenceCategory.recordDelete_timeMillis ? " (Inactive)" : "") %>
+          </span>
         </p>
       </div>
     </div>

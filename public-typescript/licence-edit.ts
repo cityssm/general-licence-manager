@@ -772,7 +772,7 @@ declare const bulmaJS: BulmaJS;
             "<td>" + cityssm.escapeHTML(responseJSON.additionalFee.additionalFee) + "</td>" +
             "<td class=\"has-text-right\">$" + responseJSON.additionalFee.additionalFeeAmount.toFixed(2) + "</td>" +
             ("<td class=\"has-width-1\">" +
-              "<button class=\"button is-small is-danger is-inverted\" type=\"button\" aria-label=\"Delete Additional Fee\">" +
+              "<button class=\"button is-small is-danger is-inverted\" data-tooltip=\"Delete Additional Fee\" type=\"button\" aria-label=\"Delete Additional Fee\">" +
               "<i class=\"fas fa-trash\" aria-hidden=\"true\"></i>" +
               "</td>");
 
@@ -941,7 +941,7 @@ declare const bulmaJS: BulmaJS;
           "$" + licenceTransaction.transactionAmount.toFixed(2) +
           "</td>") +
         ("<td>" +
-          "<button class=\"button is-small is-danger is-inverted\" type=\"button\" aria-label=\"Delete Transaction\">" +
+          "<button class=\"button is-small is-danger is-inverted\" data-tooltip=\"Delete Transaction\" type=\"button\" aria-label=\"Delete Transaction\">" +
           "<i class=\"fas fa-trash\" aria-hidden=\"true\"></i>" +
           "</button>" +
           "</td>");

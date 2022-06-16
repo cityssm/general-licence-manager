@@ -480,7 +480,7 @@
                   <td class="has-text-right">$<%= additionalFee.additionalFeeAmount.toFixed(2) %></td>
                   <td class="has-width-1">
                     <% if (!additionalFee.isRequired) { %>
-                      <button class="button is-small is-danger is-inverted is-delete-additional-fee-button" type="button" aria-label="Delete Fee">
+                      <button class="button is-small is-danger is-inverted is-delete-additional-fee-button" data-tooltip="Delete Additional Fee" type="button" aria-label="Delete Additional Fee">
                         <i class="fas fa-trash" aria-hidden="true"></i>
                       </button>
                     <% } %>

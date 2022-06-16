@@ -78,8 +78,8 @@ app.use(csurf({ cookie: true }));
  */
 
 const limiter = rateLimit({
-  windowMs: 60 * 1000,
-  max: 1000
+  windowMs: 1000,
+  max: 25 * Math.max(3, configFunctions.getProperty("users.canLogin").length)
 });
 
 app.use(limiter);

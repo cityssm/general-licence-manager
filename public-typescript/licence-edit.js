@@ -822,7 +822,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     }
-    if (!isCreate && !issueLicenceButtonElement) {
+    const renewLicenceButtonElement = document.querySelector("#is-renew-licence-button");
+    if (!isCreate && renewLicenceButtonElement) {
         const doRenew = () => {
             const url = new URL(window.location.protocol + "//" +
                 window.location.host +
@@ -849,11 +850,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
             url.searchParams.append("startDateString", cityssm.dateToString(newStartDate));
             window.location.href = url.toString();
         };
-        document.querySelector("#is-renew-licence-button").addEventListener("click", (clickEvent) => {
+        renewLicenceButtonElement.addEventListener("click", (clickEvent) => {
             clickEvent.preventDefault();
             bulmaJS.confirm({
                 title: "Renew " + licenceAlias,
-                message: "Are you sure you want to renew this " + licenceAlias.toLowerCase() + "?",
+                message: "Are you sure you want to copy the information from this " + licenceAlias.toLowerCase() + " to a new one?",
                 okButton: {
                     text: "Yes, Renew this " + licenceAlias,
                     callbackFunction: doRenew

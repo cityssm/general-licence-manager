@@ -33,7 +33,9 @@ describe("licencesDB", () => {
         assert.strictEqual(typeof (records), "object");
     });
     it("should execute getNextLicenceNumber()", () => {
-        const nextLicenceNumber = getNextLicenceNumber();
+        const nextLicenceNumber = getNextLicenceNumber({
+            licenceCategory: "Test Category"
+        });
         assert.strictEqual(typeof (nextLicenceNumber), "string");
     });
     it("should execute getUnusedLicenceApprovalKey()", () => {

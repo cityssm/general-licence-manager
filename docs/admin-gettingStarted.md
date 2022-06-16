@@ -8,6 +8,17 @@ Managing municipal licences is oftentimes a one or two person job.
 While this application can run on a high end server, that is by no means a requirement.
 Most user workstations are sufficient.
 
+## Minimum Requirements
+
+The system must meet the minimum requirements for Node.js,
+which is able to run on budget hardware.
+
+_More is better_, however under stress tests,
+the application peaked at the following:
+
+-   2 GB of RAM
+-   1 GB of storage for application, dependencies, and data.
+
 ## Step 1: Install Node.js 14 or better and npm
 
 [Node.js](https://nodejs.org) is a JavaScript runtime environment.
@@ -25,7 +36,7 @@ Node.js and npm are also available in most package managers.
 
 ## Step 2: Install git
 
-*Alternatively, [releases are available on GitHub](https://github.com/cityssm/general-licence-manager/releases).  Git is not required when using releases.*
+_Alternatively, [releases are available on GitHub](https://github.com/cityssm/general-licence-manager/releases).  Git is not required when using releases._
 
 [Git](https://git-scm.com/) is the version control system that manages the
 code for the General Licence System.

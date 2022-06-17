@@ -25,7 +25,7 @@
         Are you sure you want to proceed?
       </p>
       <p class="has-text-right">
-        <button class="button is-warning" id="yearEnd--showProcess" type="button">
+        <button class="button is-warning" id="yearEnd--showProcess" data-cy="proceed" type="button">
           Proceed to Year-End Process
         </button>
       </p>
@@ -92,7 +92,7 @@
             </div>
             <div class="media-content">
               <h3 class="title is-4 is-marginless">
-                <a href="#" id="yearEnd--backupDatabase">Backup Database</a>
+                <a href="#" id="yearEnd--backupDatabase" data-cy="backup">Backup Database</a>
               </h3>
               <p>Take a snapshot of the database as it is right now, and archive it on the server.</p>
             </div>
@@ -142,7 +142,7 @@
             </div>
             <div class="media-content">
               <h3 class="title is-4 is-marginless">
-                <a class="has-text-danger" href="#" id="yearEnd--refreshDatabase">Refresh Database</a>
+                <a class="has-text-danger" href="#" id="yearEnd--refreshDatabase" data-cy="refresh">Refresh Database</a>
               </h3>
               <p>
                 This process cannot be undone without restoring from backups.

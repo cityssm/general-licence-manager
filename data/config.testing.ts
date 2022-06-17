@@ -16,7 +16,8 @@ export const config: configTypes.Config = {
     isAdmin: ["*testAdmin"]
   },
   settings: {
-    includeBatches: true
+    includeBatches: true,
+    includeYearEnd: true
   },
   exports: {
     batches: {

@@ -33,11 +33,11 @@
           </span>
         </div>
         <div class="is-flex-grow-1">
-          <h3 class="title is-5 is-marginless">Daily Transactions</h3>
+          <h3 class="title is-5 is-marginless">Transaction Log</h3>
           <form class="mt-2" action="<%= urlPrefix %>/reports/licenceTransactions-byDate" method="get">
             <div class="field has-addons">
               <div class="control is-expanded has-icons-left">
-                <input class="input" name="transactionDateString" type="date" value="<%= todayDateString %>" max="<%= nearFutureDateString %>" aria-label="Transaction Date" required />
+                <input class="input" name="transactionDateString" type="date" value="<%= todayDateString %>" max="<%= nearFutureDateString %>" aria-label="Transaction Date" />
                 <span class="icon is-small is-left" aria-hidden="true">
                   <i class="fas fa-calendar"></i>
                 </span>

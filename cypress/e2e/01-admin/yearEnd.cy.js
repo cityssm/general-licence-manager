@@ -1,5 +1,13 @@
 import { testAdmin } from "../../../test/_globals.js";
 import { logout, login, ajaxDelayMillis } from "../../support/index.js";
+var isJanuary = function () {
+    return (new Date().getMonth() === 1 - 1);
+};
+var proceedIfNotJanuary = function () {
+    if (!isJanuary()) {
+        cy.get("button[data-cy='proceed']").click();
+    }
+};
 describe("Admin - Year-End Process", function () {
     before(function () {
         logout();
@@ -13,11 +21,11 @@ describe("Admin - Year-End Process", function () {
     it("Has no detectable accessibility issues", function () {
         cy.injectAxe();
         cy.checkA11y();
+        proceedIfNotJanuary();
+        cy.checkA11y();
     });
     it("Refreshes the database", function () {
-        if (new Date().getMonth() !== 1 - 1) {
-            cy.get("button[data-cy='proceed']").click();
-        }
+        proceedIfNotJanuary();
         cy.get("a[data-cy='backup']").click();
         cy.get(".modal")
             .should("be.visible")

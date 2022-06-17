@@ -5,6 +5,18 @@ import { testAdmin } from "../../../test/_globals.js";
 import { logout, login, ajaxDelayMillis } from "../../support/index.js";
 
 
+const isJanuary = () => {
+    return (new Date().getMonth() === 1 - 1);
+}
+
+
+const proceedIfNotJanuary = () => {
+  if (!isJanuary()) {
+    cy.get("button[data-cy='proceed']").click();
+  }
+}
+
+
 describe("Admin - Year-End Process", () => {
 
   before(() => {
@@ -22,15 +34,15 @@ describe("Admin - Year-End Process", () => {
   it("Has no detectable accessibility issues", () => {
     cy.injectAxe();
     cy.checkA11y();
+
+    proceedIfNotJanuary();
+    
+    cy.checkA11y();
   });
 
   it("Refreshes the database", () => {
 
-    // Proceed in not January
-
-    if (new Date().getMonth() !== 1 - 1) {
-      cy.get("button[data-cy='proceed']").click();
-    }
+    proceedIfNotJanuary();
 
     // Backup
 

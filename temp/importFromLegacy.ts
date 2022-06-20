@@ -421,12 +421,18 @@ const cleanupLicences = () => {
   database.close();
 };
 
-// Preserve configuration
-recreateDatabase(true);
 
-// await importLicenceCategories();
+if (true) {
+  console.log("Disabled.");
+} else {
 
-await importLicences();
-cleanupLicences();
+  // Preserve configuration
+  recreateDatabase(true);
 
-sqlPool.releaseAll();
+  // await importLicenceCategories();
+
+  await importLicences();
+  cleanupLicences();
+
+  sqlPool.releaseAll();
+}

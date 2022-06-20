@@ -262,7 +262,12 @@ const cleanupLicences = () => {
         .run();
     database.close();
 };
-recreateDatabase(true);
-await importLicences();
-cleanupLicences();
-sqlPool.releaseAll();
+if (true) {
+    console.log("Disabled.");
+}
+else {
+    recreateDatabase(true);
+    await importLicences();
+    cleanupLicences();
+    sqlPool.releaseAll();
+}

@@ -296,11 +296,11 @@
               <th>Total Transactions</th>
               <th class="has-text-right">$<%= transactionTotal.toFixed(2) %></th>
             </tr>
-            <% if (licence.licenceFee - transactionTotal > 0) { %>
+            <% if (Math.round((licence.licenceFee - transactionTotal) * 100) / 100 > 0) { %>
               <tr class="has-background-danger-light">
                 <th>Outstanding Balance</th>
                 <th class="has-text-right">$<%= (licence.licenceFee - transactionTotal).toFixed(2) %></th>
-              </tr
+              </tr>
             <% } %>
           </tfoot>
         </table>

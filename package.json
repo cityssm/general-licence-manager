@@ -14,8 +14,8 @@
     "dev:test": "cross-env NODE_ENV=dev DEBUG=general-licence-manager:* TEST_DATABASES=true nodemon ./bin/www",
     "cy:open": "cypress open --config-file cypress.config.ts",
     "cy:run": "cypress run --config-file cypress.config.ts",
-    "test": "cross-env NODE_ENV=dev DEBUG=parking-ticket-system:* TEST_DATABASES=true mocha --timeout 30000 --exit",
-    "coverage": "cross-env NODE_ENV=dev DEBUG=parking-ticket-system:* TEST_DATABASES=true c8 --reporter=lcov --reporter=text --reporter=text-summary mocha --timeout 30000 --exit",
+    "test": "cross-env NODE_ENV=dev DEBUG=general-licence-manager:* TEST_DATABASES=true mocha --timeout 30000 --exit",
+    "coverage": "cross-env NODE_ENV=dev DEBUG=general-licence-manager:* TEST_DATABASES=true c8 --reporter=lcov --reporter=text --reporter=text-summary mocha --timeout 30000 --exit",
     "dev:importFromLegacy": "echo cross-env NODE_ENV=dev DEBUG=general-licence-manager:* node ./temp/importFromLegacy"
   },
   "repository": {

@@ -17,9 +17,7 @@ to manage the general licences issued by the municipality.
 The application can handle several simple licence types,
 but was built with the following licence types in mind.
 
--   Adult Parlour Owner/Operator
 -   Amusement Arcade
--   Burlesque Attendant
 -   Food Vending
 -   Master Plumber
 -   Pawnbroker

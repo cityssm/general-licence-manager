@@ -156,3 +156,14 @@ Fees consist of the following details.
 
 -   **Licence Fee**, **Renewal Fee**, and **Replacement Fee**
     to set the cost of the licence.
+
+
+## Removing a Licence Category
+
+![More Licence Category Options](images/category-delete.png)
+
+The option to delete licence categories can be found when viewing a category in the "More" menu.
+
+Note that deleting a licence category will not delete any licences in the system
+that make use of the category.  It will however prevent the category from being used
+to issue future licences.

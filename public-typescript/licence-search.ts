@@ -125,20 +125,20 @@ declare const cityssm: cityssmGlobal;
 
           const paginationElement = document.createElement("nav");
           paginationElement.className = "level-right is-hidden-print";
-          paginationElement.setAttribute("role", "pagination");
+          paginationElement.setAttribute("role", "navigation");
           paginationElement.setAttribute("aria-label", "pagination");
 
           if (currentOffset > 0) {
 
-            const previousElement = document.createElement("a");
+            const previousElement = document.createElement("button");
             previousElement.className = "button";
             previousElement.textContent = "Previous";
-            previousElement.addEventListener("click", (clickEvent) => {
+            previousElement.type = "button";
 
+            previousElement.addEventListener("click", (clickEvent) => {
               clickEvent.preventDefault();
               offsetElement.value = Math.max(0, currentOffset - currentLimit).toString();
               doLicenceSearchFunction();
-
             });
 
             paginationElement.append(previousElement);
@@ -146,15 +146,15 @@ declare const cityssm: cityssmGlobal;
 
           if (currentLimit + currentOffset < licenceResults.count) {
 
-            const nextElement = document.createElement("a");
+            const nextElement = document.createElement("button");
             nextElement.className = "button ml-3";
+            nextElement.type = "button";
 
             nextElement.innerHTML =
               "<span>Next " + licenceAliasPlural + "</span>" +
               "<span class=\"icon\"><i class=\"fas fa-chevron-right\" aria-hidden=\"true\"></i></span>";
 
             nextElement.addEventListener("click", (clickEvent) => {
-
               clickEvent.preventDefault();
               offsetElement.value = (currentOffset + currentLimit).toString();
               doLicenceSearchFunction();

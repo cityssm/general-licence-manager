@@ -4,6 +4,15 @@
 
 # Licence Categories
 
+## Contents
+
+-   [Introduction](#introduction)
+-   [Creating a New Licence Category](#creating-a-new-licence-category)
+-   [Updating a Licence Category](#updating-a-licence-category)
+-   [Removing a Licence Category](#removing-a-licence-category)
+
+## Introduction
+
 The General Licence Manager application supports multiple types of licences
 at the same time.
 Licence categories are used to group together licences of the same type.
@@ -129,7 +138,7 @@ Approvals consist of the following details.
     when editing a licence to help clarify what the approval is.
 
 -   **Required for New Licences** and **Required for Renewals**
-    to prevent creating licence records without the appropriate approvals.
+    to prevent issuing licence records without the appropriate approvals.
 
 -   **Print Key**, which can be used in licence print out templates
     to retrieve the approval status.

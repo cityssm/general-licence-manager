@@ -157,7 +157,6 @@ Fees consist of the following details.
 -   **Licence Fee**, **Renewal Fee**, and **Replacement Fee**
     to set the cost of the licence.
 
-
 ## Removing a Licence Category
 
 ![More Licence Category Options](images/category-delete.png)

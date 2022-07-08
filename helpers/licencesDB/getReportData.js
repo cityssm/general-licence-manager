@@ -135,6 +135,10 @@ export const getReportData = (reportName, reportParameters) => {
                 dateFilter = " and t.transactionDate = ?";
                 sqlParameters.push(dateTimeFunctions.dateStringToInteger(reportParameters.transactionDateString));
             }
+            if (reportParameters.batchDateString && reportParameters.batchDateString !== "") {
+                dateFilter = " and t.batchDate = ?";
+                sqlParameters.push(dateTimeFunctions.dateStringToInteger(reportParameters.batchDateString));
+            }
             sql = "select" +
                 " c.licenceCategory as " + licenceCategory + "," +
                 " l.licenceNumber as " + licenceNumber + "," +

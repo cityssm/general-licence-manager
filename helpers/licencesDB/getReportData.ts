@@ -202,6 +202,11 @@ export const getReportData = (reportName: string, reportParameters?: ReportParam
         sqlParameters.push(dateTimeFunctions.dateStringToInteger(reportParameters.transactionDateString as string));
       }
 
+      if (reportParameters.batchDateString && reportParameters.batchDateString !== "") {
+        dateFilter = " and t.batchDate = ?";
+        sqlParameters.push(dateTimeFunctions.dateStringToInteger(reportParameters.batchDateString as string));
+      }
+
       sql = "select" +
         " c.licenceCategory as " + licenceCategory + "," +
         " l.licenceNumber as " + licenceNumber + "," +

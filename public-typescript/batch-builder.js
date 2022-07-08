@@ -78,6 +78,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         "</button>" +
                         "</div>" +
                         "<div class=\"dropdown-menu\"><div class=\"dropdown-content\">" +
+                        "<a class=\"dropdown-item\" href=\"" + urlPrefix + "/reports/licenceTransactions-byDate?batchDateString=" + batchDateString + "\">" +
+                        "<span class=\"icon\"><i class=\"fas fa-file-csv\" aria-hidden=\"true\"></i></span>" +
+                        " <span>Transaction Report</span>" +
+                        "</a>" +
+                        "<hr class=\"dropdown-divider\">" +
                         "<a class=\"dropdown-item is-clear-batch-button\" role=\"button\" href=\"#\">" +
                         "<span class=\"icon\"><i class=\"fas fa-trash\" aria-hidden=\"true\"></i></span>" +
                         " <span>Clear and Remove Batch</span>" +

@@ -186,6 +186,7 @@
           <p class="mt-4">
             <strong>Additional Description or Special Provisions</strong><br />
             <% for (const specialProvisionsField of specialProvisionsFields) { %>
+              <%= specialProvisionsField.licenceField %>:
               <%= specialProvisionsField.licenceFieldValue %><br />
             <% } %>
           </p>

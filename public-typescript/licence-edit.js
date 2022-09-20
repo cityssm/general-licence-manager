@@ -8,7 +8,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const licenseeAlias = exports.licenseeAlias;
     const includeReplacementFee = exports.includeReplacementFee;
     const licenceId = document.querySelector("#licenceEdit--licenceId").value;
-    const isCreate = (licenceId === "");
+    const isCreate = licenceId === "";
     const populateBankName = (bankInstitutionNumberElement, bankTransitNumberElement, bankNameElement) => {
         const bankInstitutionNumber = bankInstitutionNumberElement.value;
         const bankTransitNumber = bankTransitNumberElement.value;
@@ -18,7 +18,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
         glm.getBankName(bankInstitutionNumber, bankTransitNumber, (bankName) => {
             bankNameElement.value =
-                (!bankName || bankName === "")
+                !bankName || bankName === ""
                     ? "Institution Not Found (" + bankInstitutionNumber + ")"
                     : bankName;
         });
@@ -32,16 +32,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const editFormElement = document.querySelector("#form--licenceEdit");
     editFormElement.addEventListener("submit", (formEvent) => {
         formEvent.preventDefault();
-        const submitURL = urlPrefix + "/licences/" +
-            (isCreate
-                ? "doCreateLicence"
-                : "doUpdateLicence");
+        const submitURL = urlPrefix + "/licences/" + (isCreate ? "doCreateLicence" : "doUpdateLicence");
         cityssm.postJSON(submitURL, formEvent.currentTarget, (responseJSON) => {
             if (responseJSON.success) {
                 hasUnsavedChanges = false;
                 cityssm.disableNavBlocker();
                 if (isCreate || refreshAfterSave) {
-                    window.location.href = urlPrefix + "/licences/" + responseJSON.licenceId.toString() + "/edit?t=" + Date.now();
+                    window.location.href =
+                        urlPrefix +
+                            "/licences/" +
+                            responseJSON.licenceId.toString() +
+                            "/edit?t=" +
+                            Date.now();
                 }
                 else {
                     bulmaJS.alert({
@@ -78,7 +80,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         unlockButtonElement.addEventListener("click", unlockField);
     }
     if (isCreate && document.querySelector("#is-cancel-related-licence-id-button")) {
-        document.querySelector("#is-cancel-related-licence-id-button").addEventListener("click", (clickEvent) => {
+        document
+            .querySelector("#is-cancel-related-licence-id-button")
+            .addEventListener("click", (clickEvent) => {
             clickEvent.preventDefault();
             clickEvent.currentTarget.closest(".message").remove();
         });
@@ -86,36 +90,52 @@ Object.defineProperty(exports, "__esModule", { value: true });
     if (!isCreate && document.querySelector("#panel--relatedLicences")) {
         const currentDateString = cityssm.dateToString(new Date());
         const getRelatedLicenceHTML = (relatedLicence) => {
-            const licenceURL = urlPrefix + "/licences/" + relatedLicence.licenceId +
-                (relatedLicence.endDateString >= currentDateString
-                    ? "/edit"
-                    : "");
-            return "<div class=\"columns mb-0\">" +
-                "<div class=\"column\">" +
-                "<a class=\"has-text-weight-bold\" href=\"" + licenceURL + "\" target=\"_blank\">" +
-                licenceAlias + " #" + cityssm.escapeHTML(relatedLicence.licenceNumber) +
+            const licenceURL = urlPrefix +
+                "/licences/" +
+                relatedLicence.licenceId +
+                (relatedLicence.endDateString >= currentDateString ? "/edit" : "");
+            return ('<div class="columns mb-0">' +
+                '<div class="column">' +
+                '<a class="has-text-weight-bold" href="' +
+                licenceURL +
+                '" target="_blank">' +
+                licenceAlias +
+                " #" +
+                cityssm.escapeHTML(relatedLicence.licenceNumber) +
                 "</a>" +
                 "</div>" +
-                "<div class=\"column is-narrow is-button-container\"></div>" +
+                '<div class="column is-narrow is-button-container"></div>' +
                 "</div>" +
-                "<div class=\"columns is-size-7\">" +
-                ("<div class=\"column\">" +
-                    "<span data-tooltip=\"" + licenceAlias + " Category\">" + cityssm.escapeHTML(relatedLicence.licenceCategory) + "</span>" +
+                '<div class="columns is-size-7">' +
+                ('<div class="column">' +
+                    '<span data-tooltip="' +
+                    licenceAlias +
+                    ' Category">' +
+                    cityssm.escapeHTML(relatedLicence.licenceCategory) +
+                    "</span>" +
                     "</div>") +
-                ("<div class=\"column\">" +
-                    "<span data-tooltip=\"" + licenseeAlias + " Name\">" + cityssm.escapeHTML(relatedLicence.licenseeName) + "</span>" +
+                ('<div class="column">' +
+                    '<span data-tooltip="' +
+                    licenseeAlias +
+                    ' Name">' +
+                    cityssm.escapeHTML(relatedLicence.licenseeName) +
+                    "</span>" +
                     "</div>") +
-                ("<div class=\"column\">" +
-                    "<span data-tooltip=\"Start Date\">" + relatedLicence.startDateString + "</span>" +
+                ('<div class="column">' +
+                    '<span data-tooltip="Start Date">' +
+                    relatedLicence.startDateString +
+                    "</span>" +
                     " to " +
-                    "<span data-tooltip=\"End Date\">" + relatedLicence.endDateString + "</span>" +
+                    '<span data-tooltip="End Date">' +
+                    relatedLicence.endDateString +
+                    "</span>" +
                     "</div>") +
-                ("<div class=\"column is-narrow\">" +
+                ('<div class="column is-narrow">' +
                     (relatedLicence.issueDate
-                        ? "<span class=\"tag is-success\">Issued</span>"
-                        : "<span class=\"tag is-warning\">Pending</span>") +
+                        ? '<span class="tag is-success">Issued</span>'
+                        : '<span class="tag is-warning">Pending</span>') +
                     "</div>") +
-                "</div>";
+                "</div>");
         };
         const removeRelatedLicence = (clickEvent) => {
             clickEvent.preventDefault();
@@ -132,8 +152,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
             };
             bulmaJS.confirm({
                 title: "Remove Related " + licenceAlias,
-                message: "Are you sure you want to remove this related " + licenceAlias.toLowerCase() + "?<br />" +
-                    "Note that only the relationship will be removed, not the " + licenceAlias.toLowerCase() + " itself.",
+                message: "Are you sure you want to remove this related " +
+                    licenceAlias.toLowerCase() +
+                    "?<br />" +
+                    "Note that only the relationship will be removed, not the " +
+                    licenceAlias.toLowerCase() +
+                    " itself.",
                 messageIsHtml: true,
                 okButton: {
                     text: "Yes, Remove the Relationship",
@@ -150,9 +174,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
             if (relatedLicences.length === 0) {
                 const panelBlockElement = document.createElement("div");
                 panelBlockElement.className = "panel-block is-block";
-                panelBlockElement.innerHTML = "<div class=\"message is-small is-info\">" +
-                    "<p class=\"message-body\">There are no related " + licenceAliasPlural.toLowerCase() + ".</p>" +
-                    "</div>";
+                panelBlockElement.innerHTML =
+                    '<div class="message is-small is-info">' +
+                        '<p class="message-body">There are no related ' +
+                        licenceAliasPlural.toLowerCase() +
+                        ".</p>" +
+                        "</div>";
                 relatedLicencesPanelElement.append(panelBlockElement);
             }
             for (const relatedLicence of relatedLicences) {
@@ -164,14 +191,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 deleteButtonElement.className = "button is-small is-inverted is-danger";
                 deleteButtonElement.type = "button";
                 deleteButtonElement.ariaLabel = "Delete Related Licence";
-                deleteButtonElement.innerHTML = "<i class=\"fas fa-trash\" aria-hidden=\"true\"></i>";
+                deleteButtonElement.innerHTML = '<i class="fas fa-trash" aria-hidden="true"></i>';
                 deleteButtonElement.addEventListener("click", removeRelatedLicence);
-                panelBlockElement.querySelector(".is-button-container")
-                    .append(deleteButtonElement);
+                panelBlockElement.querySelector(".is-button-container").append(deleteButtonElement);
                 relatedLicencesPanelElement.append(panelBlockElement);
             }
         };
-        document.querySelector("#button--addRelatedLicence").addEventListener("click", (clickEvent) => {
+        document
+            .querySelector("#button--addRelatedLicence")
+            .addEventListener("click", (clickEvent) => {
             clickEvent.preventDefault();
             const addButtonElement = clickEvent.currentTarget;
             let addRelatedLicencesModalElement;
@@ -194,19 +222,25 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     changeEvent.preventDefault();
                 }
                 const containerElement = addRelatedLicencesModalElement.querySelector("#container--relatableLicences");
-                containerElement.innerHTML = "<div class=\"my-4 has-text-centered has-text-grey-light\">" +
-                    "<i class=\"fas fa-4x fa-spinner fa-pulse\"></i><br />" +
-                    "<em>Loading " + licenceAliasPlural.toLowerCase() + "...</em>" +
-                    "</div>";
+                containerElement.innerHTML =
+                    '<div class="my-4 has-text-centered has-text-grey-light">' +
+                        '<i class="fas fa-4x fa-spinner fa-pulse"></i><br />' +
+                        "<em>Loading " +
+                        licenceAliasPlural.toLowerCase() +
+                        "...</em>" +
+                        "</div>";
                 const searchString = addRelatedLicencesModalElement.querySelector("#addRelatedLicence--searchString").value;
                 cityssm.postJSON(urlPrefix + "/licences/doGetRelatableLicences", {
                     licenceId,
                     searchString
                 }, (responseJSON) => {
                     if (responseJSON.licences.length === 0) {
-                        containerElement.innerHTML = "<div class=\"message is-info\">" +
-                            "<p class=\"message-body\">There are no " + licenceAliasPlural.toLowerCase() + " that meet your criteria.</p>" +
-                            "</div>";
+                        containerElement.innerHTML =
+                            '<div class="message is-info">' +
+                                '<p class="message-body">There are no ' +
+                                licenceAliasPlural.toLowerCase() +
+                                " that meet your criteria.</p>" +
+                                "</div>";
                         return;
                     }
                     const panelElement = document.createElement("div");
@@ -214,15 +248,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     for (const relatableLicence of responseJSON.licences) {
                         const panelBlockElement = document.createElement("div");
                         panelBlockElement.className = "panel-block is-block";
-                        panelBlockElement.dataset.licenceId = relatableLicence.licenceId.toString();
-                        panelBlockElement.innerHTML = getRelatedLicenceHTML(relatableLicence);
+                        panelBlockElement.dataset.licenceId =
+                            relatableLicence.licenceId.toString();
+                        panelBlockElement.innerHTML =
+                            getRelatedLicenceHTML(relatableLicence);
                         const addButtonElement = document.createElement("button");
                         addButtonElement.className = "button is-small is-success";
                         addButtonElement.type = "button";
                         addButtonElement.ariaLabel = "Add Related Licence";
-                        addButtonElement.innerHTML = "<i class=\"fas fa-plus\" aria-hidden=\"true\"></i>";
+                        addButtonElement.innerHTML =
+                            '<i class="fas fa-plus" aria-hidden="true"></i>';
                         addButtonElement.addEventListener("click", doAdd);
-                        panelBlockElement.querySelector(".is-button-container")
+                        panelBlockElement
+                            .querySelector(".is-button-container")
                             .append(addButtonElement);
                         panelElement.append(panelBlockElement);
                     }
@@ -234,7 +272,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 onshow: (modalElement) => {
                     addRelatedLicencesModalElement = modalElement;
                     glm.populateAliases(modalElement);
-                    document.querySelector("#addRelatedLicence--searchString").addEventListener("change", doSearch);
+                    document
+                        .querySelector("#addRelatedLicence--searchString")
+                        .addEventListener("change", doSearch);
                     doSearch();
                 },
                 onshown: () => {
@@ -265,8 +305,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         const isRenewal = isRenewalElement.checked;
         const approvalCheckboxElements = document.querySelectorAll("#container--licenceApprovals input[type='checkbox']");
         for (const approvalCheckboxElement of approvalCheckboxElements) {
-            if (!approvalCheckboxElement.checked && ((isRenewal && approvalCheckboxElement.dataset.isRequiredForRenewal === "true") ||
-                (!isRenewal && approvalCheckboxElement.dataset.isRequiredForNew === "true"))) {
+            if (!approvalCheckboxElement.checked &&
+                ((isRenewal && approvalCheckboxElement.dataset.isRequiredForRenewal === "true") ||
+                    (!isRenewal && approvalCheckboxElement.dataset.isRequiredForNew === "true"))) {
                 return true;
             }
         }
@@ -335,17 +376,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
             return;
         }
         licenceFieldsContainerElement.classList.remove("is-hidden");
-        licenceFieldsContainerElement.innerHTML = "<h2 class=\"panel-heading\">Fields</h2>";
+        licenceFieldsContainerElement.innerHTML = '<h2 class="panel-heading">Fields</h2>';
         const licenceFieldKeys = [];
         for (const licenceCategoryField of licenceCategory.licenceCategoryFields) {
             const panelBlockElement = document.createElement("div");
             panelBlockElement.className = "panel-block is-block";
-            panelBlockElement.innerHTML = "<div class=\"field\">" +
-                "<label class=\"label\"></label>" +
-                "<div class=\"control\">" +
-                "<input class=\"input\" type=\"text\" />" +
-                "</div>" +
-                "</div>";
+            panelBlockElement.innerHTML =
+                '<div class="field">' +
+                    '<label class="label"></label>' +
+                    '<div class="control">' +
+                    '<input class="input" type="text" />' +
+                    "</div>" +
+                    "</div>";
             const inputId = "licenceFieldEdit--" + licenceCategoryField.licenceFieldKey;
             const labelElement = panelBlockElement.querySelector("label");
             labelElement.setAttribute("for", inputId);
@@ -384,15 +426,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
             return;
         }
         licenceApprovalsContainerElement.classList.remove("is-hidden");
-        licenceApprovalsContainerElement.innerHTML = "<h2 class=\"panel-heading\">Approvals</h2>";
+        licenceApprovalsContainerElement.innerHTML = '<h2 class="panel-heading">Approvals</h2>';
         const licenceApprovalKeys = [];
         for (const licenceCategoryApproval of licenceCategory.licenceCategoryApprovals) {
             const panelBlockElement = document.createElement("div");
             panelBlockElement.className = "panel-block is-block";
-            panelBlockElement.innerHTML = "<div class=\"facheck\">" +
-                "<input type=\"checkbox\" />" +
-                "<label></label>" +
-                "</div>";
+            panelBlockElement.innerHTML =
+                '<div class="facheck">' +
+                    '<input type="checkbox" />' +
+                    "<label></label>" +
+                    "</div>";
             const inputId = "licenceApprovalEdit--" + licenceCategoryApproval.licenceApprovalKey;
             const labelElement = panelBlockElement.querySelector("label");
             labelElement.setAttribute("for", inputId);
@@ -400,8 +443,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
             const inputElement = panelBlockElement.querySelector("input");
             inputElement.id = inputId;
             inputElement.name = "approval--" + licenceCategoryApproval.licenceApprovalKey;
-            inputElement.dataset.isRequiredForNew = licenceCategoryApproval.isRequiredForNew ? "true" : "false";
-            inputElement.dataset.isRequiredForRenewal = licenceCategoryApproval.isRequiredForRenewal ? "true" : "false";
+            inputElement.dataset.isRequiredForNew = licenceCategoryApproval.isRequiredForNew
+                ? "true"
+                : "false";
+            inputElement.dataset.isRequiredForRenewal = licenceCategoryApproval.isRequiredForRenewal
+                ? "true"
+                : "false";
             if (licenceCategoryApproval.licenceApprovalDescription !== "") {
                 const helpElement = document.createElement("p");
                 helpElement.className = "help";
@@ -427,21 +474,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
             return;
         }
-        baseLicenceFeeElement.value = (isRenewalElement.checked
+        baseLicenceFeeElement.value = isRenewalElement.checked
             ? licenceCategory.licenceCategoryFees[0].renewalFee.toFixed(2)
-            : licenceCategory.licenceCategoryFees[0].licenceFee.toFixed(2));
+            : licenceCategory.licenceCategoryFees[0].licenceFee.toFixed(2);
         if (baseReplacementFeeElement) {
-            baseReplacementFeeElement.value = licenceCategory.licenceCategoryFees[0].replacementFee.toFixed(2);
+            baseReplacementFeeElement.value =
+                licenceCategory.licenceCategoryFees[0].replacementFee.toFixed(2);
         }
         if (!isCreate && !additionalFeeTableElement.classList.contains("is-hidden")) {
             additionalFeeTableElement.classList.add("is-hidden");
-            additionalFeeTableElement.insertAdjacentHTML("beforebegin", "<div class=\"message is-warning\">" +
-                "<p class=\"message-body\">Fees will be recalculated after saving.</p>" +
+            additionalFeeTableElement.insertAdjacentHTML("beforebegin", '<div class="message is-warning">' +
+                '<p class="message-body">Fees will be recalculated after saving.</p>' +
                 "</div>");
-            additionalFeeTableElement.closest(".panel")
+            additionalFeeTableElement
+                .closest(".panel")
                 .querySelector(".panel-heading .level-right")
-                .classList
-                .add("is-hidden");
+                .classList.add("is-hidden");
             refreshAfterSave = true;
         }
     };
@@ -518,17 +566,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     return;
                 }
                 const additionalFeeRowElement = document.createElement("tr");
-                additionalFeeRowElement.dataset.licenceAdditionalFeeKey = responseJSON.additionalFee.licenceAdditionalFeeKey;
-                additionalFeeRowElement.innerHTML = "<td class=\"has-width-1\"><i class=\"fas fa-plus\" aria-label=\"Plus\"></i></td>" +
-                    "<td>" + cityssm.escapeHTML(responseJSON.additionalFee.additionalFee) + "</td>" +
-                    "<td class=\"has-text-right\">$" + responseJSON.additionalFee.additionalFeeAmount.toFixed(2) + "</td>" +
-                    ("<td class=\"has-width-1\">" +
-                        "<button class=\"button is-small is-danger is-inverted\" data-tooltip=\"Delete Additional Fee\" type=\"button\" aria-label=\"Delete Additional Fee\">" +
-                        "<i class=\"fas fa-trash\" aria-hidden=\"true\"></i>" +
-                        "</td>");
-                additionalFeeRowElement.querySelector("button").addEventListener("click", deleteAdditionalFee);
-                additionalFeeTableElement.querySelector("tbody").append(additionalFeeRowElement);
-                document.querySelector("#licenceEdit--licenceFee").value = responseJSON.licenceFee.toFixed(2);
+                additionalFeeRowElement.dataset.licenceAdditionalFeeKey =
+                    responseJSON.additionalFee.licenceAdditionalFeeKey;
+                additionalFeeRowElement.innerHTML =
+                    '<td class="has-width-1"><i class="fas fa-plus" aria-label="Plus"></i></td>' +
+                        "<td>" +
+                        cityssm.escapeHTML(responseJSON.additionalFee.additionalFee) +
+                        "</td>" +
+                        '<td class="has-text-right">$' +
+                        responseJSON.additionalFee.additionalFeeAmount.toFixed(2) +
+                        "</td>" +
+                        ('<td class="has-width-1">' +
+                            '<button class="button is-small is-danger is-inverted" data-tooltip="Delete Additional Fee" type="button" aria-label="Delete Additional Fee">' +
+                            '<i class="fas fa-trash" aria-hidden="true"></i>' +
+                            "</td>");
+                additionalFeeRowElement
+                    .querySelector("button")
+                    .addEventListener("click", deleteAdditionalFee);
+                additionalFeeTableElement
+                    .querySelector("tbody")
+                    .append(additionalFeeRowElement);
+                document.querySelector("#licenceEdit--licenceFee").value =
+                    responseJSON.licenceFee.toFixed(2);
                 addAdditionalFeeCloseModalFunction();
                 renderLicenceTransactions();
             });
@@ -539,7 +598,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 bulmaJS.toggleHtmlClipped();
                 modalElement.querySelector("#additionalFeeAdd--licenceId").value = licenceId;
                 const availableAdditionalFees = optionalAdditionalFees.filter((additionalFee) => {
-                    if (additionalFeeTableElement.querySelector("tbody tr[data-licence-additional-fee-key='" + additionalFee.licenceAdditionalFeeKey + "']")) {
+                    if (additionalFeeTableElement.querySelector("tbody tr[data-licence-additional-fee-key='" +
+                        additionalFee.licenceAdditionalFeeKey +
+                        "']")) {
                         return false;
                     }
                     return true;
@@ -560,7 +621,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     optionElement.textContent = availableAdditionalFee.additionalFee;
                     licenceAdditionalFeeKeyElement.append(optionElement);
                 }
-                modalElement.querySelector("#form--additionalFeeAdd").addEventListener("submit", submitFunction_addAdditionalFee);
+                modalElement
+                    .querySelector("#form--additionalFeeAdd")
+                    .addEventListener("submit", submitFunction_addAdditionalFee);
+                const currentDateString = cityssm.dateToString(new Date());
+                const licenceEndDateString = document.querySelector("#licenceEdit--endDateString").value;
+                if (currentDateString > licenceEndDateString) {
+                    modalElement
+                        .querySelector(".modal-card-body")
+                        .insertAdjacentHTML("afterbegin", '<div class="message is-warning">' +
+                        '<p class="message-body">Note that you are adding a fee to an expired licence.</p>' +
+                        "</div>");
+                }
             }
         });
     };
@@ -581,14 +653,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
     let licenceTransactions = exports.licenceTransactions;
     const getOutstandingBalance = () => {
         const licenceFeeString = document.querySelector("#licenceEdit--licenceFee").value;
-        const transactionAmountTotalString = licenceTransactionsTableElement.querySelector("#transactions--total").textContent.slice(1);
+        const transactionAmountTotalString = licenceTransactionsTableElement
+            .querySelector("#transactions--total")
+            .textContent.slice(1);
         const outstandingBalance = Math.max(Number.parseFloat(licenceFeeString) - Number.parseFloat(transactionAmountTotalString), 0);
         return outstandingBalance;
     };
     const deleteLicenceTransaction = (clickEvent) => {
         clickEvent.preventDefault();
-        const transactionIndex = clickEvent.currentTarget
-            .closest("tr").dataset.transactionIndex;
+        const transactionIndex = clickEvent.currentTarget.closest("tr")
+            .dataset.transactionIndex;
         const doDelete = () => {
             cityssm.postJSON(urlPrefix + "/licences/doDeleteLicenceTransaction", {
                 licenceId,
@@ -620,29 +694,38 @@ Object.defineProperty(exports, "__esModule", { value: true });
             const trElement = document.createElement("tr");
             trElement.dataset.transactionIndex = licenceTransaction.transactionIndex.toString();
             trElement.innerHTML =
-                ("<td>" +
-                    "<p>" + licenceTransaction.transactionDateString + "<p>" +
+                "<td>" +
+                    "<p>" +
+                    licenceTransaction.transactionDateString +
+                    "<p>" +
                     (licenceTransaction.transactionNote && licenceTransaction.transactionNote !== ""
-                        ? "<p class=\"is-size-7\">" + cityssm.escapeHTML(licenceTransaction.transactionNote) + "</p>"
+                        ? '<p class="is-size-7">' +
+                            cityssm.escapeHTML(licenceTransaction.transactionNote) +
+                            "</p>"
                         : "") +
-                    "<div class=\"tags\">" +
+                    '<div class="tags">' +
                     (currentDateString < licenceTransaction.transactionDateString
-                        ? "<span class=\"tag is-warning\">Upcoming</span>"
+                        ? '<span class="tag is-warning">Upcoming</span>'
                         : "") +
                     (licenceTransaction.batchDate
-                        ? "<span class=\"tag is-info\">Batch Transaction</span>"
+                        ? '<span class="tag is-info">Batch Transaction</span>'
                         : "") +
-                    (licenceTransaction.batchDate && (!licenceTransaction.externalReceiptNumber || licenceTransaction.externalReceiptNumber === "")
-                        ? "<span class=\"tag is-warning\">Unconfirmed</span>"
+                    (licenceTransaction.batchDate &&
+                        (!licenceTransaction.externalReceiptNumber ||
+                            licenceTransaction.externalReceiptNumber === "")
+                        ? '<span class="tag is-warning">Unconfirmed</span>'
                         : "") +
                     "</div>" +
-                    "</td>") +
-                    ("<td class=\"has-text-right" + (licenceTransaction.transactionAmount === 0 ? " has-text-danger" : "") + "\">" +
-                        "$" + licenceTransaction.transactionAmount.toFixed(2) +
+                    "</td>" +
+                    ('<td class="has-text-right' +
+                        (licenceTransaction.transactionAmount === 0 ? " has-text-danger" : "") +
+                        '">' +
+                        "$" +
+                        licenceTransaction.transactionAmount.toFixed(2) +
                         "</td>") +
                     ("<td>" +
-                        "<button class=\"button is-small is-danger is-inverted\" data-tooltip=\"Delete Transaction\" type=\"button\" aria-label=\"Delete Transaction\">" +
-                        "<i class=\"fas fa-trash\" aria-hidden=\"true\"></i>" +
+                        '<button class="button is-small is-danger is-inverted" data-tooltip="Delete Transaction" type="button" aria-label="Delete Transaction">' +
+                        '<i class="fas fa-trash" aria-hidden="true"></i>' +
                         "</button>" +
                         "</td>");
             trElement.querySelector("button").addEventListener("click", deleteLicenceTransaction);
@@ -650,16 +733,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
             transactionTotal += licenceTransaction.transactionAmount;
         }
         const tfootElement = licenceTransactionsTableElement.querySelector("tfoot");
-        tfootElement.innerHTML = "<tr>" +
-            "<th>Total</th>" +
-            "<th id=\"transactions--total\" class=\"has-text-right\">$" + transactionTotal.toFixed(2) + "</th>" +
-            "<th></th>" +
-            "</tr>";
+        tfootElement.innerHTML =
+            "<tr>" +
+                "<th>Total</th>" +
+                '<th id="transactions--total" class="has-text-right">$' +
+                transactionTotal.toFixed(2) +
+                "</th>" +
+                "<th></th>" +
+                "</tr>";
         const outstandingBalance = getOutstandingBalance();
         if (outstandingBalance > 0) {
-            tfootElement.insertAdjacentHTML("beforeend", "<tr class=\"has-background-danger-light\">" +
+            tfootElement.insertAdjacentHTML("beforeend", '<tr class="has-background-danger-light">' +
                 "<th>Outstanding Balance</th>" +
-                "<th class=\"has-text-right\">$" + outstandingBalance.toFixed(2) + "</th>" +
+                '<th class="has-text-right">$' +
+                outstandingBalance.toFixed(2) +
+                "</th>" +
                 "<th></th>" +
                 "</tr>");
         }
@@ -688,29 +776,33 @@ Object.defineProperty(exports, "__esModule", { value: true });
         };
         const setTransactionAmountFunction = (clickEvent) => {
             clickEvent.preventDefault();
-            const transactionAmountSpanId = clickEvent.currentTarget.dataset.spanId;
-            addTransactionModalElement.querySelector("#transactionAdd--transactionAmount").value =
-                addTransactionModalElement.querySelector("#" + transactionAmountSpanId).textContent;
+            const transactionAmountSpanId = clickEvent.currentTarget.dataset
+                .spanId;
+            addTransactionModalElement.querySelector("#transactionAdd--transactionAmount").value = addTransactionModalElement.querySelector("#" + transactionAmountSpanId).textContent;
         };
         cityssm.openHtmlModal("transaction-add", {
             onshow: (modalElement) => {
                 glm.populateAliases(modalElement);
                 modalElement.querySelector("#transactionAdd--licenceId").value = licenceId;
                 const licenceFeeString = document.querySelector("#licenceEdit--licenceFee").value;
-                modalElement.querySelector("#transactionAdd--licenceFee").textContent = licenceFeeString;
+                modalElement.querySelector("#transactionAdd--licenceFee").textContent =
+                    licenceFeeString;
                 if (includeReplacementFee) {
-                    modalElement.querySelector("#transactionAdd--replacementFee").textContent =
-                        document.querySelector("#licenceEdit--replacementFee").value;
+                    modalElement.querySelector("#transactionAdd--replacementFee").textContent = document.querySelector("#licenceEdit--replacementFee").value;
                 }
                 else {
-                    modalElement.querySelector("#transactionAdd--replacementFee").closest("tr").remove();
+                    modalElement
+                        .querySelector("#transactionAdd--replacementFee")
+                        .closest("tr")
+                        .remove();
                 }
                 const outstandingBalance = getOutstandingBalance();
-                modalElement.querySelector("#transactionAdd--outstandingBalance").textContent = outstandingBalance.toFixed(2);
+                modalElement.querySelector("#transactionAdd--outstandingBalance").textContent =
+                    outstandingBalance.toFixed(2);
                 modalElement.querySelector("#transactionAdd--transactionAmount").value =
-                    (outstandingBalance > 0 || !includeReplacementFee
+                    outstandingBalance > 0 || !includeReplacementFee
                         ? outstandingBalance.toFixed(2)
-                        : document.querySelector("#licenceEdit--replacementFee").value);
+                        : document.querySelector("#licenceEdit--replacementFee").value;
             },
             onshown: (modalElement, closeModalFunction) => {
                 addTransactionModalElement = modalElement;
@@ -722,7 +814,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
                 const addTransaction_bankInstitutionNumberElement = modalElement.querySelector("#transactionAdd--bankInstitutionNumber");
                 const addTransaction_bankTransitNumberElement = modalElement.querySelector("#transactionAdd--bankTransitNumber");
-                modalElement.querySelector("button.is-more-fields-button").addEventListener("click", (clickEvent) => {
+                modalElement
+                    .querySelector("button.is-more-fields-button")
+                    .addEventListener("click", (clickEvent) => {
                     clickEvent.preventDefault();
                     clickEvent.currentTarget.remove();
                     let moreFieldsSelector = ".is-more-fields";
@@ -738,23 +832,29 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     }
                 });
                 if (exports.includeBatches) {
-                    modalElement.querySelector("button.is-copy-bank-numbers-button").addEventListener("click", (clickEvent) => {
+                    modalElement
+                        .querySelector("button.is-copy-bank-numbers-button")
+                        .addEventListener("click", (clickEvent) => {
                         clickEvent.preventDefault();
-                        addTransaction_bankInstitutionNumberElement.value = bankInstitutionNumberElement.value;
-                        addTransaction_bankTransitNumberElement.value = bankTransitNumberElement.value;
-                        modalElement.querySelector("#transactionAdd--bankName").value =
-                            document.querySelector("#licenceEdit--bankName").value;
-                        modalElement.querySelector("#transactionAdd--bankAccountNumber").value =
-                            document.querySelector("#licenceEdit--bankAccountNumber").value;
+                        addTransaction_bankInstitutionNumberElement.value =
+                            bankInstitutionNumberElement.value;
+                        addTransaction_bankTransitNumberElement.value =
+                            bankTransitNumberElement.value;
+                        modalElement.querySelector("#transactionAdd--bankName").value = document.querySelector("#licenceEdit--bankName").value;
+                        modalElement.querySelector("#transactionAdd--bankAccountNumber").value = document.querySelector("#licenceEdit--bankAccountNumber").value;
                     });
                 }
-                modalElement.querySelector("#form--transactionAdd").addEventListener("submit", addTransactionSubmitFunction);
+                modalElement
+                    .querySelector("#form--transactionAdd")
+                    .addEventListener("submit", addTransactionSubmitFunction);
             }
         });
     };
     if (!isCreate) {
         renderLicenceTransactions();
-        document.querySelector("#button--addTransaction").addEventListener("click", openAddTransactionModal);
+        document
+            .querySelector("#button--addTransaction")
+            .addEventListener("click", openAddTransactionModal);
         const deleteTransactionButtonElements = document.querySelectorAll(".is-delete-transaction-button");
         for (const deleteTransactionButtonElement of deleteTransactionButtonElements) {
             deleteTransactionButtonElement.addEventListener("click", deleteLicenceTransaction);
@@ -767,7 +867,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 licenceId
             }, (responseJSON) => {
                 if (responseJSON.success) {
-                    window.location.href = urlPrefix + "/licences/" + licenceId + "/edit?t=" + Date.now();
+                    window.location.href =
+                        urlPrefix + "/licences/" + licenceId + "/edit?t=" + Date.now();
                 }
             });
         };
@@ -776,7 +877,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
             if (hasUnsavedChanges) {
                 bulmaJS.alert({
                     title: licenceAlias + " Has Unsaved Changes",
-                    message: "Please save your " + licenceAlias.toLowerCase() + " changes before issuing the " + licenceAlias.toLowerCase() + ".",
+                    message: "Please save your " +
+                        licenceAlias.toLowerCase() +
+                        " changes before issuing the " +
+                        licenceAlias.toLowerCase() +
+                        ".",
                     contextualColorName: "warning"
                 });
             }
@@ -790,7 +895,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             else if (getOutstandingBalance() > 0) {
                 bulmaJS.confirm({
                     title: licenceAlias + " Has an Outstanding Balance",
-                    message: "Are you sure you want to issue this " + licenceAlias.toLowerCase() + " with an outstanding balance?",
+                    message: "Are you sure you want to issue this " +
+                        licenceAlias.toLowerCase() +
+                        " with an outstanding balance?",
                     contextualColorName: "warning",
                     okButton: {
                         text: "Yes, Issue with Outstanding Balance",
@@ -801,7 +908,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             else if (startDateStringElement.value < cityssm.dateToString(new Date())) {
                 bulmaJS.confirm({
                     title: licenceAlias + " Has a Start Date in the Past",
-                    message: "Are you sure you want to issue this " + licenceAlias.toLowerCase() + " with a start date in the past?",
+                    message: "Are you sure you want to issue this " +
+                        licenceAlias.toLowerCase() +
+                        " with a start date in the past?",
                     contextualColorName: "warning",
                     okButton: {
                         text: "Yes, Issue with a Past Start Date",
@@ -825,22 +934,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
     const renewLicenceButtonElement = document.querySelector("#is-renew-licence-button");
     if (!isCreate && renewLicenceButtonElement) {
         const doRenew = () => {
-            const url = new URL(window.location.protocol + "//" +
-                window.location.host +
-                urlPrefix + "/licences/new");
+            const url = new URL(window.location.protocol + "//" + window.location.host + urlPrefix + "/licences/new");
             url.searchParams.append("licenceCategoryKey", licenceCategoryKeyElement.value);
             url.searchParams.append("isRenewal", "true");
             url.searchParams.append("licenseeName", document.querySelector("#licenceEdit--licenseeName").value);
-            url.searchParams.append("licenseeBusinessName", document.querySelector("#licenceEdit--licenseeBusinessName").value);
+            url.searchParams.append("licenseeBusinessName", document.querySelector("#licenceEdit--licenseeBusinessName")
+                .value);
             url.searchParams.append("licenseeAddress1", document.querySelector("#licenceEdit--licenseeAddress1").value);
             url.searchParams.append("licenseeAddress2", document.querySelector("#licenceEdit--licenseeAddress2").value);
             url.searchParams.append("licenseeCity", document.querySelector("#licenceEdit--licenseeCity").value);
             url.searchParams.append("licenseeProvince", document.querySelector("#licenceEdit--licenseeProvince").value);
-            url.searchParams.append("licenseePostalCode", document.querySelector("#licenceEdit--licenseePostalCode").value);
+            url.searchParams.append("licenseePostalCode", document.querySelector("#licenceEdit--licenseePostalCode")
+                .value);
             if (bankInstitutionNumberElement) {
                 url.searchParams.append("bankInstitutionNumber", bankInstitutionNumberElement.value);
                 url.searchParams.append("bankTransitNumber", bankTransitNumberElement.value);
-                url.searchParams.append("bankAccountNumber", document.querySelector("#licenceEdit--bankAccountNumber").value);
+                url.searchParams.append("bankAccountNumber", document.querySelector("#licenceEdit--bankAccountNumber")
+                    .value);
             }
             let newStartDate = endDateStringElement.valueAsDate;
             newStartDate.setDate(newStartDate.getDate() + 1);
@@ -854,7 +964,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             clickEvent.preventDefault();
             bulmaJS.confirm({
                 title: "Renew " + licenceAlias,
-                message: "Are you sure you want to copy the information from this " + licenceAlias.toLowerCase() + " to a new one?",
+                message: "Are you sure you want to copy the information from this " +
+                    licenceAlias.toLowerCase() +
+                    " to a new one?",
                 okButton: {
                     text: "Yes, Renew this " + licenceAlias,
                     callbackFunction: doRenew
@@ -863,7 +975,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     }
     if (!isCreate) {
-        document.querySelector("#is-delete-licence-button").addEventListener("click", (clickEvent) => {
+        document
+            .querySelector("#is-delete-licence-button")
+            .addEventListener("click", (clickEvent) => {
             clickEvent.preventDefault();
             const isIssued = !issueLicenceButtonElement;
             const isPast = endDateStringElement.value < cityssm.dateToString(new Date());
@@ -878,12 +992,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
             };
             bulmaJS.confirm({
                 title: "Delete " + licenceAlias,
-                message: "<p>Are you sure you want to delete this " + licenceAlias.toLowerCase() + "?</p>" +
+                message: "<p>Are you sure you want to delete this " +
+                    licenceAlias.toLowerCase() +
+                    "?</p>" +
                     (isIssued
-                        ? "<p>Note that <strong>this " + licenceAlias.toLowerCase() + " has been issued</strong>, and deleting it may cause confusion.</p>"
+                        ? "<p>Note that <strong>this " +
+                            licenceAlias.toLowerCase() +
+                            " has been issued</strong>, and deleting it may cause confusion.</p>"
                         : ""),
                 messageIsHtml: true,
-                contextualColorName: (isPast ? "info" : "warning"),
+                contextualColorName: isPast ? "info" : "warning",
                 okButton: {
                     text: "Yes, Delete " + licenceAlias,
                     callbackFunction: doDelete

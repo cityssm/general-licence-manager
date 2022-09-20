@@ -31,7 +31,7 @@
     "placeOpenBraceOnNewLineForControlBlocks": false
   },
   "exclude": [
-    "cypress/*",
+    "node_modules/*",
     "public-typescript/*"
   ]
 }

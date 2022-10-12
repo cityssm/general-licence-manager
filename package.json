@@ -63,7 +63,7 @@
     "@cityssm/fa-glow": "^0.1.0",
     "@cityssm/mssql-multi-pool": "^2.1.6",
     "@types/activedirectory2": "^1.2.3",
-    "@types/better-sqlite3": "^7.6.0",
+    "@types/better-sqlite3": "^7.6.2",
     "@types/compression": "^1.7.2",
     "@types/cookie-parser": "^1.4.3",
     "@types/csurf": "^1.11.2",

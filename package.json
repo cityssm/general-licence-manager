@@ -82,7 +82,7 @@
     "@types/string-hash": "^1.1.1",
     "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.38.0",
-    "@typescript-eslint/parser": "^5.38.0",
+    "@typescript-eslint/parser": "^5.40.1",
     "cypress": "10.8.0",
     "cypress-axe": "^1.0.0",
     "eslint": "^8.23.1",

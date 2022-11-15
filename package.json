@@ -81,7 +81,7 @@
     "@types/session-file-store": "^1.2.2",
     "@types/string-hash": "^1.1.1",
     "@types/uuid": "^8.3.4",
-    "@typescript-eslint/eslint-plugin": "^5.38.0",
+    "@typescript-eslint/eslint-plugin": "^5.43.0",
     "@typescript-eslint/parser": "^5.38.0",
     "cypress": "10.8.0",
     "cypress-axe": "^1.0.0",

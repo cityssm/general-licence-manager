@@ -1,5 +1,6 @@
 <%
   const urlPrefix = configFunctions.getProperty("reverseProxy.urlPrefix");
+  const isShortTermRental = (licenceCategory.licenceCategory.trim().toLowerCase() === "short term rental");
 %><html>
 <head>
   <meta charset="utf-8" />
@@ -133,7 +134,9 @@
           <% if (licence.licenseeBusinessName !== "") { %>
             <td style="width:50%">
               <p>
-                <strong>Business Name</strong><br />
+                <strong>
+                  <%= (isShortTermRental ? "Short Term Rental Property Address" : "Business Name") %>
+                </strong><br />
                 <%= licence.licenseeBusinessName %>
               </p>
             </td>
@@ -167,27 +170,36 @@
             </td>
             <td style="width:50%">
               <p>
-                <strong>Licence Account Number</strong><br />
+                <strong>
+                  Licence
+                  <%= (isShortTermRental ? "" : "Account") %>
+                  Number</strong><br />
                 <%= licence.licenceNumber %>
               </p>
             </td>
             <td>
               <p>
                 <strong>Amount</strong><br />
-                $<%= licence.licenceFee.toFixed(2) %>
+                $<%= (licence.licenceFee || 0).toFixed(2) %>
               </p>
             </td>
           </tr>
         </table>
         <%
           const specialProvisionsFields = printFunctions.getLicenceFieldsByPrintKeyPiece(licence, "special-provisions");
-          if (specialProvisionsFields && specialProvisionsFields.length > 0) {
+          if ((specialProvisionsFields && specialProvisionsFields.length > 0) || (isShortTermRental && licence.licenceApprovals.length > 0)) {
         %>
           <p class="mt-4">
             <strong>Additional Description or Special Provisions</strong><br />
             <% for (const specialProvisionsField of specialProvisionsFields) { %>
               <%= specialProvisionsField.licenceField %>:
               <%= specialProvisionsField.licenceFieldValue %><br />
+            <% } %>
+            <% if (isShortTermRental) { %>
+              <% for (const licenceApproval of licence.licenceApprovals) { %>
+                <%= licenceApproval.isApproved ? "☑️" : "⬜" %>
+                <%= licenceApproval.licenceApproval %><br />
+              <% } %>
             <% } %>
           </p>
         <%

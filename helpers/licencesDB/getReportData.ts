@@ -10,7 +10,7 @@ import * as configFunctions from "../functions.config.js";
 import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
 import { getCanadianBankName } from "@cityssm/get-canadian-bank-name";
 
-interface ReportParameters {
+export interface ReportParameters {
     [parameterName: string]: string | number;
 }
 

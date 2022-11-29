@@ -1,37 +1,19 @@
 {
-  "compilerOptions": {
-    "target": "ES2017",
-    "module": "ES2020",
-    "moduleResolution": "Node",
-    "isolatedModules": false,
-    "declaration": true,
-    "noImplicitAny": false,
-    "removeComments": true,
-    "allowUnreachableCode": false,
-    "allowSyntheticDefaultImports": true,
-    "resolveJsonModule": true,
-    "esModuleInterop": true
-  },
-  "compileOnSave": true,
-  "buildOnSave": true,
-  "atom": {
-    "rewriteTsconfig": false,
-    "formatOnSave": true
-  },
-  "formatCodeOptions": {
-    "indentSize": 2,
-    "tabSize": 2,
-    "insertSpaceAfterCommaDelimiter": true,
-    "insertSpaceAfterSemicolonInForStatements": true,
-    "insertSpaceBeforeAndAfterBinaryOperators": true,
-    "insertSpaceAfterKeywordsInControlFlowStatements": true,
-    "insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
-    "insertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis": false,
-    "placeOpenBraceOnNewLineForFunctions": false,
-    "placeOpenBraceOnNewLineForControlBlocks": false
-  },
-  "exclude": [
-    "node_modules/*",
-    "public-typescript/*"
-  ]
+    "compilerOptions": {
+        "target": "ES2017",
+        "module": "ES2020",
+        "moduleResolution": "Node",
+        "isolatedModules": false,
+        "declaration": true,
+        "noImplicitAny": false,
+        "removeComments": true,
+        "allowUnreachableCode": false,
+        "allowSyntheticDefaultImports": true,
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true
+    },
+    "compileOnSave": true,
+    "buildOnSave": true,
+    "exclude": ["node_modules/*", "public-typescript/*"]
 }

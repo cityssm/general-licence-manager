@@ -2,28 +2,28 @@ import * as configFunctions from "../../../helpers/functions.config.js";
 import { getCanadianBankName } from "@cityssm/get-canadian-bank-name";
 import { testUpdate } from "../../../test/_globals.js";
 import { logout, login, ajaxDelayMillis } from "../../support/index.js";
-describe("Update - Licences", function () {
-    before(function () {
+describe("Update - Licences", () => {
+    before(() => {
         logout();
         login(testUpdate);
     });
-    it("Has a \"Create\" link on the dashboard", function () {
+    it("Has a \"Create\" link on the dashboard", () => {
         cy.visit("/dashboard");
         cy.get("a[href$='/licences/new']").should("exist");
     });
-    it("Has a \"Create\" link on the Licence Search", function () {
+    it("Has a \"Create\" link on the Licence Search", () => {
         cy.visit("/licences");
         cy.get("a[href$='/licences/new']").should("exist");
     });
-    describe("Create a New Licence", function () {
-        before(function () {
+    describe("Create a New Licence", () => {
+        before(() => {
             cy.visit("/licences/new");
         });
-        it("Has no detectable accessibility issues", function () {
+        it("Has no detectable accessibility issues", () => {
             cy.injectAxe();
             cy.checkA11y();
         });
-        it("Can select a licence category", function () {
+        it("Can select a licence category", () => {
             cy.get("select[name='licenceCategoryKey']")
                 .select(0);
             cy.get("input[name='baseLicenceFee']")
@@ -43,7 +43,7 @@ describe("Update - Licences", function () {
                     .should("not.have.value", "");
             }
         });
-        it("Can unlock the licence number field", function () {
+        it("Can unlock the licence number field", () => {
             cy.get("input[name='licenceNumber']")
                 .should("have.attr", "readonly");
             cy.get("input[name='licenceNumber']")
@@ -54,8 +54,8 @@ describe("Update - Licences", function () {
                 .should("be.focused")
                 .should("not.have.attr", "readonly");
         });
-        it("Can populate basic details", function () {
-            cy.fixture("licence.json").then(function (licenceJSON) {
+        it("Can populate basic details", () => {
+            cy.fixture("licence.json").then((licenceJSON) => {
                 cy.get("input[name='licenseeName']")
                     .clear()
                     .type(licenceJSON.licenseeName);
@@ -70,7 +70,7 @@ describe("Update - Licences", function () {
                     .type(licenceJSON.licenseePostalCode);
                 cy.get("input[name='bankInstitutionNumber']")
                     .invoke("attr", "type")
-                    .then(function (attributeType) {
+                    .then((attributeType) => {
                     if (attributeType !== "hidden") {
                         cy.get("input[name='bankInstitutionNumber']")
                             .clear()
@@ -88,23 +88,23 @@ describe("Update - Licences", function () {
                 });
             });
         });
-        it("Should use the default licensee city and province", function () {
+        it("Should use the default licensee city and province", () => {
             cy.get("input[name='licenseeCity']")
                 .should("have.value", configFunctions.getProperty("defaults.licenseeCity"));
             cy.get("input[name='licenseeProvince']")
                 .should("have.value", configFunctions.getProperty("defaults.licenseeProvince"));
         });
-        it("Should populate custom fields", function () {
-            cy.get("input[name^='field--']").each(function ($fieldElement, index) {
+        it("Should populate custom fields", () => {
+            cy.get("input[name^='field--']").each(($fieldElement, index) => {
                 $fieldElement.val("Field " + index);
             });
         });
-        it("Should check custom approvals", function () {
-            cy.get("input[name^='approval--']").each(function ($approvalElement) {
+        it("Should check custom approvals", () => {
+            cy.get("input[name^='approval--']").each(($approvalElement) => {
                 $approvalElement.prop("checked", true);
             });
         });
-        it("Should submit form and create the licence", function () {
+        it("Should submit form and create the licence", () => {
             cy.get("#form--licenceEdit").submit();
             cy.wait(ajaxDelayMillis);
             cy.location("pathname")
@@ -112,8 +112,8 @@ describe("Update - Licences", function () {
                 .should("contain", "/edit");
         });
     });
-    describe("Update a Licence", function () {
-        before(function () {
+    describe("Update a Licence", () => {
+        before(() => {
             cy.visit("/licences");
             cy.wait(ajaxDelayMillis);
             cy.get("#container--searchResults tr[data-cy='pending'] a")
@@ -125,13 +125,13 @@ describe("Update - Licences", function () {
                 .click();
             cy.wait(ajaxDelayMillis);
         });
-        it("Can update the licence", function () {
+        it("Can update the licence", () => {
             cy.get("#form--licenceEdit").submit();
             cy.get(".modal")
                 .should("contain.text", "Updated Successfully");
             cy.get(".modal button").click();
         });
-        it("Can add a transaction", function () {
+        it("Can add a transaction", () => {
             cy.get("#button--addTransaction")
                 .click();
             cy.get(".modal")
@@ -147,7 +147,7 @@ describe("Update - Licences", function () {
             cy.injectAxe();
             cy.checkA11y();
             cy.get(".modal .is-copy-bank-numbers-button")
-                .then(function ($copyBankButton) {
+                .then(($copyBankButton) => {
                 if (!$copyBankButton.hasClass("is-hidden")) {
                     cy.get(".modal input[name='bankInstitutionNumber']")
                         .should("be.visible")
@@ -162,7 +162,7 @@ describe("Update - Licences", function () {
             cy.get("#table--licenceTransactions tbody tr")
                 .should("have.lengthOf.gt", 0);
         });
-        it("Can issue the licence", function () {
+        it("Can issue the licence", () => {
             cy.get("#is-issue-licence-button")
                 .click();
             cy.get(".modal button[data-cy='ok']")

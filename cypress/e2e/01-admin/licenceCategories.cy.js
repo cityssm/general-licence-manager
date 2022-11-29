@@ -1,23 +1,23 @@
 import { v4 as uuidV4 } from "uuid";
 import { testAdmin } from "../../../test/_globals.js";
 import { logout, login, ajaxDelayMillis } from "../../support/index.js";
-describe("Admin - Licence Categories", function () {
-    before(function () {
+describe("Admin - Licence Categories", () => {
+    before(() => {
         logout();
         login(testAdmin);
     });
     after(logout);
-    beforeEach("Loads page", function () {
+    beforeEach("Loads page", () => {
         cy.visit("/admin/licenceCategories");
         cy.location("pathname").should("equal", "/admin/licenceCategories");
     });
-    it("Has no detectable accessibility issues", function () {
+    it("Has no detectable accessibility issues", () => {
         cy.injectAxe();
         cy.checkA11y();
     });
-    it("Adds a New Licence Category", function () {
+    it("Adds a New Licence Category", () => {
         cy.get("button[data-cy='add-licence-category']").click();
-        var licenceCategory = uuidV4().slice(-10);
+        const licenceCategory = uuidV4().slice(-10);
         cy.get(".modal").should("be.visible");
         cy.get(".modal .modal-card-title")
             .should("contain.text", "Add")
@@ -40,8 +40,8 @@ describe("Admin - Licence Categories", function () {
         cy.get("[data-cy='results']")
             .should("contain.text", licenceCategory);
     });
-    describe("Updates an Existing Licence Category", function () {
-        beforeEach(function () {
+    describe("Updates an Existing Licence Category", () => {
+        beforeEach(() => {
             cy.wait(ajaxDelayMillis);
             cy.get("[data-cy='results'] a.panel-block").first().click();
             cy.get(".modal").should("be.visible");
@@ -50,18 +50,18 @@ describe("Admin - Licence Categories", function () {
             cy.get(".modal input[name='licenceCategory']")
                 .should("be.focused");
         });
-        afterEach(function () {
+        afterEach(() => {
             cy.get(".modal .is-close-modal-button")
                 .first()
                 .click();
             cy.get(".modal").should("not.exist");
         });
-        it("Has no detectable accessibility issues", function () {
+        it("Has no detectable accessibility issues", () => {
             cy.injectAxe();
             cy.checkA11y();
         });
-        it("Updates Main Details", function () {
-            var licenceCategory = uuidV4().slice(-10);
+        it("Updates Main Details", () => {
+            const licenceCategory = uuidV4().slice(-10);
             cy.get(".modal input[name='licenceCategory']")
                 .clear()
                 .clear()
@@ -75,8 +75,8 @@ describe("Admin - Licence Categories", function () {
                 .find("button")
                 .click();
         });
-        it("Adds an Additional Field", function () {
-            var licenceField = uuidV4().slice(-10);
+        it("Adds an Additional Field", () => {
+            const licenceField = uuidV4().slice(-10);
             cy.get(".modal #licenceCategoryFieldAdd--licenceField")
                 .focus()
                 .type(licenceField)
@@ -92,7 +92,7 @@ describe("Admin - Licence Categories", function () {
             cy.get(".modal #container--licenceCategoryFields")
                 .should("contain.text", licenceField);
         });
-        it("Updates an Additional Field", function () {
+        it("Updates an Additional Field", () => {
             cy.get(".modal #container--licenceCategoryFields a.panel-block")
                 .first()
                 .click();
@@ -113,8 +113,8 @@ describe("Admin - Licence Categories", function () {
             cy.wait(ajaxDelayMillis);
             cy.get(".modal").should("have.length", 1);
         });
-        it("Adds an Approval", function () {
-            var licenceApproval = uuidV4().slice(-10);
+        it("Adds an Approval", () => {
+            const licenceApproval = uuidV4().slice(-10);
             cy.get(".modal #licenceCategoryApprovalAdd--licenceApproval")
                 .focus()
                 .type(licenceApproval)
@@ -130,7 +130,7 @@ describe("Admin - Licence Categories", function () {
             cy.get(".modal #container--licenceCategoryApprovals")
                 .should("contain.text", licenceApproval);
         });
-        it("Updates an Approval", function () {
+        it("Updates an Approval", () => {
             cy.get(".modal #container--licenceCategoryApprovals a.panel-block")
                 .first()
                 .click();
@@ -151,8 +151,8 @@ describe("Admin - Licence Categories", function () {
             cy.wait(ajaxDelayMillis);
             cy.get(".modal").should("have.length", 1);
         });
-        it("Adds a Fee", function () {
-            var currentYear = new Date().getFullYear();
+        it("Adds a Fee", () => {
+            const currentYear = new Date().getFullYear();
             cy.get(".modal .is-add-fee-button")
                 .click();
             cy.wait(ajaxDelayMillis);
@@ -177,8 +177,8 @@ describe("Admin - Licence Categories", function () {
             cy.get(".modal")
                 .should("have.length", 1);
         });
-        it("Adds an Additional Fee", function () {
-            var additionalFee = uuidV4().slice(-10);
+        it("Adds an Additional Fee", () => {
+            const additionalFee = uuidV4().slice(-10);
             cy.get(".modal #licenceCategoryAdditionalFeeAdd--additionalFee")
                 .focus()
                 .type(additionalFee)
@@ -194,7 +194,7 @@ describe("Admin - Licence Categories", function () {
             cy.get(".modal #container--licenceCategoryAdditionalFees")
                 .should("contain.text", additionalFee);
         });
-        it("Updates an Additional Fee", function () {
+        it("Updates an Additional Fee", () => {
             cy.get(".modal #container--licenceCategoryAdditionalFees a.panel-block")
                 .first()
                 .click();

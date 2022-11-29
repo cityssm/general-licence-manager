@@ -1,30 +1,30 @@
 import { testAdmin } from "../../../test/_globals.js";
 import { logout, login, ajaxDelayMillis } from "../../support/index.js";
-var isJanuary = function () {
+const isJanuary = () => {
     return (new Date().getMonth() === 1 - 1);
 };
-var proceedIfNotJanuary = function () {
+const proceedIfNotJanuary = () => {
     if (!isJanuary()) {
         cy.get("button[data-cy='proceed']").click();
     }
 };
-describe("Admin - Year-End Process", function () {
-    before(function () {
+describe("Admin - Year-End Process", () => {
+    before(() => {
         logout();
         login(testAdmin);
     });
     after(logout);
-    beforeEach("Loads page", function () {
+    beforeEach("Loads page", () => {
         cy.visit("/admin/yearEnd");
         cy.location("pathname").should("equal", "/admin/yearEnd");
     });
-    it("Has no detectable accessibility issues", function () {
+    it("Has no detectable accessibility issues", () => {
         cy.injectAxe();
         cy.checkA11y();
         proceedIfNotJanuary();
         cy.checkA11y();
     });
-    it("Refreshes the database", function () {
+    it("Refreshes the database", () => {
         proceedIfNotJanuary();
         cy.get("a[data-cy='backup']").click();
         cy.get(".modal")

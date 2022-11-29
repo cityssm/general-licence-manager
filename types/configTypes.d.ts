@@ -34,6 +34,7 @@ export interface Config {
     additionalFeeFunctions?: {
         [additionalFeeFunctionName: string]: AdditionalFeeFunction;
     };
+    customReports?: ReportDefinition[];
 }
 interface ConfigApplication {
     applicationName?: string;
@@ -79,4 +80,10 @@ export interface ConfigBatchExport_RBCPreauthorized {
 export declare type LicenceNumberFunction = "year-fourDigits" | "year-fiveDigits" | "year-sixDigits" | "category-fourDigits" | "category-fiveDigits" | "category-sixDigits" | "category-distinctFourDigits" | "category-distinctFiveDigits" | "category-distinctSixDigits";
 export declare type LicenceLengthFunction = (startDate: Date) => Date;
 export declare type AdditionalFeeFunction = (baseLicenceFee: number) => number;
+export interface ReportDefinition {
+    reportName: string;
+    reportTitle: string;
+    reportDescription?: string;
+    sql: string;
+}
 export {};

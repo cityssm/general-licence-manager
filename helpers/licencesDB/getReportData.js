@@ -25,26 +25,51 @@ const getLicencesByLicenceCategorySQL = (licenceCategoryKey) => {
     for (const licenceField of licenceCategoryDefinition.licenceCategoryFields) {
         let fieldColumnName = "";
         for (let fieldColumnNameIndex = 0; fieldColumnNameIndex <= 100; fieldColumnNameIndex += 1) {
-            fieldColumnName = "field_" + camelCase(licenceField.licenceField) +
-                (fieldColumnNameIndex === 0 ? "" : "_" + fieldColumnNameIndex);
+            fieldColumnName =
+                "field_" +
+                    camelCase(licenceField.licenceField) +
+                    (fieldColumnNameIndex === 0 ? "" : "_" + fieldColumnNameIndex);
             if (!fieldColumnNames.has(fieldColumnName)) {
                 fieldColumnNames.add(fieldColumnName);
                 break;
             }
         }
-        fieldsSql += " max(case when f.licenceFieldKey = ? then f.licenceFieldValue else null end) as " + fieldColumnName + ",";
+        fieldsSql +=
+            " max(case when f.licenceFieldKey = ? then f.licenceFieldValue else null end) as " +
+                fieldColumnName +
+                ",";
         sqlParameters.push(licenceField.licenceFieldKey);
     }
-    const sql = "select l.licenceId as " + licenceId + "," +
-        " c.licenceCategory as " + licenceCategory + "," +
-        " l.licenceNumber as " + licenceNumber + "," +
-        " l.licenseeName as " + licenseeName + "," +
-        " l.licenseeBusinessName as " + licenseeBusinessName + "," +
-        " l.licenseeAddress1 as " + licenseeAddress1 + "," +
-        " l.licenseeAddress2 as " + licenseeAddress2 + "," +
-        " l.licenseeCity as " + licenseeCity + "," +
-        " l.licenseeProvince as " + licenseeProvince + "," +
-        " l.licenseePostalCode as " + licenseePostalCode + "," +
+    const sql = "select l.licenceId as " +
+        licenceId +
+        "," +
+        " c.licenceCategory as " +
+        licenceCategory +
+        "," +
+        " l.licenceNumber as " +
+        licenceNumber +
+        "," +
+        " l.licenseeName as " +
+        licenseeName +
+        "," +
+        " l.licenseeBusinessName as " +
+        licenseeBusinessName +
+        "," +
+        " l.licenseeAddress1 as " +
+        licenseeAddress1 +
+        "," +
+        " l.licenseeAddress2 as " +
+        licenseeAddress2 +
+        "," +
+        " l.licenseeCity as " +
+        licenseeCity +
+        "," +
+        " l.licenseeProvince as " +
+        licenseeProvince +
+        "," +
+        " l.licenseePostalCode as " +
+        licenseePostalCode +
+        "," +
         fieldsSql +
         " userFn_dateIntegerToString(l.startDate) as startDateString," +
         " userFn_dateIntegerToString(l.endDate) as endDateString," +
@@ -67,106 +92,141 @@ const getLicencesByLicenceCategorySQL = (licenceCategoryKey) => {
 export const getReportData = (reportName, reportParameters) => {
     let sql;
     let sqlParameters = [];
-    switch (reportName) {
-        case "licences-all":
-            sql = "select * from Licences";
-            break;
-        case "licences-byLicenceCategory":
-            const report = getLicencesByLicenceCategorySQL(reportParameters.licenceCategoryKey);
-            sql = report.sql;
-            sqlParameters = report.sqlParameters;
-            break;
-        case "licences-formatted":
-            let issuedFilter = "";
-            if (reportParameters.issued && reportParameters.issued !== "") {
-                issuedFilter = (reportParameters.issued === "false"
-                    ? " and l.issueDate is null"
-                    : " and l.issueDate is not null");
+    const customReport = configFunctions.getCustomReport(reportName);
+    if (customReport) {
+        sql = customReport.sql;
+    }
+    else {
+        switch (reportName) {
+            case "licences-all":
+                sql = "select * from Licences";
+                break;
+            case "licences-byLicenceCategory":
+                const report = getLicencesByLicenceCategorySQL(reportParameters.licenceCategoryKey);
+                sql = report.sql;
+                sqlParameters = report.sqlParameters;
+                break;
+            case "licences-formatted":
+                let issuedFilter = "";
+                if (reportParameters.issued && reportParameters.issued !== "") {
+                    issuedFilter =
+                        reportParameters.issued === "false"
+                            ? " and l.issueDate is null"
+                            : " and l.issueDate is not null";
+                }
+                sql =
+                    "select l.licenceId as " +
+                        licenceId +
+                        "," +
+                        " c.licenceCategory as " +
+                        licenceCategory +
+                        "," +
+                        " l.licenceNumber as " +
+                        licenceNumber +
+                        "," +
+                        " l.licenseeName as " +
+                        licenseeName +
+                        "," +
+                        " l.licenseeBusinessName as " +
+                        licenseeBusinessName +
+                        "," +
+                        " l.licenseeAddress1 as " +
+                        licenseeAddress1 +
+                        "," +
+                        " l.licenseeAddress2 as " +
+                        licenseeAddress2 +
+                        "," +
+                        " l.licenseeCity as " +
+                        licenseeCity +
+                        "," +
+                        " l.licenseeProvince as " +
+                        licenseeProvince +
+                        "," +
+                        " l.licenseePostalCode as " +
+                        licenseePostalCode +
+                        "," +
+                        " userFn_dateIntegerToString(l.startDate) as startDateString," +
+                        " userFn_dateIntegerToString(l.endDate) as endDateString," +
+                        " userFn_dateIntegerToString(l.issueDate) as issueDateString" +
+                        " from Licences l" +
+                        " left join LicenceCategories c on l.licenceCategoryKey = c.licenceCategoryKey" +
+                        " where l.recordDelete_timeMillis is null" +
+                        issuedFilter +
+                        " order by startDate desc, endDate desc, licenceId";
+                break;
+            case "licenceAdditionalFees-all":
+                sql = "select * from LicenceAdditionalFees";
+                break;
+            case "licenceApprovals-all":
+                sql = "select * from LicenceApprovals";
+                break;
+            case "licenceCategories-all":
+                sql = "select * from LicenceCategories";
+                break;
+            case "licenceCategoryAdditionalFees-all":
+                sql = "select * from LicenceCategoryAdditionalFees";
+                break;
+            case "licenceCategoryApprovals-all":
+                sql = "select * from LicenceCategoryApprovals";
+                break;
+            case "licenceCategoryFees-all":
+                sql = "select * from LicenceCategoryFees";
+                break;
+            case "licenceCategoryFields-all":
+                sql = "select * from LicenceCategoryFields";
+                break;
+            case "licenceFields-all":
+                sql = "select * from LicenceFields";
+                break;
+            case "licenceTransactions-all":
+                sql = "select * from LicenceTransactions";
+                break;
+            case "licenceTransactions-byDate":
+                let dateFilter = "";
+                if (reportParameters.transactionDateString &&
+                    reportParameters.transactionDateString !== "") {
+                    dateFilter = " and t.transactionDate = ?";
+                    sqlParameters.push(dateTimeFunctions.dateStringToInteger(reportParameters.transactionDateString));
+                }
+                if (reportParameters.batchDateString && reportParameters.batchDateString !== "") {
+                    dateFilter = " and t.batchDate = ?";
+                    sqlParameters.push(dateTimeFunctions.dateStringToInteger(reportParameters.batchDateString));
+                }
+                sql =
+                    "select" +
+                        " c.licenceCategory as " +
+                        licenceCategory +
+                        "," +
+                        " l.licenceNumber as " +
+                        licenceNumber +
+                        "," +
+                        " l.licenseeName, l.licenseeBusinessName," +
+                        " userFn_dateIntegerToString(t.transactionDate) as transactionDateString," +
+                        " userFn_timeIntegerToString(t.transactionTime) as transactionTimeString," +
+                        " t.transactionAmount," +
+                        (configFunctions.getProperty("settings.includeBatches")
+                            ? " userFn_dateIntegerToString(t.batchDate) as batchDateString," +
+                                " userFn_getCanadianBankName(t.bankInstitutionNumber, t.bankTransitNumber) as bankName," +
+                                " t.bankInstitutionNumber," +
+                                " t.bankTransitNumber," +
+                                " t.bankAccountNumber,"
+                            : "") +
+                        " t.externalReceiptNumber," +
+                        " t.transactionNote" +
+                        " from LicenceTransactions t" +
+                        " left join Licences l on t.licenceId = l.licenceId" +
+                        " left join LicenceCategories c on l.licenceCategoryKey = c.licenceCategoryKey" +
+                        " where t.recordDelete_timeMillis is null" +
+                        dateFilter +
+                        " order by t.transactionDate, t.transactionTime";
+                break;
+            case "relatedLicences-all":
+                sql = "select * from RelatedLicences";
+                break;
+            default: {
+                return undefined;
             }
-            sql = "select l.licenceId as " + licenceId + "," +
-                " c.licenceCategory as " + licenceCategory + "," +
-                " l.licenceNumber as " + licenceNumber + "," +
-                " l.licenseeName as " + licenseeName + "," +
-                " l.licenseeBusinessName as " + licenseeBusinessName + "," +
-                " l.licenseeAddress1 as " + licenseeAddress1 + "," +
-                " l.licenseeAddress2 as " + licenseeAddress2 + "," +
-                " l.licenseeCity as " + licenseeCity + "," +
-                " l.licenseeProvince as " + licenseeProvince + "," +
-                " l.licenseePostalCode as " + licenseePostalCode + "," +
-                " userFn_dateIntegerToString(l.startDate) as startDateString," +
-                " userFn_dateIntegerToString(l.endDate) as endDateString," +
-                " userFn_dateIntegerToString(l.issueDate) as issueDateString" +
-                " from Licences l" +
-                " left join LicenceCategories c on l.licenceCategoryKey = c.licenceCategoryKey" +
-                " where l.recordDelete_timeMillis is null" +
-                issuedFilter +
-                " order by startDate desc, endDate desc, licenceId";
-            break;
-        case "licenceAdditionalFees-all":
-            sql = "select * from LicenceAdditionalFees";
-            break;
-        case "licenceApprovals-all":
-            sql = "select * from LicenceApprovals";
-            break;
-        case "licenceCategories-all":
-            sql = "select * from LicenceCategories";
-            break;
-        case "licenceCategoryAdditionalFees-all":
-            sql = "select * from LicenceCategoryAdditionalFees";
-            break;
-        case "licenceCategoryApprovals-all":
-            sql = "select * from LicenceCategoryApprovals";
-            break;
-        case "licenceCategoryFees-all":
-            sql = "select * from LicenceCategoryFees";
-            break;
-        case "licenceCategoryFields-all":
-            sql = "select * from LicenceCategoryFields";
-            break;
-        case "licenceFields-all":
-            sql = "select * from LicenceFields";
-            break;
-        case "licenceTransactions-all":
-            sql = "select * from LicenceTransactions";
-            break;
-        case "licenceTransactions-byDate":
-            let dateFilter = "";
-            if (reportParameters.transactionDateString && reportParameters.transactionDateString !== "") {
-                dateFilter = " and t.transactionDate = ?";
-                sqlParameters.push(dateTimeFunctions.dateStringToInteger(reportParameters.transactionDateString));
-            }
-            if (reportParameters.batchDateString && reportParameters.batchDateString !== "") {
-                dateFilter = " and t.batchDate = ?";
-                sqlParameters.push(dateTimeFunctions.dateStringToInteger(reportParameters.batchDateString));
-            }
-            sql = "select" +
-                " c.licenceCategory as " + licenceCategory + "," +
-                " l.licenceNumber as " + licenceNumber + "," +
-                " l.licenseeName, l.licenseeBusinessName," +
-                " userFn_dateIntegerToString(t.transactionDate) as transactionDateString," +
-                " userFn_timeIntegerToString(t.transactionTime) as transactionTimeString," +
-                " t.transactionAmount," +
-                (configFunctions.getProperty("settings.includeBatches") ?
-                    " userFn_dateIntegerToString(t.batchDate) as batchDateString," +
-                        " userFn_getCanadianBankName(t.bankInstitutionNumber, t.bankTransitNumber) as bankName," +
-                        " t.bankInstitutionNumber," +
-                        " t.bankTransitNumber," +
-                        " t.bankAccountNumber,"
-                    : "") +
-                " t.externalReceiptNumber," +
-                " t.transactionNote" +
-                " from LicenceTransactions t" +
-                " left join Licences l on t.licenceId = l.licenceId" +
-                " left join LicenceCategories c on l.licenceCategoryKey = c.licenceCategoryKey" +
-                " where t.recordDelete_timeMillis is null" +
-                dateFilter +
-                " order by t.transactionDate, t.transactionTime";
-            break;
-        case "relatedLicences-all":
-            sql = "select * from RelatedLicences";
-            break;
-        default:
-            return undefined;
+        }
     }
     const database = sqlite(databasePath, {
         readonly: true
@@ -174,8 +234,7 @@ export const getReportData = (reportName, reportParameters) => {
     database.function("userFn_dateIntegerToString", dateTimeFunctions.dateIntegerToString);
     database.function("userFn_timeIntegerToString", dateTimeFunctions.timeIntegerToString);
     database.function("userFn_getCanadianBankName", getCanadianBankName);
-    const rows = database.prepare(sql)
-        .all(sqlParameters);
+    const rows = database.prepare(sql).all(sqlParameters);
     database.close();
     return rows;
 };

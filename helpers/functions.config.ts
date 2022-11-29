@@ -3,7 +3,6 @@ import { config } from "../data/config.js";
 
 import type * as configTypes from "../types/configTypes";
 
-
 /*
  * SET UP FALLBACK VALUES
  */
@@ -45,7 +44,7 @@ configFallbackValues.set("settings.includeYearEnd", false);
 
 configFallbackValues.set("licenceLengthFunctions", {});
 configFallbackValues.set("additionalFeeFunctions", {});
-
+configFallbackValues.set("customReports", []);
 
 /*
  * Set up function overloads
@@ -66,7 +65,9 @@ export function getProperty(propertyName: "users.isAdmin"): string[];
 
 export function getProperty(propertyName: "defaults.licenseeCity"): string;
 export function getProperty(propertyName: "defaults.licenseeProvince"): string;
-export function getProperty(propertyName: "defaults.licenceNumberFunction"): configTypes.LicenceNumberFunction;
+export function getProperty(
+    propertyName: "defaults.licenceNumberFunction"
+): configTypes.LicenceNumberFunction;
 
 export function getProperty(propertyName: "settings.licenceAlias"): string;
 export function getProperty(propertyName: "settings.licenceAliasPlural"): string;
@@ -81,12 +82,14 @@ export function getProperty(propertyName: "settings.includeYearEnd"): boolean;
 export function getProperty(propertyName: "exports.batches"): configTypes.ConfigBatchExport;
 
 export function getProperty(propertyName: "licenceLengthFunctions"): {
-  [licenceLengthFunctionName: string]: configTypes.LicenceLengthFunction;
+    [licenceLengthFunctionName: string]: configTypes.LicenceLengthFunction;
 };
 
 export function getProperty(propertyName: "additionalFeeFunctions"): {
-  [additonalFeeFunctionName: string]: configTypes.AdditionalFeeFunction;
+    [additionalFeeFunctionName: string]: configTypes.AdditionalFeeFunction;
 };
+
+export function getProperty(propertyName: "customReports"): configTypes.ReportDefinition[];
 
 export function getProperty(propertyName: "reverseProxy.disableCompression"): boolean;
 export function getProperty(propertyName: "reverseProxy.disableEtag"): boolean;
@@ -98,45 +101,51 @@ export function getProperty(propertyName: "session.maxAgeMillis"): number;
 export function getProperty(propertyName: "session.secret"): string;
 
 export function getProperty(propertyName: string): unknown {
+    const propertyNameSplit = propertyName.split(".");
 
-  const propertyNameSplit = propertyName.split(".");
+    let currentObject = config;
 
-  let currentObject = config;
+    for (const propertyNamePiece of propertyNameSplit) {
+        if (Object.prototype.hasOwnProperty.call(currentObject, propertyNamePiece)) {
+            currentObject = currentObject[propertyNamePiece];
+            continue;
+        }
 
-  for (const propertyNamePiece of propertyNameSplit) {
-
-    if (Object.prototype.hasOwnProperty.call(currentObject, propertyNamePiece)) {
-      currentObject = currentObject[propertyNamePiece];
-      continue;
+        return configFallbackValues.get(propertyName);
     }
 
-    return configFallbackValues.get(propertyName);
-  }
-
-  return currentObject;
-
+    return currentObject;
 }
 
-export const keepAliveMillis =
-  getProperty("session.doKeepAlive")
+export const keepAliveMillis = getProperty("session.doKeepAlive")
     ? Math.max(
-      getProperty("session.maxAgeMillis") / 2,
-      getProperty("session.maxAgeMillis") - (10 * 60 * 1000)
-    )
+          getProperty("session.maxAgeMillis") / 2,
+          getProperty("session.maxAgeMillis") - 10 * 60 * 1000
+      )
     : 0;
 
 export const getLicenceLengthFunctionNames = (): string[] => {
-  return Object.keys(getProperty("licenceLengthFunctions"));
+    return Object.keys(getProperty("licenceLengthFunctions"));
 };
 
-export const getLicenceLengthFunction = (licenceLengthFunctionName: string): configTypes.LicenceLengthFunction => {
-  return getProperty("licenceLengthFunctions")[licenceLengthFunctionName];
+export const getLicenceLengthFunction = (
+    licenceLengthFunctionName: string
+): configTypes.LicenceLengthFunction => {
+    return getProperty("licenceLengthFunctions")[licenceLengthFunctionName];
 };
 
 export const getAdditionalFeeFunctionNames = (): string[] => {
-  return Object.keys(getProperty("additionalFeeFunctions")) || [];
+    return Object.keys(getProperty("additionalFeeFunctions")) || [];
 };
 
-export const getAdditionalFeeFunction = (additionalFeeFunctionName: string): configTypes.AdditionalFeeFunction => {
-  return getProperty("additionalFeeFunctions")[additionalFeeFunctionName];
+export const getAdditionalFeeFunction = (
+    additionalFeeFunctionName: string
+): configTypes.AdditionalFeeFunction => {
+    return getProperty("additionalFeeFunctions")[additionalFeeFunctionName];
+};
+
+export const getCustomReport = (reportName: string): configTypes.ReportDefinition => {
+    return getProperty("customReports").find((possibleReportDefinition) => {
+        return possibleReportDefinition.reportName === reportName;
+    });
 };

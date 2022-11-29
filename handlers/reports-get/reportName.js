@@ -9,9 +9,7 @@ export const handler = (request, response) => {
             break;
     }
     if (!rows) {
-        return response
-            .status(404)
-            .json({
+        return response.status(404).json({
             success: false,
             message: "Report Not Found"
         });

@@ -115,6 +115,32 @@
         </div>
       </div>
     </div>
+    <% if (configFunctions.getProperty("customReports").length > 0) { %>
+      <div class="panel">
+        <h2 class="panel-heading">Custom Reports</h2>
+        <% for (const customReport of configFunctions.getProperty("customReports")) { %>
+          <% uid = stringFns.getUID(); %>
+          <a class="panel-block align-items-flex-start"
+            href="<%= urlPrefix %>/reports/<%= customReport.reportName %>"
+            aria-labelledby="h--<%= uid %>"
+            aria-describedby="p--<%= uid %>">
+            <div class="has-text-centered my-2 ml-2 mr-4">
+              <span class="icon has-text-info" aria-hidden="true">
+                <i class="fas fa-fw fa-2x fa-file-csv"></i>
+              </span>
+            </div>
+            <div>
+              <h3 class="title is-5 is-marginless" id="h--<%= uid %>">
+                <%= customReport.reportTitle %>
+              </h3>
+              <p id="p--<%= uid %>">
+                <%= customReport.reportDescription %>
+              </p>
+            </div>
+          </a>
+        <% } %>
+      </div>
+    <% } %>
   </div>
   <div class="column">
     <div class="panel">

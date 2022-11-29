@@ -29,6 +29,7 @@ configFallbackValues.set("settings.includeReplacementFee", true);
 configFallbackValues.set("settings.includeYearEnd", false);
 configFallbackValues.set("licenceLengthFunctions", {});
 configFallbackValues.set("additionalFeeFunctions", {});
+configFallbackValues.set("customReports", []);
 export function getProperty(propertyName) {
     const propertyNameSplit = propertyName.split(".");
     let currentObject = config;
@@ -42,7 +43,7 @@ export function getProperty(propertyName) {
     return currentObject;
 }
 export const keepAliveMillis = getProperty("session.doKeepAlive")
-    ? Math.max(getProperty("session.maxAgeMillis") / 2, getProperty("session.maxAgeMillis") - (10 * 60 * 1000))
+    ? Math.max(getProperty("session.maxAgeMillis") / 2, getProperty("session.maxAgeMillis") - 10 * 60 * 1000)
     : 0;
 export const getLicenceLengthFunctionNames = () => {
     return Object.keys(getProperty("licenceLengthFunctions"));
@@ -55,4 +56,9 @@ export const getAdditionalFeeFunctionNames = () => {
 };
 export const getAdditionalFeeFunction = (additionalFeeFunctionName) => {
     return getProperty("additionalFeeFunctions")[additionalFeeFunctionName];
+};
+export const getCustomReport = (reportName) => {
+    return getProperty("customReports").find((possibleReportDefinition) => {
+        return possibleReportDefinition.reportName === reportName;
+    });
 };

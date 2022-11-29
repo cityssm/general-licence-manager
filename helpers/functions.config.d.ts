@@ -26,8 +26,9 @@ export declare function getProperty(propertyName: "licenceLengthFunctions"): {
     [licenceLengthFunctionName: string]: configTypes.LicenceLengthFunction;
 };
 export declare function getProperty(propertyName: "additionalFeeFunctions"): {
-    [additonalFeeFunctionName: string]: configTypes.AdditionalFeeFunction;
+    [additionalFeeFunctionName: string]: configTypes.AdditionalFeeFunction;
 };
+export declare function getProperty(propertyName: "customReports"): configTypes.ReportDefinition[];
 export declare function getProperty(propertyName: "reverseProxy.disableCompression"): boolean;
 export declare function getProperty(propertyName: "reverseProxy.disableEtag"): boolean;
 export declare function getProperty(propertyName: "reverseProxy.urlPrefix"): string;
@@ -40,3 +41,4 @@ export declare const getLicenceLengthFunctionNames: () => string[];
 export declare const getLicenceLengthFunction: (licenceLengthFunctionName: string) => configTypes.LicenceLengthFunction;
 export declare const getAdditionalFeeFunctionNames: () => string[];
 export declare const getAdditionalFeeFunction: (additionalFeeFunctionName: string) => configTypes.AdditionalFeeFunction;
+export declare const getCustomReport: (reportName: string) => configTypes.ReportDefinition;

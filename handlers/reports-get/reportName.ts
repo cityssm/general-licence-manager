@@ -4,38 +4,34 @@ import { getReportData } from "../../helpers/licencesDB/getReportData.js";
 
 import papaparse from "papaparse";
 
-
 export const handler: RequestHandler = (request, response) => {
+    const reportName = request.params.reportName;
 
-  const reportName = request.params.reportName;
+    let rows: unknown[];
 
-  let rows: unknown[];
+    switch (reportName) {
+        default:
+            rows = getReportData(reportName, request.query);
+            break;
+    }
 
-  switch (reportName) {
+    if (!rows) {
+        return response.status(404).json({
+            success: false,
+            message: "Report Not Found"
+        });
+    }
 
-    default:
-      rows = getReportData(reportName, request.query);
-      break;
-  }
+    const csv = papaparse.unparse(rows);
 
-  if (!rows) {
-    return response
-      .status(404)
-      .json({
-        success: false,
-        message: "Report Not Found"
-      });
-  }
+    response.setHeader(
+        "Content-Disposition",
+        "attachment; filename=" + reportName + "-" + Date.now().toString() + ".csv"
+    );
 
-  const csv = papaparse.unparse(rows);
+    response.setHeader("Content-Type", "text/csv");
 
-  response.setHeader("Content-Disposition",
-    "attachment; filename=" + reportName + "-" + Date.now().toString() + ".csv");
-
-  response.setHeader("Content-Type", "text/csv");
-
-  response.send(csv);
+    response.send(csv);
 };
-
 
 export default handler;

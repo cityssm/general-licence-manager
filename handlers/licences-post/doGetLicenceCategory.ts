@@ -8,7 +8,8 @@ export const handler: RequestHandler = async (request, response) => {
   const licenceCategory = getLicenceCategory(request.body.licenceCategoryKey, {
     includeApprovals: true,
     includeFees: "current",
-    includeFields: true
+    includeFields: true,
+    includeAdditionalFees: true
   });
 
   response.json({

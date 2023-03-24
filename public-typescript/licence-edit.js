@@ -633,6 +633,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         '<p class="message-body">Note that you are adding a fee to an expired licence.</p>' +
                         "</div>");
                 }
+            },
+            onremoved: () => {
+                bulmaJS.toggleHtmlClipped();
             }
         });
     };

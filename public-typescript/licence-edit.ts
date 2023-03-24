@@ -976,6 +976,9 @@ declare const bulmaJS: BulmaJS;
                                 "</div>"
                         );
                 }
+            },
+            onremoved: () => {
+                bulmaJS.toggleHtmlClipped();
             }
         });
     };

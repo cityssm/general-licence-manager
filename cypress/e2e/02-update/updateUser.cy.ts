@@ -5,13 +5,12 @@ import { logout, login } from "../../support/index.js";
 
 describe("Update User", () => {
 
-  before(logout);
-
-  after(logout);
-
-  it("Logs In Successfully", () => {
-    login(testUpdate);
+  beforeEach(() => {
+    logout();
+    login(testUpdate)
   });
+
+  afterEach(logout);
 
   describe("Dashboard", () => {
     before(() => {

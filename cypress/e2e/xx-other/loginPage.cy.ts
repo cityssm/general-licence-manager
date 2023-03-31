@@ -3,7 +3,10 @@ import { logout } from "../../support/index.js";
 
 describe("Login Page", () => {
 
-  before(logout);
+  beforeEach('Loads Page', () => {
+    logout();
+    cy.visit("/login");
+  });
 
   it("Has no detectable accessibility issues", () => {
     cy.injectAxe();

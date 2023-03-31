@@ -5,13 +5,12 @@ import { logout, login } from "../../support/index.js";
 
 describe("Read Only User", () => {
 
-  before(logout);
-
-  after(logout);
-
-  it("Logs In Successfully", () => {
-    login(testView);
+  beforeEach(() => {
+    logout();
+    login(testView)
   });
+
+  afterEach(logout);
 
   describe("Dashboard", () => {
     before(() => {

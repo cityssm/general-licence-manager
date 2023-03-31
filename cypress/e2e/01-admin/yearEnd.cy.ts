@@ -19,17 +19,14 @@ const proceedIfNotJanuary = () => {
 
 describe("Admin - Year-End Process", () => {
 
-  before(() => {
+  beforeEach('Loads Page', () => {
     logout();
     login(testAdmin)
-  });
-
-  after(logout);
-
-  beforeEach("Loads page", () => {
     cy.visit("/admin/yearEnd");
     cy.location("pathname").should("equal", "/admin/yearEnd");
   });
+
+  afterEach(logout);
 
   it("Has no detectable accessibility issues", () => {
     cy.injectAxe();

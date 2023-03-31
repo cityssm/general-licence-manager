@@ -2,15 +2,13 @@ import { v4 as uuidV4 } from "uuid";
 import { testAdmin } from "../../../test/_globals.js";
 import { logout, login, ajaxDelayMillis } from "../../support/index.js";
 describe("Admin - Licence Categories", () => {
-    before(() => {
+    beforeEach('Loads Page', () => {
         logout();
         login(testAdmin);
-    });
-    after(logout);
-    beforeEach("Loads page", () => {
         cy.visit("/admin/licenceCategories");
         cy.location("pathname").should("equal", "/admin/licenceCategories");
     });
+    afterEach(logout);
     it("Has no detectable accessibility issues", () => {
         cy.injectAxe();
         cy.checkA11y();

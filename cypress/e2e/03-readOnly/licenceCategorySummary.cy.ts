@@ -4,13 +4,13 @@ import { logout, login, ajaxDelayMillis } from "../../support/index.js";
 
 describe("Licence Category Summary", () => {
 
-  before(() => {
+  beforeEach(() => {
     logout();
     login(testView);
     cy.visit("/licences/licenceCategorySummary");
   });
 
-  after(logout);
+  afterEach(logout);
 
   it("Has no detectable accessibility issues", () => {
     cy.wait(ajaxDelayMillis);

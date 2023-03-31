@@ -1,11 +1,11 @@
 import { testView } from "../../../test/_globals.js";
 import { logout, login } from "../../support/index.js";
 describe("Read Only User", () => {
-    before(logout);
-    after(logout);
-    it("Logs In Successfully", () => {
+    beforeEach(() => {
+        logout();
         login(testView);
     });
+    afterEach(logout);
     describe("Dashboard", () => {
         before(() => {
             cy.visit("/dashboard");

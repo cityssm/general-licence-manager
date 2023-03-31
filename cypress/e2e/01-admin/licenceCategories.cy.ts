@@ -9,17 +9,14 @@ import { logout, login, ajaxDelayMillis } from "../../support/index.js";
 
 describe("Admin - Licence Categories", () => {
 
-  before(() => {
+  beforeEach('Loads Page', () => {
     logout();
     login(testAdmin)
-  });
-
-  after(logout);
-
-  beforeEach("Loads page", () => {
     cy.visit("/admin/licenceCategories");
     cy.location("pathname").should("equal", "/admin/licenceCategories");
   });
+
+  afterEach(logout);
 
   it("Has no detectable accessibility issues", () => {
     cy.injectAxe();

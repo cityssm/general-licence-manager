@@ -4,6 +4,7 @@ import type { LicenceLengthFunction } from "../types/configTypes";
 const endOfMonthNextYear = (startDate: Date, javascriptMonthNumber: number): Date => {
 
   const endDate = new Date();
+  endDate.setDate(1)
   endDate.setFullYear(startDate.getFullYear() + 1);
   endDate.setMonth(javascriptMonthNumber + 1);
   endDate.setDate(0);

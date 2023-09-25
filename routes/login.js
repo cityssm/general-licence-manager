@@ -1,36 +1,37 @@
-import { Router } from "express";
-import Debug from "debug";
-import * as configFunctions from "../helpers/functions.config.js";
-import * as authenticationFunctions from "../helpers/functions.authentication.js";
-import { useTestDatabases } from "../data/databasePaths.js";
-const debug = Debug("general-licence-manager:login");
+import { Router } from 'express';
+import Debug from 'debug';
+import * as configFunctions from '../helpers/functions.config.js';
+import * as authenticationFunctions from '../helpers/functions.authentication.js';
+import { useTestDatabases } from '../data/databasePaths.js';
+const debug = Debug('general-licence-manager:login');
 export const router = Router();
-const getSafeRedirectURL = (possibleRedirectURL = "") => {
-    const urlPrefix = configFunctions.getProperty("reverseProxy.urlPrefix");
+const getSafeRedirectURL = (possibleRedirectURL = '') => {
+    const urlPrefix = configFunctions.getProperty('reverseProxy.urlPrefix');
     const urlToCheck = (possibleRedirectURL.startsWith(urlPrefix)
         ? possibleRedirectURL.slice(urlPrefix.length)
         : possibleRedirectURL).toLowerCase();
     switch (urlToCheck) {
-        case "/admin/cleanup":
-        case "/admin/licenceCategories":
-        case "/admin/yearEnd":
-        case "/licences":
-        case "/reports":
+        case '/admin/cleanup':
+        case '/admin/licenceCategories':
+        case '/admin/yearEnd':
+        case '/licences':
+        case '/reports':
             return urlPrefix + urlToCheck;
     }
-    return urlPrefix + "/dashboard";
+    return urlPrefix + '/dashboard';
 };
-router.route("/")
+router
+    .route('/')
     .get((request, response) => {
-    const sessionCookieName = configFunctions.getProperty("session.cookieName");
+    const sessionCookieName = configFunctions.getProperty('session.cookieName');
     if (request.session.user && request.cookies[sessionCookieName]) {
-        const redirectURL = getSafeRedirectURL((request.query.redirect || ""));
+        const redirectURL = getSafeRedirectURL((request.query.redirect || ''));
         response.redirect(redirectURL);
     }
     else {
-        response.render("login", {
-            userName: "",
-            message: "",
+        response.render('login', {
+            userName: '',
+            message: '',
             redirect: request.query.redirect,
             useTestDatabases
         });
@@ -41,11 +42,13 @@ router.route("/")
     const passwordPlain = request.body.password;
     const redirectURL = getSafeRedirectURL(request.body.redirect);
     let isAuthenticated = false;
-    if (userName.charAt(0) === "*") {
+    if (userName.charAt(0) === '*') {
         if (useTestDatabases && userName === passwordPlain) {
-            isAuthenticated = configFunctions.getProperty("users.testing").includes(userName);
+            isAuthenticated = configFunctions
+                .getProperty('users.testing')
+                .includes(userName);
             if (isAuthenticated) {
-                debug("Authenticated testing user: " + userName);
+                debug('Authenticated testing user: ' + userName);
             }
         }
     }
@@ -55,16 +58,19 @@ router.route("/")
     let userObject;
     if (isAuthenticated) {
         const userNameLowerCase = userName.toLowerCase();
-        const canLogin = configFunctions.getProperty("users.canLogin")
+        const canLogin = configFunctions
+            .getProperty('users.canLogin')
             .some((currentUserName) => {
             return userNameLowerCase === currentUserName.toLowerCase();
         });
         if (canLogin) {
-            const canUpdate = configFunctions.getProperty("users.canUpdate")
+            const canUpdate = configFunctions
+                .getProperty('users.canUpdate')
                 .some((currentUserName) => {
                 return userNameLowerCase === currentUserName.toLowerCase();
             });
-            const isAdmin = configFunctions.getProperty("users.isAdmin")
+            const isAdmin = configFunctions
+                .getProperty('users.isAdmin')
                 .some((currentUserName) => {
                 return userNameLowerCase === currentUserName.toLowerCase();
             });
@@ -82,9 +88,9 @@ router.route("/")
         response.redirect(redirectURL);
     }
     else {
-        response.render("login", {
+        response.render('login', {
             userName,
-            message: "Login Failed",
+            message: 'Login Failed',
             redirect: redirectURL,
             useTestDatabases
         });

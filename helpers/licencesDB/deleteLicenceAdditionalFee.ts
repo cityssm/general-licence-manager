@@ -1,57 +1,60 @@
-import sqlite from "better-sqlite3";
-import { licencesDB as databasePath } from "../../data/databasePaths.js";
+import sqlite from 'better-sqlite3'
+import { licencesDB as databasePath } from '../../data/databasePaths.js'
 
-import type * as recordTypes from "../../types/recordTypes";
-
+import type * as recordTypes from '../../types/recordTypes'
 
 interface DeleteLicenceAdditionalFeeReturn {
-  licenceFee: number;
+  licenceFee: number
 }
 
+export const deleteLicenceAdditionalFee = (
+  licenceId: string | number,
+  licenceAdditionalFeeKey: string,
+  requestSession: recordTypes.PartialSession
+): DeleteLicenceAdditionalFeeReturn => {
+  const database = sqlite(databasePath)
 
-export const deleteLicenceAdditionalFee =
-  (licenceId: string | number, licenceAdditionalFeeKey: string, requestSession: recordTypes.PartialSession): DeleteLicenceAdditionalFeeReturn => {
+  const licenceFees = database
+    .prepare(
+      'select licenceFee, additionalFeeAmount' +
+        ' from Licences l' +
+        ' left join LicenceAdditionalFees f on l.licenceId = f.licenceId' +
+        ' where l.licenceId = ?' +
+        ' and f.licenceAdditionalFeeKey = ?' +
+        ' and l.recordDelete_timeMillis is null'
+    )
+    .get(licenceId, licenceAdditionalFeeKey) as {
+    licenceFee: number
+    additionalFeeAmount: number
+  }
 
-    const database = sqlite(databasePath);
+  const rightNowMillis = Date.now()
 
-    const licenceFees: {
-      licenceFee: number;
-      additionalFeeAmount: number;
-    } = database.prepare("select licenceFee, additionalFeeAmount" +
-      " from Licences l" +
-      " left join LicenceAdditionalFees f on l.licenceId = f.licenceId" +
-      " where l.licenceId = ?" +
-      " and f.licenceAdditionalFeeKey = ?" +
-      " and l.recordDelete_timeMillis is null")
-      .get(licenceId, licenceAdditionalFeeKey);
+  database
+    .prepare(
+      'delete from LicenceAdditionalFees' +
+        ' where licenceId = ?' +
+        ' and licenceAdditionalFeeKey = ?'
+    )
+    .run(licenceId, licenceAdditionalFeeKey)
 
-    const rightNowMillis = Date.now();
+  const newLicenceFee = licenceFees.licenceFee - licenceFees.additionalFeeAmount
 
-    database
-      .prepare("delete from LicenceAdditionalFees" +
-        " where licenceId = ?" +
-        " and licenceAdditionalFeeKey = ?")
-      .run(licenceId,
-        licenceAdditionalFeeKey);
+  database
+    .prepare(
+      'update Licences' +
+        ' set licenceFee = ?,' +
+        ' recordUpdate_userName = ?,' +
+        ' recordUpdate_timeMillis = ?' +
+        ' where licenceId = ?'
+    )
+    .run(newLicenceFee, requestSession.user.userName, rightNowMillis, licenceId)
 
-    const newLicenceFee = licenceFees.licenceFee - licenceFees.additionalFeeAmount;
+  database.close()
 
-    database.prepare("update Licences" +
-      " set licenceFee = ?," +
-      " recordUpdate_userName = ?," +
-      " recordUpdate_timeMillis = ?" +
-      " where licenceId = ?")
-      .run(newLicenceFee,
-        requestSession.user.userName,
-        rightNowMillis,
-        licenceId);
+  return {
+    licenceFee: newLicenceFee
+  }
+}
 
-    database.close();
-
-    return {
-      licenceFee: newLicenceFee
-    };
-  };
-
-
-export default deleteLicenceAdditionalFee;
+export default deleteLicenceAdditionalFee

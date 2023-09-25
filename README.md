@@ -4,8 +4,7 @@
 [![Codacy grade](https://img.shields.io/codacy/grade/97f530e50c2f416eb1eb5be9e4ef846f)](https://app.codacy.com/gh/cityssm/general-licence-manager/dashboard)
 [![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/cityssm/general-licence-manager)](https://codeclimate.com/github/cityssm/general-licence-manager)
 [![Code Climate coverage](https://img.shields.io/codeclimate/coverage/cityssm/general-licence-manager)](https://codeclimate.com/github/cityssm/general-licence-manager)
-[![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/cityssm/general-licence-manager)](https://app.snyk.io/org/cityssm/project/9324a6c8-ab05-4ede-a6a7-aecb822dc75f)
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/cityssm/general-licence-manager/Coverage%20Testing)](https://github.com/cityssm/general-licence-manager/actions/workflows/coverage.yml)
+[![Coverage Testing](https://github.com/cityssm/general-licence-manager/actions/workflows/coverage.yml/badge.svg)](https://github.com/cityssm/general-licence-manager/actions/workflows/coverage.yml)
 [![general-licence-manager](https://img.shields.io/endpoint?url=https://dashboard.cypress.io/badge/simple/m93ucs&style=flat&logo=cypress)](https://dashboard.cypress.io/projects/m93ucs/runs)
 
 ![Licence Search](docs/images/licence-search.png)
@@ -17,26 +16,26 @@ to manage the general licences issued by the municipality.
 The application can handle several simple licence types,
 but was built with the following licence types in mind.
 
--   Amusement Arcade
--   Food Vending
--   Master Plumber
--   Pawnbroker
--   Peddler
--   Taxi, Limo and Shuttle Bus
+- Amusement Arcade
+- Food Vending
+- Master Plumber
+- Pawnbroker
+- Peddler
+- Taxi, Limo and Shuttle Bus
 
 **[User Documentation (In the Works)](docs/)**
 
 ## Features
 
--   Unlimited, easy-to-configure licence categories
-    with category specific fields.
+- Unlimited, easy-to-configure licence categories
+  with category specific fields.
 
--   Customizable licence print templates.
+- Customizable licence print templates.
 
--   Prepare for upcoming new and renewal fee increases by
-    setting up new licence fees **before** they come into effect.
+- Prepare for upcoming new and renewal fee increases by
+  setting up new licence fees **before** they come into effect.
 
--   **Free to use and open source.**
+- **Free to use and open source.**
 
 Something missing?
 **[Open an issue.](https://github.com/cityssm/general-licence-manager/issues/new/choose)**

@@ -1,37 +1,38 @@
-import sqlite from "better-sqlite3";
-import { licencesDB as databasePath } from "../../data/databasePaths.js";
+import sqlite from 'better-sqlite3'
+import { licencesDB as databasePath } from '../../data/databasePaths.js'
 
-import type * as recordTypes from "../../types/recordTypes";
+import type * as recordTypes from '../../types/recordTypes'
 
-
-export const getLicenceCategoryApproval = (licenceApprovalKey: string, database?: sqlite.Database): recordTypes.LicenceCategoryApproval => {
-
-  let doCloseDatabase = false;
+export const getLicenceCategoryApproval = (
+  licenceApprovalKey: string,
+  database?: sqlite.Database
+): recordTypes.LicenceCategoryApproval => {
+  let doCloseDatabase = false
 
   if (!database) {
-
     database = sqlite(databasePath, {
       readonly: true
-    });
+    })
 
-    doCloseDatabase = true;
+    doCloseDatabase = true
   }
 
-  const licenceCategoryApproval: recordTypes.LicenceCategoryApproval =
-    database.prepare("select licenceApprovalKey, licenceCategoryKey," +
-      " licenceApproval, licenceApprovalDescription," +
-      " isRequiredForNew, isRequiredForRenewal, printKey" +
-      " from LicenceCategoryApprovals" +
-      " where recordDelete_timeMillis is null" +
-      " and licenceApprovalKey = ?")
-      .get(licenceApprovalKey);
+  const licenceCategoryApproval = database
+    .prepare(
+      'select licenceApprovalKey, licenceCategoryKey,' +
+        ' licenceApproval, licenceApprovalDescription,' +
+        ' isRequiredForNew, isRequiredForRenewal, printKey' +
+        ' from LicenceCategoryApprovals' +
+        ' where recordDelete_timeMillis is null' +
+        ' and licenceApprovalKey = ?'
+    )
+    .get(licenceApprovalKey) as recordTypes.LicenceCategoryApproval
 
   if (doCloseDatabase) {
-    database.close();
+    database.close()
   }
 
-  return licenceCategoryApproval;
-};
+  return licenceCategoryApproval
+}
 
-
-export default getLicenceCategoryApproval;
+export default getLicenceCategoryApproval

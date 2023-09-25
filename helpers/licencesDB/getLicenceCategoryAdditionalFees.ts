@@ -1,38 +1,39 @@
-import sqlite from "better-sqlite3";
-import { licencesDB as databasePath } from "../../data/databasePaths.js";
+import sqlite from 'better-sqlite3'
+import { licencesDB as databasePath } from '../../data/databasePaths.js'
 
-import type * as recordTypes from "../../types/recordTypes";
+import type * as recordTypes from '../../types/recordTypes'
 
-
-export const getLicenceCategoryAdditionalFees = (licenceCategoryKey: string, database?: sqlite.Database): recordTypes.LicenceCategoryAdditionalFee[] => {
-
-  let doCloseDatabase = false;
+export const getLicenceCategoryAdditionalFees = (
+  licenceCategoryKey: string,
+  database?: sqlite.Database
+): recordTypes.LicenceCategoryAdditionalFee[] => {
+  let doCloseDatabase = false
 
   if (!database) {
-
     database = sqlite(databasePath, {
       readonly: true
-    });
+    })
 
-    doCloseDatabase = true;
+    doCloseDatabase = true
   }
 
-  const licenceCategoryAdditionalFees: recordTypes.LicenceCategoryAdditionalFee[] =
-    database.prepare("select licenceAdditionalFeeKey," +
-      " additionalFee, additionalFeeType, additionalFeeNumber, additionalFeeFunction," +
-      " isRequired, orderNumber" +
-      " from LicenceCategoryAdditionalFees" +
-      " where recordDelete_timeMillis is null" +
-      " and licenceCategoryKey = ?" +
-      " order by orderNumber, additionalFee")
-      .all(licenceCategoryKey);
+  const licenceCategoryAdditionalFees = database
+    .prepare(
+      'select licenceAdditionalFeeKey,' +
+        ' additionalFee, additionalFeeType, additionalFeeNumber, additionalFeeFunction,' +
+        ' isRequired, orderNumber' +
+        ' from LicenceCategoryAdditionalFees' +
+        ' where recordDelete_timeMillis is null' +
+        ' and licenceCategoryKey = ?' +
+        ' order by orderNumber, additionalFee'
+    )
+    .all(licenceCategoryKey) as recordTypes.LicenceCategoryAdditionalFee[]
 
   if (doCloseDatabase) {
-    database.close();
+    database.close()
   }
 
-  return licenceCategoryAdditionalFees;
-};
+  return licenceCategoryAdditionalFees
+}
 
-
-export default getLicenceCategoryAdditionalFees;
+export default getLicenceCategoryAdditionalFees

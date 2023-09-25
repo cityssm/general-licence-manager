@@ -13,7 +13,7 @@ declare const bulmaJS: BulmaJS;
 (() => {
   const glm = exports.glm as GLM;
 
-  const urlPrefix = document.querySelector("main").dataset.urlPrefix;
+  const urlPrefix = document.querySelector("main")?.dataset.urlPrefix;
 
   const licenceAlias = exports.licenceAlias as string;
 
@@ -25,7 +25,7 @@ declare const bulmaJS: BulmaJS;
 
     clickEvent.preventDefault();
 
-    const batchDateString = (clickEvent.currentTarget as HTMLElement).closest("th").dataset.batchDateString;
+    const batchDateString = (clickEvent.currentTarget as HTMLElement).closest("th")?.dataset.batchDateString;
 
     const doClear = () => {
 

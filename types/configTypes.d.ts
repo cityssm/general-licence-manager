@@ -60,26 +60,37 @@ interface ConfigDefaults {
     licenseeCity: string;
     licenseeProvince: string;
 }
-export declare type ConfigBatchExport = ConfigBatchExport_RBCPreauthorized;
+export type ConfigBatchExport = ConfigBatchExport_RBCPreauthorized | ConfigBatchExport_CPA005;
 export interface ConfigBatchExport_RBCPreauthorized {
-    exportType: "rbcPreauthorized";
+    exportType: 'rbcPreauthorized';
     isTesting: boolean;
     header: {
         clientNumber: string;
         clientName: string;
         fileCreationNumberOffset: number;
-        currencyType: "CAD" | "USD";
+        currencyType: 'CAD' | 'USD';
     };
     record: {
-        transactionCode: "430";
-        languageCode: "E" | "F";
+        transactionCode: '430';
+        languageCode: 'E' | 'F';
         clientShortName: string;
-        destinationCountry: "CAN" | "USA";
+        destinationCountry: 'CAN' | 'USA';
     };
 }
-export declare type LicenceNumberFunction = "year-fourDigits" | "year-fiveDigits" | "year-sixDigits" | "category-fourDigits" | "category-fiveDigits" | "category-sixDigits" | "category-distinctFourDigits" | "category-distinctFiveDigits" | "category-distinctSixDigits";
-export declare type LicenceLengthFunction = (startDate: Date) => Date;
-export declare type AdditionalFeeFunction = (baseLicenceFee: number) => number;
+export interface ConfigBatchExport_CPA005 {
+    exportType: 'cpa005';
+    isTesting: boolean;
+    config: {
+        fileCreationNumberOffset: number;
+        originatorId: string;
+        originatorLongName: string;
+        originatorShortName?: string;
+        cpaCode: number;
+    };
+}
+export type LicenceNumberFunction = 'year-fourDigits' | 'year-fiveDigits' | 'year-sixDigits' | 'category-fourDigits' | 'category-fiveDigits' | 'category-sixDigits' | 'category-distinctFourDigits' | 'category-distinctFiveDigits' | 'category-distinctSixDigits';
+export type LicenceLengthFunction = (startDate: Date) => Date;
+export type AdditionalFeeFunction = (baseLicenceFee: number) => number;
 export interface ReportDefinition {
     reportName: string;
     reportTitle: string;

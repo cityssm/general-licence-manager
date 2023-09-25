@@ -1,9 +1,9 @@
-import type * as recordTypes from "../../types/recordTypes";
+import type * as recordTypes from '../../types/recordTypes';
 interface GetLicencesFilters {
     licenceCategoryKey?: string;
     licenceDetails?: string;
     licensee?: string;
-    licenceStatus?: "" | "active" | "past";
+    licenceStatus?: '' | 'active' | 'past';
     startDateMin?: number;
     startDateMax?: number;
     relatedLicenceId?: number | string;

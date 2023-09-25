@@ -1,20 +1,19 @@
-import { testView } from "../../../test/_globals.js";
+import { testView } from '../../../test/_globals.js'
 
-import { logout, login, ajaxDelayMillis } from "../../support/index.js";
+import { logout, login, ajaxDelayMillis } from '../../support/index.js'
 
-describe("Licence Category Summary", () => {
-
+describe('Licence Category Summary', () => {
   beforeEach(() => {
-    logout();
-    login(testView);
-    cy.visit("/licences/licenceCategorySummary");
-  });
+    logout()
+    login(testView)
+    cy.visit('/licences/licenceCategorySummary')
+  })
 
-  afterEach(logout);
+  afterEach(logout)
 
-  it("Has no detectable accessibility issues", () => {
-    cy.wait(ajaxDelayMillis);
-    cy.injectAxe();
-    cy.checkA11y();
-  });
-});
+  it('Has no detectable accessibility issues', () => {
+    cy.wait(ajaxDelayMillis)
+    cy.injectAxe()
+    cy.checkA11y()
+  })
+})

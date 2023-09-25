@@ -1,14 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
+    var _a;
     const glm = exports.glm;
-    const urlPrefix = document.querySelector("main").dataset.urlPrefix;
+    const urlPrefix = (_a = document.querySelector("main")) === null || _a === void 0 ? void 0 : _a.dataset.urlPrefix;
     const licenceAlias = exports.licenceAlias;
     const transactionBatchesTableElement = document.querySelector("#table--transactionBatches");
     let batchDateStrings = [];
     const clearBatch = (clickEvent) => {
+        var _a;
         clickEvent.preventDefault();
-        const batchDateString = clickEvent.currentTarget.closest("th").dataset.batchDateString;
+        const batchDateString = (_a = clickEvent.currentTarget.closest("th")) === null || _a === void 0 ? void 0 : _a.dataset.batchDateString;
         const doClear = () => {
             cityssm.postJSON(urlPrefix + "/batches/doClearBatchTransactions", {
                 batchDateString

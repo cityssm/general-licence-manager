@@ -1,4 +1,4 @@
-import sqlite from "better-sqlite3";
+import sqlite from 'better-sqlite3';
 export declare const getCategorySlug: (licenceCategory: string, maxLength?: number) => string;
 export declare const getNextLicenceNumber: (licenceDetails: {
     licenceCategory: string;

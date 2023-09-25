@@ -1,51 +1,52 @@
-import sqlite from "better-sqlite3";
-import { licencesDB as databasePath } from "../../data/databasePaths.js";
+import sqlite from 'better-sqlite3'
+import { licencesDB as databasePath } from '../../data/databasePaths.js'
 
-import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
-
+import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js'
 
 interface LicenceStats {
-  startDateMin: number;
-  startDateStringMin?: string;
-  startYearMin?: number;
+  startDateMin: number
+  startDateStringMin?: string
+  startYearMin?: number
 
-  startDateMax: number;
-  startDateStringMax?: string;
-  startYearMax?: number;
+  startDateMax: number
+  startDateStringMax?: string
+  startYearMax?: number
 }
 
-
 export const getLicenceStats = (): LicenceStats => {
-
-  const sql = "select min(startDate) as startDateMin," +
-  " max(startDate) as startDateMax" +
-  " from Licences" +
-  " where recordDelete_timeMillis is null";
+  const sql =
+    'select min(startDate) as startDateMin,' +
+    ' max(startDate) as startDateMax' +
+    ' from Licences' +
+    ' where recordDelete_timeMillis is null'
 
   const database = sqlite(databasePath, {
     readonly: true
-  });
+  })
 
-  let stats: LicenceStats = database.prepare(sql).get();
+  let stats = database.prepare(sql).get() as LicenceStats
 
-  database.close();
+  database.close()
 
   if (!stats || !stats.startDateMin) {
-    const currentDate = dateTimeFunctions.dateToInteger(new Date());
+    const currentDate = dateTimeFunctions.dateToInteger(new Date())
     stats = {
       startDateMin: currentDate,
       startDateMax: currentDate
-    };
+    }
   }
 
-  stats.startDateStringMin = dateTimeFunctions.dateIntegerToString(stats.startDateMin);
-  stats.startYearMin = Math.floor(stats.startDateMin / 10_000);
+  stats.startDateStringMin = dateTimeFunctions.dateIntegerToString(
+    stats.startDateMin
+  )
+  stats.startYearMin = Math.floor(stats.startDateMin / 10_000)
 
-  stats.startDateStringMax = dateTimeFunctions.dateIntegerToString(stats.startDateMax);
-  stats.startYearMax = Math.floor(stats.startDateMax / 10_000);
+  stats.startDateStringMax = dateTimeFunctions.dateIntegerToString(
+    stats.startDateMax
+  )
+  stats.startYearMax = Math.floor(stats.startDateMax / 10_000)
 
-  return stats;
-};
+  return stats
+}
 
-
-export default getLicenceStats;
+export default getLicenceStats

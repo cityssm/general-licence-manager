@@ -29,7 +29,7 @@ export const getLicenceCategories = (): recordTypes.LicenceCategory[] => {
     readonly: true
   });
 
-  const rows: recordTypes.LicenceCategory[] = database.prepare(sql).all(currentDate, currentDate);
+  const rows = database.prepare(sql).all(currentDate, currentDate) as recordTypes.LicenceCategory[]
 
   database.close();
 

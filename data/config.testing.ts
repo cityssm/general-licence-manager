@@ -1,19 +1,19 @@
-import type * as configTypes from "../types/configTypes";
+import type * as configTypes from '../types/configTypes'
 
 export const config: configTypes.Config = {
   application: {
     useTestDatabases: true
   },
   defaults: {
-    licenseeCity: "Sault Ste. Marie",
-    licenseeProvince: "ON",
-    licenceNumberFunction: "year-fourDigits"
+    licenseeCity: 'Sault Ste. Marie',
+    licenseeProvince: 'ON',
+    licenceNumberFunction: 'year-fourDigits'
   },
   users: {
-    testing: ["*testView", "*testUpdate", "*testAdmin"],
-    canLogin: ["*testView", "*testUpdate", "*testAdmin"],
-    canUpdate: ["*testUpdate"],
-    isAdmin: ["*testAdmin"]
+    testing: ['*testView', '*testUpdate', '*testAdmin'],
+    canLogin: ['*testView', '*testUpdate', '*testAdmin'],
+    canUpdate: ['*testUpdate'],
+    isAdmin: ['*testAdmin']
   },
   settings: {
     includeBatches: true,
@@ -21,20 +21,20 @@ export const config: configTypes.Config = {
   },
   exports: {
     batches: {
-      exportType: "rbcPreauthorized",
+      exportType: 'rbcPreauthorized',
       isTesting: true,
       header: {
-        clientName: "TESTING",
-        clientNumber: "0000",
+        clientName: 'TESTING',
+        clientNumber: '0000',
         fileCreationNumberOffset: 0,
-        currencyType: "CAD"
+        currencyType: 'CAD'
       },
       record: {
-        clientShortName: "TEST",
-        destinationCountry: "CAN",
-        languageCode: "E",
-        transactionCode: "430"
+        clientShortName: 'TEST',
+        destinationCountry: 'CAN',
+        languageCode: 'E',
+        transactionCode: '430'
       }
     }
   }
-};
+}

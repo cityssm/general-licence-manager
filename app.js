@@ -1,35 +1,35 @@
-import createError from "http-errors";
-import express from "express";
-import compression from "compression";
-import path from "path";
-import cookieParser from "cookie-parser";
-import csurf from "csurf";
-import rateLimit from "express-rate-limit";
-import session from "express-session";
-import FileStore from "session-file-store";
-import routerLogin from "./routes/login.js";
-import routerDashboard from "./routes/dashboard.js";
-import routerLicences from "./routes/licences.js";
-import routerBatches from "./routes/batches.js";
-import routerReports from "./routes/reports.js";
-import routerAdmin from "./routes/admin.js";
-import * as configFunctions from "./helpers/functions.config.js";
-import * as dateTimeFns from "@cityssm/expressjs-server-js/dateTimeFns.js";
-import * as stringFns from "@cityssm/expressjs-server-js/stringFns.js";
-import * as htmlFns from "@cityssm/expressjs-server-js/htmlFns.js";
-import { version } from "./version.js";
-import * as databaseInitializer from "./helpers/databaseInitializer.js";
-import debug from "debug";
-const debugApp = debug("general-licence-manager:app");
+import createError from 'http-errors';
+import express from 'express';
+import compression from 'compression';
+import path from 'path';
+import cookieParser from 'cookie-parser';
+import csurf from 'csurf';
+import rateLimit from 'express-rate-limit';
+import session from 'express-session';
+import FileStore from 'session-file-store';
+import routerLogin from './routes/login.js';
+import routerDashboard from './routes/dashboard.js';
+import routerLicences from './routes/licences.js';
+import routerBatches from './routes/batches.js';
+import routerReports from './routes/reports.js';
+import routerAdmin from './routes/admin.js';
+import * as configFunctions from './helpers/functions.config.js';
+import * as dateTimeFns from '@cityssm/expressjs-server-js/dateTimeFns.js';
+import * as stringFns from '@cityssm/expressjs-server-js/stringFns.js';
+import * as htmlFns from '@cityssm/expressjs-server-js/htmlFns.js';
+import { version } from './version.js';
+import * as databaseInitializer from './helpers/databaseInitializer.js';
+import debug from 'debug';
+const debugApp = debug('general-licence-manager:app');
 databaseInitializer.initLicencesDB();
-const __dirname = ".";
+const __dirname = '.';
 export const app = express();
-if (!configFunctions.getProperty("reverseProxy.disableEtag")) {
-    app.set("etag", false);
+if (!configFunctions.getProperty('reverseProxy.disableEtag')) {
+    app.set('etag', false);
 }
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "ejs");
-if (!configFunctions.getProperty("reverseProxy.disableCompression")) {
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+if (!configFunctions.getProperty('reverseProxy.disableCompression')) {
     app.use(compression());
 }
 app.use((request, _response, next) => {
@@ -44,33 +44,33 @@ app.use(cookieParser());
 app.use(csurf({ cookie: true }));
 const limiter = rateLimit({
     windowMs: 1000,
-    max: 25 * Math.max(3, configFunctions.getProperty("users.canLogin").length)
+    max: 25 * Math.max(3, configFunctions.getProperty('users.canLogin').length)
 });
 app.use(limiter);
-const urlPrefix = configFunctions.getProperty("reverseProxy.urlPrefix");
-if (urlPrefix !== "") {
-    debugApp("urlPrefix = " + urlPrefix);
+const urlPrefix = configFunctions.getProperty('reverseProxy.urlPrefix');
+if (urlPrefix !== '') {
+    debugApp('urlPrefix = ' + urlPrefix);
 }
-app.use(urlPrefix, express.static(path.join("public")));
-app.use(urlPrefix + "/lib/fa", express.static(path.join("node_modules", "@fortawesome", "fontawesome-free")));
-app.use(urlPrefix + "/lib/cityssm-bulma-webapp-js", express.static(path.join("node_modules", "@cityssm", "bulma-webapp-js")));
-app.use(urlPrefix + "/lib/cityssm-bulma-js", express.static(path.join("node_modules", "@cityssm", "bulma-js", "dist")));
-const sessionCookieName = configFunctions.getProperty("session.cookieName");
+app.use(urlPrefix, express.static(path.join('public')));
+app.use(urlPrefix + '/lib/fa', express.static(path.join('node_modules', '@fortawesome', 'fontawesome-free')));
+app.use(urlPrefix + '/lib/cityssm-bulma-webapp-js', express.static(path.join('node_modules', '@cityssm', 'bulma-webapp-js')));
+app.use(urlPrefix + '/lib/cityssm-bulma-js', express.static(path.join('node_modules', '@cityssm', 'bulma-js', 'dist')));
+const sessionCookieName = configFunctions.getProperty('session.cookieName');
 const FileStoreSession = FileStore(session);
 app.use(session({
     store: new FileStoreSession({
-        path: "./data/sessions",
-        logFn: debug("general-licence-manager:session"),
+        path: './data/sessions',
+        logFn: debug('general-licence-manager:session'),
         retries: 20
     }),
     name: sessionCookieName,
-    secret: configFunctions.getProperty("session.secret"),
+    secret: configFunctions.getProperty('session.secret'),
     resave: true,
     saveUninitialized: false,
     rolling: true,
     cookie: {
-        maxAge: configFunctions.getProperty("session.maxAgeMillis"),
-        sameSite: "strict"
+        maxAge: configFunctions.getProperty('session.maxAgeMillis'),
+        sameSite: 'strict'
     }
 }));
 app.use((request, response, next) => {
@@ -93,32 +93,32 @@ app.use((request, response, next) => {
     response.locals.dateTimeFns = dateTimeFns;
     response.locals.stringFns = stringFns;
     response.locals.htmlFns = htmlFns;
-    response.locals.urlPrefix = configFunctions.getProperty("reverseProxy.urlPrefix");
+    response.locals.urlPrefix = configFunctions.getProperty('reverseProxy.urlPrefix');
     next();
 });
-app.get(urlPrefix + "/", sessionChecker, (_request, response) => {
-    response.redirect(urlPrefix + "/dashboard");
+app.get(urlPrefix + '/', sessionChecker, (_request, response) => {
+    response.redirect(urlPrefix + '/dashboard');
 });
-app.use(urlPrefix + "/dashboard", sessionChecker, routerDashboard);
-app.use(urlPrefix + "/licences", sessionChecker, routerLicences);
-if (configFunctions.getProperty("settings.includeBatches")) {
-    app.use(urlPrefix + "/batches", sessionChecker, routerBatches);
+app.use(urlPrefix + '/dashboard', sessionChecker, routerDashboard);
+app.use(urlPrefix + '/licences', sessionChecker, routerLicences);
+if (configFunctions.getProperty('settings.includeBatches')) {
+    app.use(urlPrefix + '/batches', sessionChecker, routerBatches);
 }
-app.use(urlPrefix + "/reports", sessionChecker, routerReports);
-app.use(urlPrefix + "/admin", sessionChecker, routerAdmin);
-app.all(urlPrefix + "/keepAlive", (_request, response) => {
+app.use(urlPrefix + '/reports', sessionChecker, routerReports);
+app.use(urlPrefix + '/admin', sessionChecker, routerAdmin);
+app.all(urlPrefix + '/keepAlive', (_request, response) => {
     response.json(true);
 });
-app.use(urlPrefix + "/login", routerLogin);
-app.get(urlPrefix + "/logout", (request, response) => {
+app.use(urlPrefix + '/login', routerLogin);
+app.get(urlPrefix + '/logout', (request, response) => {
     if (request.session.user && request.cookies[sessionCookieName]) {
         request.session.destroy(null);
         request.session = undefined;
         response.clearCookie(sessionCookieName);
-        response.redirect(urlPrefix + "/");
+        response.redirect(urlPrefix + '/');
     }
     else {
-        response.redirect(urlPrefix + "/login");
+        response.redirect(urlPrefix + '/login');
     }
 });
 app.use((_request, _response, next) => {
@@ -126,8 +126,9 @@ app.use((_request, _response, next) => {
 });
 app.use((error, request, response) => {
     response.locals.message = error.message;
-    response.locals.error = request.app.get("env") === "development" ? error : {};
+    response.locals.error =
+        request.app.get('env') === 'development' ? error : {};
     response.status(error.status || 500);
-    response.render("error");
+    response.render('error');
 });
 export default app;

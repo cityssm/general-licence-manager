@@ -1,11 +1,11 @@
-import sqlite from "better-sqlite3";
-import { licencesDB as databasePath } from "../../data/databasePaths.js";
-import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
+import sqlite from 'better-sqlite3';
+import { licencesDB as databasePath } from '../../data/databasePaths.js';
+import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js';
 export const getLicenceStats = () => {
-    const sql = "select min(startDate) as startDateMin," +
-        " max(startDate) as startDateMax" +
-        " from Licences" +
-        " where recordDelete_timeMillis is null";
+    const sql = 'select min(startDate) as startDateMin,' +
+        ' max(startDate) as startDateMax' +
+        ' from Licences' +
+        ' where recordDelete_timeMillis is null';
     const database = sqlite(databasePath, {
         readonly: true
     });

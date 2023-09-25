@@ -1,47 +1,49 @@
-import { testView } from "../../../test/_globals.js";
+import { testView } from '../../../test/_globals.js'
 
-import { logout, login, ajaxDelayMillis } from "../../support/index.js";
+import { logout, login, ajaxDelayMillis } from '../../support/index.js'
 
-describe("Reports", () => {
-    beforeEach(() => {
-        logout();
-        login(testView);
-        cy.visit("/reports");
-    });
+describe('Reports', () => {
+  beforeEach(() => {
+    logout()
+    login(testView)
+    cy.visit('/reports')
+  })
 
-    afterEach(logout);
+  afterEach(logout)
 
-    it("Loads page", () => {
-        cy.location("pathname").should("equal", "/reports");
+  it('Loads page', () => {
+    cy.location('pathname').should('equal', '/reports')
 
-        // Makes all reports visible
+    // Makes all reports visible
 
-        const hiddenReportsSelector = "a.is-hidden[download][href*='/reports/']";
+    const hiddenReportsSelector = "a.is-hidden[download][href*='/reports/']"
 
-        cy.get(hiddenReportsSelector).should("exist");
+    cy.get(hiddenReportsSelector).should('exist')
 
-        cy.get("button[data-cy='panel-toggle']").each(($toggleButton) => {
-            cy.wrap($toggleButton).click();
-        });
+    cy.get("button[data-cy='panel-toggle']").each(($toggleButton) => {
+      cy.wrap($toggleButton).click()
+    })
 
-        cy.get(hiddenReportsSelector).should("not.exist");
+    cy.get(hiddenReportsSelector).should('not.exist')
 
-        // Has no detectable accessibility issues
-        cy.injectAxe();
-        cy.checkA11y();
+    // Has no detectable accessibility issues
+    cy.injectAxe()
+    cy.checkA11y()
 
-        // Exports all reports without parameters
+    // Exports all reports without parameters
 
-        cy.get("a:not(.is-hidden)[download][href*='/reports/']").each(($reportLink) => {
-            cy.wrap($reportLink).click();
-            cy.wait(ajaxDelayMillis);
-        });
+    cy.get("a:not(.is-hidden)[download][href*='/reports/']").each(
+      ($reportLink) => {
+        cy.wrap($reportLink).click()
+        cy.wait(ajaxDelayMillis)
+      }
+    )
 
-        // Exports all reports with parameters
+    // Exports all reports with parameters
 
-        cy.get("form[action*='/reports/']").each(($reportLink) => {
-            cy.wrap($reportLink).invoke("attr", "target", "_blank").submit();
-            cy.wait(ajaxDelayMillis);
-        });
-    });
-});
+    cy.get("form[action*='/reports/']").each(($reportLink) => {
+      cy.wrap($reportLink).invoke('attr', 'target', '_blank').submit()
+      cy.wait(ajaxDelayMillis)
+    })
+  })
+})

@@ -78,7 +78,7 @@
     "@types/http-errors": "^2.0.2",
     "@types/mocha": "^10.0.1",
     "@types/node-windows": "^0.1.4",
-    "@types/papaparse": "^5.3.9",
+    "@types/papaparse": "^5.3.10",
     "@types/session-file-store": "^1.2.3",
     "@types/string-hash": "^1.1.1",
     "@types/uuid": "^9.0.4",

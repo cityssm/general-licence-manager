@@ -1,4 +1,3 @@
-import type * as expressSession from "express-session";
 interface UpdateLicenceCategoryFieldForm {
     licenceFieldKey: string;
     licenceField: string;

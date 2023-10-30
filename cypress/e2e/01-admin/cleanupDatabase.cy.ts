@@ -1,7 +1,7 @@
+// eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable unicorn/filename-case, promise/catch-or-return, promise/always-return */
 
 import { testAdmin } from '../../../test/_globals.js'
-
 import { logout, login, ajaxDelayMillis } from '../../support/index.js'
 
 describe('Admin - Cleanup Database', () => {

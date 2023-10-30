@@ -6,21 +6,25 @@ permissions: read-all
 
 jobs:
   Coverage:
-    runs-on: ubuntu-20.04
-    env:
-      CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-      CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [18, 20, 21]
+
+    name: Node ${{ matrix.node }}
     steps:
       - uses: actions/checkout@v3
+
       - uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: ${{ matrix.node }}
           cache: 'npm'
 
       - name: Install Application
         run: |
           npm ci
-          npm install -g mocha c8 cypress@12
+          npm install -g mocha c8 cypress@13
 
       - name: Copy Test Config
         run: cp ./data/config.testing.js ./data/config.js
@@ -36,13 +40,17 @@ jobs:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
 
       - name: Code Climate
-        if: ${{ github.event_name != 'pull_request' && env.CC_TEST_REPORTER_ID != '' }}
+        if: ${{ ! cancelled() && github.event_name != 'pull_request' && env.CC_TEST_REPORTER_ID != '' && matrix.node == 20 }}
         run: |
           curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./codeclimate-test-reporter
           chmod +x codeclimate-test-reporter
           ./codeclimate-test-reporter before-build
           ./codeclimate-test-reporter after-build -t lcov --exit-code $?
-          
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+
       - name: Codacy
-        if: ${{ github.event_name != 'pull_request' && env.CODACY_PROJECT_TOKEN != '' }}
+        if: ${{ ! cancelled() && github.event_name != 'pull_request' && env.CODACY_PROJECT_TOKEN != '' && matrix.node == 20 }}
         run: bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r ./coverage/lcov.info
+        env:
+          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}

@@ -1,7 +1,7 @@
 # General Licence Manager
 
 [<img src="https://bulma.io/images/made-with-bulma.png" alt="Made with Bulma" width="128" height="24" />](https://bulma.io)
-[![Codacy grade](https://img.shields.io/codacy/grade/97f530e50c2f416eb1eb5be9e4ef846f)](https://app.codacy.com/gh/cityssm/general-licence-manager/dashboard)
+[![DeepSource](https://app.deepsource.com/gh/cityssm/general-licence-manager.svg/?label=active+issues&show_trend=true&token=ORSrQ921SKObd83e2GbLdPu4)](https://app.deepsource.com/gh/cityssm/general-licence-manager/)
 [![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/cityssm/general-licence-manager)](https://codeclimate.com/github/cityssm/general-licence-manager)
 [![Code Climate coverage](https://img.shields.io/codeclimate/coverage/cityssm/general-licence-manager)](https://codeclimate.com/github/cityssm/general-licence-manager)
 [![Coverage Testing](https://github.com/cityssm/general-licence-manager/actions/workflows/coverage.yml/badge.svg)](https://github.com/cityssm/general-licence-manager/actions/workflows/coverage.yml)

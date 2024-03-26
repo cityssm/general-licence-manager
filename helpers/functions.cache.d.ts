@@ -1,4 +1,4 @@
-import type * as recordTypes from "../types/recordTypes";
+import type * as recordTypes from '../types/recordTypes.js';
 export declare const getLicenceCategories: () => recordTypes.LicenceCategory[];
 export declare const getLicenceCategory: (licenceCategoryKey: string) => recordTypes.LicenceCategory;
 export declare const getLicenceCategoryAdditionalFee: (licenceAdditionalFeeKey: string) => recordTypes.LicenceCategoryAdditionalFee;

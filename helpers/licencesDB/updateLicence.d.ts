@@ -1,3 +1,4 @@
+import type * as expressSession from 'express-session';
 interface UpdateLicenceForm {
     licenceId: string;
     licenceNumber: string;

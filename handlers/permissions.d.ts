@@ -1,4 +1,4 @@
-import type { RequestHandler } from "express";
+import type { RequestHandler, Response } from "express";
 export declare const forbiddenJSON: (response: Response) => Response;
 export declare const adminGetHandler: RequestHandler;
 export declare const adminPostHandler: RequestHandler;

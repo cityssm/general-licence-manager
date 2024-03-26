@@ -1,3 +1,4 @@
+import type { ADWebAuthConfig } from '@cityssm/ad-web-auth-connector/types';
 export interface Config {
     application?: ConfigApplication;
     session?: ConfigSession;
@@ -7,6 +8,7 @@ export interface Config {
         urlPrefix: string;
     };
     activeDirectory?: ConfigActiveDirectory;
+    adWebAuthConfig?: ADWebAuthConfig;
     users?: {
         testing?: string[];
         canLogin?: string[];

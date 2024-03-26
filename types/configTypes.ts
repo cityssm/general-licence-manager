@@ -1,3 +1,4 @@
+import type { ADWebAuthConfig } from '@cityssm/ad-web-auth-connector/types'
 import type { EFTConfiguration } from '@cityssm/eft-generator/types.js'
 
 export interface Config {
@@ -9,6 +10,7 @@ export interface Config {
     urlPrefix: string
   }
   activeDirectory?: ConfigActiveDirectory
+  adWebAuthConfig?: ADWebAuthConfig
   users?: {
     testing?: string[]
     canLogin?: string[]

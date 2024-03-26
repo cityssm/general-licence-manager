@@ -1,6 +1,6 @@
 {
   "name": "general-licence-manager",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "type": "module",
   "description": "A tool for managing the licences issued by municipalities.",
   "exports": "./app.js",
@@ -30,6 +30,7 @@
   "homepage": "https://github.com/cityssm/general-licence-manager#readme",
   "private": true,
   "dependencies": {
+    "@cityssm/ad-web-auth-connector": "^1.1.0",
     "@cityssm/bulma-js": "^0.4.0",
     "@cityssm/bulma-webapp-js": "^1.5.0",
     "@cityssm/date-diff": "^2.2.3",

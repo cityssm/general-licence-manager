@@ -1,4 +1,4 @@
-import * as modernJulianDate from '@cityssm/modern-julian-date'
+import { getDayOfYear } from '@cityssm/modern-julian-date'
 import stringHash from 'string-hash'
 
 import type { LicenceTransaction } from '../../types/recordTypes.js'
@@ -29,7 +29,7 @@ export function calculateFileCreationNumber(
 ): string {
   const dayCount = Math.abs(
     (batchDate.getFullYear() - 2022) * 366 +
-      modernJulianDate.getDayOfYear(batchDate, true) +
+      getDayOfYear(batchDate, true) +
       (fileCreationNumberOffset || 0)
   )
 

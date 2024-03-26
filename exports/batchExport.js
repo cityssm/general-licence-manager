@@ -2,7 +2,7 @@ import * as configFunctions from '../helpers/functions.config.js';
 import { getBatchTransactions } from '../helpers/licencesDB/getBatchTransactions.js';
 import cpa005_getBatchExport from './batches/cpa005.js';
 import rbcPreauthorized_getBatchExport from './batches/rbcPreauthorized.js';
-export const getBatchExport = (batchDate) => {
+export function getBatchExport(batchDate) {
     const outstandingBatchTransactions = getBatchTransactions(batchDate, true);
     console.log(outstandingBatchTransactions);
     if (outstandingBatchTransactions.length === 0) {
@@ -20,4 +20,4 @@ export const getBatchExport = (batchDate) => {
             return rbcPreauthorized_getBatchExport(outstandingBatchTransactions);
         }
     }
-};
+}

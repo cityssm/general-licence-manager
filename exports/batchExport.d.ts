@@ -3,4 +3,4 @@ export interface GetBatchExportReturn {
     fileData: string;
     fileContentType: string;
 }
-export declare const getBatchExport: (batchDate: number) => GetBatchExportReturn;
+export declare function getBatchExport(batchDate: number): GetBatchExportReturn | undefined;

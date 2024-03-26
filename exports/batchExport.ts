@@ -11,7 +11,7 @@ export interface GetBatchExportReturn {
   fileContentType: string
 }
 
-export const getBatchExport = (batchDate: number): GetBatchExportReturn => {
+export function getBatchExport(batchDate: number): GetBatchExportReturn | undefined {
   const outstandingBatchTransactions = getBatchTransactions(batchDate, true)
 
   console.log(outstandingBatchTransactions)

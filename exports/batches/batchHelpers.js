@@ -1,4 +1,4 @@
-import * as modernJulianDate from '@cityssm/modern-julian-date';
+import { getDayOfYear } from '@cityssm/modern-julian-date';
 import stringHash from 'string-hash';
 export function leftPad(unpaddedString, paddingCharacter, finalLength) {
     return unpaddedString
@@ -12,7 +12,7 @@ export function rightPad(unpaddedString, paddingCharacter, finalLength) {
 }
 export function calculateFileCreationNumber(batchDate, fileCreationNumberOffset) {
     const dayCount = Math.abs((batchDate.getFullYear() - 2022) * 366 +
-        modernJulianDate.getDayOfYear(batchDate, true) +
+        getDayOfYear(batchDate, true) +
         (fileCreationNumberOffset || 0));
     return leftPad(dayCount.toString(), '0', 4);
 }

@@ -1,12 +1,17 @@
 import * as configFunctions from '../../helpers/functions.config.js'
 import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js'
-import * as modernJulianDate from '@cityssm/modern-julian-date'
+import toModernJulianDate from '@cityssm/modern-julian-date'
 
 import type * as recordTypes from '../../types/recordTypes'
 
 import type { GetBatchExportReturn } from '../batchExport.js'
 import { ConfigBatchExport_RBCPreauthorized } from '../../types/configTypes.js'
-import { calculateCustomerNumber, calculateFileCreationNumber, leftPad, rightPad } from './batchHelpers.js'
+import {
+  calculateCustomerNumber,
+  calculateFileCreationNumber,
+  leftPad,
+  rightPad
+} from './batchHelpers.js'
 
 const batchExportConfig = configFunctions.getProperty(
   'exports.batches'
@@ -40,7 +45,7 @@ export const getBatchExport = (
     (batchExportConfig.isTesting
       ? 'TEST'
       : calculateFileCreationNumber(batchDate)) +
-    modernJulianDate.toModernJulianDate(batchDate) +
+    toModernJulianDate(batchDate) +
     batchExportConfig.header.currencyType +
     '1' +
     ' '.padEnd(15) +

@@ -41,7 +41,7 @@
     "@cityssm/pdf-puppeteer": "^3.0.0",
     "@fortawesome/fontawesome-free": "^5.15.4",
     "activedirectory2": "^2.2.0",
-    "better-sqlite3": "^9.4.3",
+    "better-sqlite3": "^9.4.4",
     "camelcase": "^8.0.0",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",

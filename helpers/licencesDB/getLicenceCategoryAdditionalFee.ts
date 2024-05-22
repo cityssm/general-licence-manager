@@ -3,7 +3,7 @@ import sqlite from 'better-sqlite3'
 import { licencesDB as databasePath } from '../../data/databasePaths.js'
 import type { LicenceCategoryAdditionalFee } from '../../types/recordTypes.js'
 
-export function getLicenceCategoryAdditionalFee(
+export default function getLicenceCategoryAdditionalFee(
   licenceAdditionalFeeKey: string,
   database?: sqlite.Database
 ): LicenceCategoryAdditionalFee | undefined {
@@ -34,5 +34,3 @@ export function getLicenceCategoryAdditionalFee(
 
   return licenceCategoryAdditionalFee
 }
-
-export default getLicenceCategoryAdditionalFee

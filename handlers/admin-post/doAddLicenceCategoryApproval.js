@@ -1,7 +1,7 @@
-import { addLicenceCategoryApproval } from "../../helpers/licencesDB/addLicenceCategoryApproval.js";
-import { getLicenceCategoryApprovals } from "../../helpers/licencesDB/getLicenceCategoryApprovals.js";
-import * as cacheFunctions from "../../helpers/functions.cache.js";
-export const handler = async (request, response) => {
+import * as cacheFunctions from '../../helpers/functions.cache.js';
+import addLicenceCategoryApproval from '../../helpers/licencesDB/addLicenceCategoryApproval.js';
+import getLicenceCategoryApprovals from '../../helpers/licencesDB/getLicenceCategoryApprovals.js';
+export default function handler(request, response) {
     const licenceApprovalKey = addLicenceCategoryApproval(request.body, request.session);
     cacheFunctions.clearAll();
     const licenceCategoryApprovals = getLicenceCategoryApprovals(request.body.licenceCategoryKey);
@@ -10,5 +10,4 @@ export const handler = async (request, response) => {
         licenceCategoryApprovals,
         licenceApprovalKey
     });
-};
-export default handler;
+}

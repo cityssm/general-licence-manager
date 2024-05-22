@@ -6,7 +6,7 @@ import addLicenceCategoryField, {
 } from '../../helpers/licencesDB/addLicenceCategoryField.js'
 import getLicenceCategoryFields from '../../helpers/licencesDB/getLicenceCategoryFields.js'
 
-export function handler(request: Request, response: Response): void {
+export default function handler(request: Request, response: Response): void {
   const licenceFieldKey = addLicenceCategoryField(
     request.body as AddLicenceCategoryFieldForm,
     request.session
@@ -23,5 +23,3 @@ export function handler(request: Request, response: Response): void {
     licenceFieldKey
   })
 }
-
-export default handler

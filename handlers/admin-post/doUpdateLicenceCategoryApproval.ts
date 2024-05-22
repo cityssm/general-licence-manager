@@ -2,12 +2,12 @@ import type { Request, Response } from 'express'
 
 import * as cacheFunctions from '../../helpers/functions.cache.js'
 import getLicenceCategoryApproval from '../../helpers/licencesDB/getLicenceCategoryApproval.js'
-import { getLicenceCategoryApprovals } from '../../helpers/licencesDB/getLicenceCategoryApprovals.js'
+import getLicenceCategoryApprovals from '../../helpers/licencesDB/getLicenceCategoryApprovals.js'
 import updateLicenceCategoryApproval, {
   type UpdateLicenceCategoryApprovalForm
 } from '../../helpers/licencesDB/updateLicenceCategoryApproval.js'
 
-export function handler(request: Request, response: Response): void {
+export default function handler(request: Request, response: Response): void {
   const success = updateLicenceCategoryApproval(
     request.body as UpdateLicenceCategoryApprovalForm,
     request.session
@@ -28,5 +28,3 @@ export function handler(request: Request, response: Response): void {
     licenceCategoryApprovals
   })
 }
-
-export default handler

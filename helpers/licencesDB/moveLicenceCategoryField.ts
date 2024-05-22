@@ -1,7 +1,10 @@
 import sqlite from 'better-sqlite3'
 
 import { licencesDB as databasePath } from '../../data/databasePaths.js'
-import type { LicenceCategoryField, PartialSession } from '../../types/recordTypes.js'
+import type {
+  LicenceCategoryField,
+  PartialSession
+} from '../../types/recordTypes.js'
 
 import getLicenceCategoryField from './getLicenceCategoryField.js'
 import getLicenceCategoryFields from './getLicenceCategoryFields.js'
@@ -13,11 +16,11 @@ const sql =
   ' recordUpdate_timeMillis = ?' +
   ' where licenceFieldKey = ?'
 
-export const moveLicenceCategoryField = (
+export default function moveLicenceCategoryField(
   licenceFieldKeyFrom: string,
   licenceFieldKeyTo: string,
   requestSession: PartialSession
-): string => {
+): string {
   const database = sqlite(databasePath)
 
   const licenceCategoryFieldFrom = getLicenceCategoryField(
@@ -68,5 +71,3 @@ export const moveLicenceCategoryField = (
 
   return licenceCategoryFieldFrom.licenceCategoryKey
 }
-
-export default moveLicenceCategoryField

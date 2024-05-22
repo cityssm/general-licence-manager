@@ -1,15 +1,15 @@
 import sqlite from 'better-sqlite3'
+
 import { licencesDB as databasePath } from '../../data/databasePaths.js'
+import type { LicenceCategoryApproval } from '../../types/recordTypes.js'
 
-import type * as recordTypes from '../../types/recordTypes'
-
-export const getLicenceCategoryApprovals = (
+export default function getLicenceCategoryApprovals(
   licenceCategoryKey: string,
   database?: sqlite.Database
-): recordTypes.LicenceCategoryApproval[] => {
+): LicenceCategoryApproval[] {
   let doCloseDatabase = false
 
-  if (!database) {
+  if (database === undefined) {
     database = sqlite(databasePath, {
       readonly: true
     })
@@ -19,14 +19,16 @@ export const getLicenceCategoryApprovals = (
 
   const licenceCategoryApprovals = database
     .prepare(
-      'select licenceApprovalKey, licenceApproval, licenceApprovalDescription,' +
-        ' isRequiredForNew, isRequiredForRenewal, printKey' +
-        ' from LicenceCategoryApprovals' +
-        ' where recordDelete_timeMillis is null' +
-        ' and licenceCategoryKey = ?' +
-        ' order by orderNumber, licenceApproval'
+      `select licenceApprovalKey, licenceCategoryKey,
+        licenceApproval, licenceApprovalDescription,
+        isRequiredForNew, isRequiredForRenewal,
+        printKey
+        from LicenceCategoryApprovals
+        where recordDelete_timeMillis is null
+        and licenceCategoryKey = ?
+        order by orderNumber, licenceApproval`
     )
-    .all(licenceCategoryKey) as recordTypes.LicenceCategoryApproval[]
+    .all(licenceCategoryKey) as LicenceCategoryApproval[]
 
   if (doCloseDatabase) {
     database.close()
@@ -34,5 +36,3 @@ export const getLicenceCategoryApprovals = (
 
   return licenceCategoryApprovals
 }
-
-export default getLicenceCategoryApprovals

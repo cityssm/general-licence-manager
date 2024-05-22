@@ -7,7 +7,7 @@ const sql = 'update LicenceCategoryFields' +
     ' recordUpdate_userName = ?,' +
     ' recordUpdate_timeMillis = ?' +
     ' where licenceFieldKey = ?';
-export const moveLicenceCategoryField = (licenceFieldKeyFrom, licenceFieldKeyTo, requestSession) => {
+export default function moveLicenceCategoryField(licenceFieldKeyFrom, licenceFieldKeyTo, requestSession) {
     const database = sqlite(databasePath);
     const licenceCategoryFieldFrom = getLicenceCategoryField(licenceFieldKeyFrom, database);
     const licenceCategoryFields = getLicenceCategoryFields(licenceCategoryFieldFrom.licenceCategoryKey, database);
@@ -31,5 +31,4 @@ export const moveLicenceCategoryField = (licenceFieldKeyFrom, licenceFieldKeyTo,
     }
     database.close();
     return licenceCategoryFieldFrom.licenceCategoryKey;
-};
-export default moveLicenceCategoryField;
+}

@@ -1,3 +1,2 @@
-import type * as expressSession from "express-session";
-export declare const deleteLicenceCategory: (licenceCategoryKey: string, requestSession: expressSession.Session) => boolean;
-export default deleteLicenceCategory;
+import type { PartialSession } from '../../types/recordTypes.js';
+export default function deleteLicenceCategory(licenceCategoryKey: string, requestSession: PartialSession): boolean;

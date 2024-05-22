@@ -1,6 +1,6 @@
 import sqlite from 'better-sqlite3';
 import { licencesDB as databasePath } from '../../data/databasePaths.js';
-export function getLicenceCategoryAdditionalFee(licenceAdditionalFeeKey, database) {
+export default function getLicenceCategoryAdditionalFee(licenceAdditionalFeeKey, database) {
     let doCloseDatabase = false;
     if (database === undefined) {
         database = sqlite(databasePath, {
@@ -21,4 +21,3 @@ export function getLicenceCategoryAdditionalFee(licenceAdditionalFeeKey, databas
     }
     return licenceCategoryAdditionalFee;
 }
-export default getLicenceCategoryAdditionalFee;

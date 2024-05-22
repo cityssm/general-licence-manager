@@ -8,7 +8,7 @@ import updateLicenceCategoryField, {
 } from '../../helpers/licencesDB/updateLicenceCategoryField.js'
 import type { LicenceCategoryField } from '../../types/recordTypes.js'
 
-export function handler(request: Request, response: Response): void {
+export default function handler(request: Request, response: Response): void {
   const success = updateLicenceCategoryField(
     request.body as UpdateLicenceCategoryFieldForm,
     request.session
@@ -29,5 +29,3 @@ export function handler(request: Request, response: Response): void {
     licenceCategoryFields
   })
 }
-
-export default handler

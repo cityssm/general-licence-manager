@@ -4,7 +4,7 @@ import { licencesDB as databasePath } from '../../data/databasePaths.js'
 import type { PartialSession } from '../../types/recordTypes.js'
 
 import getLicenceCategoryApproval from './getLicenceCategoryApproval.js'
-import { getLicenceCategoryApprovals } from './getLicenceCategoryApprovals.js'
+import getLicenceCategoryApprovals from './getLicenceCategoryApprovals.js'
 
 const sql = `update LicenceCategoryApprovals
     set orderNumber = ?,
@@ -12,11 +12,11 @@ const sql = `update LicenceCategoryApprovals
     recordUpdate_timeMillis = ?
     where licenceApprovalKey = ?`
 
-export const moveLicenceCategoryApproval = (
+export default function moveLicenceCategoryApproval(
   licenceApprovalKeyFrom: string,
   licenceApprovalKeyTo: string,
   requestSession: PartialSession
-): string => {
+): string {
   const database = sqlite(databasePath)
 
   const licenceCategoryApprovalFrom = getLicenceCategoryApproval(
@@ -67,5 +67,3 @@ export const moveLicenceCategoryApproval = (
 
   return licenceCategoryApprovalFrom.licenceCategoryKey
 }
-
-export default moveLicenceCategoryApproval

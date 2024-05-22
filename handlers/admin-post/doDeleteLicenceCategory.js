@@ -1,6 +1,6 @@
-import { deleteLicenceCategory } from "../../helpers/licencesDB/deleteLicenceCategory.js";
-import * as cacheFunctions from "../../helpers/functions.cache.js";
-export const handler = async (request, response) => {
+import * as cacheFunctions from '../../helpers/functions.cache.js';
+import deleteLicenceCategory from '../../helpers/licencesDB/deleteLicenceCategory.js';
+export default function handler(request, response) {
     const licenceCategoryKey = request.body.licenceCategoryKey;
     deleteLicenceCategory(licenceCategoryKey, request.session);
     cacheFunctions.clearAll();
@@ -9,5 +9,4 @@ export const handler = async (request, response) => {
         success: true,
         licenceCategories
     });
-};
-export default handler;
+}

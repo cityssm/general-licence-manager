@@ -7,7 +7,7 @@ import updateLicenceCategoryFee, {
   type UpdateLicenceCategoryFeeForm
 } from '../../helpers/licencesDB/updateLicenceCategoryFee.js'
 
-export function handler(request: Request, response: Response): void {
+export default function handler(request: Request, response: Response): void {
   const success = updateLicenceCategoryFee(
     request.body as UpdateLicenceCategoryFeeForm,
     request.session
@@ -29,5 +29,3 @@ export function handler(request: Request, response: Response): void {
     licenceCategoryFees
   })
 }
-
-export default handler

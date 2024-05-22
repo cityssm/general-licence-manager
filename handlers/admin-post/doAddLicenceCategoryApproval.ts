@@ -1,25 +1,26 @@
-import type { RequestHandler } from "express";
+import type { Request, Response } from 'express'
 
-import { addLicenceCategoryApproval } from "../../helpers/licencesDB/addLicenceCategoryApproval.js";
-import { getLicenceCategoryApprovals } from "../../helpers/licencesDB/getLicenceCategoryApprovals.js";
+import * as cacheFunctions from '../../helpers/functions.cache.js'
+import addLicenceCategoryApproval, {
+  type AddLicenceCategoryApprovalForm
+} from '../../helpers/licencesDB/addLicenceCategoryApproval.js'
+import getLicenceCategoryApprovals from '../../helpers/licencesDB/getLicenceCategoryApprovals.js'
 
-import * as cacheFunctions from "../../helpers/functions.cache.js";
+export default function handler(request: Request, response: Response): void {
+  const licenceApprovalKey = addLicenceCategoryApproval(
+    request.body as AddLicenceCategoryApprovalForm,
+    request.session
+  )
 
+  cacheFunctions.clearAll()
 
-export const handler: RequestHandler = async (request, response) => {
-
-  const licenceApprovalKey = addLicenceCategoryApproval(request.body, request.session);
-
-  cacheFunctions.clearAll();
-  
-  const licenceCategoryApprovals = getLicenceCategoryApprovals(request.body.licenceCategoryKey);
+  const licenceCategoryApprovals = getLicenceCategoryApprovals(
+    request.body.licenceCategoryKey as string
+  )
 
   response.json({
     success: true,
     licenceCategoryApprovals,
     licenceApprovalKey
-  });
-};
-
-
-export default handler;
+  })
+}

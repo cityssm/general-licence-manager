@@ -1,4 +1,4 @@
-import { Router } from 'express'
+import { type RequestHandler, Router } from 'express'
 
 import handler_cleanup from '../handlers/admin-get/cleanup.js'
 import handler_licenceCategories from '../handlers/admin-get/licenceCategories.js'
@@ -174,7 +174,7 @@ router.post(
 router.post(
   '/doBackupDatabase',
   permissionHandlers.adminPostHandler,
-  handler_doBackupDatabase
+  handler_doBackupDatabase as RequestHandler
 )
 
 /*

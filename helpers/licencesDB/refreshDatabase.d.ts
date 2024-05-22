@@ -1,3 +1,2 @@
-import type * as recordTypes from '../../types/recordTypes';
-export declare const refreshDatabase: (requestSession: recordTypes.PartialSession) => boolean;
-export default refreshDatabase;
+import type { PartialSession } from '../../types/recordTypes.js';
+export default function refreshDatabase(requestSession: PartialSession): boolean;

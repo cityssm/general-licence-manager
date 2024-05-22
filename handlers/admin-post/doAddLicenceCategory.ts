@@ -1,23 +1,22 @@
-import type { RequestHandler } from "express";
+import type { Request, Response } from 'express'
 
-import { addLicenceCategory } from "../../helpers/licencesDB/addLicenceCategory.js";
+import * as cacheFunctions from '../../helpers/functions.cache.js'
+import addLicenceCategory, {
+  type AddLicenceCategoryForm
+} from '../../helpers/licencesDB/addLicenceCategory.js'
 
-import * as cacheFunctions from "../../helpers/functions.cache.js";
+export default function handler(request: Request, response: Response): void {
+  const licenceCategoryKey = addLicenceCategory(
+    request.body as AddLicenceCategoryForm,
+    request.session
+  )
 
-
-export const handler: RequestHandler = async (request, response) => {
-
-  const licenceCategoryKey = addLicenceCategory(request.body, request.session);
-
-  cacheFunctions.clearAll();
-  const licenceCategories = cacheFunctions.getLicenceCategories();
+  cacheFunctions.clearAll()
+  const licenceCategories = cacheFunctions.getLicenceCategories()
 
   response.json({
     success: true,
     licenceCategories,
     licenceCategoryKey
-  });
-};
-
-
-export default handler;
+  })
+}

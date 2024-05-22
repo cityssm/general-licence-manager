@@ -3,9 +3,9 @@ import type { Request, Response } from 'express'
 import * as cacheFunctions from '../../helpers/functions.cache.js'
 import { deleteLicenceCategoryApproval } from '../../helpers/licencesDB/deleteLicenceCategoryApproval.js'
 import getLicenceCategoryApproval from '../../helpers/licencesDB/getLicenceCategoryApproval.js'
-import { getLicenceCategoryApprovals } from '../../helpers/licencesDB/getLicenceCategoryApprovals.js'
+import getLicenceCategoryApprovals from '../../helpers/licencesDB/getLicenceCategoryApprovals.js'
 
-export function handler(request: Request, response: Response): void {
+export default function handler(request: Request, response: Response): void {
   const licenceApprovalKey = request.body.licenceApprovalKey as string
 
   const licenceCategoryApproval = getLicenceCategoryApproval(licenceApprovalKey)
@@ -28,5 +28,3 @@ export function handler(request: Request, response: Response): void {
     })
   }
 }
-
-export default handler

@@ -1,43 +1,46 @@
-import sqlite from "better-sqlite3";
-import { licencesDB as databasePath } from "../../data/databasePaths.js";
+import sqlite from 'better-sqlite3'
 
-import { getUnusedLicenceCategoryKey } from "./getUnusedKey.js";
+import { licencesDB as databasePath } from '../../data/databasePaths.js'
+import type { PartialSession } from '../../types/recordTypes.js'
 
-import type * as recordTypes from "../../types/recordTypes";
+import { getUnusedLicenceCategoryKey } from './getUnusedKey.js'
 
-interface AddLicenceCategoryForm {
-  licenceCategoryKey?: string;
-  licenceCategory: string;
+export interface AddLicenceCategoryForm {
+  licenceCategoryKey?: string
+  licenceCategory: string
 }
 
-export const addLicenceCategory =
-  (licenceCategoryForm: AddLicenceCategoryForm, requestSession: recordTypes.PartialSession): string => {
-
-    const licenceCategoryKey = (licenceCategoryForm.licenceCategoryKey && licenceCategoryForm.licenceCategoryKey !== ""
+export default function addLicenceCategory(
+  licenceCategoryForm: AddLicenceCategoryForm,
+  requestSession: PartialSession
+): string {
+  const licenceCategoryKey =
+    licenceCategoryForm.licenceCategoryKey &&
+    licenceCategoryForm.licenceCategoryKey !== ''
       ? licenceCategoryForm.licenceCategoryKey
-      : getUnusedLicenceCategoryKey(licenceCategoryForm.licenceCategory));
+      : getUnusedLicenceCategoryKey(licenceCategoryForm.licenceCategory)
 
-    const database = sqlite(databasePath);
+  const database = sqlite(databasePath)
 
-    const rightNowMillis = Date.now();
+  const rightNowMillis = Date.now()
 
-    database
-      .prepare("insert into LicenceCategories" +
-        "(licenceCategoryKey, licenceCategory," +
-        " recordCreate_userName, recordCreate_timeMillis," +
-        " recordUpdate_userName, recordUpdate_timeMillis)" +
-        " values (?, ?, ?, ?, ?, ?)")
-      .run(licenceCategoryKey,
-        licenceCategoryForm.licenceCategory,
-        requestSession.user.userName,
-        rightNowMillis,
-        requestSession.user.userName,
-        rightNowMillis);
+  database
+    .prepare(
+      `insert into LicenceCategories (
+        licenceCategoryKey, licenceCategory,
+        recordCreate_userName, recordCreate_timeMillis, recordUpdate_userName, recordUpdate_timeMillis)
+        values (?, ?, ?, ?, ?, ?)`
+    )
+    .run(
+      licenceCategoryKey,
+      licenceCategoryForm.licenceCategory,
+      requestSession.user.userName,
+      rightNowMillis,
+      requestSession.user.userName,
+      rightNowMillis
+    )
 
-    database.close();
+  database.close()
 
-    return licenceCategoryKey;
-  };
-
-
-export default addLicenceCategory;
+  return licenceCategoryKey
+}

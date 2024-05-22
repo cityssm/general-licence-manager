@@ -5,7 +5,7 @@ import deleteLicenceCategoryFee from '../../helpers/licencesDB/deleteLicenceCate
 import getLicenceCategoryFee from '../../helpers/licencesDB/getLicenceCategoryFee.js'
 import getLicenceCategoryFees from '../../helpers/licencesDB/getLicenceCategoryFees.js'
 
-export function handler(request: Request, response: Response): void {
+export default function handler(request: Request, response: Response): void {
   const licenceFeeId = request.body.licenceFeeId as string
 
   const licenceCategoryFee = getLicenceCategoryFee(licenceFeeId)
@@ -29,5 +29,3 @@ export function handler(request: Request, response: Response): void {
     })
   }
 }
-
-export default handler

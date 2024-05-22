@@ -4,7 +4,7 @@ import { licencesDB as databasePath } from '../../data/databasePaths.js'
 import type * as recordTypes from '../../types/recordTypes'
 
 import getLicenceCategoryAdditionalFees from './getLicenceCategoryAdditionalFees.js'
-import { getLicenceCategoryApprovals } from './getLicenceCategoryApprovals.js'
+import getLicenceCategoryApprovals from './getLicenceCategoryApprovals.js'
 import getLicenceCategoryFees from './getLicenceCategoryFees.js'
 import getLicenceCategoryFields from './getLicenceCategoryFields.js'
 

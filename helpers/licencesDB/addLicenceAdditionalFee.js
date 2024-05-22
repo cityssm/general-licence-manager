@@ -1,7 +1,7 @@
 import sqlite from 'better-sqlite3';
 import { licencesDB as databasePath } from '../../data/databasePaths.js';
 import * as licenceFunctions from '../functions.licence.js';
-import { getLicenceCategoryAdditionalFee } from './getLicenceCategoryAdditionalFee.js';
+import getLicenceCategoryAdditionalFee from './getLicenceCategoryAdditionalFee.js';
 export default function addLicenceAdditionalFee(licenceId, licenceAdditionalFeeKey, requestSession) {
     const database = sqlite(databasePath);
     const licenceFees = database

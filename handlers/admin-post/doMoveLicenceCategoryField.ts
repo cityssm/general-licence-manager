@@ -2,9 +2,9 @@ import type { Request, Response } from 'express'
 
 import * as cacheFunctions from '../../helpers/functions.cache.js'
 import getLicenceCategoryFields from '../../helpers/licencesDB/getLicenceCategoryFields.js'
-import { moveLicenceCategoryField } from '../../helpers/licencesDB/moveLicenceCategoryField.js'
+import moveLicenceCategoryField from '../../helpers/licencesDB/moveLicenceCategoryField.js'
 
-export function handler(request: Request, response: Response): void {
+export default function handler(request: Request, response: Response): void {
   const licenceFieldKeyFrom = request.body.licenceFieldKey_from as string
   const licenceFieldKeyTo = request.body.licenceFieldKey_to as string
 
@@ -21,5 +21,3 @@ export function handler(request: Request, response: Response): void {
     licenceCategoryFields
   })
 }
-
-export default handler

@@ -1,21 +1,19 @@
-import type { RequestHandler } from "express";
+import type { Request, Response } from 'express'
 
-import { backupDatabase } from "../../helpers/functions.database.js";
+import { backupDatabase } from '../../helpers/functions.database.js'
 
-
-export const handler: RequestHandler = async (_request, response) => {
-
+export default async function handler(
+  _request: Request,
+  response: Response
+): Promise<void> {
   const backupDatabasePath = await backupDatabase()
 
-  const backupDatabasePathSplit = backupDatabasePath.split(/[/\\]/g);
+  const backupDatabasePathSplit = backupDatabasePath.split(/[/\\]/g)
 
-  const fileName = backupDatabasePathSplit[backupDatabasePathSplit.length - 1];
+  const fileName = backupDatabasePathSplit.at(-1)
 
   response.json({
     success: true,
     fileName
-  });
-};
-
-
-export default handler;
+  })
+}

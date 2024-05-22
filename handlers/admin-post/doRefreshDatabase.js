@@ -1,8 +1,7 @@
-import { refreshDatabase } from "../../helpers/licencesDB/refreshDatabase.js";
-export const handler = async (request, response) => {
+import refreshDatabase from '../../helpers/licencesDB/refreshDatabase.js';
+export default function handler(request, response) {
     const success = refreshDatabase(request.session);
     response.json({
         success
     });
-};
-export default handler;
+}

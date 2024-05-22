@@ -4,10 +4,7 @@ import * as cacheFunctions from '../../helpers/functions.cache.js'
 import getLicenceCategoryAdditionalFees from '../../helpers/licencesDB/getLicenceCategoryAdditionalFees.js'
 import moveLicenceCategoryAdditionalFee from '../../helpers/licencesDB/moveLicenceCategoryAdditionalFee.js'
 
-export async function handler(
-  request: Request,
-  response: Response
-): Promise<void> {
+export default function handler(request: Request, response: Response): void {
   const licenceAdditionalFeeKeyFrom = request.body
     .licenceAdditionalFeeKey_from as string
 
@@ -28,5 +25,3 @@ export async function handler(
     licenceCategoryAdditionalFees
   })
 }
-
-export default handler

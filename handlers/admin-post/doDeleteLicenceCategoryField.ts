@@ -5,7 +5,7 @@ import { deleteLicenceCategoryField } from '../../helpers/licencesDB/deleteLicen
 import getLicenceCategoryField from '../../helpers/licencesDB/getLicenceCategoryField.js'
 import getLicenceCategoryFields from '../../helpers/licencesDB/getLicenceCategoryFields.js'
 
-export function handler(request: Request, response: Response): void {
+export default function handler(request: Request, response: Response): void {
   const licenceFieldKey = request.body.licenceFieldKey as string
 
   const licenceCategoryField = getLicenceCategoryField(licenceFieldKey)
@@ -28,5 +28,3 @@ export function handler(request: Request, response: Response): void {
     })
   }
 }
-
-export default handler

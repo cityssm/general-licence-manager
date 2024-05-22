@@ -1,2 +1,1 @@
-export declare const cleanupDatabase: () => number;
-export default cleanupDatabase;
+export default function cleanupDatabase(): number;

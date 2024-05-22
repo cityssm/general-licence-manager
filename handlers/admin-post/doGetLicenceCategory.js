@@ -1,5 +1,5 @@
 import getLicenceCategory from '../../helpers/licencesDB/getLicenceCategory.js';
-export function handler(request, response) {
+export default function handler(request, response) {
     const licenceCategory = getLicenceCategory(request.body.licenceCategoryKey, {
         includeApprovals: true,
         includeFees: 'all',
@@ -11,4 +11,3 @@ export function handler(request, response) {
         licenceCategory
     });
 }
-export default handler;

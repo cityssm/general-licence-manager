@@ -7,7 +7,7 @@ import type {
 } from '../../types/recordTypes.js'
 import * as licenceFunctions from '../functions.licence.js'
 
-import { getLicenceCategoryAdditionalFee } from './getLicenceCategoryAdditionalFee.js'
+import getLicenceCategoryAdditionalFee from './getLicenceCategoryAdditionalFee.js'
 
 interface AddLicenceAdditionalFeeReturn {
   licenceFee: number

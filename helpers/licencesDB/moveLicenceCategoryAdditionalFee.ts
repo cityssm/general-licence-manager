@@ -4,7 +4,7 @@ import type * as expressSession from 'express-session'
 import { licencesDB as databasePath } from '../../data/databasePaths.js'
 import type { LicenceCategoryAdditionalFee } from '../../types/recordTypes.js'
 
-import { getLicenceCategoryAdditionalFee } from './getLicenceCategoryAdditionalFee.js'
+import getLicenceCategoryAdditionalFee from './getLicenceCategoryAdditionalFee.js'
 import getLicenceCategoryAdditionalFees from './getLicenceCategoryAdditionalFees.js'
 
 const sql = `update LicenceCategoryAdditionalFees

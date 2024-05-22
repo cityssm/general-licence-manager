@@ -1,6 +1,6 @@
 import type { Request } from 'express'
 
-export const userIsAdmin = (request: Request): boolean => {
+export function userIsAdmin(request: Request): boolean {
   const user = request.session?.user
 
   if (!user) {
@@ -10,7 +10,7 @@ export const userIsAdmin = (request: Request): boolean => {
   return user.userProperties.isAdmin
 }
 
-export const userCanUpdate = (request: Request): boolean => {
+export function userCanUpdate(request: Request): boolean {
   const user = request.session?.user
 
   if (!user) {

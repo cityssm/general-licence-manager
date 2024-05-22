@@ -1,5 +1,5 @@
 import * as configFunctions from './functions.config.js';
-export const calculateAdditionalFeeAmount = (licenceCategoryAdditionalFee, baseLicenceFee) => {
+export function calculateAdditionalFeeAmount(licenceCategoryAdditionalFee, baseLicenceFee) {
     const baseLicenceFeeFloat = typeof baseLicenceFee === 'string'
         ? Number.parseFloat(baseLicenceFee)
         : baseLicenceFee;
@@ -15,4 +15,4 @@ export const calculateAdditionalFeeAmount = (licenceCategoryAdditionalFee, baseL
         }
     }
     return additionalFeeAmount;
-};
+}

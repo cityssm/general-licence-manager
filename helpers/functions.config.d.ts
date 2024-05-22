@@ -24,12 +24,8 @@ export declare function getProperty(propertyName: 'settings.includeBatches'): bo
 export declare function getProperty(propertyName: 'settings.includeReplacementFee'): boolean;
 export declare function getProperty(propertyName: 'settings.includeYearEnd'): boolean;
 export declare function getProperty(propertyName: 'exports.batches'): configTypes.ConfigBatchExport;
-export declare function getProperty(propertyName: 'licenceLengthFunctions'): {
-    [licenceLengthFunctionName: string]: configTypes.LicenceLengthFunction;
-};
-export declare function getProperty(propertyName: 'additionalFeeFunctions'): {
-    [additionalFeeFunctionName: string]: configTypes.AdditionalFeeFunction;
-};
+export declare function getProperty(propertyName: 'licenceLengthFunctions'): Record<string, configTypes.LicenceLengthFunction>;
+export declare function getProperty(propertyName: 'additionalFeeFunctions'): Record<string, configTypes.AdditionalFeeFunction>;
 export declare function getProperty(propertyName: 'customReports'): configTypes.ReportDefinition[];
 export declare function getProperty(propertyName: 'reverseProxy.disableCompression'): boolean;
 export declare function getProperty(propertyName: 'reverseProxy.disableEtag'): boolean;
@@ -39,8 +35,8 @@ export declare function getProperty(propertyName: 'session.doKeepAlive'): boolea
 export declare function getProperty(propertyName: 'session.maxAgeMillis'): number;
 export declare function getProperty(propertyName: 'session.secret'): string;
 export declare const keepAliveMillis: number;
-export declare const getLicenceLengthFunctionNames: () => string[];
-export declare const getLicenceLengthFunction: (licenceLengthFunctionName: string) => configTypes.LicenceLengthFunction;
-export declare const getAdditionalFeeFunctionNames: () => string[];
-export declare const getAdditionalFeeFunction: (additionalFeeFunctionName: string) => configTypes.AdditionalFeeFunction;
-export declare const getCustomReport: (reportName: string) => configTypes.ReportDefinition;
+export declare function getLicenceLengthFunctionNames(): string[];
+export declare function getLicenceLengthFunction(licenceLengthFunctionName: string): configTypes.LicenceLengthFunction;
+export declare function getAdditionalFeeFunctionNames(): string[];
+export declare function getAdditionalFeeFunction(additionalFeeFunctionName: string): configTypes.AdditionalFeeFunction;
+export declare function getCustomReport(reportName: string): configTypes.ReportDefinition;

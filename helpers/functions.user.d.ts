@@ -1,3 +1,4 @@
+/// <reference types="cookie-parser" />
 import type { Request } from 'express';
-export declare const userIsAdmin: (request: Request) => boolean;
-export declare const userCanUpdate: (request: Request) => boolean;
+export declare function userIsAdmin(request: Request): boolean;
+export declare function userCanUpdate(request: Request): boolean;

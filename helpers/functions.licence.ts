@@ -2,10 +2,10 @@ import type { LicenceCategoryAdditionalFee } from '../types/recordTypes.js'
 
 import * as configFunctions from './functions.config.js'
 
-export const calculateAdditionalFeeAmount = (
+export function calculateAdditionalFeeAmount(
   licenceCategoryAdditionalFee: LicenceCategoryAdditionalFee,
   baseLicenceFee: number | string
-): number => {
+): number {
   const baseLicenceFeeFloat =
     typeof baseLicenceFee === 'string'
       ? Number.parseFloat(baseLicenceFee)

@@ -3,7 +3,7 @@ import path from 'node:path';
 import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js';
 import * as cacheFunctions from './functions.cache.js';
 let printEJSList = [];
-export const getPrintEJSList = async () => {
+export async function getPrintEJSList() {
     if (printEJSList.length === 0) {
         const printPath = path.join('print');
         const allFiles = await fs.readdir(printPath);
@@ -18,23 +18,23 @@ export const getPrintEJSList = async () => {
         printEJSList = ejsList;
     }
     return printEJSList;
-};
-export const getLicenceFieldByPrintKey = (licence, printKey) => {
+}
+export function getLicenceFieldByPrintKey(licence, printKey) {
     return licence.licenceFields.find((currentLicenceField) => {
         return currentLicenceField.printKey === printKey;
     });
-};
-export const getLicenceFieldsByPrintKeyPiece = (licence, printKeyPiece) => {
+}
+export function getLicenceFieldsByPrintKeyPiece(licence, printKeyPiece) {
     return licence.licenceFields.filter((currentLicenceField) => {
         return currentLicenceField.printKey.includes(printKeyPiece);
     });
-};
-export const getLicenceApprovalByPrintKey = (licence, printKey) => {
+}
+export function getLicenceApprovalByPrintKey(licence, printKey) {
     return licence.licenceApprovals.find((currentLicenceApproval) => {
         return currentLicenceApproval.printKey === printKey;
     });
-};
-export const getLicenceLengthEndDateString = (licence) => {
+}
+export function getLicenceLengthEndDateString(licence) {
     const licenceCategory = cacheFunctions.getLicenceCategory(licence.licenceCategoryKey);
     if (licenceCategory.licenceLengthFunction &&
         licenceCategory.licenceLengthFunction !== '') {
@@ -72,4 +72,4 @@ export const getLicenceLengthEndDateString = (licence) => {
         return licence.endDateString;
     }
     return licenceLengthEndDateString;
-};
+}

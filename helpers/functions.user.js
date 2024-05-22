@@ -1,14 +1,14 @@
-export const userIsAdmin = (request) => {
+export function userIsAdmin(request) {
     const user = request.session?.user;
     if (!user) {
         return false;
     }
     return user.userProperties.isAdmin;
-};
-export const userCanUpdate = (request) => {
+}
+export function userCanUpdate(request) {
     const user = request.session?.user;
     if (!user) {
         return false;
     }
     return user.userProperties.canUpdate;
-};
+}

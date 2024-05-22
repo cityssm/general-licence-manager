@@ -9,7 +9,7 @@ import * as cacheFunctions from './functions.cache.js'
 
 let printEJSList: string[] = []
 
-export const getPrintEJSList = async (): Promise<string[]> => {
+export async function getPrintEJSList(): Promise<string[]> {
   if (printEJSList.length === 0) {
     const printPath = path.join('print')
 
@@ -33,44 +33,34 @@ export const getPrintEJSList = async (): Promise<string[]> => {
   return printEJSList
 }
 
-export const getLicenceFieldByPrintKey = (
-  licence: recordTypes.Licence,
-  printKey: string
-): recordTypes.LicenceField => {
+export function getLicenceFieldByPrintKey(licence: recordTypes.Licence,
+  printKey: string): recordTypes.LicenceField {
   return licence.licenceFields.find((currentLicenceField) => {
     return currentLicenceField.printKey === printKey
   })
 }
 
-export const getLicenceFieldsByPrintKeyPiece = (
-  licence: recordTypes.Licence,
-  printKeyPiece: string
-): recordTypes.LicenceField[] => {
+export function getLicenceFieldsByPrintKeyPiece(licence: recordTypes.Licence,
+  printKeyPiece: string): recordTypes.LicenceField[] {
   return licence.licenceFields.filter((currentLicenceField) => {
     return currentLicenceField.printKey.includes(printKeyPiece)
   })
 }
 
-export const getLicenceApprovalByPrintKey = (
-  licence: recordTypes.Licence,
-  printKey: string
-): recordTypes.LicenceApproval => {
+export function getLicenceApprovalByPrintKey(licence: recordTypes.Licence,
+  printKey: string): recordTypes.LicenceApproval {
   return licence.licenceApprovals.find((currentLicenceApproval) => {
     return currentLicenceApproval.printKey === printKey
   })
 }
 
-export const getLicenceLengthEndDateString = (
-  licence: recordTypes.Licence
-): string => {
+export function getLicenceLengthEndDateString(licence: recordTypes.Licence): string {
   const licenceCategory = cacheFunctions.getLicenceCategory(
     licence.licenceCategoryKey
   )
 
-  if (
-    licenceCategory.licenceLengthFunction &&
-    licenceCategory.licenceLengthFunction !== ''
-  ) {
+  if (licenceCategory.licenceLengthFunction &&
+    licenceCategory.licenceLengthFunction !== '') {
     return licence.endDateString
   }
 
@@ -116,10 +106,8 @@ export const getLicenceLengthEndDateString = (
       (licenceCategory.licenceLengthDays === 1 ? '' : 's')
   }
 
-  if (
-    licenceLengthEndDateString === '' ||
-    licence.endDate !== dateTimeFunctions.dateToInteger(calculatedEndDate)
-  ) {
+  if (licenceLengthEndDateString === '' ||
+    licence.endDate !== dateTimeFunctions.dateToInteger(calculatedEndDate)) {
     return licence.endDateString
   }
 

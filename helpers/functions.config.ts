@@ -104,13 +104,13 @@ export function getProperty(
   propertyName: 'exports.batches'
 ): configTypes.ConfigBatchExport
 
-export function getProperty(propertyName: 'licenceLengthFunctions'): {
-  [licenceLengthFunctionName: string]: configTypes.LicenceLengthFunction
-}
+export function getProperty(
+  propertyName: 'licenceLengthFunctions'
+): Record<string, configTypes.LicenceLengthFunction>
 
-export function getProperty(propertyName: 'additionalFeeFunctions'): {
-  [additionalFeeFunctionName: string]: configTypes.AdditionalFeeFunction
-}
+export function getProperty(
+  propertyName: 'additionalFeeFunctions'
+): Record<string, configTypes.AdditionalFeeFunction>
 
 export function getProperty(
   propertyName: 'customReports'
@@ -153,29 +153,29 @@ export const keepAliveMillis = getProperty('session.doKeepAlive')
     )
   : 0
 
-export const getLicenceLengthFunctionNames = (): string[] => {
+export function getLicenceLengthFunctionNames(): string[] {
   return Object.keys(getProperty('licenceLengthFunctions'))
 }
 
-export const getLicenceLengthFunction = (
+export function getLicenceLengthFunction(
   licenceLengthFunctionName: string
-): configTypes.LicenceLengthFunction => {
+): configTypes.LicenceLengthFunction {
   return getProperty('licenceLengthFunctions')[licenceLengthFunctionName]
 }
 
-export const getAdditionalFeeFunctionNames = (): string[] => {
+export function getAdditionalFeeFunctionNames(): string[] {
   return Object.keys(getProperty('additionalFeeFunctions')) || []
 }
 
-export const getAdditionalFeeFunction = (
+export function getAdditionalFeeFunction(
   additionalFeeFunctionName: string
-): configTypes.AdditionalFeeFunction => {
+): configTypes.AdditionalFeeFunction {
   return getProperty('additionalFeeFunctions')[additionalFeeFunctionName]
 }
 
-export const getCustomReport = (
+export function getCustomReport(
   reportName: string
-): configTypes.ReportDefinition => {
+): configTypes.ReportDefinition {
   return getProperty('customReports').find((possibleReportDefinition) => {
     return possibleReportDefinition.reportName === reportName
   })

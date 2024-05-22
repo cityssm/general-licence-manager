@@ -45,20 +45,20 @@ export function getProperty(propertyName) {
 export const keepAliveMillis = getProperty('session.doKeepAlive')
     ? Math.max(getProperty('session.maxAgeMillis') / 2, getProperty('session.maxAgeMillis') - 10 * 60 * 1000)
     : 0;
-export const getLicenceLengthFunctionNames = () => {
+export function getLicenceLengthFunctionNames() {
     return Object.keys(getProperty('licenceLengthFunctions'));
-};
-export const getLicenceLengthFunction = (licenceLengthFunctionName) => {
+}
+export function getLicenceLengthFunction(licenceLengthFunctionName) {
     return getProperty('licenceLengthFunctions')[licenceLengthFunctionName];
-};
-export const getAdditionalFeeFunctionNames = () => {
+}
+export function getAdditionalFeeFunctionNames() {
     return Object.keys(getProperty('additionalFeeFunctions')) || [];
-};
-export const getAdditionalFeeFunction = (additionalFeeFunctionName) => {
+}
+export function getAdditionalFeeFunction(additionalFeeFunctionName) {
     return getProperty('additionalFeeFunctions')[additionalFeeFunctionName];
-};
-export const getCustomReport = (reportName) => {
+}
+export function getCustomReport(reportName) {
     return getProperty('customReports').find((possibleReportDefinition) => {
         return possibleReportDefinition.reportName === reportName;
     });
-};
+}

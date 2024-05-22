@@ -17,7 +17,7 @@ const licenseeAddress2 = `${licenseeAliasSQL}Address2`;
 const licenseeCity = `${licenseeAliasSQL}City`;
 const licenseeProvince = `${licenseeAliasSQL}Province`;
 const licenseePostalCode = `${licenseeAliasSQL}PostalCode`;
-const getLicencesByLicenceCategorySQL = (licenceCategoryKey) => {
+function getLicencesByLicenceCategorySQL(licenceCategoryKey) {
     const licenceCategoryDefinition = cacheFunctions.getLicenceCategory(licenceCategoryKey);
     const sqlParameters = [];
     let fieldsSql = '';
@@ -34,61 +34,38 @@ const getLicencesByLicenceCategorySQL = (licenceCategoryKey) => {
                 break;
             }
         }
-        fieldsSql +=
-            ' max(case when f.licenceFieldKey = ? then f.licenceFieldValue else null end) as ' +
-                fieldColumnName +
-                ',';
+        fieldsSql += ` max(case when f.licenceFieldKey = ? then f.licenceFieldValue else null end) as ${fieldColumnName},`;
         sqlParameters.push(licenceField.licenceFieldKey);
     }
-    const sql = 'select l.licenceId as ' +
-        licenceId +
-        ',' +
-        ' c.licenceCategory as ' +
-        licenceCategory +
-        ',' +
-        ' l.licenceNumber as ' +
-        licenceNumber +
-        ',' +
-        ' l.licenseeName as ' +
-        licenseeName +
-        ',' +
-        ' l.licenseeBusinessName as ' +
-        licenseeBusinessName +
-        ',' +
-        ' l.licenseeAddress1 as ' +
-        licenseeAddress1 +
-        ',' +
-        ' l.licenseeAddress2 as ' +
-        licenseeAddress2 +
-        ',' +
-        ' l.licenseeCity as ' +
-        licenseeCity +
-        ',' +
-        ' l.licenseeProvince as ' +
-        licenseeProvince +
-        ',' +
-        ' l.licenseePostalCode as ' +
-        licenseePostalCode +
-        ',' +
-        fieldsSql +
-        ' userFn_dateIntegerToString(l.startDate) as startDateString,' +
-        ' userFn_dateIntegerToString(l.endDate) as endDateString,' +
-        ' userFn_dateIntegerToString(l.issueDate) as issueDateString' +
-        ' from Licences l' +
-        ' left join LicenceCategories c on l.licenceCategoryKey = c.licenceCategoryKey' +
-        ' left join LicenceFields f on l.licenceId = f.licenceId' +
-        ' where l.licenceCategoryKey = ?' +
-        ' group by l.licenceId, c.licenceCategory, l.licenceNumber,' +
-        ' l.licenseeName, l.licenseeBusinessName, l.licenseeAddress1, l.licenseeAddress2,' +
-        ' l.licenseeCity, l.licenseeProvince, l.licenseePostalCode,' +
-        ' l.startDate, l.endDate' +
-        ' order by l.startDate desc, l.endDate desc, l.licenceId';
+    const sql = `select l.licenceId as ${licenceId},
+      c.licenceCategory as ${licenceCategory},
+      l.licenceNumber as ${licenceNumber},
+      l.licenseeName as ${licenseeName},
+      l.licenseeBusinessName as ${licenseeBusinessName},
+      l.licenseeAddress1 as ${licenseeAddress1},
+      l.licenseeAddress2 as ${licenseeAddress2},
+      l.licenseeCity as ${licenseeCity},
+      l.licenseeProvince as ${licenseeProvince},
+      l.licenseePostalCode as ${licenseePostalCode},
+      ${fieldsSql}
+      userFn_dateIntegerToString(l.startDate) as startDateString,
+      userFn_dateIntegerToString(l.endDate) as endDateString,
+      userFn_dateIntegerToString(l.issueDate) as issueDateString
+      from Licences l
+      left join LicenceCategories c on l.licenceCategoryKey = c.licenceCategoryKey
+      left join LicenceFields f on l.licenceId = f.licenceId
+      where l.licenceCategoryKey = ?
+      group by l.licenceId, c.licenceCategory, l.licenceNumber,
+        l.licenseeName, l.licenseeBusinessName,
+        l.licenseeAddress1, l.licenseeAddress2, l.licenseeCity, l.licenseeProvince, l.licenseePostalCode,
+        l.startDate, l.endDate
+      order by l.startDate desc, l.endDate desc, l.licenceId`;
     sqlParameters.push(licenceCategoryKey);
     return {
         sql,
         sqlParameters
     };
-};
+}
 export default function getReportData(reportName, reportParameters) {
     let sql;
     let sqlParameters = [];
@@ -116,45 +93,24 @@ export default function getReportData(reportName, reportParameters) {
                             ? ' and l.issueDate is null'
                             : ' and l.issueDate is not null';
                 }
-                sql =
-                    'select l.licenceId as ' +
-                        licenceId +
-                        ',' +
-                        ' c.licenceCategory as ' +
-                        licenceCategory +
-                        ',' +
-                        ' l.licenceNumber as ' +
-                        licenceNumber +
-                        ',' +
-                        ' l.licenseeName as ' +
-                        licenseeName +
-                        ',' +
-                        ' l.licenseeBusinessName as ' +
-                        licenseeBusinessName +
-                        ',' +
-                        ' l.licenseeAddress1 as ' +
-                        licenseeAddress1 +
-                        ',' +
-                        ' l.licenseeAddress2 as ' +
-                        licenseeAddress2 +
-                        ',' +
-                        ' l.licenseeCity as ' +
-                        licenseeCity +
-                        ',' +
-                        ' l.licenseeProvince as ' +
-                        licenseeProvince +
-                        ',' +
-                        ' l.licenseePostalCode as ' +
-                        licenseePostalCode +
-                        ',' +
-                        ' userFn_dateIntegerToString(l.startDate) as startDateString,' +
-                        ' userFn_dateIntegerToString(l.endDate) as endDateString,' +
-                        ' userFn_dateIntegerToString(l.issueDate) as issueDateString' +
-                        ' from Licences l' +
-                        ' left join LicenceCategories c on l.licenceCategoryKey = c.licenceCategoryKey' +
-                        ' where l.recordDelete_timeMillis is null' +
-                        issuedFilter +
-                        ' order by startDate desc, endDate desc, licenceId';
+                sql = `select l.licenceId as ${licenceId},
+            c.licenceCategory as ${licenceCategory},
+            l.licenceNumber as ${licenceNumber},
+            l.licenseeName as ${licenseeName},
+            l.licenseeBusinessName as ${licenseeBusinessName},
+            l.licenseeAddress1 as ${licenseeAddress1},
+            l.licenseeAddress2 as ${licenseeAddress2},
+            l.licenseeCity as ${licenseeCity},
+            l.licenseeProvince as ${licenseeProvince},
+            l.licenseePostalCode as ${licenseePostalCode},
+            userFn_dateIntegerToString(l.startDate) as startDateString,
+            userFn_dateIntegerToString(l.endDate) as endDateString,
+            userFn_dateIntegerToString(l.issueDate) as issueDateString
+            from Licences l
+            left join LicenceCategories c on l.licenceCategoryKey = c.licenceCategoryKey
+            where l.recordDelete_timeMillis is null
+            ${issuedFilter}
+            order by startDate desc, endDate desc, licenceId`;
                 break;
             }
             case 'licenceAdditionalFees-all': {

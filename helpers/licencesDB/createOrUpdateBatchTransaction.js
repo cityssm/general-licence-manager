@@ -2,7 +2,7 @@ import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js'
 import sqlite from 'better-sqlite3';
 import { licencesDB as databasePath } from '../../data/databasePaths.js';
 import * as configFunctions from '../functions.config.js';
-import { getNextLicenceTransactionIndex } from './getNextLicenceTransactionIndex.js';
+import getNextLicenceTransactionIndex from './getNextLicenceTransactionIndex.js';
 function isBankingInformationIncomplete(bankRecord) {
     return ((bankRecord.bankInstitutionNumber ?? '') === '' ||
         (bankRecord.bankTransitNumber ?? '') === '' ||

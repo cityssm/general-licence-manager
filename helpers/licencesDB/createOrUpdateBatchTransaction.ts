@@ -8,7 +8,7 @@ import type {
 } from '../../types/recordTypes.js'
 import * as configFunctions from '../functions.config.js'
 
-import { getNextLicenceTransactionIndex } from './getNextLicenceTransactionIndex.js'
+import getNextLicenceTransactionIndex from './getNextLicenceTransactionIndex.js'
 
 export interface CreateOrUpdateBatchTransactionForm {
   licenceId: string | number

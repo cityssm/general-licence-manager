@@ -7,7 +7,7 @@ import sqlite from 'better-sqlite3'
 import { licencesDB as databasePath } from '../../data/databasePaths.js'
 import type { PartialSession } from '../../types/recordTypes.js'
 
-import { getNextLicenceTransactionIndex } from './getNextLicenceTransactionIndex.js'
+import getNextLicenceTransactionIndex from './getNextLicenceTransactionIndex.js'
 
 export interface AddLicenceTransactionForm {
   licenceId: number | string

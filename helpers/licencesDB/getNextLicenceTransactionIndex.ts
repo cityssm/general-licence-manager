@@ -1,18 +1,18 @@
-import sqlite from 'better-sqlite3'
+import type sqlite from 'better-sqlite3'
 
-export const getNextLicenceTransactionIndex = (
+export default function getNextLicenceTransactionIndex(
   licenceId: number | string,
   database: sqlite.Database
-): number => {
+): number {
   let transactionIndex = 0
 
   const row = database
     .prepare(
-      'select transactionIndex' +
-        ' from LicenceTransactions' +
-        ' where licenceId = ?' +
-        ' order by transactionIndex desc' +
-        ' limit 1'
+      `select transactionIndex
+        from LicenceTransactions
+        where licenceId = ?
+        order by transactionIndex desc
+        limit 1`
     )
     .get(licenceId) as { transactionIndex: number }
 
@@ -22,5 +22,3 @@ export const getNextLicenceTransactionIndex = (
 
   return transactionIndex
 }
-
-export default getNextLicenceTransactionIndex

@@ -1,32 +1,32 @@
 import sqlite from 'better-sqlite3';
+import Debug from 'debug';
 import { licencesDB as databasePath } from '../data/databasePaths.js';
-import debug from 'debug';
-const debugSQL = debug('general-licence-manager:databaseInitializer');
-const recordColumns = ' recordCreate_userName varchar(30) not null,' +
-    ' recordCreate_timeMillis integer not null,' +
-    ' recordUpdate_userName varchar(30) not null,' +
-    ' recordUpdate_timeMillis integer not null,' +
-    ' recordDelete_userName varchar(30),' +
-    ' recordDelete_timeMillis integer';
+const debug = Debug('general-licence-manager:databaseInitializer');
+const recordColumns = ` recordCreate_userName varchar(30) not null,
+    recordCreate_timeMillis integer not null,
+    recordUpdate_userName varchar(30) not null,
+    recordUpdate_timeMillis integer not null,
+    recordDelete_userName varchar(30),
+    recordDelete_timeMillis integer`;
 export const initLicencesDB = () => {
     const licencesDB = sqlite(databasePath);
     const row = licencesDB
         .prepare("select name from sqlite_master where type = 'table' and name = 'Licences'")
         .get();
     if (!row) {
-        debugSQL('Creating ' + databasePath);
+        debug(`Creating ${databasePath}`);
         licencesDB
-            .prepare('create table if not exists LicenceCategories (' +
-            'licenceCategoryKey varchar(50) primary key,' +
-            ' licenceCategory varchar(100) not null,' +
-            " bylawNumber varchar(20) default ''," +
-            " licenceLengthFunction varchar(50) not null default ''," +
-            ' licenceLengthYears smallint not null default 1,' +
-            ' licenceLengthMonths smallint default 0,' +
-            ' licenceLengthDays smallint not null default 0,' +
-            " printEJS varchar(50) not null default ''," +
-            recordColumns +
-            ') without rowid')
+            .prepare(`create table if not exists LicenceCategories (
+          licenceCategoryKey varchar(50) primary key,
+          licenceCategory varchar(100) not null,
+          bylawNumber varchar(20) default '',
+          licenceLengthFunction varchar(50) not null default '',
+          licenceLengthYears smallint not null default 1,
+          licenceLengthMonths smallint default 0,
+          licenceLengthDays smallint not null default 0,
+          printEJS varchar(50) not null default '',
+          ${recordColumns}
+        ) without rowid`)
             .run();
         licencesDB
             .prepare('create table if not exists LicenceCategoryFees (' +

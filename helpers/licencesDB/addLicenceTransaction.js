@@ -1,7 +1,7 @@
 import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js';
 import sqlite from 'better-sqlite3';
 import { licencesDB as databasePath } from '../../data/databasePaths.js';
-import { getNextLicenceTransactionIndex } from './getNextLicenceTransactionIndex.js';
+import getNextLicenceTransactionIndex from './getNextLicenceTransactionIndex.js';
 export default function addLicenceTransaction(licenceTransactionForm, requestSession) {
     const database = sqlite(databasePath);
     const rightNow = new Date();

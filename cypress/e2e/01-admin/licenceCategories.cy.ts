@@ -232,12 +232,12 @@ describe('Admin - Licence Categories', () => {
 
       cy.get(".modal input[name='effectiveStartDateString']").invoke(
         'val',
-        currentYear.toString() + '-01-01'
+        `${currentYear.toString()}-01-01`
       )
 
       cy.get(".modal input[name='effectiveEndDateString']").invoke(
         'val',
-        currentYear.toString() + '-12-31'
+        `${currentYear.toString()}-12-31`
       )
 
       cy.get(".modal input[name='licenceFee']").clear().clear().type('100')

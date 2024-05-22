@@ -1,7 +1,7 @@
 import sqlite from 'better-sqlite3';
 import { licencesDB as databasePath } from '../../data/databasePaths.js';
 import { getUnusedLicenceAdditionalFeeKey } from './getUnusedKey.js';
-export function addLicenceCategoryAdditionalFee(licenceCategoryAdditionalFeeForm, requestSession) {
+export default function addLicenceCategoryAdditionalFee(licenceCategoryAdditionalFeeForm, requestSession) {
     const licenceAdditionalFeeKey = getUnusedLicenceAdditionalFeeKey(licenceCategoryAdditionalFeeForm.licenceCategoryKey, licenceCategoryAdditionalFeeForm.additionalFee);
     const database = sqlite(databasePath);
     const rightNowMillis = Date.now();
@@ -16,4 +16,3 @@ export function addLicenceCategoryAdditionalFee(licenceCategoryAdditionalFeeForm
     database.close();
     return licenceAdditionalFeeKey;
 }
-export default addLicenceCategoryAdditionalFee;

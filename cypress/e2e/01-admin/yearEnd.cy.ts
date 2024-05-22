@@ -1,14 +1,12 @@
-/* eslint-disable unicorn/filename-case, promise/catch-or-return, promise/always-return */
-
 import { testAdmin } from '../../../test/_globals.js'
+import { ajaxDelayMillis, login, logout } from '../../support/index.js'
 
-import { logout, login, ajaxDelayMillis } from '../../support/index.js'
-
-const isJanuary = () => {
+function isJanuary(): boolean {
+  // eslint-disable-next-line sonarjs/no-identical-expressions
   return new Date().getMonth() === 1 - 1
 }
 
-const proceedIfNotJanuary = () => {
+function proceedIfNotJanuary(): void {
   if (!isJanuary()) {
     cy.get("button[data-cy='proceed']").click()
   }

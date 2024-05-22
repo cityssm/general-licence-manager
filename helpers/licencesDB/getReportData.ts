@@ -52,10 +52,9 @@ function getLicencesByLicenceCategorySQL(licenceCategoryKey: string): {
       fieldColumnNameIndex <= 100;
       fieldColumnNameIndex += 1
     ) {
-      fieldColumnName =
-        'field_' +
-        camelCase(licenceField.licenceField) +
-        (fieldColumnNameIndex === 0 ? '' : '_' + fieldColumnNameIndex)
+      fieldColumnName = `field_${camelCase(licenceField.licenceField)}${
+        fieldColumnNameIndex === 0 ? '' : `_${fieldColumnNameIndex}`
+      }`
 
       if (!fieldColumnNames.has(fieldColumnName)) {
         fieldColumnNames.add(fieldColumnName)
@@ -231,33 +230,29 @@ export default function getReportData(
           )
         }
 
-        sql =
-          'select' +
-          ' c.licenceCategory as ' +
-          licenceCategory +
-          ',' +
-          ' l.licenceNumber as ' +
-          licenceNumber +
-          ',' +
-          ' l.licenseeName, l.licenseeBusinessName,' +
-          ' userFn_dateIntegerToString(t.transactionDate) as transactionDateString,' +
-          ' userFn_timeIntegerToString(t.transactionTime) as transactionTimeString,' +
-          ' t.transactionAmount,' +
-          (configFunctions.getProperty('settings.includeBatches')
-            ? ' userFn_dateIntegerToString(t.batchDate) as batchDateString,' +
-              ' userFn_getCanadianBankName(t.bankInstitutionNumber, t.bankTransitNumber) as bankName,' +
-              ' t.bankInstitutionNumber,' +
-              ' t.bankTransitNumber,' +
-              ' t.bankAccountNumber,'
-            : '') +
-          ' t.externalReceiptNumber,' +
-          ' t.transactionNote' +
-          ' from LicenceTransactions t' +
-          ' left join Licences l on t.licenceId = l.licenceId' +
-          ' left join LicenceCategories c on l.licenceCategoryKey = c.licenceCategoryKey' +
-          ' where t.recordDelete_timeMillis is null' +
-          dateFilter +
-          ' order by t.transactionDate, t.transactionTime'
+        sql = `select c.licenceCategory as ${licenceCategory},
+            l.licenceNumber as ${licenceNumber},
+            l.licenseeName, l.licenseeBusinessName,
+            userFn_dateIntegerToString(t.transactionDate) as transactionDateString,
+            userFn_timeIntegerToString(t.transactionTime) as transactionTimeString,
+            t.transactionAmount,
+            ${
+              configFunctions.getProperty('settings.includeBatches')
+                ? ` userFn_dateIntegerToString(t.batchDate) as batchDateString,
+                      userFn_getCanadianBankName(t.bankInstitutionNumber, t.bankTransitNumber) as bankName,
+                      t.bankInstitutionNumber,
+                      t.bankTransitNumber,
+                      t.bankAccountNumber,`
+                : ''
+            }
+            t.externalReceiptNumber,
+            t.transactionNote
+            from LicenceTransactions t
+            left join Licences l on t.licenceId = l.licenceId
+            left join LicenceCategories c on l.licenceCategoryKey = c.licenceCategoryKey
+            where t.recordDelete_timeMillis is null
+            ${dateFilter}
+            order by t.transactionDate, t.transactionTime`
 
         break
       }

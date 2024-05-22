@@ -1,9 +1,8 @@
 import type { Request, Response } from 'express'
 
 import * as cacheFunctions from '../../helpers/functions.cache.js'
-import {
-  type AddLicenceCategoryAdditionalFeeForm,
-  addLicenceCategoryAdditionalFee
+import addLicenceCategoryAdditionalFee, {
+  type AddLicenceCategoryAdditionalFeeForm
 } from '../../helpers/licencesDB/addLicenceCategoryAdditionalFee.js'
 import getLicenceCategoryAdditionalFees from '../../helpers/licencesDB/getLicenceCategoryAdditionalFees.js'
 

@@ -14,7 +14,8 @@ export default async function handler(request, response, next) {
         return;
     }
     const licenceCategory = getLicenceCategory(licence.licenceCategoryKey);
-    if (!licenceCategory.printEJS || licenceCategory.printEJS === '') {
+    if (licenceCategory === undefined ||
+        (licenceCategory.printEJS ?? '') === '') {
         next(configFunctions.getProperty('settings.licenceAlias') +
             ' does not have a print template set.');
         return;
@@ -41,7 +42,7 @@ export default async function handler(request, response, next) {
             '-' +
             licenceId +
             '-' +
-            licence.recordUpdate_timeMillis.toString() +
+            (licence.recordUpdate_timeMillis ?? 0).toString() +
             '.pdf');
         response.setHeader('Content-Type', 'application/pdf');
         response.send(pdf);

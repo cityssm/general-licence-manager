@@ -1,5 +1,10 @@
+/* eslint-disable eslint-comments/disable-enable-pair */
+/* eslint-disable @typescript-eslint/no-misused-promises, @typescript-eslint/strict-boolean-expressions */
+
 import { AdWebAuthConnector } from '@cityssm/ad-web-auth-connector'
 import ActiveDirectory from 'activedirectory2'
+
+import type { ConfigActiveDirectory } from '../types/configTypes.js'
 
 import * as configFunctions from './functions.config.js'
 
@@ -13,7 +18,9 @@ async function authenticateViaActiveDirectory(
 ): Promise<boolean> {
   return await new Promise((resolve) => {
     try {
-      const ad = new ActiveDirectory(activeDirectoryConfig)
+      const ad = new ActiveDirectory(
+        activeDirectoryConfig as ConfigActiveDirectory
+      )
 
       ad.authenticate(
         userDomain + '\\' + userName,

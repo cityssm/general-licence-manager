@@ -10,7 +10,7 @@ export interface AddLicenceCategoryAdditionalFeeForm {
   additionalFee: string
 }
 
-export function addLicenceCategoryAdditionalFee(
+export default function addLicenceCategoryAdditionalFee(
   licenceCategoryAdditionalFeeForm: AddLicenceCategoryAdditionalFeeForm,
   requestSession: PartialSession
 ): string {
@@ -50,5 +50,3 @@ export function addLicenceCategoryAdditionalFee(
 
   return licenceAdditionalFeeKey
 }
-
-export default addLicenceCategoryAdditionalFee

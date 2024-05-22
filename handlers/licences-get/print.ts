@@ -28,7 +28,10 @@ export default async function handler(
 
   const licenceCategory = getLicenceCategory(licence.licenceCategoryKey)
 
-  if (!licenceCategory.printEJS || licenceCategory.printEJS === '') {
+  if (
+    licenceCategory === undefined ||
+    (licenceCategory.printEJS ?? '') === ''
+  ) {
     next(
       configFunctions.getProperty('settings.licenceAlias') +
         ' does not have a print template set.'
@@ -67,7 +70,7 @@ export default async function handler(
           '-' +
           licenceId +
           '-' +
-          licence.recordUpdate_timeMillis.toString() +
+          (licence.recordUpdate_timeMillis ?? 0).toString() +
           '.pdf'
       )
 

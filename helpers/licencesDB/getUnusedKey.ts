@@ -1,132 +1,135 @@
-import sqlite from "better-sqlite3";
-import { licencesDB as databasePath } from "../../data/databasePaths.js";
+import { randomUUID } from 'node:crypto'
 
-import slugify from "slugify";
-import { v4 as uuidv4 } from "uuid";
+import sqlite from 'better-sqlite3'
+import slugify from 'slugify'
 
+import { licencesDB as databasePath } from '../../data/databasePaths.js'
 
-const getUnusedKey = (database: sqlite.Database,
-  unsluggedString: string, maxLength: number,
-  searchSQL: string) => {
-
+function getUnusedKey(
+  database: sqlite.Database,
+  unsluggedString: string,
+  maxLength: number,
+  searchSQL: string
+): string {
   let keyString = slugify(unsluggedString, {
-    replacement: "-",
+    replacement: '-',
     lower: true,
     strict: true,
-    locale: "en",
+    locale: 'en',
     trim: true
-  });
+  })
 
   if (keyString.length > maxLength) {
-    keyString = keyString.slice(0, maxLength);
+    keyString = keyString.slice(0, maxLength)
   }
 
-  let row = database.prepare(searchSQL).get(keyString);
+  let row = database.prepare(searchSQL).get(keyString)
 
   if (!row) {
-    return keyString;
+    return keyString
   }
 
   if (keyString.length + 3 > maxLength) {
-    keyString = keyString.slice(0, maxLength - 4);
+    keyString = keyString.slice(0, maxLength - 4)
   }
 
   for (let index = 1; index <= 999; index += 1) {
+    const possibleKeyString = keyString + '-' + index.toString()
 
-    const possibleKeyString = keyString + "-" + index.toString();
-
-    row = database.prepare(searchSQL).get(possibleKeyString);
+    row = database.prepare(searchSQL).get(possibleKeyString)
 
     if (!row) {
-      return possibleKeyString;
+      return possibleKeyString
     }
   }
 
   // eslint-disable-next-line no-constant-condition
   while (true) {
+    const possibleKeyString = randomUUID().slice(0, maxLength)
 
-    const possibleKeyString = uuidv4().slice(0, maxLength);
-
-    row = database.prepare(searchSQL).get(possibleKeyString);
+    row = database.prepare(searchSQL).get(possibleKeyString)
 
     if (!row) {
-      return possibleKeyString;
+      return possibleKeyString
     }
   }
-};
+}
 
-
-export const getUnusedLicenceCategoryKey = (licenceCategory: string): string => {
-
+export const getUnusedLicenceCategoryKey = (
+  licenceCategory: string
+): string => {
   const database = sqlite(databasePath, {
     readonly: true
-  });
+  })
 
-  const licenceCategoryKey = getUnusedKey(database,
+  const licenceCategoryKey = getUnusedKey(
+    database,
     licenceCategory,
     50,
-    "select licenceCategoryKey" +
-    " from LicenceCategories" +
-    " where licenceCategoryKey = ?");
+    'select licenceCategoryKey from LicenceCategories where licenceCategoryKey = ?'
+  )
 
-  database.close();
+  database.close()
 
-  return licenceCategoryKey;
-};
+  return licenceCategoryKey
+}
 
-
-export const getUnusedLicenceFieldKey = (licenceCategoryKey: string, licenceField: string): string => {
-
+export const getUnusedLicenceFieldKey = (
+  licenceCategoryKey: string,
+  licenceField: string
+): string => {
   const database = sqlite(databasePath, {
     readonly: true
-  });
+  })
 
-  const licenceFieldKey = getUnusedKey(database,
-    licenceCategoryKey + " " + licenceField,
+  const licenceFieldKey = getUnusedKey(
+    database,
+    `${licenceCategoryKey} ${licenceField}`,
     80,
-    "select licenceFieldKey" +
-    " from LicenceCategoryFields" +
-    " where licenceFieldKey = ?");
+    'select licenceFieldKey from LicenceCategoryFields where licenceFieldKey = ?'
+  )
 
-  database.close();
+  database.close()
 
-  return licenceFieldKey;
-};
+  return licenceFieldKey
+}
 
-
-export const getUnusedLicenceApprovalKey = (licenceCategoryKey: string, licenceApproval: string): string => {
-
+export function getUnusedLicenceApprovalKey(
+  licenceCategoryKey: string,
+  licenceApproval: string
+): string {
   const database = sqlite(databasePath, {
     readonly: true
-  });
+  })
 
-  const licenceApprovalKey = getUnusedKey(database,
-    licenceCategoryKey + " " + licenceApproval,
+  const licenceApprovalKey = getUnusedKey(
+    database,
+    `${licenceCategoryKey} ${licenceApproval}`,
     80,
-    "select licenceApprovalKey" +
-    " from LicenceCategoryApprovals" +
-    " where licenceApprovalKey = ?");
+    'select licenceApprovalKey from LicenceCategoryApprovals where licenceApprovalKey = ?'
+  )
 
-  database.close();
+  database.close()
 
-  return licenceApprovalKey;
-};
+  return licenceApprovalKey
+}
 
-
-export const getUnusedLicenceAdditionalFeeKey = (licenceCategoryKey: string, additionalFee: string): string => {
-
+export const getUnusedLicenceAdditionalFeeKey = (
+  licenceCategoryKey: string,
+  additionalFee: string
+): string => {
   const database = sqlite(databasePath, {
     readonly: true
-  });
+  })
 
-  const licenceAdditionalFeeKey = getUnusedKey(database,
-    licenceCategoryKey + " " + additionalFee,
+  const licenceAdditionalFeeKey = getUnusedKey(
+    database,
+    `${licenceCategoryKey} ${additionalFee}`,
     80,
-    "select licenceAdditionalFeeKey" +
-    " from LicenceCategoryAdditionalFees" +
-    " where licenceAdditionalFeeKey = ?");
+    'select licenceAdditionalFeeKey from LicenceCategoryAdditionalFees where licenceAdditionalFeeKey = ?'
+  )
 
-  database.close();
+  database.close()
 
-  return licenceAdditionalFeeKey;
-};
+  return licenceAdditionalFeeKey
+}

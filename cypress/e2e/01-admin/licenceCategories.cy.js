@@ -51,7 +51,7 @@ describe('Admin - Licence Categories', () => {
             cy.checkA11y();
         });
         it('Updates Main Details', () => {
-            const licenceCategory = uuidV4().slice(-10);
+            const licenceCategory = randomUUID().slice(-10);
             cy.get(".modal input[name='licenceCategory']")
                 .clear()
                 .clear()
@@ -66,7 +66,7 @@ describe('Admin - Licence Categories', () => {
                 .click();
         });
         it('Adds an Additional Field', () => {
-            const licenceField = uuidV4().slice(-10);
+            const licenceField = randomUUID().slice(-10);
             cy.get('.modal #licenceCategoryFieldAdd--licenceField')
                 .focus()
                 .type(licenceField)
@@ -96,13 +96,13 @@ describe('Admin - Licence Categories', () => {
                 .focus()
                 .clear()
                 .clear()
-                .type(uuidV4());
+                .type(randomUUID());
             cy.get('.modal').last().find('form').submit();
             cy.wait(ajaxDelayMillis);
             cy.get('.modal').should('have.length', 1);
         });
         it('Adds an Approval', () => {
-            const licenceApproval = uuidV4().slice(-10);
+            const licenceApproval = randomUUID().slice(-10);
             cy.get('.modal #licenceCategoryApprovalAdd--licenceApproval')
                 .focus()
                 .type(licenceApproval)
@@ -132,7 +132,7 @@ describe('Admin - Licence Categories', () => {
                 .focus()
                 .clear()
                 .clear()
-                .type(uuidV4());
+                .type(randomUUID());
             cy.get('.modal').last().find('form').submit();
             cy.wait(ajaxDelayMillis);
             cy.get('.modal').should('have.length', 1);
@@ -155,7 +155,7 @@ describe('Admin - Licence Categories', () => {
             cy.get('.modal').should('have.length', 1);
         });
         it('Adds an Additional Fee', () => {
-            const additionalFee = uuidV4().slice(-10);
+            const additionalFee = randomUUID().slice(-10);
             cy.get('.modal #licenceCategoryAdditionalFeeAdd--additionalFee')
                 .focus()
                 .type(additionalFee)

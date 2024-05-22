@@ -84,7 +84,7 @@ describe('Admin - Licence Categories', () => {
     })
 
     it('Updates Main Details', () => {
-      const licenceCategory = uuidV4().slice(-10)
+      const licenceCategory = randomUUID().slice(-10)
 
       cy.get(".modal input[name='licenceCategory']")
         .clear()
@@ -105,7 +105,7 @@ describe('Admin - Licence Categories', () => {
     })
 
     it('Adds an Additional Field', () => {
-      const licenceField = uuidV4().slice(-10)
+      const licenceField = randomUUID().slice(-10)
 
       cy.get('.modal #licenceCategoryFieldAdd--licenceField')
         .focus()
@@ -149,7 +149,7 @@ describe('Admin - Licence Categories', () => {
         .focus()
         .clear()
         .clear()
-        .type(uuidV4())
+        .type(randomUUID())
 
       cy.get('.modal').last().find('form').submit()
 
@@ -159,7 +159,7 @@ describe('Admin - Licence Categories', () => {
     })
 
     it('Adds an Approval', () => {
-      const licenceApproval = uuidV4().slice(-10)
+      const licenceApproval = randomUUID().slice(-10)
 
       cy.get('.modal #licenceCategoryApprovalAdd--licenceApproval')
         .focus()
@@ -203,7 +203,7 @@ describe('Admin - Licence Categories', () => {
         .focus()
         .clear()
         .clear()
-        .type(uuidV4())
+        .type(randomUUID())
 
       cy.get('.modal').last().find('form').submit()
 
@@ -248,7 +248,7 @@ describe('Admin - Licence Categories', () => {
     })
 
     it('Adds an Additional Fee', () => {
-      const additionalFee = uuidV4().slice(-10)
+      const additionalFee = randomUUID().slice(-10)
 
       cy.get('.modal #licenceCategoryAdditionalFeeAdd--additionalFee')
         .focus()

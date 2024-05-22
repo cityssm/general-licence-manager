@@ -1,6 +1,6 @@
-import * as configFunctions from '../../helpers/functions.config.js';
 import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js';
-import toModernJulianDate from '@cityssm/modern-julian-date';
+import { toModernJulianDate } from '@cityssm/modern-julian-date';
+import * as configFunctions from '../../helpers/functions.config.js';
 import { calculateCustomerNumber, calculateFileCreationNumber, leftPad, rightPad } from './batchHelpers.js';
 const batchExportConfig = configFunctions.getProperty('exports.batches');
 const NEWLINE = '\n';
@@ -62,7 +62,7 @@ export const getBatchExport = (outstandingBatchTransactions) => {
         recordCounter += 1;
         output +=
             leftPad(recordCounter.toString(), '0', 6) +
-                modernJulianDate.toModernJulianDate(dateTimeFunctions.dateStringToDate(batchTransaction.batchDateString)) +
+                toModernJulianDate(dateTimeFunctions.dateStringToDate(batchTransaction.batchDateString)) +
                 rightPad(batchTransaction.licenseeName +
                     (batchTransaction.licenseeBusinessName === ''
                         ? ''

@@ -9,12 +9,11 @@ import type {
 import getLicenceCategoryField from './getLicenceCategoryField.js'
 import getLicenceCategoryFields from './getLicenceCategoryFields.js'
 
-const sql =
-  'update LicenceCategoryFields' +
-  ' set orderNumber = ?,' +
-  ' recordUpdate_userName = ?,' +
-  ' recordUpdate_timeMillis = ?' +
-  ' where licenceFieldKey = ?'
+const sql = `update LicenceCategoryFields
+    set orderNumber = ?,
+    recordUpdate_userName = ?,
+    recordUpdate_timeMillis = ?
+    where licenceFieldKey = ?`
 
 export default function moveLicenceCategoryField(
   licenceFieldKeyFrom: string,

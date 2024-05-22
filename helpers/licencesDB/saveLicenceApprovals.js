@@ -1,17 +1,15 @@
-import sqlite from "better-sqlite3";
-import { licencesDB as databasePath } from "../../data/databasePaths.js";
-export const saveLicenceApprovals = (licenceId, licenceApprovalKeys, licenceForm, database) => {
+import sqlite from 'better-sqlite3';
+import { licencesDB as databasePath } from '../../data/databasePaths.js';
+export default function saveLicenceApprovals(licenceId, licenceApprovalKeys, licenceForm, database) {
     let doCloseDatabase = false;
     if (!database) {
         database = sqlite(databasePath);
         doCloseDatabase = true;
     }
     for (const licenceApprovalKey of licenceApprovalKeys) {
-        if (licenceForm["approval--" + licenceApprovalKey]) {
+        if (licenceForm['approval--' + licenceApprovalKey]) {
             database
-                .prepare("insert into LicenceApprovals" +
-                "(licenceId, licenceApprovalKey)" +
-                " values (?, ?)")
+                .prepare('insert into LicenceApprovals (licenceId, licenceApprovalKey) values (?, ?)')
                 .run(licenceId, licenceApprovalKey);
         }
     }
@@ -19,5 +17,4 @@ export const saveLicenceApprovals = (licenceId, licenceApprovalKeys, licenceForm
         database.close();
     }
     return true;
-};
-export default saveLicenceApprovals;
+}

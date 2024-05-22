@@ -1,5 +1,4 @@
 import * as configFunctions from '../helpers/functions.config.js'
-
 import { getBatchTransactions } from '../helpers/licencesDB/getBatchTransactions.js'
 
 import cpa005_getBatchExport from './batches/cpa005.js'
@@ -11,7 +10,9 @@ export interface GetBatchExportReturn {
   fileContentType: string
 }
 
-export function getBatchExport(batchDate: number): GetBatchExportReturn | undefined {
+export function getBatchExport(
+  batchDate: number
+): GetBatchExportReturn | undefined {
   const outstandingBatchTransactions = getBatchTransactions(batchDate, true)
 
   console.log(outstandingBatchTransactions)

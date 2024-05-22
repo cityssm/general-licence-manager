@@ -1,41 +1,34 @@
-import sqlite from "better-sqlite3";
-import { licencesDB as databasePath } from "../../data/databasePaths.js";
+import sqlite from 'better-sqlite3'
 
+import { licencesDB as databasePath } from '../../data/databasePaths.js'
 
-export const saveLicenceFields =
-  (licenceId: number | string,
-    licenceFieldKeys: string[],
-    licenceForm: { [fieldKey: string]: string },
-    database?: sqlite.Database): boolean => {
+export default function saveLicenceFields(
+  licenceId: number | string,
+  licenceFieldKeys: string[],
+  licenceForm: Record<string, string>,
+  database?: sqlite.Database
+): boolean {
+  let doCloseDatabase = false
 
-    let doCloseDatabase = false;
+  if (database === undefined) {
+    database = sqlite(databasePath)
 
-    if (!database) {
+    doCloseDatabase = true
+  }
 
-      database = sqlite(databasePath);
+  for (const licenceFieldKey of licenceFieldKeys) {
+    const licenceFieldValue = licenceForm[`field--${licenceFieldKey}`]
 
-      doCloseDatabase = true;
-    }
+    database
+      .prepare(
+        'insert into LicenceFields (licenceId, licenceFieldKey, licenceFieldValue) values (?, ?, ?)'
+      )
+      .run(licenceId, licenceFieldKey, licenceFieldValue)
+  }
 
-    for (const licenceFieldKey of licenceFieldKeys) {
+  if (doCloseDatabase) {
+    database.close()
+  }
 
-      const licenceFieldValue = licenceForm["field--" + licenceFieldKey];
-
-      database
-        .prepare("insert into LicenceFields" +
-          "(licenceId, licenceFieldKey, licenceFieldValue)" +
-          " values (?, ?, ?)")
-        .run(licenceId,
-          licenceFieldKey,
-          licenceFieldValue);
-    }
-
-    if (doCloseDatabase) {
-      database.close();
-    }
-
-    return true;
-  };
-
-
-export default saveLicenceFields;
+  return true
+}

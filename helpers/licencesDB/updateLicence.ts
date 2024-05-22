@@ -7,8 +7,8 @@ import type { LicenceCategoryAdditionalFee } from '../../types/recordTypes.js'
 import * as configFunctions from '../functions.config.js'
 import * as licenceFunctions from '../functions.licence.js'
 
-import { saveLicenceApprovals } from './saveLicenceApprovals.js'
-import { saveLicenceFields } from './saveLicenceFields.js'
+import saveLicenceApprovals from './saveLicenceApprovals.js'
+import saveLicenceFields from './saveLicenceFields.js'
 
 export interface UpdateLicenceForm {
   licenceId: string

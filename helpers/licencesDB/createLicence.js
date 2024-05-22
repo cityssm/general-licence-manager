@@ -4,9 +4,9 @@ import { licencesDB as databasePath } from '../../data/databasePaths.js';
 import * as cacheFunctions from '../functions.cache.js';
 import * as licenceFunctions from '../functions.licence.js';
 import addRelatedLicence from './addRelatedLicence.js';
-import { getNextLicenceNumber } from './getNextLicenceNumber.js';
-import { saveLicenceApprovals } from './saveLicenceApprovals.js';
-import { saveLicenceFields } from './saveLicenceFields.js';
+import getNextLicenceNumber from './getNextLicenceNumber.js';
+import saveLicenceApprovals from './saveLicenceApprovals.js';
+import saveLicenceFields from './saveLicenceFields.js';
 export default function createLicence(licenceForm, requestSession) {
     const database = sqlite(databasePath);
     let licenceNumber = licenceForm.licenceNumber;

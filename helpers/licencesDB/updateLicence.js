@@ -3,8 +3,8 @@ import sqlite from 'better-sqlite3';
 import { licencesDB as databasePath } from '../../data/databasePaths.js';
 import * as configFunctions from '../functions.config.js';
 import * as licenceFunctions from '../functions.licence.js';
-import { saveLicenceApprovals } from './saveLicenceApprovals.js';
-import { saveLicenceFields } from './saveLicenceFields.js';
+import saveLicenceApprovals from './saveLicenceApprovals.js';
+import saveLicenceFields from './saveLicenceFields.js';
 export default function updateLicence(licenceForm, requestSession) {
     const database = sqlite(databasePath);
     const rightNowMillis = Date.now();

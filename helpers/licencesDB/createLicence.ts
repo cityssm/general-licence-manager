@@ -7,9 +7,9 @@ import * as cacheFunctions from '../functions.cache.js'
 import * as licenceFunctions from '../functions.licence.js'
 
 import addRelatedLicence from './addRelatedLicence.js'
-import { getNextLicenceNumber } from './getNextLicenceNumber.js'
-import { saveLicenceApprovals } from './saveLicenceApprovals.js'
-import { saveLicenceFields } from './saveLicenceFields.js'
+import getNextLicenceNumber from './getNextLicenceNumber.js'
+import saveLicenceApprovals from './saveLicenceApprovals.js'
+import saveLicenceFields from './saveLicenceFields.js'
 
 export interface CreateLicenceForm {
   licenceCategoryKey: string

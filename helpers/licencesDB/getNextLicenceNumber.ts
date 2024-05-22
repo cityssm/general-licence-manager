@@ -1,10 +1,13 @@
 import sqlite from 'better-sqlite3'
-import { licencesDB as databasePath } from '../../data/databasePaths.js'
-
-import * as configFunctions from '../functions.config.js'
 import slugify from 'slugify'
 
-export const getCategorySlug = (licenceCategory: string, maxLength = 10) => {
+import { licencesDB as databasePath } from '../../data/databasePaths.js'
+import * as configFunctions from '../functions.config.js'
+
+export function getCategorySlug(
+  licenceCategory: string,
+  maxLength = 10
+): string {
   let categorySlug = slugify(licenceCategory.toUpperCase()).slice(
     0,
     Math.max(0, maxLength + 1)
@@ -28,12 +31,12 @@ export const getCategorySlug = (licenceCategory: string, maxLength = 10) => {
   return categorySlug.slice(0, Math.max(0, maxLength))
 }
 
-const getCategoryNDigitsLicenceNumber = (
+function getCategoryNDigitsLicenceNumber(
   database: sqlite.Database,
   licenceCategory: string,
   digits: number,
   distinctDigits: boolean
-): string => {
+): string {
   const categorySlug = getCategorySlug(licenceCategory, 10)
 
   const licenceNumberLength = categorySlug.length + 1 + digits
@@ -49,17 +52,16 @@ const getCategoryNDigitsLicenceNumber = (
   const licenceNumber = distinctDigits
     ? (database
         .prepare(
-          'select licenceNumber from Licences' +
-            ' order by userFn_digits(licenceNumber) desc'
+          'select licenceNumber from Licences order by userFn_digits(licenceNumber) desc'
         )
         .pluck()
         .get() as string)
     : (database
         .prepare(
-          'select licenceNumber from Licences' +
-            ' where length(licenceNumber) = ?' +
-            ' and userFn_matchesFormat(licenceNumber) = 1' +
-            ' order by licenceNumber desc'
+          `select licenceNumber from Licences
+            where length(licenceNumber) = ?
+            and userFn_matchesFormat(licenceNumber) = 1
+            order by licenceNumber desc`
         )
         .pluck()
         .get(licenceNumberLength) as string)
@@ -85,7 +87,9 @@ const getNextYearNDigitsLicenceNumber = (
 ): string => {
   const currentYear = new Date().getFullYear()
 
-  const regularExpression = new RegExp(currentYear.toString() + '-\\d+')
+  const regularExpression = new RegExp(
+    currentYear.toString() + String.raw`-\d+`
+  )
 
   const licenceNumberLength = 5 + digits
 
@@ -95,10 +99,10 @@ const getNextYearNDigitsLicenceNumber = (
 
   const licenceNumber = database
     .prepare(
-      'select licenceNumber from Licences' +
-        ' where length(licenceNumber) = ?' +
-        ' and userFn_matchesFormat(licenceNumber) = 1' +
-        ' order by licenceNumber desc'
+      `select licenceNumber from Licences
+        where length(licenceNumber) = ?
+        and userFn_matchesFormat(licenceNumber) = 1
+        order by licenceNumber desc`
     )
     .pluck()
     .get(licenceNumberLength) as string
@@ -116,12 +120,12 @@ const getNextYearNDigitsLicenceNumber = (
   )
 }
 
-export const getNextLicenceNumber = (
+export default function getNextLicenceNumber(
   licenceDetails: {
     licenceCategory: string
   },
   database?: sqlite.Database
-): string => {
+): string {
   let doCloseDatabase = false
 
   if (!database) {
@@ -135,7 +139,7 @@ export const getNextLicenceNumber = (
   let licenceNumber = ''
 
   switch (configFunctions.getProperty('defaults.licenceNumberFunction')) {
-    case 'category-fourDigits':
+    case 'category-fourDigits': {
       licenceNumber = getCategoryNDigitsLicenceNumber(
         database,
         licenceDetails.licenceCategory,
@@ -143,8 +147,9 @@ export const getNextLicenceNumber = (
         false
       )
       break
+    }
 
-    case 'category-fiveDigits':
+    case 'category-fiveDigits': {
       licenceNumber = getCategoryNDigitsLicenceNumber(
         database,
         licenceDetails.licenceCategory,
@@ -152,8 +157,9 @@ export const getNextLicenceNumber = (
         false
       )
       break
+    }
 
-    case 'category-sixDigits':
+    case 'category-sixDigits': {
       licenceNumber = getCategoryNDigitsLicenceNumber(
         database,
         licenceDetails.licenceCategory,
@@ -161,8 +167,9 @@ export const getNextLicenceNumber = (
         false
       )
       break
+    }
 
-    case 'category-distinctFourDigits':
+    case 'category-distinctFourDigits': {
       licenceNumber = getCategoryNDigitsLicenceNumber(
         database,
         licenceDetails.licenceCategory,
@@ -170,8 +177,9 @@ export const getNextLicenceNumber = (
         true
       )
       break
+    }
 
-    case 'category-distinctFiveDigits':
+    case 'category-distinctFiveDigits': {
       licenceNumber = getCategoryNDigitsLicenceNumber(
         database,
         licenceDetails.licenceCategory,
@@ -179,8 +187,9 @@ export const getNextLicenceNumber = (
         true
       )
       break
+    }
 
-    case 'category-distinctSixDigits':
+    case 'category-distinctSixDigits': {
       licenceNumber = getCategoryNDigitsLicenceNumber(
         database,
         licenceDetails.licenceCategory,
@@ -188,18 +197,22 @@ export const getNextLicenceNumber = (
         true
       )
       break
+    }
 
-    case 'year-fourDigits':
+    case 'year-fourDigits': {
       licenceNumber = getNextYearNDigitsLicenceNumber(database, 4)
       break
+    }
 
-    case 'year-fiveDigits':
+    case 'year-fiveDigits': {
       licenceNumber = getNextYearNDigitsLicenceNumber(database, 5)
       break
+    }
 
-    case 'year-sixDigits':
+    case 'year-sixDigits': {
       licenceNumber = getNextYearNDigitsLicenceNumber(database, 6)
       break
+    }
   }
 
   if (doCloseDatabase) {
@@ -208,5 +221,3 @@ export const getNextLicenceNumber = (
 
   return licenceNumber
 }
-
-export default getNextLicenceNumber

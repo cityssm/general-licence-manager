@@ -30,12 +30,8 @@ export interface Config {
     exports?: {
         batches?: ConfigBatchExport;
     };
-    licenceLengthFunctions?: {
-        [licenceLengthFunctionName: string]: LicenceLengthFunction;
-    };
-    additionalFeeFunctions?: {
-        [additionalFeeFunctionName: string]: AdditionalFeeFunction;
-    };
+    licenceLengthFunctions?: Record<string, LicenceLengthFunction>;
+    additionalFeeFunctions?: Record<string, AdditionalFeeFunction>;
     customReports?: ReportDefinition[];
 }
 interface ConfigApplication {

@@ -1,10 +1,7 @@
-/* eslint-disable unicorn/filename-case, promise/catch-or-return, promise/always-return */
-
-import { v4 as uuidV4 } from 'uuid'
+import { randomUUID } from 'node:crypto'
 
 import { testAdmin } from '../../../test/_globals.js'
-
-import { logout, login, ajaxDelayMillis } from '../../support/index.js'
+import { ajaxDelayMillis, login, logout } from '../../support/index.js'
 
 describe('Admin - Licence Categories', () => {
   beforeEach('Loads Page', () => {
@@ -26,7 +23,7 @@ describe('Admin - Licence Categories', () => {
 
     // Test add modal
 
-    const licenceCategory = uuidV4().slice(-10)
+    const licenceCategory = randomUUID().slice(-10)
 
     cy.get('.modal').should('be.visible')
 

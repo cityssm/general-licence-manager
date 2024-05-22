@@ -1,6 +1,6 @@
-import { v4 as uuidV4 } from 'uuid';
+import { randomUUID } from 'node:crypto';
 import { testAdmin } from '../../../test/_globals.js';
-import { logout, login, ajaxDelayMillis } from '../../support/index.js';
+import { ajaxDelayMillis, login, logout } from '../../support/index.js';
 describe('Admin - Licence Categories', () => {
     beforeEach('Loads Page', () => {
         logout();
@@ -15,7 +15,7 @@ describe('Admin - Licence Categories', () => {
     });
     it('Adds a New Licence Category', () => {
         cy.get("button[data-cy='add-licence-category']").click();
-        const licenceCategory = uuidV4().slice(-10);
+        const licenceCategory = randomUUID().slice(-10);
         cy.get('.modal').should('be.visible');
         cy.get('.modal .modal-card-title')
             .should('contain.text', 'Add')

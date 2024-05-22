@@ -1,4 +1,4 @@
-import { randomUUID } from 'node:crypto';
+import { randomUUID } from 'crypto';
 import { testAdmin } from '../../../test/_globals.js';
 import { ajaxDelayMillis, login, logout } from '../../support/index.js';
 describe('Admin - Licence Categories', () => {

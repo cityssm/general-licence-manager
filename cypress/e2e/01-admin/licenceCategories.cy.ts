@@ -1,4 +1,5 @@
-import { randomUUID } from 'node:crypto'
+// eslint-disable-next-line unicorn/prefer-node-protocol
+import { randomUUID } from 'crypto'
 
 import { testAdmin } from '../../../test/_globals.js'
 import { ajaxDelayMillis, login, logout } from '../../support/index.js'

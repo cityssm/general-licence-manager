@@ -1,11 +1,16 @@
-import { deleteLicenceCategoryApproval } from "../../helpers/licencesDB/deleteLicenceCategoryApproval.js";
-import { getLicenceCategoryApproval } from "../../helpers/licencesDB/getLicenceCategoryApproval.js";
-import { getLicenceCategoryApprovals } from "../../helpers/licencesDB/getLicenceCategoryApprovals.js";
-import * as cacheFunctions from "../../helpers/functions.cache.js";
-export const handler = async (request, response) => {
+import * as cacheFunctions from '../../helpers/functions.cache.js';
+import { deleteLicenceCategoryApproval } from '../../helpers/licencesDB/deleteLicenceCategoryApproval.js';
+import getLicenceCategoryApproval from '../../helpers/licencesDB/getLicenceCategoryApproval.js';
+import { getLicenceCategoryApprovals } from '../../helpers/licencesDB/getLicenceCategoryApprovals.js';
+export function handler(request, response) {
     const licenceApprovalKey = request.body.licenceApprovalKey;
     const licenceCategoryApproval = getLicenceCategoryApproval(licenceApprovalKey);
-    if (licenceCategoryApproval) {
+    if (licenceCategoryApproval === undefined) {
+        response.json({
+            success: false
+        });
+    }
+    else {
         deleteLicenceCategoryApproval(licenceApprovalKey, request.session);
         cacheFunctions.clearAll();
         const licenceCategoryApprovals = getLicenceCategoryApprovals(licenceCategoryApproval.licenceCategoryKey);
@@ -14,10 +19,5 @@ export const handler = async (request, response) => {
             licenceCategoryApprovals
         });
     }
-    else {
-        response.json({
-            success: false
-        });
-    }
-};
+}
 export default handler;

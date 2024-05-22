@@ -1,36 +1,33 @@
-import type { RequestHandler } from "express";
+import type { Request, Response } from 'express'
 
-import { deleteLicenceCategoryFee } from "../../helpers/licencesDB/deleteLicenceCategoryFee.js";
-import { getLicenceCategoryFee } from "../../helpers/licencesDB/getLicenceCategoryFee.js";
-import { getLicenceCategoryFees } from "../../helpers/licencesDB/getLicenceCategoryFees.js";
+import * as cacheFunctions from '../../helpers/functions.cache.js'
+import deleteLicenceCategoryFee from '../../helpers/licencesDB/deleteLicenceCategoryFee.js'
+import getLicenceCategoryFee from '../../helpers/licencesDB/getLicenceCategoryFee.js'
+import getLicenceCategoryFees from '../../helpers/licencesDB/getLicenceCategoryFees.js'
 
-import * as cacheFunctions from "../../helpers/functions.cache.js";
+export function handler(request: Request, response: Response): void {
+  const licenceFeeId = request.body.licenceFeeId as string
 
+  const licenceCategoryFee = getLicenceCategoryFee(licenceFeeId)
 
-export const handler: RequestHandler = async (request, response) => {
+  if (licenceCategoryFee === undefined) {
+    response.json({
+      success: false
+    })
+  } else {
+    deleteLicenceCategoryFee(licenceFeeId, request.session)
 
-  const licenceFeeId = request.body.licenceFeeId as string;
-
-  const licenceCategoryFee = getLicenceCategoryFee(licenceFeeId);
-
-  if (licenceCategoryFee) {
-    deleteLicenceCategoryFee(licenceFeeId, request.session);
-
-    cacheFunctions.clearAll();
-    const licenceCategoryFees = getLicenceCategoryFees(licenceCategoryFee.licenceCategoryKey, "all");
+    cacheFunctions.clearAll()
+    const licenceCategoryFees = getLicenceCategoryFees(
+      licenceCategoryFee.licenceCategoryKey,
+      'all'
+    )
 
     response.json({
       success: true,
       licenceCategoryFees
-    });
-
-  } else {
-
-    response.json({
-      success: false
-    });
+    })
   }
-};
+}
 
-
-export default handler;
+export default handler

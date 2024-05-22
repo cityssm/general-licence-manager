@@ -1,24 +1,31 @@
-import type { RequestHandler } from "express";
+import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js'
+import type { Request, Response } from 'express'
 
-import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
-import { getLicences } from "../../helpers/licencesDB/getLicences.js";
+import getLicences from '../../helpers/licencesDB/getLicences.js'
 
-
-export const handler: RequestHandler = async (request, response) => {
-
-  const licencesResponse = getLicences({
-    licenceCategoryKey: request.body.licenceCategoryKey,
-    startDateMin: dateTimeFunctions.dateStringToInteger(request.body.startDateStringMin),
-    startDateMax: dateTimeFunctions.dateStringToInteger(request.body.startDateStringMax),
-  }, {
+export async function handler(
+  request: Request,
+  response: Response
+): Promise<void> {
+  const licencesResponse = getLicences(
+    {
+      licenceCategoryKey: request.body.licenceCategoryKey,
+      startDateMin: dateTimeFunctions.dateStringToInteger(
+        request.body.startDateStringMin as string
+      ),
+      startDateMax: dateTimeFunctions.dateStringToInteger(
+        request.body.startDateStringMax as string
+      )
+    },
+    {
       limit: -1,
       offset: 0,
       includeFields: true,
       includeTransactions: true
-    });
+    }
+  )
 
-  response.json(licencesResponse);
-};
+  response.json(licencesResponse)
+}
 
-
-export default handler;
+export default handler

@@ -1,61 +1,72 @@
-import sqlite from "better-sqlite3";
-import { licencesDB as databasePath } from "../../data/databasePaths.js";
+import sqlite from 'better-sqlite3'
 
-import { getLicenceCategoryField } from "./getLicenceCategoryField.js";
-import { getLicenceCategoryFields } from "./getLicenceCategoryFields.js";
+import { licencesDB as databasePath } from '../../data/databasePaths.js'
+import type { LicenceCategoryField, PartialSession } from '../../types/recordTypes.js'
 
-import type * as expressSession from "express-session";
+import getLicenceCategoryField from './getLicenceCategoryField.js'
+import getLicenceCategoryFields from './getLicenceCategoryFields.js'
 
+const sql =
+  'update LicenceCategoryFields' +
+  ' set orderNumber = ?,' +
+  ' recordUpdate_userName = ?,' +
+  ' recordUpdate_timeMillis = ?' +
+  ' where licenceFieldKey = ?'
 
-const sql = "update LicenceCategoryFields" +
-  " set orderNumber = ?," +
-  " recordUpdate_userName = ?," +
-  " recordUpdate_timeMillis = ?" +
-  " where licenceFieldKey = ?";
+export const moveLicenceCategoryField = (
+  licenceFieldKeyFrom: string,
+  licenceFieldKeyTo: string,
+  requestSession: PartialSession
+): string => {
+  const database = sqlite(databasePath)
 
+  const licenceCategoryFieldFrom = getLicenceCategoryField(
+    licenceFieldKeyFrom,
+    database
+  ) as LicenceCategoryField
 
-export const moveLicenceCategoryField =
-  (licenceFieldKey_from: string, licenceFieldKey_to: string, requestSession: expressSession.Session): string => {
+  const licenceCategoryFields = getLicenceCategoryFields(
+    licenceCategoryFieldFrom.licenceCategoryKey,
+    database
+  )
 
-    const database = sqlite(databasePath);
+  let expectedOrderNumber = 0
 
-    const licenceCategoryField_from = getLicenceCategoryField(licenceFieldKey_from, database);
-
-    const licenceCategoryFields = getLicenceCategoryFields(licenceCategoryField_from.licenceCategoryKey, database);
-
-    let expectedOrderNumber = 0;
-
-    for (const licenceCategoryField of licenceCategoryFields) {
-
-      if (licenceCategoryField.licenceFieldKey === licenceFieldKey_from) {
-        continue;
-      }
-
-      expectedOrderNumber += 1;
-
-      if (licenceCategoryField.licenceFieldKey === licenceFieldKey_to) {
-        database.prepare(sql)
-          .run(expectedOrderNumber,
-            requestSession.user.userName,
-            Date.now(),
-            licenceFieldKey_from);
-
-        expectedOrderNumber += 1;
-      }
-
-      if (licenceCategoryField.orderNumber !== expectedOrderNumber) {
-        database.prepare(sql)
-          .run(expectedOrderNumber,
-            requestSession.user.userName,
-            Date.now(),
-            licenceCategoryField.licenceFieldKey);
-      }
+  for (const licenceCategoryField of licenceCategoryFields) {
+    if (licenceCategoryField.licenceFieldKey === licenceFieldKeyFrom) {
+      continue
     }
 
-    database.close();
+    expectedOrderNumber += 1
 
-    return licenceCategoryField_from.licenceCategoryKey;
-  };
+    if (licenceCategoryField.licenceFieldKey === licenceFieldKeyTo) {
+      database
+        .prepare(sql)
+        .run(
+          expectedOrderNumber,
+          requestSession.user.userName,
+          Date.now(),
+          licenceFieldKeyFrom
+        )
 
+      expectedOrderNumber += 1
+    }
 
-export default moveLicenceCategoryField;
+    if (licenceCategoryField.orderNumber !== expectedOrderNumber) {
+      database
+        .prepare(sql)
+        .run(
+          expectedOrderNumber,
+          requestSession.user.userName,
+          Date.now(),
+          licenceCategoryField.licenceFieldKey
+        )
+    }
+  }
+
+  database.close()
+
+  return licenceCategoryFieldFrom.licenceCategoryKey
+}
+
+export default moveLicenceCategoryField

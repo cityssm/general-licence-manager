@@ -1,43 +1,46 @@
-import sqlite from "better-sqlite3";
-import { licencesDB as databasePath } from "../../data/databasePaths.js";
+import sqlite from 'better-sqlite3'
 
-import { getUnusedLicenceFieldKey } from "./getUnusedKey.js";
+import { licencesDB as databasePath } from '../../data/databasePaths.js'
+import type { PartialSession } from '../../types/recordTypes.js'
 
-import type * as recordTypes from "../../types/recordTypes";
+import { getUnusedLicenceFieldKey } from './getUnusedKey.js'
 
-interface AddLicenceCategoryFieldForm {
-  licenceCategoryKey: string;
-  licenceField: string;
+export interface AddLicenceCategoryFieldForm {
+  licenceCategoryKey: string
+  licenceField: string
 }
 
-export const addLicenceCategoryField =
-  (licenceCategoryFieldForm: AddLicenceCategoryFieldForm, requestSession: recordTypes.PartialSession): string => {
+export default function addLicenceCategoryField(
+  licenceCategoryFieldForm: AddLicenceCategoryFieldForm,
+  requestSession: PartialSession
+): string {
+  const licenceFieldKey = getUnusedLicenceFieldKey(
+    licenceCategoryFieldForm.licenceCategoryKey,
+    licenceCategoryFieldForm.licenceField
+  )
 
-    const licenceFieldKey =
-      getUnusedLicenceFieldKey(licenceCategoryFieldForm.licenceCategoryKey, licenceCategoryFieldForm.licenceField);
+  const database = sqlite(databasePath)
 
-    const database = sqlite(databasePath);
+  const rightNowMillis = Date.now()
 
-    const rightNowMillis = Date.now();
+  database
+    .prepare(
+      `insert into LicenceCategoryFields (
+        licenceFieldKey, licenceCategoryKey, licenceField,
+        recordCreate_userName, recordCreate_timeMillis, recordUpdate_userName, recordUpdate_timeMillis)
+        values (?, ?, ?, ?, ?, ?, ?)`
+    )
+    .run(
+      licenceFieldKey,
+      licenceCategoryFieldForm.licenceCategoryKey,
+      licenceCategoryFieldForm.licenceField,
+      requestSession.user.userName,
+      rightNowMillis,
+      requestSession.user.userName,
+      rightNowMillis
+    )
 
-    database
-      .prepare("insert into LicenceCategoryFields" +
-        "(licenceFieldKey, licenceCategoryKey, licenceField," +
-        " recordCreate_userName, recordCreate_timeMillis," +
-        " recordUpdate_userName, recordUpdate_timeMillis)" +
-        " values (?, ?, ?, ?, ?, ?, ?)")
-      .run(licenceFieldKey,
-        licenceCategoryFieldForm.licenceCategoryKey,
-        licenceCategoryFieldForm.licenceField,
-        requestSession.user.userName,
-        rightNowMillis,
-        requestSession.user.userName,
-        rightNowMillis);
+  database.close()
 
-    database.close();
-
-    return licenceFieldKey;
-  };
-
-
-export default addLicenceCategoryField;
+  return licenceFieldKey
+}

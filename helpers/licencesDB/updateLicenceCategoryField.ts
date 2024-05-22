@@ -1,52 +1,53 @@
-import sqlite from "better-sqlite3";
-import { licencesDB as databasePath } from "../../data/databasePaths.js";
+import sqlite from 'better-sqlite3'
 
-import type * as expressSession from "express-session";
+import { licencesDB as databasePath } from '../../data/databasePaths.js'
+import type { PartialSession } from '../../types/recordTypes.js'
 
-interface UpdateLicenceCategoryFieldForm {
-  licenceFieldKey: string;
-  licenceField: string;
-  licenceFieldDescription: string;
-  isRequired?: string;
-  minimumLength: string;
-  maximumLength: string;
-  pattern: string;
-  printKey: string;
+export interface UpdateLicenceCategoryFieldForm {
+  licenceFieldKey: string
+  licenceField: string
+  licenceFieldDescription: string
+  isRequired?: string
+  minimumLength: string
+  maximumLength: string
+  pattern: string
+  printKey: string
 }
 
+export default function updateLicenceCategoryField(
+  licenceCategoryFieldForm: UpdateLicenceCategoryFieldForm,
+  requestSession: PartialSession
+): boolean {
+  const database = sqlite(databasePath)
 
-export const updateLicenceCategoryField =
-  (licenceCategoryFieldForm: UpdateLicenceCategoryFieldForm, requestSession: expressSession.Session): boolean => {
+  database
+    .prepare(
+      `update LicenceCategoryFields
+        set licenceField = ?,
+        licenceFieldDescription = ?,
+        isRequired = ?,
+        minimumLength = ?,
+        maximumLength = ?,
+        pattern = ?,
+        printKey = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+        where licenceFieldKey = ?`
+    )
+    .run(
+      licenceCategoryFieldForm.licenceField,
+      licenceCategoryFieldForm.licenceFieldDescription,
+      licenceCategoryFieldForm.isRequired ? 1 : 0,
+      licenceCategoryFieldForm.minimumLength,
+      licenceCategoryFieldForm.maximumLength,
+      licenceCategoryFieldForm.pattern,
+      licenceCategoryFieldForm.printKey,
+      requestSession.user.userName,
+      Date.now(),
+      licenceCategoryFieldForm.licenceFieldKey
+    )
 
-    const database = sqlite(databasePath);
+  database.close()
 
-    database
-      .prepare("update LicenceCategoryFields" +
-        " set licenceField = ?," +
-        " licenceFieldDescription = ?," +
-        " isRequired = ?," +
-        " minimumLength = ?," +
-        " maximumLength = ?," +
-        " pattern = ?," +
-        " printKey = ?," +
-        " recordUpdate_userName = ?," +
-        " recordUpdate_timeMillis = ?" +
-        " where licenceFieldKey = ?")
-      .run(licenceCategoryFieldForm.licenceField,
-        licenceCategoryFieldForm.licenceFieldDescription,
-        licenceCategoryFieldForm.isRequired ? 1 : 0,
-        licenceCategoryFieldForm.minimumLength,
-        licenceCategoryFieldForm.maximumLength,
-        licenceCategoryFieldForm.pattern,
-        licenceCategoryFieldForm.printKey,
-        requestSession.user.userName,
-        Date.now(),
-        licenceCategoryFieldForm.licenceFieldKey);
-
-    database.close();
-
-    return true;
-  };
-
-
-export default updateLicenceCategoryField;
+  return true
+}

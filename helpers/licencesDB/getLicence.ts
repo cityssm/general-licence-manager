@@ -7,7 +7,7 @@ import type * as recordTypes from '../../types/recordTypes'
 
 import { getLicenceFields } from './getLicenceFields.js'
 import { getLicenceTransactions } from './getLicenceTransactions.js'
-import { getLicences } from './getLicences.js'
+import getLicences from './getLicences.js'
 
 export default function getLicence(
   licenceId: number | string

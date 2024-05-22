@@ -1,3 +1,2 @@
-import type * as recordTypes from "../../types/recordTypes";
-export declare const getLicenceCategories: () => recordTypes.LicenceCategory[];
-export default getLicenceCategories;
+import type { LicenceCategory } from '../../types/recordTypes.js';
+export default function getLicenceCategories(): LicenceCategory[];

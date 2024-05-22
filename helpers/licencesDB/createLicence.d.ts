@@ -1,4 +1,4 @@
-import type * as recordTypes from "../../types/recordTypes";
+import type * as recordTypes from '../../types/recordTypes';
 interface CreateLicenceForm {
     licenceCategoryKey: string;
     licenceNumber: string;

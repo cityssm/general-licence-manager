@@ -1,36 +1,32 @@
-import type { RequestHandler } from "express";
+import type { Request, Response } from 'express'
 
-import { deleteLicenceCategoryApproval } from "../../helpers/licencesDB/deleteLicenceCategoryApproval.js";
-import { getLicenceCategoryApproval } from "../../helpers/licencesDB/getLicenceCategoryApproval.js";
-import { getLicenceCategoryApprovals } from "../../helpers/licencesDB/getLicenceCategoryApprovals.js";
+import * as cacheFunctions from '../../helpers/functions.cache.js'
+import { deleteLicenceCategoryApproval } from '../../helpers/licencesDB/deleteLicenceCategoryApproval.js'
+import getLicenceCategoryApproval from '../../helpers/licencesDB/getLicenceCategoryApproval.js'
+import { getLicenceCategoryApprovals } from '../../helpers/licencesDB/getLicenceCategoryApprovals.js'
 
-import * as cacheFunctions from "../../helpers/functions.cache.js";
+export function handler(request: Request, response: Response): void {
+  const licenceApprovalKey = request.body.licenceApprovalKey as string
 
+  const licenceCategoryApproval = getLicenceCategoryApproval(licenceApprovalKey)
 
-export const handler: RequestHandler = async (request, response) => {
+  if (licenceCategoryApproval === undefined) {
+    response.json({
+      success: false
+    })
+  } else {
+    deleteLicenceCategoryApproval(licenceApprovalKey, request.session)
 
-  const licenceApprovalKey = request.body.licenceApprovalKey as string;
-
-  const licenceCategoryApproval = getLicenceCategoryApproval(licenceApprovalKey);
-
-  if (licenceCategoryApproval) {
-    deleteLicenceCategoryApproval(licenceApprovalKey, request.session);
-
-    cacheFunctions.clearAll();
-    const licenceCategoryApprovals = getLicenceCategoryApprovals(licenceCategoryApproval.licenceCategoryKey);
+    cacheFunctions.clearAll()
+    const licenceCategoryApprovals = getLicenceCategoryApprovals(
+      licenceCategoryApproval.licenceCategoryKey
+    )
 
     response.json({
       success: true,
       licenceCategoryApprovals
-    });
-
-  } else {
-
-    response.json({
-      success: false
-    });
+    })
   }
-};
+}
 
-
-export default handler;
+export default handler

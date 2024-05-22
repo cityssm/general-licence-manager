@@ -1,15 +1,15 @@
 import sqlite from 'better-sqlite3'
-import { licencesDB as databasePath } from '../../data/databasePaths.js'
 
+import { licencesDB as databasePath } from '../../data/databasePaths.js'
 import type * as recordTypes from '../../types/recordTypes'
 
-export const getLicenceCategoryFields = (
+export default function getLicenceCategoryFields(
   licenceCategoryKey: string,
   database?: sqlite.Database
-): recordTypes.LicenceCategoryField[] => {
+): recordTypes.LicenceCategoryField[] {
   let doCloseDatabase = false
 
-  if (!database) {
+  if (database === undefined) {
     database = sqlite(databasePath, {
       readonly: true
     })
@@ -19,12 +19,16 @@ export const getLicenceCategoryFields = (
 
   const licenceCategoryFields = database
     .prepare(
-      'select licenceFieldKey, licenceField, licenceFieldDescription,' +
-        ' isRequired, minimumLength, maximumLength, pattern, printKey, orderNumber' +
-        ' from LicenceCategoryFields' +
-        ' where recordDelete_timeMillis is null' +
-        ' and licenceCategoryKey = ?' +
-        ' order by orderNumber, licenceField'
+      `select licenceFieldKey, licenceCategoryKey,
+        licenceField, licenceFieldDescription,
+        isRequired,
+        minimumLength, maximumLength, pattern,
+        printKey,
+        orderNumber
+        from LicenceCategoryFields
+        where recordDelete_timeMillis is null
+        and licenceCategoryKey = ?
+        order by orderNumber, licenceField`
     )
     .all(licenceCategoryKey) as recordTypes.LicenceCategoryField[]
 
@@ -34,5 +38,3 @@ export const getLicenceCategoryFields = (
 
   return licenceCategoryFields
 }
-
-export default getLicenceCategoryFields

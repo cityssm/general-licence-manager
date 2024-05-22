@@ -1,9 +1,9 @@
-export const testView = "*testView";
-export const testUpdate = "*testUpdate";
-export const testAdmin = "*testAdmin";
+export const testView = '*testView';
+export const testUpdate = '*testUpdate';
+export const testAdmin = '*testAdmin';
 export const portNumber = 7000;
 export const fakeViewOnlySession = {
-    id: "",
+    id: '',
     cookie: undefined,
     destroy: undefined,
     regenerate: undefined,
@@ -14,7 +14,7 @@ export const fakeViewOnlySession = {
     user: undefined
 };
 export const fakeAdminSession = {
-    id: "",
+    id: '',
     cookie: undefined,
     destroy: undefined,
     regenerate: undefined,

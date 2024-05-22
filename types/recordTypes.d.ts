@@ -103,7 +103,7 @@ export interface LicenceCategory extends Record {
 }
 export interface LicenceCategoryApproval extends Record {
     licenceApprovalKey: string;
-    licenceCategoryKey?: string;
+    licenceCategoryKey: string;
     licenceApproval: string;
     licenceApprovalDescription: string;
     isRequiredForNew: boolean;
@@ -113,7 +113,7 @@ export interface LicenceCategoryApproval extends Record {
 }
 export interface LicenceCategoryFee extends Record {
     licenceFeeId?: number;
-    licenceCategoryKey?: string;
+    licenceCategoryKey: string;
     effectiveStartDate?: number;
     effectiveStartDateString?: string;
     effectiveEndDate?: number;
@@ -134,7 +134,7 @@ export interface LicenceCategoryAdditionalFee extends Record {
 }
 export interface LicenceCategoryField extends Record {
     licenceFieldKey: string;
-    licenceCategoryKey?: string;
+    licenceCategoryKey: string;
     licenceField: string;
     licenceFieldDescription: string;
     isRequired: boolean;

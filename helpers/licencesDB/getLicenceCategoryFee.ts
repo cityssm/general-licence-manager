@@ -1,14 +1,13 @@
-import sqlite from 'better-sqlite3'
-import { licencesDB as databasePath } from '../../data/databasePaths.js'
-
 import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js'
+import sqlite from 'better-sqlite3'
 
-import type * as recordTypes from '../../types/recordTypes'
+import { licencesDB as databasePath } from '../../data/databasePaths.js'
+import type { LicenceCategoryFee } from '../../types/recordTypes'
 
-export const getLicenceCategoryFee = (
+export default function getLicenceCategoryFee(
   licenceFeeId: number | string,
   database?: sqlite.Database
-): recordTypes.LicenceCategoryFee => {
+): LicenceCategoryFee | undefined {
   let doCloseDatabase = false
 
   if (!database) {
@@ -26,17 +25,15 @@ export const getLicenceCategoryFee = (
 
   const licenceCategoryFee = database
     .prepare(
-      'select licenceFeeId, licenceCategoryKey,' +
-        ' effectiveStartDate,' +
-        ' fn_dateIntegerToString(effectiveStartDate) as effectiveStartDateString,' +
-        ' effectiveEndDate,' +
-        ' fn_dateIntegerToString(effectiveEndDate) as effectiveEndDateString,' +
-        ' licenceFee, renewalFee, replacementFee' +
-        ' from LicenceCategoryFees' +
-        ' where recordDelete_timeMillis is null' +
-        ' and licenceFeeId = ?'
+      `select licenceFeeId, licenceCategoryKey,
+        effectiveStartDate, fn_dateIntegerToString(effectiveStartDate) as effectiveStartDateString,
+        effectiveEndDate, fn_dateIntegerToString(effectiveEndDate) as effectiveEndDateString,
+        licenceFee, renewalFee, replacementFee
+        from LicenceCategoryFees
+        where recordDelete_timeMillis is null
+        and licenceFeeId = ?`
     )
-    .get(licenceFeeId) as recordTypes.LicenceCategoryFee
+    .get(licenceFeeId) as LicenceCategoryFee
 
   if (doCloseDatabase) {
     database.close()
@@ -44,5 +41,3 @@ export const getLicenceCategoryFee = (
 
   return licenceCategoryFee
 }
-
-export default getLicenceCategoryFee

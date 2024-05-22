@@ -1,46 +1,47 @@
-import sqlite from "better-sqlite3";
-import { licencesDB as databasePath } from "../../data/databasePaths.js";
+import sqlite from 'better-sqlite3'
 
-import type * as recordTypes from "../../types/recordTypes";
+import { licencesDB as databasePath } from '../../data/databasePaths.js'
+import type { PartialSession } from '../../types/recordTypes.js'
 
-interface UpdateLicenceCategoryApprovalForm {
-  licenceApprovalKey: string;
-  licenceApproval: string;
-  licenceApprovalDescription: string;
-  isRequiredForNew?: string;
-  isRequiredForRenewal?: string;
-  printKey: string;
+export interface UpdateLicenceCategoryApprovalForm {
+  licenceApprovalKey: string
+  licenceApproval: string
+  licenceApprovalDescription: string
+  isRequiredForNew?: string
+  isRequiredForRenewal?: string
+  printKey: string
 }
 
+export default function updateLicenceCategoryApproval(
+  licenceCategoryApprovalForm: UpdateLicenceCategoryApprovalForm,
+  requestSession: PartialSession
+): boolean {
+  const database = sqlite(databasePath)
 
-export const updateLicenceCategoryApproval =
-  (licenceCategoryApprovalForm: UpdateLicenceCategoryApprovalForm, requestSession: recordTypes.PartialSession): boolean => {
+  database
+    .prepare(
+      `update LicenceCategoryApprovals
+        set licenceApproval = ?,
+        licenceApprovalDescription = ?,
+        isRequiredForNew = ?,
+        isRequiredForRenewal = ?,
+        printKey = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+        where licenceApprovalKey = ?`
+    )
+    .run(
+      licenceCategoryApprovalForm.licenceApproval,
+      licenceCategoryApprovalForm.licenceApprovalDescription,
+      licenceCategoryApprovalForm.isRequiredForNew ? 1 : 0,
+      licenceCategoryApprovalForm.isRequiredForRenewal ? 1 : 0,
+      licenceCategoryApprovalForm.printKey,
+      requestSession.user.userName,
+      Date.now(),
+      licenceCategoryApprovalForm.licenceApprovalKey
+    )
 
-    const database = sqlite(databasePath);
+  database.close()
 
-    database
-      .prepare("update LicenceCategoryApprovals" +
-        " set licenceApproval = ?," +
-        " licenceApprovalDescription = ?," +
-        " isRequiredForNew = ?," +
-        " isRequiredForRenewal = ?," +
-        " printKey = ?," +
-        " recordUpdate_userName = ?," +
-        " recordUpdate_timeMillis = ?" +
-        " where licenceApprovalKey = ?")
-      .run(licenceCategoryApprovalForm.licenceApproval,
-        licenceCategoryApprovalForm.licenceApprovalDescription,
-        licenceCategoryApprovalForm.isRequiredForNew ? 1 : 0,
-        licenceCategoryApprovalForm.isRequiredForRenewal ? 1 : 0,
-        licenceCategoryApprovalForm.printKey,
-        requestSession.user.userName,
-        Date.now(),
-        licenceCategoryApprovalForm.licenceApprovalKey);
-
-    database.close();
-
-    return true;
-  };
-
-
-export default updateLicenceCategoryApproval;
+  return true
+}

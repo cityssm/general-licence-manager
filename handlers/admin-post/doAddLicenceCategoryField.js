@@ -1,7 +1,7 @@
-import { addLicenceCategoryField } from "../../helpers/licencesDB/addLicenceCategoryField.js";
-import { getLicenceCategoryFields } from "../../helpers/licencesDB/getLicenceCategoryFields.js";
-import * as cacheFunctions from "../../helpers/functions.cache.js";
-export const handler = async (request, response) => {
+import * as cacheFunctions from '../../helpers/functions.cache.js';
+import addLicenceCategoryField from '../../helpers/licencesDB/addLicenceCategoryField.js';
+import getLicenceCategoryFields from '../../helpers/licencesDB/getLicenceCategoryFields.js';
+export function handler(request, response) {
     const licenceFieldKey = addLicenceCategoryField(request.body, request.session);
     cacheFunctions.clearAll();
     const licenceCategoryFields = getLicenceCategoryFields(request.body.licenceCategoryKey);
@@ -10,5 +10,5 @@ export const handler = async (request, response) => {
         licenceCategoryFields,
         licenceFieldKey
     });
-};
+}
 export default handler;

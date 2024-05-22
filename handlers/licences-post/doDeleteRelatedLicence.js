@@ -1,6 +1,6 @@
-import { deleteRelatedLicence } from "../../helpers/licencesDB/deleteRelatedLicence.js";
-import { getLicences } from "../../helpers/licencesDB/getLicences.js";
-export const handler = async (request, response) => {
+import { deleteRelatedLicence } from '../../helpers/licencesDB/deleteRelatedLicence.js';
+import getLicences from '../../helpers/licencesDB/getLicences.js';
+export async function handler(request, response) {
     const success = deleteRelatedLicence(request.body.licenceId, request.body.relatedLicenceId);
     const relatedLicences = getLicences({
         relatedLicenceId: request.body.licenceId
@@ -12,5 +12,5 @@ export const handler = async (request, response) => {
         success,
         relatedLicences
     });
-};
+}
 export default handler;

@@ -1,7 +1,6 @@
-import type * as recordTypes from "../../types/recordTypes";
-interface AddLicenceCategoryFieldForm {
+import type { PartialSession } from '../../types/recordTypes.js';
+export interface AddLicenceCategoryFieldForm {
     licenceCategoryKey: string;
     licenceField: string;
 }
-export declare const addLicenceCategoryField: (licenceCategoryFieldForm: AddLicenceCategoryFieldForm, requestSession: recordTypes.PartialSession) => string;
-export default addLicenceCategoryField;
+export default function addLicenceCategoryField(licenceCategoryFieldForm: AddLicenceCategoryFieldForm, requestSession: PartialSession): string;

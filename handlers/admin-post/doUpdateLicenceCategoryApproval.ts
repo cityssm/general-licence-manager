@@ -1,27 +1,32 @@
-import type { RequestHandler } from "express";
+import type { Request, Response } from 'express'
 
-import { updateLicenceCategoryApproval } from "../../helpers/licencesDB/updateLicenceCategoryApproval.js";
-import { getLicenceCategoryApproval } from "../../helpers/licencesDB/getLicenceCategoryApproval.js";
-import { getLicenceCategoryApprovals } from "../../helpers/licencesDB/getLicenceCategoryApprovals.js";
+import * as cacheFunctions from '../../helpers/functions.cache.js'
+import getLicenceCategoryApproval from '../../helpers/licencesDB/getLicenceCategoryApproval.js'
+import { getLicenceCategoryApprovals } from '../../helpers/licencesDB/getLicenceCategoryApprovals.js'
+import updateLicenceCategoryApproval, {
+  type UpdateLicenceCategoryApprovalForm
+} from '../../helpers/licencesDB/updateLicenceCategoryApproval.js'
 
-import * as cacheFunctions from "../../helpers/functions.cache.js";
+export function handler(request: Request, response: Response): void {
+  const success = updateLicenceCategoryApproval(
+    request.body as UpdateLicenceCategoryApprovalForm,
+    request.session
+  )
 
+  cacheFunctions.clearAll()
 
-export const handler: RequestHandler = async (request, response) => {
+  const licenceCategoryApproval = getLicenceCategoryApproval(
+    request.body.licenceApprovalKey as string
+  )
 
-  const success = updateLicenceCategoryApproval(request.body, request.session);
-
-  cacheFunctions.clearAll();
-
-  const licenceCategoryApproval = getLicenceCategoryApproval(request.body.licenceApprovalKey);
-
-  const licenceCategoryApprovals = getLicenceCategoryApprovals(licenceCategoryApproval.licenceCategoryKey);
+  const licenceCategoryApprovals = getLicenceCategoryApprovals(
+    licenceCategoryApproval.licenceCategoryKey
+  )
 
   response.json({
     success,
     licenceCategoryApprovals
-  });
-};
+  })
+}
 
-
-export default handler;
+export default handler

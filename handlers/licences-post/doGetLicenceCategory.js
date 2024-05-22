@@ -1,8 +1,8 @@
-import { getLicenceCategory } from "../../helpers/licencesDB/getLicenceCategory.js";
-export const handler = async (request, response) => {
+import getLicenceCategory from '../../helpers/licencesDB/getLicenceCategory.js';
+export function handler(request, response) {
     const licenceCategory = getLicenceCategory(request.body.licenceCategoryKey, {
         includeApprovals: true,
-        includeFees: "current",
+        includeFees: 'current',
         includeFields: true,
         includeAdditionalFees: true
     });
@@ -10,5 +10,5 @@ export const handler = async (request, response) => {
         success: true,
         licenceCategory
     });
-};
+}
 export default handler;

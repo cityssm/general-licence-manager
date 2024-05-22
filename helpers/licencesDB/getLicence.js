@@ -4,7 +4,7 @@ import sqlite from 'better-sqlite3';
 import { licencesDB as databasePath } from '../../data/databasePaths.js';
 import { getLicenceFields } from './getLicenceFields.js';
 import { getLicenceTransactions } from './getLicenceTransactions.js';
-import { getLicences } from './getLicences.js';
+import getLicences from './getLicences.js';
 export default function getLicence(licenceId) {
     const database = sqlite(databasePath, {
         readonly: true

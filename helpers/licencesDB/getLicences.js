@@ -1,9 +1,9 @@
+import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js';
 import sqlite from 'better-sqlite3';
 import { licencesDB as databasePath } from '../../data/databasePaths.js';
-import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js';
 import { getLicenceFields } from './getLicenceFields.js';
 import { getLicenceTransactions } from './getLicenceTransactions.js';
-export const getLicences = (filters, options) => {
+export default function getLicences(filters, options) {
     const database = sqlite(databasePath, {
         readonly: true
     });
@@ -17,13 +17,10 @@ export const getLicences = (filters, options) => {
     if (filters.licenceDetails && filters.licenceDetails !== '') {
         const licenceDetailsPieces = filters.licenceDetails.trim().split(' ');
         for (const licenceDetailsPiece of licenceDetailsPieces) {
-            sqlWhereClause +=
-                ' and (' +
-                    "c.licenceCategory like '%' || ? || '%'" +
-                    " or l.licenseeName like '%' || ? || '%'" +
-                    " or l.licenseeBusinessName like '%' || ? || '%'" +
-                    " or l.licenceId in (select licenceId from LicenceFields where licenceFieldValue like '%' || ? || '%')" +
-                    ')';
+            sqlWhereClause += ` and (c.licenceCategory like '%' || ? || '%'
+          or l.licenseeName like '%' || ? || '%'
+          or l.licenseeBusinessName like '%' || ? || '%'
+          or l.licenceId in (select licenceId from LicenceFields where licenceFieldValue like '%' || ? || '%'))`;
             sqlParameters.push(licenceDetailsPiece, licenceDetailsPiece, licenceDetailsPiece, licenceDetailsPiece);
         }
     }
@@ -54,31 +51,27 @@ export const getLicences = (filters, options) => {
         sqlParameters.push(filters.startDateMax);
     }
     if (filters.relatedLicenceId) {
-        sqlWhereClause +=
-            ' and (' +
-                'l.licenceId in (select licenceIdA from RelatedLicences where licenceIdB = ?)' +
-                ' or l.licenceId in (select licenceIdB from RelatedLicences where licenceIdA = ?))' +
-                ' and l.licenceId <> ?';
+        sqlWhereClause += ` and (
+        l.licenceId in (select licenceIdA from RelatedLicences where licenceIdB = ?)
+        or l.licenceId in (select licenceIdB from RelatedLicences where licenceIdA = ?)
+      ) and l.licenceId <> ?`;
         sqlParameters.push(filters.relatedLicenceId, filters.relatedLicenceId, filters.relatedLicenceId);
     }
     if (filters.notRelatedLicenceId) {
-        sqlWhereClause +=
-            ' and l.licenceId not in (select licenceIdA from RelatedLicences where licenceIdB = ?)' +
-                ' and l.licenceId not in (select licenceIdB from RelatedLicences where licenceIdA = ?)' +
-                ' and l.licenceId <> ?';
+        sqlWhereClause += ` and l.licenceId not in (select licenceIdA from RelatedLicences where licenceIdB = ?)
+        and l.licenceId not in (select licenceIdB from RelatedLicences where licenceIdA = ?)
+        and l.licenceId <> ?`;
         sqlParameters.push(filters.notRelatedLicenceId, filters.notRelatedLicenceId, filters.notRelatedLicenceId);
     }
     if (filters.searchString && filters.searchString !== '') {
         const searchStringPieces = filters.searchString.trim().split(' ');
         for (const searchStringPiece of searchStringPieces) {
-            sqlWhereClause +=
-                ' and (' +
-                    " l.licenceNumber like '%' || ? || '%'" +
-                    " or c.licenceCategory like '%' || ? || '%'" +
-                    " or l.licenseeName like '%' || ? || '%'" +
-                    " or l.licenseeBusinessName like '%' || ? || '%'" +
-                    " or l.bankAccountNumber like '%' || ? || '%'" +
-                    ')';
+            sqlWhereClause += ` and (
+          l.licenceNumber like '%' || ? || '%'
+          or c.licenceCategory like '%' || ? || '%'
+          or l.licenseeName like '%' || ? || '%'
+          or l.licenseeBusinessName like '%' || ? || '%'
+          or l.bankAccountNumber like '%' || ? || '%')`;
             sqlParameters.push(searchStringPiece, searchStringPiece, searchStringPiece, searchStringPiece, searchStringPiece);
         }
     }
@@ -92,25 +85,20 @@ export const getLicences = (filters, options) => {
             .pluck()
             .get(sqlParameters);
     }
-    let sql = 'select l.licenceId,' +
-        ' l.licenceCategoryKey, c.licenceCategory,' +
-        ' l.licenceNumber,' +
-        ' l.licenseeName, l.licenseeBusinessName,' +
-        ' l.licenseeAddress1, l.licenseeAddress2,' +
-        ' l.licenseeCity, l.licenseeProvince, l.licenseePostalCode,' +
-        ' l.startDate, userFn_dateIntegerToString(l.startDate) as startDateString,' +
-        ' l.endDate, userFn_dateIntegerToString(l.endDate) as endDateString,' +
-        ' l.issueDate, userFn_dateIntegerToString(l.issueDate) as issueDateString' +
-        ' from Licences l' +
-        ' left join LicenceCategories c on l.licenceCategoryKey = c.licenceCategoryKey' +
-        sqlWhereClause +
-        ' order by startDate desc, endDate desc, licenceId desc';
+    let sql = `select l.licenceId,
+      l.licenceCategoryKey, c.licenceCategory,
+      l.licenceNumber,
+      l.licenseeName, l.licenseeBusinessName,
+      l.licenseeAddress1, l.licenseeAddress2, l.licenseeCity, l.licenseeProvince, l.licenseePostalCode,
+      l.startDate, userFn_dateIntegerToString(l.startDate) as startDateString,
+      l.endDate, userFn_dateIntegerToString(l.endDate) as endDateString,
+      l.issueDate, userFn_dateIntegerToString(l.issueDate) as issueDateString
+      from Licences l
+      left join LicenceCategories c on l.licenceCategoryKey = c.licenceCategoryKey
+      ${sqlWhereClause}
+      order by startDate desc, endDate desc, licenceId desc`;
     if (options.limit !== -1) {
-        sql +=
-            ' limit ' +
-                options.limit.toString() +
-                ' offset ' +
-                (options.offset || 0).toString();
+        sql += ` limit ${options.limit.toString()} offset ${(options.offset ?? 0).toString()}`;
     }
     database.function('userFn_dateIntegerToString', dateTimeFunctions.dateIntegerToString);
     const rows = database.prepare(sql).all(sqlParameters);
@@ -132,5 +120,4 @@ export const getLicences = (filters, options) => {
         count,
         licences: rows
     };
-};
-export default getLicences;
+}

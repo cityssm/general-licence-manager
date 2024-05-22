@@ -1,3 +1,3 @@
-import type * as expressSession from "express-session";
-export declare const moveLicenceCategoryField: (licenceFieldKey_from: string, licenceFieldKey_to: string, requestSession: expressSession.Session) => string;
+import type { PartialSession } from '../../types/recordTypes.js';
+export declare const moveLicenceCategoryField: (licenceFieldKeyFrom: string, licenceFieldKeyTo: string, requestSession: PartialSession) => string;
 export default moveLicenceCategoryField;

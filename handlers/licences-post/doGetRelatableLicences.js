@@ -1,5 +1,5 @@
-import { getLicences } from "../../helpers/licencesDB/getLicences.js";
-export const handler = async (request, response) => {
+import getLicences from '../../helpers/licencesDB/getLicences.js';
+export async function handler(request, response) {
     const licences = getLicences({
         notRelatedLicenceId: request.body.licenceId,
         searchString: request.body.searchString
@@ -10,5 +10,5 @@ export const handler = async (request, response) => {
     response.json({
         licences
     });
-};
+}
 export default handler;

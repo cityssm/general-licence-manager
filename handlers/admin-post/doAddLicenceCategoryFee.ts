@@ -1,24 +1,26 @@
-import type { RequestHandler } from "express";
+import type { Request, Response } from 'express'
 
-import { addLicenceCategoryFee } from "../../helpers/licencesDB/addLicenceCategoryFee.js";
-import { getLicenceCategoryFees } from "../../helpers/licencesDB/getLicenceCategoryFees.js";
+import * as cacheFunctions from '../../helpers/functions.cache.js'
+import addLicenceCategoryFee from '../../helpers/licencesDB/addLicenceCategoryFee.js'
+import getLicenceCategoryFees from '../../helpers/licencesDB/getLicenceCategoryFees.js'
 
-import * as cacheFunctions from "../../helpers/functions.cache.js";
+export function handler(request: Request, response: Response): void {
+  const licenceFeeId = addLicenceCategoryFee(
+    request.body.licenceCategoryKey as string,
+    request.session
+  )
 
-
-export const handler: RequestHandler = async (request, response) => {
-
-  const licenceFeeId = addLicenceCategoryFee(request.body.licenceCategoryKey, request.session);
-
-  cacheFunctions.clearAll();
-  const licenceCategoryFees = getLicenceCategoryFees(request.body.licenceCategoryKey, "all");
+  cacheFunctions.clearAll()
+  const licenceCategoryFees = getLicenceCategoryFees(
+    request.body.licenceCategoryKey as string,
+    'all'
+  )
 
   response.json({
     success: true,
     licenceCategoryFees,
     licenceFeeId
-  });
-};
+  })
+}
 
-
-export default handler;
+export default handler

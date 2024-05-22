@@ -1,2 +1,2 @@
-export declare const deleteRelatedLicence: (licenceIdA: number | string, licenceIdB: number | string) => boolean;
+export declare function deleteRelatedLicence(licenceIdA: number | string, licenceIdB: number | string): boolean;
 export default deleteRelatedLicence;

@@ -1,22 +1,22 @@
-import type { RequestHandler } from "express";
+import type { Request, Response } from 'express'
 
-import { getLicenceCategory } from "../../helpers/licencesDB/getLicenceCategory.js";
+import getLicenceCategory from '../../helpers/licencesDB/getLicenceCategory.js'
 
-
-export const handler: RequestHandler = async (request, response) => {
-
-  const licenceCategory = getLicenceCategory(request.body.licenceCategoryKey, {
-    includeApprovals: true,
-    includeFees: "all",
-    includeFields: true,
-    includeAdditionalFees: true
-  });
+export function handler(request: Request, response: Response): void {
+  const licenceCategory = getLicenceCategory(
+    request.body.licenceCategoryKey as string,
+    {
+      includeApprovals: true,
+      includeFees: 'all',
+      includeFields: true,
+      includeAdditionalFees: true
+    }
+  )
 
   response.json({
     success: true,
     licenceCategory
-  });
-};
+  })
+}
 
-
-export default handler;
+export default handler

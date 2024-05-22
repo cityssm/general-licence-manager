@@ -1,24 +1,27 @@
-import type { RequestHandler } from "express";
+import type { Request, Response } from 'express'
 
-import { addLicenceCategoryField } from "../../helpers/licencesDB/addLicenceCategoryField.js";
-import { getLicenceCategoryFields } from "../../helpers/licencesDB/getLicenceCategoryFields.js";
+import * as cacheFunctions from '../../helpers/functions.cache.js'
+import addLicenceCategoryField, {
+  type AddLicenceCategoryFieldForm
+} from '../../helpers/licencesDB/addLicenceCategoryField.js'
+import getLicenceCategoryFields from '../../helpers/licencesDB/getLicenceCategoryFields.js'
 
-import * as cacheFunctions from "../../helpers/functions.cache.js";
+export function handler(request: Request, response: Response): void {
+  const licenceFieldKey = addLicenceCategoryField(
+    request.body as AddLicenceCategoryFieldForm,
+    request.session
+  )
 
-
-export const handler: RequestHandler = async (request, response) => {
-
-  const licenceFieldKey = addLicenceCategoryField(request.body, request.session);
-
-  cacheFunctions.clearAll();
-  const licenceCategoryFields = getLicenceCategoryFields(request.body.licenceCategoryKey);
+  cacheFunctions.clearAll()
+  const licenceCategoryFields = getLicenceCategoryFields(
+    request.body.licenceCategoryKey as string
+  )
 
   response.json({
     success: true,
     licenceCategoryFields,
     licenceFieldKey
-  });
-};
+  })
+}
 
-
-export default handler;
+export default handler

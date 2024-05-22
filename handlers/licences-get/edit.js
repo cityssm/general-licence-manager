@@ -1,6 +1,6 @@
 import * as configFunctions from '../../helpers/functions.config.js';
 import getLicence from '../../helpers/licencesDB/getLicence.js';
-import { getLicenceCategory } from '../../helpers/licencesDB/getLicenceCategory.js';
+import getLicenceCategory from '../../helpers/licencesDB/getLicenceCategory.js';
 export function handler(request, response) {
     const licenceId = request.params.licenceId;
     const licence = getLicence(licenceId);
@@ -16,7 +16,7 @@ export function handler(request, response) {
         includeAdditionalFees: true
     });
     response.render('licence-edit', {
-        headTitle: configFunctions.getProperty('settings.licenceAlias') + ' Update',
+        headTitle: `${configFunctions.getProperty('settings.licenceAlias')} Update`,
         isCreate: false,
         licence,
         licenceCategories: [licenceCategory]

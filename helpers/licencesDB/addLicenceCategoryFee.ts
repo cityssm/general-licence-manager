@@ -1,32 +1,31 @@
-import sqlite from "better-sqlite3";
-import { licencesDB as databasePath } from "../../data/databasePaths.js";
+import sqlite from 'better-sqlite3'
 
-import type * as recordTypes from "../../types/recordTypes";
+import { licencesDB as databasePath } from '../../data/databasePaths.js'
+import type { PartialSession } from '../../types/recordTypes.js'
 
+export default function addLicenceCategoryFee(
+  licenceCategoryKey: string,
+  requestSession: PartialSession
+): number {
+  const database = sqlite(databasePath)
 
-export const addLicenceCategoryFee =
-  (licenceCategoryKey: string, requestSession: recordTypes.PartialSession): number => {
+  const rightNowMillis = Date.now()
 
-    const database = sqlite(databasePath);
+  const result = database
+    .prepare(
+      `insert into LicenceCategoryFees (
+        licenceCategoryKey, recordCreate_userName, recordCreate_timeMillis, recordUpdate_userName, recordUpdate_timeMillis)
+        values (?, ?, ?, ?, ?)`
+    )
+    .run(
+      licenceCategoryKey,
+      requestSession.user.userName,
+      rightNowMillis,
+      requestSession.user.userName,
+      rightNowMillis
+    )
 
-    const rightNowMillis = Date.now();
+  database.close()
 
-    const result = database
-      .prepare("insert into LicenceCategoryFees" +
-        "(licenceCategoryKey," +
-        " recordCreate_userName, recordCreate_timeMillis," +
-        " recordUpdate_userName, recordUpdate_timeMillis)" +
-        " values (?, ?, ?, ?, ?)")
-      .run(licenceCategoryKey,
-        requestSession.user.userName,
-        rightNowMillis,
-        requestSession.user.userName,
-        rightNowMillis);
-
-    database.close();
-
-    return result.lastInsertRowid as number;
-  };
-
-
-export default addLicenceCategoryFee;
+  return result.lastInsertRowid as number
+}

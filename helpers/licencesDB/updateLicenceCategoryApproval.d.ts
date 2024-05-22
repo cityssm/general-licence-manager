@@ -1,5 +1,5 @@
-import type * as recordTypes from "../../types/recordTypes";
-interface UpdateLicenceCategoryApprovalForm {
+import type { PartialSession } from '../../types/recordTypes.js';
+export interface UpdateLicenceCategoryApprovalForm {
     licenceApprovalKey: string;
     licenceApproval: string;
     licenceApprovalDescription: string;
@@ -7,5 +7,4 @@ interface UpdateLicenceCategoryApprovalForm {
     isRequiredForRenewal?: string;
     printKey: string;
 }
-export declare const updateLicenceCategoryApproval: (licenceCategoryApprovalForm: UpdateLicenceCategoryApprovalForm, requestSession: recordTypes.PartialSession) => boolean;
-export default updateLicenceCategoryApproval;
+export default function updateLicenceCategoryApproval(licenceCategoryApprovalForm: UpdateLicenceCategoryApprovalForm, requestSession: PartialSession): boolean;

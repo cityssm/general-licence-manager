@@ -1,44 +1,33 @@
 import { Router } from 'express'
 
-import * as permissionHandlers from '../handlers/permissions.js'
-import * as configFunctions from '../helpers/functions.config.js'
-
+import handler_cleanup from '../handlers/admin-get/cleanup.js'
 import handler_licenceCategories from '../handlers/admin-get/licenceCategories.js'
-
+import handler_yearEnd from '../handlers/admin-get/yearEnd.js'
+import handler_doAddLicenceCategory from '../handlers/admin-post/doAddLicenceCategory.js'
+import handler_doAddLicenceCategoryAdditionalFee from '../handlers/admin-post/doAddLicenceCategoryAdditionalFee.js'
+import handler_doAddLicenceCategoryApproval from '../handlers/admin-post/doAddLicenceCategoryApproval.js'
+import handler_doAddLicenceCategoryFee from '../handlers/admin-post/doAddLicenceCategoryFee.js'
+import handler_doAddLicenceCategoryField from '../handlers/admin-post/doAddLicenceCategoryField.js'
+import handler_doBackupDatabase from '../handlers/admin-post/doBackupDatabase.js'
+import handler_doCleanupDatabase from '../handlers/admin-post/doCleanupDatabase.js'
+import handler_doDeleteLicenceCategory from '../handlers/admin-post/doDeleteLicenceCategory.js'
+import handler_doDeleteLicenceCategoryAdditionalFee from '../handlers/admin-post/doDeleteLicenceCategoryAdditionalFee.js'
+import handler_doDeleteLicenceCategoryApproval from '../handlers/admin-post/doDeleteLicenceCategoryApproval.js'
+import handler_doDeleteLicenceCategoryFee from '../handlers/admin-post/doDeleteLicenceCategoryFee.js'
+import handler_doDeleteLicenceCategoryField from '../handlers/admin-post/doDeleteLicenceCategoryField.js'
 import handler_doGetLicenceCategories from '../handlers/admin-post/doGetLicenceCategories.js'
 import handler_doGetLicenceCategory from '../handlers/admin-post/doGetLicenceCategory.js'
-import handler_doAddLicenceCategory from '../handlers/admin-post/doAddLicenceCategory.js'
-import handler_doUpdateLicenceCategory from '../handlers/admin-post/doUpdateLicenceCategory.js'
-import handler_doDeleteLicenceCategory from '../handlers/admin-post/doDeleteLicenceCategory.js'
-
-import handler_doAddLicenceCategoryField from '../handlers/admin-post/doAddLicenceCategoryField.js'
-import handler_doUpdateLicenceCategoryField from '../handlers/admin-post/doUpdateLicenceCategoryField.js'
-import handler_doMoveLicenceCategoryField from '../handlers/admin-post/doMoveLicenceCategoryField.js'
-import handler_doDeleteLicenceCategoryField from '../handlers/admin-post/doDeleteLicenceCategoryField.js'
-
-import handler_doAddLicenceCategoryApproval from '../handlers/admin-post/doAddLicenceCategoryApproval.js'
-import handler_doUpdateLicenceCategoryApproval from '../handlers/admin-post/doUpdateLicenceCategoryApproval.js'
-import handler_doMoveLicenceCategoryApproval from '../handlers/admin-post/doMoveLicenceCategoryApproval.js'
-import handler_doDeleteLicenceCategoryApproval from '../handlers/admin-post/doDeleteLicenceCategoryApproval.js'
-
-import handler_doAddLicenceCategoryFee from '../handlers/admin-post/doAddLicenceCategoryFee.js'
-import handler_doUpdateLicenceCategoryFee from '../handlers/admin-post/doUpdateLicenceCategoryFee.js'
-import handler_doDeleteLicenceCategoryFee from '../handlers/admin-post/doDeleteLicenceCategoryFee.js'
-
-import handler_doAddLicenceCategoryAdditionalFee from '../handlers/admin-post/doAddLicenceCategoryAdditionalFee.js'
-import handler_doUpdateLicenceCategoryAdditionalFee from '../handlers/admin-post/doUpdateLicenceCategoryAdditionalFee.js'
 import handler_doMoveLicenceCategoryAdditionalFee from '../handlers/admin-post/doMoveLicenceCategoryAdditionalFee.js'
-import handler_doDeleteLicenceCategoryAdditionalFee from '../handlers/admin-post/doDeleteLicenceCategoryAdditionalFee.js'
-
-import handler_doBackupDatabase from '../handlers/admin-post/doBackupDatabase.js'
-
-import handler_yearEnd from '../handlers/admin-get/yearEnd.js'
-
+import handler_doMoveLicenceCategoryApproval from '../handlers/admin-post/doMoveLicenceCategoryApproval.js'
+import handler_doMoveLicenceCategoryField from '../handlers/admin-post/doMoveLicenceCategoryField.js'
 import handler_doRefreshDatabase from '../handlers/admin-post/doRefreshDatabase.js'
-
-import handler_cleanup from '../handlers/admin-get/cleanup.js'
-
-import handler_doCleanupDatabase from '../handlers/admin-post/doCleanupDatabase.js'
+import handler_doUpdateLicenceCategory from '../handlers/admin-post/doUpdateLicenceCategory.js'
+import handler_doUpdateLicenceCategoryAdditionalFee from '../handlers/admin-post/doUpdateLicenceCategoryAdditionalFee.js'
+import handler_doUpdateLicenceCategoryApproval from '../handlers/admin-post/doUpdateLicenceCategoryApproval.js'
+import handler_doUpdateLicenceCategoryFee from '../handlers/admin-post/doUpdateLicenceCategoryFee.js'
+import handler_doUpdateLicenceCategoryField from '../handlers/admin-post/doUpdateLicenceCategoryField.js'
+import * as permissionHandlers from '../handlers/permissions.js'
+import * as configFunctions from '../helpers/functions.config.js'
 
 export const router = Router()
 

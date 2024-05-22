@@ -1,4 +1,4 @@
-import type * as recordTypes from '../../types/recordTypes';
+import type { Licence } from '../../types/recordTypes.js';
 interface GetLicencesFilters {
     licenceCategoryKey?: string;
     licenceDetails?: string;
@@ -10,13 +10,13 @@ interface GetLicencesFilters {
     notRelatedLicenceId?: number | string;
     searchString?: string;
 }
-export declare const getLicences: (filters: GetLicencesFilters, options: {
+export default function getLicences(filters: GetLicencesFilters, options: {
     limit: number;
     offset: number;
     includeFields?: boolean;
     includeTransactions?: boolean;
-}) => {
+}): {
     count: number;
-    licences: recordTypes.Licence[];
+    licences: Licence[];
 };
-export default getLicences;
+export {};

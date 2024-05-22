@@ -5,10 +5,7 @@ import { deleteLicenceCategoryAdditionalFee } from '../../helpers/licencesDB/del
 import { getLicenceCategoryAdditionalFee } from '../../helpers/licencesDB/getLicenceCategoryAdditionalFee.js'
 import getLicenceCategoryAdditionalFees from '../../helpers/licencesDB/getLicenceCategoryAdditionalFees.js'
 
-export async function handler(
-  request: Request,
-  response: Response
-): Promise<void> {
+export function handler(request: Request, response: Response): void {
   const licenceAdditionalFeeKey = request.body.licenceAdditionalFeeKey as string
 
   const licenceCategoryAdditionalFee = getLicenceCategoryAdditionalFee(
@@ -23,6 +20,7 @@ export async function handler(
     deleteLicenceCategoryAdditionalFee(licenceAdditionalFeeKey, request.session)
 
     cacheFunctions.clearAll()
+
     const licenceCategoryAdditionalFees = getLicenceCategoryAdditionalFees(
       licenceCategoryAdditionalFee.licenceCategoryKey
     )

@@ -5,16 +5,18 @@ import type * as recordTypes from '../../types/recordTypes'
 
 import getLicenceCategoryAdditionalFees from './getLicenceCategoryAdditionalFees.js'
 import { getLicenceCategoryApprovals } from './getLicenceCategoryApprovals.js'
-import { getLicenceCategoryFees } from './getLicenceCategoryFees.js'
-import { getLicenceCategoryFields } from './getLicenceCategoryFields.js'
+import getLicenceCategoryFees from './getLicenceCategoryFees.js'
+import getLicenceCategoryFields from './getLicenceCategoryFields.js'
 
-export function getLicenceCategory(licenceCategoryKey: string,
+export default function getLicenceCategory(
+  licenceCategoryKey: string,
   options: {
     includeApprovals: boolean
     includeFees: 'current' | 'all' | false
     includeFields: boolean
     includeAdditionalFees: boolean
-  }): recordTypes.LicenceCategory {
+  }
+): recordTypes.LicenceCategory {
   const database = sqlite(databasePath, {
     readonly: true
   })
@@ -60,5 +62,3 @@ export function getLicenceCategory(licenceCategoryKey: string,
 
   return licenceCategory
 }
-
-export default getLicenceCategory

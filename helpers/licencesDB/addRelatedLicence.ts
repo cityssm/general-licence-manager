@@ -1,34 +1,38 @@
-import sqlite from "better-sqlite3";
-import { licencesDB as databasePath } from "../../data/databasePaths.js";
+import sqlite from 'better-sqlite3'
 
+import { licencesDB as databasePath } from '../../data/databasePaths.js'
 
-export const addRelatedLicence =
-  (licenceIdA: number | string, licenceIdB: number | string, database?: sqlite.Database): boolean => {
+export function addRelatedLicence(licenceIdA: number | string,
+  licenceIdB: number | string,
+  database?: sqlite.Database): boolean {
+  let closeDatabase = false
 
-    let closeDatabase = false;
+  if (!database) {
+    database = sqlite(databasePath)
+    closeDatabase = true
+  }
 
-    if (!database) {
+  const licenceIdA_number = typeof licenceIdA === 'number'
+    ? licenceIdA
+    : Number.parseInt(licenceIdA, 10)
+  const licenceIdB_number = typeof licenceIdB === 'number'
+    ? licenceIdB
+    : Number.parseInt(licenceIdB, 10)
 
-      database = sqlite(databasePath);
-      closeDatabase = true;
-    }
+  const result = database
+    .prepare(
+      'insert or ignore into RelatedLicences (licenceIdA, licenceIdB) values (?, ?)'
+    )
+    .run(
+      Math.min(licenceIdA_number, licenceIdB_number),
+      Math.max(licenceIdA_number, licenceIdB_number)
+    )
 
-    const licenceIdA_number = typeof (licenceIdA) === "number" ? licenceIdA : Number.parseInt(licenceIdA, 10);
-    const licenceIdB_number = typeof (licenceIdB) === "number" ? licenceIdB : Number.parseInt(licenceIdB, 10);
+  if (closeDatabase) {
+    database.close()
+  }
 
-    const result = database
-      .prepare("insert or ignore into RelatedLicences" +
-        "(licenceIdA, licenceIdB)" +
-        " values (?, ?)")
-      .run(Math.min(licenceIdA_number, licenceIdB_number),
-        Math.max(licenceIdA_number, licenceIdB_number));
+  return result.changes > 0
+}
 
-    if (closeDatabase) {
-      database.close();
-    }
-
-    return result.changes > 0;
-  };
-
-
-export default addRelatedLicence;
+export default addRelatedLicence

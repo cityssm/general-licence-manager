@@ -13,13 +13,13 @@ export function rightPad(unpaddedString, paddingCharacter, finalLength) {
 export function calculateFileCreationNumber(batchDate, fileCreationNumberOffset) {
     const dayCount = Math.abs((batchDate.getFullYear() - 2022) * 366 +
         getDayOfYear(batchDate, true) +
-        (fileCreationNumberOffset || 0));
+        (fileCreationNumberOffset ?? 0));
     return leftPad(dayCount.toString(), '0', 4);
 }
 export function calculateCustomerNumber(transaction) {
-    const textToHash = transaction.licenseeName.toLowerCase() +
+    const textToHash = (transaction.licenseeName ?? '').toLowerCase() +
         '::' +
-        transaction.licenseeBusinessName.toLowerCase() +
+        (transaction.licenseeBusinessName ?? '').toLowerCase() +
         '::' +
         transaction.bankInstitutionNumber +
         '::' +

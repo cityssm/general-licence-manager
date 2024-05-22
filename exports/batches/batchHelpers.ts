@@ -30,7 +30,7 @@ export function calculateFileCreationNumber(
   const dayCount = Math.abs(
     (batchDate.getFullYear() - 2022) * 366 +
       getDayOfYear(batchDate, true) +
-      (fileCreationNumberOffset || 0)
+      (fileCreationNumberOffset ?? 0)
   )
 
   return leftPad(dayCount.toString(), '0', 4)
@@ -40,9 +40,9 @@ export function calculateCustomerNumber(
   transaction: LicenceTransaction
 ): string {
   const textToHash =
-    transaction.licenseeName.toLowerCase() +
+    (transaction.licenseeName ?? '').toLowerCase() +
     '::' +
-    transaction.licenseeBusinessName.toLowerCase() +
+    (transaction.licenseeBusinessName ?? '').toLowerCase() +
     '::' +
     transaction.bankInstitutionNumber +
     '::' +

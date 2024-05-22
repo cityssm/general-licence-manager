@@ -1,47 +1,43 @@
-import { app } from '../app.js';
 import http from 'node:http';
-import * as configFunctions from '../helpers/functions.config.js';
+import Debug from 'debug';
 import exitHook from 'exit-hook';
-import debug from 'debug';
-const debugWWW = debug('general-licence-manager:www');
-let httpServer;
-const onError = (error) => {
+import { app } from '../app.js';
+import * as configFunctions from '../helpers/functions.config.js';
+const debug = Debug('general-licence-manager:www');
+function onError(error) {
     if (error.syscall !== 'listen') {
         throw error;
     }
     switch (error.code) {
         case 'EACCES': {
-            debugWWW('Requires elevated privileges');
+            debug('Requires elevated privileges');
             process.exit(1);
         }
         case 'EADDRINUSE': {
-            debugWWW('Port is already in use.');
+            debug('Port is already in use.');
             process.exit(1);
         }
         default: {
             throw error;
         }
     }
-};
-const onListening = (server) => {
-    const addr = server.address();
-    const bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port.toString();
-    debugWWW('Listening on ' + bind);
-};
-const httpPort = configFunctions.getProperty('application.httpPort');
-if (httpPort) {
-    httpServer = http.createServer(app);
-    httpServer.listen(httpPort);
-    httpServer.on('error', onError);
-    httpServer.on('listening', () => {
-        onListening(httpServer);
-    });
-    debugWWW('HTTP listening on ' + httpPort.toString());
 }
-exitHook(() => {
-    if (httpServer) {
-        debugWWW('Closing HTTP');
-        httpServer.close();
-        httpServer = undefined;
+function onListening(server) {
+    const addr = server.address();
+    if (addr !== null) {
+        const bind = typeof addr === 'string' ? 'pipe ' + addr : `port ${addr.port.toString()}`;
+        debug(`Listening on ${bind}`);
     }
+}
+const httpPort = configFunctions.getProperty('application.httpPort');
+const httpServer = http.createServer(app);
+httpServer.listen(httpPort);
+httpServer.on('error', onError);
+httpServer.on('listening', () => {
+    onListening(httpServer);
+});
+debug(`HTTP listening on ${httpPort.toString()}`);
+exitHook(() => {
+    debug('Closing HTTP');
+    httpServer.close();
 });

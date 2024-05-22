@@ -1,8 +1,9 @@
-// eslint-disable-next-line unicorn/prefer-node-protocol
-import { randomUUID } from 'crypto'
-
 import { testAdmin } from '../../../test/_globals.js'
 import { ajaxDelayMillis, login, logout } from '../../support/index.js'
+
+function randomUUID(): string {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2)
+}
 
 describe('Admin - Licence Categories', () => {
   beforeEach('Loads Page', () => {

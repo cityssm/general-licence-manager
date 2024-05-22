@@ -39,4 +39,4 @@ export declare function getLicenceLengthFunctionNames(): string[];
 export declare function getLicenceLengthFunction(licenceLengthFunctionName: string): configTypes.LicenceLengthFunction;
 export declare function getAdditionalFeeFunctionNames(): string[];
 export declare function getAdditionalFeeFunction(additionalFeeFunctionName: string): configTypes.AdditionalFeeFunction;
-export declare function getCustomReport(reportName: string): configTypes.ReportDefinition;
+export declare function getCustomReport(reportName: string): configTypes.ReportDefinition | undefined;

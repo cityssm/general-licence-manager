@@ -175,7 +175,7 @@ export function getAdditionalFeeFunction(
 
 export function getCustomReport(
   reportName: string
-): configTypes.ReportDefinition {
+): configTypes.ReportDefinition | undefined {
   return getProperty('customReports').find((possibleReportDefinition) => {
     return possibleReportDefinition.reportName === reportName
   })

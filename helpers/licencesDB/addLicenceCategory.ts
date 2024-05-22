@@ -15,10 +15,9 @@ export default function addLicenceCategory(
   requestSession: PartialSession
 ): string {
   const licenceCategoryKey =
-    licenceCategoryForm.licenceCategoryKey &&
-    licenceCategoryForm.licenceCategoryKey !== ''
-      ? licenceCategoryForm.licenceCategoryKey
-      : getUnusedLicenceCategoryKey(licenceCategoryForm.licenceCategory)
+    (licenceCategoryForm.licenceCategoryKey ?? '') === ''
+      ? getUnusedLicenceCategoryKey(licenceCategoryForm.licenceCategory)
+      : (licenceCategoryForm.licenceCategoryKey as string)
 
   const database = sqlite(databasePath)
 

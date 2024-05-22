@@ -1,3 +1,2 @@
-import type * as recordTypes from "../../types/recordTypes";
-export declare const clearBatchTransactionsByLicence: (licenceId: number | string, requestSession: recordTypes.PartialSession) => boolean;
-export default clearBatchTransactionsByLicence;
+import type { PartialSession } from '../../types/recordTypes.js';
+export default function clearBatchTransactionsByLicence(licenceId: number | string, requestSession: PartialSession): boolean;

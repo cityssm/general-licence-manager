@@ -1,3 +1,2 @@
-import type * as recordTypes from '../../types/recordTypes';
-export declare const getOutstandingBatchTransactions: () => recordTypes.LicenceTransaction[];
-export default getOutstandingBatchTransactions;
+import type { LicenceTransaction } from '../../types/recordTypes';
+export default function getOutstandingBatchTransactions(): LicenceTransaction[];

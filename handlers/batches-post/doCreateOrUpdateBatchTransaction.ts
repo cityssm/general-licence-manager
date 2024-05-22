@@ -1,16 +1,16 @@
-import type { RequestHandler } from "express";
+import type { Request, Response } from 'express'
 
-import { createOrUpdateBatchTransaction } from "../../helpers/licencesDB/createOrUpdateBatchTransaction.js";
-import { getOutstandingBatchTransactions } from "../../helpers/licencesDB/getOutstandingBatchTransactions.js";
+import createOrUpdateBatchTransaction, {
+  type CreateOrUpdateBatchTransactionForm
+} from '../../helpers/licencesDB/createOrUpdateBatchTransaction.js'
+import getOutstandingBatchTransactions from '../../helpers/licencesDB/getOutstandingBatchTransactions.js'
 
+export default function handler(request: Request, response: Response): void {
+  const results = createOrUpdateBatchTransaction(
+    request.body as CreateOrUpdateBatchTransactionForm,
+    request.session
+  )
+  results.batchTransactions = getOutstandingBatchTransactions()
 
-export const handler: RequestHandler = async (request, response) => {
-
-  const results = createOrUpdateBatchTransaction(request.body, request.session);
-  results.batchTransactions = getOutstandingBatchTransactions();
-
-  response.json(results);
-};
-
-
-export default handler;
+  response.json(results)
+}

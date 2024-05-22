@@ -2,9 +2,9 @@ import type { Request, Response } from 'express'
 
 import * as configFunctions from '../../helpers/functions.config.js'
 import getLicenceCategories from '../../helpers/licencesDB/getLicenceCategories.js'
-import { getLicenceStats } from '../../helpers/licencesDB/getLicenceStats.js'
+import getLicenceStats from '../../helpers/licencesDB/getLicenceStats.js'
 
-export function handler(_request: Request, response: Response): void {
+export default function handler(_request: Request, response: Response): void {
   const licenceCategories = getLicenceCategories()
 
   const licenceStats = getLicenceStats()
@@ -17,5 +17,3 @@ export function handler(_request: Request, response: Response): void {
     licenceStats
   })
 }
-
-export default handler

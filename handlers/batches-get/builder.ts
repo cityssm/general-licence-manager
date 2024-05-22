@@ -1,9 +1,9 @@
-import type { RequestHandler } from 'express'
+import type { Request, Response } from 'express'
 
-import { getBatchableLicences } from '../../helpers/licencesDB/getBatchableLicences.js'
-import { getOutstandingBatchTransactions } from '../../helpers/licencesDB/getOutstandingBatchTransactions.js'
+import getBatchableLicences from '../../helpers/licencesDB/getBatchableLicences.js'
+import getOutstandingBatchTransactions from '../../helpers/licencesDB/getOutstandingBatchTransactions.js'
 
-export const handler: RequestHandler = (_request, response) => {
+export default function handler(_request: Request, response: Response): void {
   const licences = getBatchableLicences()
   const batchTransactions = getOutstandingBatchTransactions()
 
@@ -13,5 +13,3 @@ export const handler: RequestHandler = (_request, response) => {
     batchTransactions
   })
 }
-
-export default handler

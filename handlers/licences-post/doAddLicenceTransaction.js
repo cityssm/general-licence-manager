@@ -1,6 +1,6 @@
-import { addLicenceTransaction } from "../../helpers/licencesDB/addLicenceTransaction.js";
-import { getLicenceTransactions } from "../../helpers/licencesDB/getLicenceTransactions.js";
-export const handler = async (request, response) => {
+import addLicenceTransaction from '../../helpers/licencesDB/addLicenceTransaction.js';
+import getLicenceTransactions from '../../helpers/licencesDB/getLicenceTransactions.js';
+export default function handler(request, response) {
     const transactionIndex = addLicenceTransaction(request.body, request.session);
     const licenceTransactions = getLicenceTransactions(request.body.licenceId);
     response.json({
@@ -8,5 +8,4 @@ export const handler = async (request, response) => {
         transactionIndex,
         licenceTransactions
     });
-};
-export default handler;
+}

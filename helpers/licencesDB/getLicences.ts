@@ -7,8 +7,8 @@ import sqlite from 'better-sqlite3'
 import { licencesDB as databasePath } from '../../data/databasePaths.js'
 import type { Licence } from '../../types/recordTypes.js'
 
-import { getLicenceFields } from './getLicenceFields.js'
-import { getLicenceTransactions } from './getLicenceTransactions.js'
+import getLicenceFields from './getLicenceFields.js'
+import getLicenceTransactions from './getLicenceTransactions.js'
 
 interface GetLicencesFilters {
   licenceCategoryKey?: string

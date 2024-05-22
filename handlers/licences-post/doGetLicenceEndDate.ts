@@ -1,30 +1,31 @@
-import type { RequestHandler } from "express";
+import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js'
+import type { Request, Response } from 'express'
 
-import * as configFunctions from "../../helpers/functions.config.js";
-import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
+import * as configFunctions from '../../helpers/functions.config.js'
 
-export const handler: RequestHandler = async (request, response) => {
+export default function handler(request: Request, response: Response): void {
+  const licenceLengthFunctionName = request.body.licenceLengthFunction as string
 
-  const licenceLengthFunctionName = request.body.licenceLengthFunction;
-  const licenceLengthFunction = configFunctions.getLicenceLengthFunction(licenceLengthFunctionName);
+  const licenceLengthFunction = configFunctions.getLicenceLengthFunction(
+    licenceLengthFunctionName
+  )
 
-  if (!licenceLengthFunction) {
-    return response.json({
+  if (licenceLengthFunction === undefined) {
+    response.json({
       success: false,
-      errorMessage: "Unable to find licence length function: " + licenceLengthFunctionName
-    });
+      errorMessage:
+        'Unable to find licence length function: ' + licenceLengthFunctionName
+    })
+    return
   }
 
-  const startDateString = request.body.startDateString;
-  const startDate = dateTimeFunctions.dateStringToDate(startDateString);
+  const startDateString = request.body.startDateString as string
+  const startDate = dateTimeFunctions.dateStringToDate(startDateString)
 
-  const endDate = licenceLengthFunction(startDate);
+  const endDate = licenceLengthFunction(startDate)
 
   response.json({
     success: true,
     endDateString: dateTimeFunctions.dateToString(endDate)
-  });
-};
-
-
-export default handler;
+  })
+}

@@ -5,7 +5,7 @@ import { getLicenceCategory } from '../../helpers/functions.cache.js';
 import * as configFunctions from '../../helpers/functions.config.js';
 import * as printFunctions from '../../helpers/functions.print.js';
 import getLicence from '../../helpers/licencesDB/getLicence.js';
-export async function handler(request, response, next) {
+export default async function handler(request, response, next) {
     const licenceId = request.params.licenceId;
     const licence = getLicence(licenceId);
     if (!licence?.issueDate) {
@@ -47,4 +47,3 @@ export async function handler(request, response, next) {
         response.send(pdf);
     });
 }
-export default handler;

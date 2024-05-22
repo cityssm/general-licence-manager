@@ -1,6 +1,6 @@
 import sqlite from 'better-sqlite3';
 import { licencesDB as databasePath } from '../../data/databasePaths.js';
-export function addRelatedLicence(licenceIdA, licenceIdB, database) {
+export default function addRelatedLicence(licenceIdA, licenceIdB, database) {
     let closeDatabase = false;
     if (!database) {
         database = sqlite(databasePath);
@@ -20,4 +20,3 @@ export function addRelatedLicence(licenceIdA, licenceIdB, database) {
     }
     return result.changes > 0;
 }
-export default addRelatedLicence;

@@ -4,7 +4,7 @@ import * as configFunctions from '../../helpers/functions.config.js'
 import getLicence from '../../helpers/licencesDB/getLicence.js'
 import getLicenceCategory from '../../helpers/licencesDB/getLicenceCategory.js'
 
-export function handler(request: Request, response: Response): void {
+export default function handler(request: Request, response: Response): void {
   const licenceId = Number.parseInt(request.params.licenceId)
 
   const licence = getLicence(licenceId)
@@ -32,5 +32,3 @@ export function handler(request: Request, response: Response): void {
     licenceCategory
   })
 }
-
-export default handler

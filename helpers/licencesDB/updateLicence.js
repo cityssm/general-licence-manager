@@ -1,36 +1,36 @@
+import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js';
 import sqlite from 'better-sqlite3';
 import { licencesDB as databasePath } from '../../data/databasePaths.js';
 import * as configFunctions from '../functions.config.js';
-import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js';
 import * as licenceFunctions from '../functions.licence.js';
-import { saveLicenceFields } from './saveLicenceFields.js';
 import { saveLicenceApprovals } from './saveLicenceApprovals.js';
-export const updateLicence = (licenceForm, requestSession) => {
+import { saveLicenceFields } from './saveLicenceFields.js';
+export default function updateLicence(licenceForm, requestSession) {
     const database = sqlite(databasePath);
     const rightNowMillis = Date.now();
     database
-        .prepare('update Licences' +
-        ' set licenceNumber = ?,' +
-        ' licenseeName = ?,' +
-        ' licenseeBusinessName = ?,' +
-        ' licenseeAddress1 = ?,' +
-        ' licenseeAddress2 = ?,' +
-        ' licenseeCity = ?,' +
-        ' licenseeProvince = ?,' +
-        ' licenseePostalCode = ?,' +
-        ' bankInstitutionNumber = ?,' +
-        ' bankTransitNumber = ?,' +
-        ' bankAccountNumber = ?,' +
-        ' isRenewal = ?,' +
-        ' startDate = ?,' +
-        ' endDate = ?,' +
-        ' baseLicenceFee = ?,' +
-        ' baseReplacementFee = ?,' +
-        ' licenceFee = ?,' +
-        ' replacementFee = ?,' +
-        ' recordUpdate_userName = ?,' +
-        ' recordUpdate_timeMillis = ?' +
-        ' where licenceId = ?')
+        .prepare(`update Licences
+        set licenceNumber = ?,
+        licenseeName = ?,
+        licenseeBusinessName = ?,
+        licenseeAddress1 = ?,
+        licenseeAddress2 = ?,
+        licenseeCity = ?,
+        licenseeProvince = ?,
+        licenseePostalCode = ?,
+        bankInstitutionNumber = ?,
+        bankTransitNumber = ?,
+        bankAccountNumber = ?,
+        isRenewal = ?,
+        startDate = ?,
+        endDate = ?,
+        baseLicenceFee = ?,
+        baseReplacementFee = ?,
+        licenceFee = ?,
+        replacementFee = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+        where licenceId = ?`)
         .run(licenceForm.licenceNumber, licenceForm.licenseeName, licenceForm.licenseeBusinessName, licenceForm.licenseeAddress1, licenceForm.licenseeAddress2, licenceForm.licenseeCity, licenceForm.licenseeProvince, licenceForm.licenseePostalCode, licenceForm.bankInstitutionNumber, licenceForm.bankTransitNumber, licenceForm.bankAccountNumber, licenceForm.isRenewal ? 1 : 0, dateTimeFunctions.dateStringToInteger(licenceForm.startDateString), dateTimeFunctions.dateStringToInteger(licenceForm.endDateString), licenceForm.baseLicenceFee, licenceForm.baseReplacementFee, licenceForm.baseLicenceFee, licenceForm.baseReplacementFee, requestSession.user.userName, rightNowMillis, licenceForm.licenceId);
     if (licenceForm.licenceFieldKeys) {
         database
@@ -68,20 +68,19 @@ export const updateLicence = (licenceForm, requestSession) => {
     }
     if (configFunctions.getProperty('settings.includeBatches')) {
         database
-            .prepare('update LicenceTransactions' +
-            ' set bankInstitutionNumber = ?,' +
-            ' bankTransitNumber = ?,' +
-            ' bankAccountNumber = ?,' +
-            ' recordUpdate_userName = ?,' +
-            ' recordUpdate_timeMillis = ?' +
-            ' where licenceId = ?' +
-            ' and recordDelete_timeMillis is null' +
-            ' and batchDate is not null' +
-            " and (externalReceiptNumber is null or externalReceiptNumber = '')" +
-            ' and (bankInstitutionNumber <> ? or bankTransitNumber <> ? or bankAccountNumber <> ?)')
+            .prepare(`update LicenceTransactions
+          set bankInstitutionNumber = ?,
+          bankTransitNumber = ?,
+          bankAccountNumber = ?,
+          recordUpdate_userName = ?,
+          recordUpdate_timeMillis = ?
+          where licenceId = ?
+          and recordDelete_timeMillis is null
+          and batchDate is not null
+          and (externalReceiptNumber is null or externalReceiptNumber = '')
+          and (bankInstitutionNumber <> ? or bankTransitNumber <> ? or bankAccountNumber <> ?)`)
             .run(licenceForm.bankInstitutionNumber, licenceForm.bankTransitNumber, licenceForm.bankAccountNumber, requestSession.user.userName, rightNowMillis, licenceForm.licenceId, licenceForm.bankInstitutionNumber, licenceForm.bankTransitNumber, licenceForm.bankAccountNumber);
     }
     database.close();
     return true;
-};
-export default updateLicence;
+}

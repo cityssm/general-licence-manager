@@ -4,12 +4,12 @@ import * as configFunctions from '../../helpers/functions.config.js'
 import getLicence from '../../helpers/licencesDB/getLicence.js'
 import getLicenceCategory from '../../helpers/licencesDB/getLicenceCategory.js'
 
-export function handler(request: Request, response: Response): void {
+export default function handler(request: Request, response: Response): void {
   const licenceId = request.params.licenceId
 
   const licence = getLicence(licenceId)
 
-  if (!licence) {
+  if (licence === undefined) {
     response.redirect(
       configFunctions.getProperty('reverseProxy.urlPrefix') +
         '/licences/?error=licenceIdNotFound'
@@ -31,5 +31,3 @@ export function handler(request: Request, response: Response): void {
     licenceCategories: [licenceCategory]
   })
 }
-
-export default handler

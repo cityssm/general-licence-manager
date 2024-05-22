@@ -1,17 +1,16 @@
-import sqlite from 'better-sqlite3'
-import { licencesDB as databasePath } from '../../data/databasePaths.js'
-
 import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js'
+import sqlite from 'better-sqlite3'
 
+import { licencesDB as databasePath } from '../../data/databasePaths.js'
 import type * as recordTypes from '../../types/recordTypes'
 
-export const getLicenceTransactions = (
+export default function getLicenceTransactions(
   licenceId: number | string,
   database?: sqlite.Database
-): recordTypes.LicenceTransaction[] => {
+): recordTypes.LicenceTransaction[] {
   let doCloseDatabase = false
 
-  if (!database) {
+  if (database === undefined) {
     database = sqlite(databasePath, {
       readonly: true
     })
@@ -30,16 +29,17 @@ export const getLicenceTransactions = (
 
   const rows = database
     .prepare(
-      'select transactionIndex,' +
-        ' transactionDate, userFn_dateIntegerToString(transactionDate) as transactionDateString,' +
-        ' transactionTime, userFn_timeIntegerToString(transactionTime) as transactionTimeString,' +
-        ' batchDate, userFn_dateIntegerToString(batchDate) as batchDateString,' +
-        ' bankTransitNumber, bankInstitutionNumber, bankAccountNumber,' +
-        ' externalReceiptNumber, transactionAmount, transactionNote' +
-        ' from LicenceTransactions' +
-        ' where recordDelete_timeMillis is null' +
-        ' and licenceId = ?' +
-        ' order by transactionDate, transactionTime, transactionIndex'
+      `select transactionIndex,
+        transactionDate, userFn_dateIntegerToString(transactionDate) as transactionDateString,
+        transactionTime, userFn_timeIntegerToString(transactionTime) as transactionTimeString,
+        batchDate, userFn_dateIntegerToString(batchDate) as batchDateString,
+        bankTransitNumber, bankInstitutionNumber, bankAccountNumber,
+        externalReceiptNumber,
+        transactionAmount, transactionNote
+        from LicenceTransactions
+        where recordDelete_timeMillis is null
+        and licenceId = ?
+        order by transactionDate, transactionTime, transactionIndex`
     )
     .all(licenceId) as recordTypes.LicenceTransaction[]
 
@@ -49,5 +49,3 @@ export const getLicenceTransactions = (
 
   return rows
 }
-
-export default getLicenceTransactions

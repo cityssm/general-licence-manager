@@ -1,13 +1,13 @@
-import { createOrUpdateBatchTransaction } from "../../helpers/licencesDB/createOrUpdateBatchTransaction.js";
-import { getOutstandingBatchTransactions } from "../../helpers/licencesDB/getOutstandingBatchTransactions.js";
-export const handler = async (request, response) => {
+import createOrUpdateBatchTransaction from '../../helpers/licencesDB/createOrUpdateBatchTransaction.js';
+import getOutstandingBatchTransactions from '../../helpers/licencesDB/getOutstandingBatchTransactions.js';
+export default function handler(request, response) {
     const licenceOutstandingBalances = request.body.licenceOutstandingBalances;
     const batchDateStrings = request.body.batchDateStrings;
     for (const licenceOutstandingBalance of licenceOutstandingBalances) {
         const licenceId = licenceOutstandingBalance.licenceId;
         const outstandingBalance = Number.parseFloat(licenceOutstandingBalance.outstandingBalance);
         const transactionAmount = Math.floor((outstandingBalance / batchDateStrings.length) * 100) / 100;
-        let leftoverPennies = Math.round((outstandingBalance - (transactionAmount * batchDateStrings.length)) * 100) / 100;
+        let leftoverPennies = Math.round((outstandingBalance - transactionAmount * batchDateStrings.length) * 100) / 100;
         for (const batchDateString of batchDateStrings) {
             createOrUpdateBatchTransaction({
                 licenceId,
@@ -22,5 +22,4 @@ export const handler = async (request, response) => {
         success: true,
         batchTransactions
     });
-};
-export default handler;
+}

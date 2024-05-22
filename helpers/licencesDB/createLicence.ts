@@ -6,12 +6,12 @@ import type * as recordTypes from '../../types/recordTypes'
 import * as cacheFunctions from '../functions.cache.js'
 import * as licenceFunctions from '../functions.licence.js'
 
-import { addRelatedLicence } from './addRelatedLicence.js'
+import addRelatedLicence from './addRelatedLicence.js'
 import { getNextLicenceNumber } from './getNextLicenceNumber.js'
 import { saveLicenceApprovals } from './saveLicenceApprovals.js'
 import { saveLicenceFields } from './saveLicenceFields.js'
 
-interface CreateLicenceForm {
+export interface CreateLicenceForm {
   licenceCategoryKey: string
   licenceNumber: string
   relatedLicenceId?: string
@@ -35,10 +35,10 @@ interface CreateLicenceForm {
   [fieldOrApprovalKey: string]: string
 }
 
-export const createLicence = (
+export default function createLicence(
   licenceForm: CreateLicenceForm,
   requestSession: recordTypes.PartialSession
-): number => {
+): number {
   const database = sqlite(databasePath)
 
   let licenceNumber = licenceForm.licenceNumber
@@ -60,18 +60,17 @@ export const createLicence = (
 
   const result = database
     .prepare(
-      'insert into Licences' +
-        '(licenceCategoryKey, licenceNumber,' +
-        ' licenseeName, licenseeBusinessName,' +
-        ' licenseeAddress1, licenseeAddress2,' +
-        ' licenseeCity, licenseeProvince, licenseePostalCode,' +
-        ' bankInstitutionNumber, bankTransitNumber, bankAccountNumber,' +
-        ' isRenewal, startDate, endDate,' +
-        ' baseLicenceFee, baseReplacementFee,' +
-        ' licenceFee, replacementFee,' +
-        ' recordCreate_userName, recordCreate_timeMillis,' +
-        ' recordUpdate_userName, recordUpdate_timeMillis)' +
-        ' values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+      `insert into Licences (
+        licenceCategoryKey, licenceNumber,
+        licenseeName, licenseeBusinessName,
+        licenseeAddress1, licenseeAddress2, licenseeCity, licenseeProvince, licenseePostalCode,
+        bankInstitutionNumber, bankTransitNumber, bankAccountNumber,
+        isRenewal,
+        startDate, endDate,
+        baseLicenceFee, baseReplacementFee, licenceFee, replacementFee,
+        recordCreate_userName, recordCreate_timeMillis,
+        recordUpdate_userName, recordUpdate_timeMillis)
+        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .run(
       licenceForm.licenceCategoryKey,
@@ -127,9 +126,9 @@ export const createLicence = (
 
     database
       .prepare(
-        'insert into LicenceAdditionalFees' +
-          ' (licenceId, licenceAdditionalFeeKey, additionalFeeAmount)' +
-          ' values (?, ?, ?)'
+        `insert into LicenceAdditionalFees (
+          licenceId, licenceAdditionalFeeKey, additionalFeeAmount)
+          values (?, ?, ?)`
       )
       .run(
         licenceId,
@@ -139,9 +138,9 @@ export const createLicence = (
 
     database
       .prepare(
-        'update Licences' +
-          ' set licenceFee = licenceFee + ?' +
-          ' where licenceId = ?'
+        `update Licences
+          set licenceFee = licenceFee + ?
+          where licenceId = ?`
       )
       .run(additionalFeeAmount.toFixed(2), licenceId)
   }
@@ -150,5 +149,3 @@ export const createLicence = (
 
   return licenceId
 }
-
-export default createLicence

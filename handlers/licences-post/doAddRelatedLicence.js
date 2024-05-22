@@ -1,6 +1,6 @@
-import { addRelatedLicence } from '../../helpers/licencesDB/addRelatedLicence.js';
+import addRelatedLicence from '../../helpers/licencesDB/addRelatedLicence.js';
 import getLicences from '../../helpers/licencesDB/getLicences.js';
-export async function handler(request, response) {
+export default function handler(request, response) {
     const success = addRelatedLicence(request.body.licenceId, request.body.relatedLicenceId);
     const relatedLicences = getLicences({
         relatedLicenceId: request.body.licenceId
@@ -13,4 +13,3 @@ export async function handler(request, response) {
         relatedLicences
     });
 }
-export default handler;

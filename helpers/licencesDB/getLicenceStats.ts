@@ -1,10 +1,10 @@
+import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js'
 import sqlite from 'better-sqlite3'
+
 import { licencesDB as databasePath } from '../../data/databasePaths.js'
 
-import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js'
-
 interface LicenceStats {
-  startDateMin: number
+  startDateMin: number | null
   startDateStringMin?: string
   startYearMin?: number
 
@@ -13,22 +13,22 @@ interface LicenceStats {
   startYearMax?: number
 }
 
-export const getLicenceStats = (): LicenceStats => {
-  const sql =
-    'select min(startDate) as startDateMin,' +
-    ' max(startDate) as startDateMax' +
-    ' from Licences' +
-    ' where recordDelete_timeMillis is null'
+export default function getLicenceStats(): LicenceStats {
+  const sql = `select min(startDate) as startDateMin,
+    max(startDate) as startDateMax
+    from Licences
+    where recordDelete_timeMillis is null`
 
   const database = sqlite(databasePath, {
     readonly: true
   })
 
-  let stats = database.prepare(sql).get() as LicenceStats
+  let stats = database.prepare(sql).get() as LicenceStats | undefined
 
   database.close()
 
-  if (!stats || !stats.startDateMin) {
+  // eslint-disable-next-line @typescript-eslint/prefer-optional-chain
+  if (stats === undefined || stats.startDateMin === null) {
     const currentDate = dateTimeFunctions.dateToInteger(new Date())
     stats = {
       startDateMin: currentDate,
@@ -37,9 +37,9 @@ export const getLicenceStats = (): LicenceStats => {
   }
 
   stats.startDateStringMin = dateTimeFunctions.dateIntegerToString(
-    stats.startDateMin
+    stats.startDateMin ?? 0
   )
-  stats.startYearMin = Math.floor(stats.startDateMin / 10_000)
+  stats.startYearMin = Math.floor((stats.startDateMin ?? 0) / 10_000)
 
   stats.startDateStringMax = dateTimeFunctions.dateIntegerToString(
     stats.startDateMax
@@ -48,5 +48,3 @@ export const getLicenceStats = (): LicenceStats => {
 
   return stats
 }
-
-export default getLicenceStats

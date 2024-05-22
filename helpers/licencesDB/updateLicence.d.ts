@@ -1,5 +1,5 @@
 import type * as expressSession from 'express-session';
-interface UpdateLicenceForm {
+export interface UpdateLicenceForm {
     licenceId: string;
     licenceNumber: string;
     licenseeName: string;
@@ -23,5 +23,4 @@ interface UpdateLicenceForm {
     licenceApprovalKeys?: string;
     [fieldOrApprovalKey: string]: string;
 }
-export declare const updateLicence: (licenceForm: UpdateLicenceForm, requestSession: expressSession.Session) => boolean;
-export default updateLicence;
+export default function updateLicence(licenceForm: UpdateLicenceForm, requestSession: expressSession.Session): boolean;

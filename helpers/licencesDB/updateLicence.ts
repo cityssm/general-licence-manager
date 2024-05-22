@@ -1,17 +1,16 @@
-import sqlite from 'better-sqlite3'
-import { licencesDB as databasePath } from '../../data/databasePaths.js'
-
-import * as configFunctions from '../functions.config.js'
 import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js'
+import sqlite from 'better-sqlite3'
+import type * as expressSession from 'express-session'
+
+import { licencesDB as databasePath } from '../../data/databasePaths.js'
+import type { LicenceCategoryAdditionalFee } from '../../types/recordTypes.js'
+import * as configFunctions from '../functions.config.js'
 import * as licenceFunctions from '../functions.licence.js'
 
-import { saveLicenceFields } from './saveLicenceFields.js'
 import { saveLicenceApprovals } from './saveLicenceApprovals.js'
+import { saveLicenceFields } from './saveLicenceFields.js'
 
-import type * as expressSession from 'express-session'
-import type * as recordTypes from '../../types/recordTypes'
-
-interface UpdateLicenceForm {
+export interface UpdateLicenceForm {
   licenceId: string
   licenceNumber: string
   licenseeName: string
@@ -36,38 +35,38 @@ interface UpdateLicenceForm {
   [fieldOrApprovalKey: string]: string
 }
 
-export const updateLicence = (
+export default function updateLicence(
   licenceForm: UpdateLicenceForm,
   requestSession: expressSession.Session
-): boolean => {
+): boolean {
   const database = sqlite(databasePath)
 
   const rightNowMillis = Date.now()
 
   database
     .prepare(
-      'update Licences' +
-        ' set licenceNumber = ?,' +
-        ' licenseeName = ?,' +
-        ' licenseeBusinessName = ?,' +
-        ' licenseeAddress1 = ?,' +
-        ' licenseeAddress2 = ?,' +
-        ' licenseeCity = ?,' +
-        ' licenseeProvince = ?,' +
-        ' licenseePostalCode = ?,' +
-        ' bankInstitutionNumber = ?,' +
-        ' bankTransitNumber = ?,' +
-        ' bankAccountNumber = ?,' +
-        ' isRenewal = ?,' +
-        ' startDate = ?,' +
-        ' endDate = ?,' +
-        ' baseLicenceFee = ?,' +
-        ' baseReplacementFee = ?,' +
-        ' licenceFee = ?,' +
-        ' replacementFee = ?,' +
-        ' recordUpdate_userName = ?,' +
-        ' recordUpdate_timeMillis = ?' +
-        ' where licenceId = ?'
+      `update Licences
+        set licenceNumber = ?,
+        licenseeName = ?,
+        licenseeBusinessName = ?,
+        licenseeAddress1 = ?,
+        licenseeAddress2 = ?,
+        licenseeCity = ?,
+        licenseeProvince = ?,
+        licenseePostalCode = ?,
+        bankInstitutionNumber = ?,
+        bankTransitNumber = ?,
+        bankAccountNumber = ?,
+        isRenewal = ?,
+        startDate = ?,
+        endDate = ?,
+        baseLicenceFee = ?,
+        baseReplacementFee = ?,
+        licenceFee = ?,
+        replacementFee = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+        where licenceId = ?`
     )
     .run(
       licenceForm.licenceNumber,
@@ -123,7 +122,6 @@ export const updateLicence = (
   }
 
   // Check for additional fees to update
-
   const currentAdditionalFees = database
     .prepare(
       'select' +
@@ -131,7 +129,7 @@ export const updateLicence = (
         ' from LicenceCategoryAdditionalFees' +
         ' where licenceAdditionalFeeKey in (select licenceAdditionalFeeKey from LicenceAdditionalFees where licenceId = ?)'
     )
-    .all(licenceForm.licenceId) as recordTypes.LicenceCategoryAdditionalFee[]
+    .all(licenceForm.licenceId) as LicenceCategoryAdditionalFee[]
 
   for (const currentAdditionalFee of currentAdditionalFees) {
     const additionalFeeAmount = licenceFunctions.calculateAdditionalFeeAmount(
@@ -162,21 +160,20 @@ export const updateLicence = (
   }
 
   // Update bank information on outstanding batch entries
-
   if (configFunctions.getProperty('settings.includeBatches')) {
     database
       .prepare(
-        'update LicenceTransactions' +
-          ' set bankInstitutionNumber = ?,' +
-          ' bankTransitNumber = ?,' +
-          ' bankAccountNumber = ?,' +
-          ' recordUpdate_userName = ?,' +
-          ' recordUpdate_timeMillis = ?' +
-          ' where licenceId = ?' +
-          ' and recordDelete_timeMillis is null' +
-          ' and batchDate is not null' +
-          " and (externalReceiptNumber is null or externalReceiptNumber = '')" +
-          ' and (bankInstitutionNumber <> ? or bankTransitNumber <> ? or bankAccountNumber <> ?)'
+        `update LicenceTransactions
+          set bankInstitutionNumber = ?,
+          bankTransitNumber = ?,
+          bankAccountNumber = ?,
+          recordUpdate_userName = ?,
+          recordUpdate_timeMillis = ?
+          where licenceId = ?
+          and recordDelete_timeMillis is null
+          and batchDate is not null
+          and (externalReceiptNumber is null or externalReceiptNumber = '')
+          and (bankInstitutionNumber <> ? or bankTransitNumber <> ? or bankAccountNumber <> ?)`
       )
       .run(
         licenceForm.bankInstitutionNumber,
@@ -195,5 +192,3 @@ export const updateLicence = (
 
   return true
 }
-
-export default updateLicence

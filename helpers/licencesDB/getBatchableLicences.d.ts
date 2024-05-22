@@ -1,3 +1,2 @@
-import type * as recordTypes from '../../types/recordTypes';
-export declare const getBatchableLicences: () => recordTypes.Licence[];
-export default getBatchableLicences;
+import type { Licence } from '../../types/recordTypes.js';
+export default function getBatchableLicences(): Licence[];

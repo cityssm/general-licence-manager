@@ -1,10 +1,9 @@
-import type * as recordTypes from "../../types/recordTypes";
-interface TransactionForm {
+import type { PartialSession } from '../../types/recordTypes.js';
+export interface MarkBatchTransactionSuccessfulForm {
     licenceId: string;
     transactionIndex: string;
     transactionAmount: string;
     batchDate: string;
     externalReceiptNumber: string;
 }
-export declare const markBatchTransactionSuccessful: (transaction: TransactionForm, requestSession: recordTypes.PartialSession) => boolean;
-export default markBatchTransactionSuccessful;
+export default function markBatchTransactionSuccessful(transaction: MarkBatchTransactionSuccessfulForm, requestSession: PartialSession): boolean;

@@ -1,5 +1,5 @@
 import type * as recordTypes from '../../types/recordTypes';
-interface CreateLicenceForm {
+export interface CreateLicenceForm {
     licenceCategoryKey: string;
     licenceNumber: string;
     relatedLicenceId?: string;
@@ -22,5 +22,4 @@ interface CreateLicenceForm {
     licenceApprovalKeys?: string;
     [fieldOrApprovalKey: string]: string;
 }
-export declare const createLicence: (licenceForm: CreateLicenceForm, requestSession: recordTypes.PartialSession) => number;
-export default createLicence;
+export default function createLicence(licenceForm: CreateLicenceForm, requestSession: recordTypes.PartialSession): number;

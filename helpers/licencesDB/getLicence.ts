@@ -5,8 +5,8 @@ import sqlite from 'better-sqlite3'
 import { licencesDB as databasePath } from '../../data/databasePaths.js'
 import type * as recordTypes from '../../types/recordTypes'
 
-import { getLicenceFields } from './getLicenceFields.js'
-import { getLicenceTransactions } from './getLicenceTransactions.js'
+import getLicenceFields from './getLicenceFields.js'
+import getLicenceTransactions from './getLicenceTransactions.js'
 import getLicences from './getLicences.js'
 
 export default function getLicence(

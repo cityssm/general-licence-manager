@@ -1,19 +1,17 @@
-import type { RequestHandler } from "express";
+import type { Request, Response } from 'express'
 
-import { clearBatchTransactionsByBatchDate } from "../../helpers/licencesDB/clearBatchTransactionsByBatchDate.js";
-import { getOutstandingBatchTransactions } from "../../helpers/licencesDB/getOutstandingBatchTransactions.js";
+import clearBatchTransactionsByBatchDate from '../../helpers/licencesDB/clearBatchTransactionsByBatchDate.js'
+import getOutstandingBatchTransactions from '../../helpers/licencesDB/getOutstandingBatchTransactions.js'
 
-
-export const handler: RequestHandler = async (request, response) => {
-
-  const success = clearBatchTransactionsByBatchDate(request.body.batchDateString, request.session);
-  const batchTransactions = getOutstandingBatchTransactions();
+export default function handler(request: Request, response: Response): void {
+  const success = clearBatchTransactionsByBatchDate(
+    request.body.batchDateString as string,
+    request.session
+  )
+  const batchTransactions = getOutstandingBatchTransactions()
 
   response.json({
     success,
     batchTransactions
-  });
-};
-
-
-export default handler;
+  })
+}

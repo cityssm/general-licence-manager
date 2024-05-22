@@ -3,7 +3,7 @@ import type { Request, Response } from 'express'
 import * as configFunctions from '../../helpers/functions.config.js'
 import getLicenceCategories from '../../helpers/licencesDB/getLicenceCategories.js'
 
-export function handler(_request: Request, response: Response): void {
+export default function handler(_request: Request, response: Response): void {
   const licenceCategories = getLicenceCategories()
 
   response.render('licence-search', {
@@ -11,5 +11,3 @@ export function handler(_request: Request, response: Response): void {
     licenceCategories
   })
 }
-
-export default handler

@@ -2,9 +2,11 @@ import sqlite from 'better-sqlite3'
 
 import { licencesDB as databasePath } from '../../data/databasePaths.js'
 
-export function addRelatedLicence(licenceIdA: number | string,
+export default function addRelatedLicence(
+  licenceIdA: number | string,
   licenceIdB: number | string,
-  database?: sqlite.Database): boolean {
+  database?: sqlite.Database
+): boolean {
   let closeDatabase = false
 
   if (!database) {
@@ -12,12 +14,14 @@ export function addRelatedLicence(licenceIdA: number | string,
     closeDatabase = true
   }
 
-  const licenceIdA_number = typeof licenceIdA === 'number'
-    ? licenceIdA
-    : Number.parseInt(licenceIdA, 10)
-  const licenceIdB_number = typeof licenceIdB === 'number'
-    ? licenceIdB
-    : Number.parseInt(licenceIdB, 10)
+  const licenceIdA_number =
+    typeof licenceIdA === 'number'
+      ? licenceIdA
+      : Number.parseInt(licenceIdA, 10)
+  const licenceIdB_number =
+    typeof licenceIdB === 'number'
+      ? licenceIdB
+      : Number.parseInt(licenceIdB, 10)
 
   const result = database
     .prepare(
@@ -34,5 +38,3 @@ export function addRelatedLicence(licenceIdA: number | string,
 
   return result.changes > 0
 }
-
-export default addRelatedLicence

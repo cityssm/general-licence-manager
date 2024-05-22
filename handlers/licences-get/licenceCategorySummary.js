@@ -1,7 +1,7 @@
 import * as configFunctions from '../../helpers/functions.config.js';
 import getLicenceCategories from '../../helpers/licencesDB/getLicenceCategories.js';
-import { getLicenceStats } from '../../helpers/licencesDB/getLicenceStats.js';
-export function handler(_request, response) {
+import getLicenceStats from '../../helpers/licencesDB/getLicenceStats.js';
+export default function handler(_request, response) {
     const licenceCategories = getLicenceCategories();
     const licenceStats = getLicenceStats();
     response.render('licence-licenceCategorySummary', {
@@ -10,4 +10,3 @@ export function handler(_request, response) {
         licenceStats
     });
 }
-export default handler;

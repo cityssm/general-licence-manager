@@ -1,12 +1,9 @@
 import type { Request, Response } from 'express'
 
-import { deleteRelatedLicence } from '../../helpers/licencesDB/deleteRelatedLicence.js'
+import deleteRelatedLicence from '../../helpers/licencesDB/deleteRelatedLicence.js'
 import getLicences from '../../helpers/licencesDB/getLicences.js'
 
-export async function handler(
-  request: Request,
-  response: Response
-): Promise<void> {
+export default function handler(request: Request, response: Response): void {
   const success = deleteRelatedLicence(
     request.body.licenceId as string,
     request.body.relatedLicenceId as string
@@ -27,5 +24,3 @@ export async function handler(
     relatedLicences
   })
 }
-
-export default handler

@@ -1,10 +1,10 @@
 interface LicenceStats {
-    startDateMin: number;
+    startDateMin: number | null;
     startDateStringMin?: string;
     startYearMin?: number;
     startDateMax: number;
     startDateStringMax?: string;
     startYearMax?: number;
 }
-export declare const getLicenceStats: () => LicenceStats;
-export default getLicenceStats;
+export default function getLicenceStats(): LicenceStats;
+export {};

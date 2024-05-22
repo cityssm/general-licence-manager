@@ -1,5 +1,5 @@
 import getLicences from '../../helpers/licencesDB/getLicences.js';
-export async function handler(request, response) {
+export default function handler(request, response) {
     const licences = getLicences({
         notRelatedLicenceId: request.body.licenceId,
         searchString: request.body.searchString
@@ -11,4 +11,3 @@ export async function handler(request, response) {
         licences
     });
 }
-export default handler;

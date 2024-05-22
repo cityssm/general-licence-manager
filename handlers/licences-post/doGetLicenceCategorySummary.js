@@ -1,6 +1,6 @@
 import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js';
 import getLicences from '../../helpers/licencesDB/getLicences.js';
-export async function handler(request, response) {
+export default function handler(request, response) {
     const licencesResponse = getLicences({
         licenceCategoryKey: request.body.licenceCategoryKey,
         startDateMin: dateTimeFunctions.dateStringToInteger(request.body.startDateStringMin),
@@ -13,4 +13,3 @@ export async function handler(request, response) {
     });
     response.json(licencesResponse);
 }
-export default handler;

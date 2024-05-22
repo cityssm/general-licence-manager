@@ -1,17 +1,17 @@
-import type { RequestHandler } from "express";
+import type { Request, Response } from 'express'
 
-import { createLicence } from "../../helpers/licencesDB/createLicence.js";
+import createLicence, {
+  type CreateLicenceForm
+} from '../../helpers/licencesDB/createLicence.js'
 
-
-export const handler: RequestHandler = async (request, response) => {
-
-  const licenceId = createLicence(request.body, request.session);
+export default function handler(request: Request, response: Response): void {
+  const licenceId = createLicence(
+    request.body as CreateLicenceForm,
+    request.session
+  )
 
   response.json({
     success: true,
     licenceId
-  });
-};
-
-
-export default handler;
+  })
+}

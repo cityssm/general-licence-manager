@@ -2,10 +2,7 @@ import type { Request, Response } from 'express'
 
 import getLicences from '../../helpers/licencesDB/getLicences.js'
 
-export async function handler(
-  request: Request,
-  response: Response
-): Promise<void> {
+export default function handler(request: Request, response: Response): void {
   const licences = getLicences(
     {
       notRelatedLicenceId: request.body.licenceId,
@@ -21,5 +18,3 @@ export async function handler(
     licences
   })
 }
-
-export default handler

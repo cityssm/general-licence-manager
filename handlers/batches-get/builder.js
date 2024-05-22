@@ -1,6 +1,6 @@
-import { getBatchableLicences } from '../../helpers/licencesDB/getBatchableLicences.js';
-import { getOutstandingBatchTransactions } from '../../helpers/licencesDB/getOutstandingBatchTransactions.js';
-export const handler = (_request, response) => {
+import getBatchableLicences from '../../helpers/licencesDB/getBatchableLicences.js';
+import getOutstandingBatchTransactions from '../../helpers/licencesDB/getOutstandingBatchTransactions.js';
+export default function handler(_request, response) {
     const licences = getBatchableLicences();
     const batchTransactions = getOutstandingBatchTransactions();
     response.render('batch-builder', {
@@ -8,5 +8,4 @@ export const handler = (_request, response) => {
         licences,
         batchTransactions
     });
-};
-export default handler;
+}

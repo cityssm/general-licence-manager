@@ -1,9 +1,8 @@
-import { deleteLicenceAdditionalFee } from "../../helpers/licencesDB/deleteLicenceAdditionalFee.js";
-export const handler = async (request, response) => {
+import deleteLicenceAdditionalFee from '../../helpers/licencesDB/deleteLicenceAdditionalFee.js';
+export default function handler(request, response) {
     const feeDetails = deleteLicenceAdditionalFee(request.body.licenceId, request.body.licenceAdditionalFeeKey, request.session);
     response.json({
-        success: (feeDetails ? true : false),
+        success: true,
         licenceFee: feeDetails.licenceFee
     });
-};
-export default handler;
+}

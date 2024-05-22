@@ -9,7 +9,11 @@ import * as configFunctions from '../../helpers/functions.config.js'
 import * as printFunctions from '../../helpers/functions.print.js'
 import getLicence from '../../helpers/licencesDB/getLicence.js'
 
-export async function handler(request: Request, response: Response, next: NextFunction): Promise<void> {
+export default async function handler(
+  request: Request,
+  response: Response,
+  next: NextFunction
+): Promise<void> {
   const licenceId = request.params.licenceId
 
   const licence = getLicence(licenceId)
@@ -17,7 +21,7 @@ export async function handler(request: Request, response: Response, next: NextFu
   if (!licence?.issueDate) {
     next(
       configFunctions.getProperty('settings.licenceAlias') +
-      ' not available for printing.'
+        ' not available for printing.'
     )
     return
   }
@@ -27,7 +31,7 @@ export async function handler(request: Request, response: Response, next: NextFu
   if (!licenceCategory.printEJS || licenceCategory.printEJS === '') {
     next(
       configFunctions.getProperty('settings.licenceAlias') +
-      ' does not have a print template set.'
+        ' does not have a print template set.'
     )
     return
   }
@@ -58,13 +62,13 @@ export async function handler(request: Request, response: Response, next: NextFu
       response.setHeader(
         'Content-Disposition',
         'attachment;' +
-        ' filename=' +
-        configFunctions.getProperty('settings.licenceAlias').toLowerCase() +
-        '-' +
-        licenceId +
-        '-' +
-        licence.recordUpdate_timeMillis.toString() +
-        '.pdf'
+          ' filename=' +
+          configFunctions.getProperty('settings.licenceAlias').toLowerCase() +
+          '-' +
+          licenceId +
+          '-' +
+          licence.recordUpdate_timeMillis.toString() +
+          '.pdf'
       )
 
       response.setHeader('Content-Type', 'application/pdf')
@@ -73,5 +77,3 @@ export async function handler(request: Request, response: Response, next: NextFu
     }
   )
 }
-
-export default handler

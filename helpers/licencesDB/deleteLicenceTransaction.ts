@@ -1,28 +1,26 @@
-import sqlite from "better-sqlite3";
-import { licencesDB as databasePath } from "../../data/databasePaths.js";
+import sqlite from 'better-sqlite3'
+import type * as expressSession from 'express-session'
 
-import type * as expressSession from "express-session";
+import { licencesDB as databasePath } from '../../data/databasePaths.js'
 
+export default function deleteLicenceTransaction(
+  licenceId: number | string,
+  transactionIndex: number | string,
+  requestSession: expressSession.Session
+): boolean {
+  const database = sqlite(databasePath)
 
-export const deleteLicenceTransaction =
-  (licenceId: number | string, transactionIndex: number | string, requestSession: expressSession.Session): boolean => {
+  database
+    .prepare(
+      `update LicenceTransactions
+        set recordDelete_userName = ?,
+        recordDelete_timeMillis = ?
+        where licenceId = ?
+        and transactionIndex = ?`
+    )
+    .run(requestSession.user.userName, Date.now(), licenceId, transactionIndex)
 
-    const database = sqlite(databasePath);
+  database.close()
 
-    database.prepare("update LicenceTransactions" +
-      " set recordDelete_userName = ?," +
-      " recordDelete_timeMillis = ?" +
-      " where licenceId = ?" +
-      " and transactionIndex = ?")
-      .run(requestSession.user.userName,
-        Date.now(),
-        licenceId,
-        transactionIndex);
-
-    database.close();
-
-    return true;
-  };
-
-
-export default deleteLicenceTransaction;
+  return true
+}

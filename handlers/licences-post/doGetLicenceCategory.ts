@@ -2,7 +2,7 @@ import type { Request, Response } from 'express'
 
 import getLicenceCategory from '../../helpers/licencesDB/getLicenceCategory.js'
 
-export function handler(request: Request, response: Response): void {
+export default function handler(request: Request, response: Response): void {
   const licenceCategory = getLicenceCategory(
     request.body.licenceCategoryKey as string,
     {
@@ -18,5 +18,3 @@ export function handler(request: Request, response: Response): void {
     licenceCategory
   })
 }
-
-export default handler

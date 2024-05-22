@@ -1,16 +1,18 @@
-import type { RequestHandler } from "express";
+import type { Request, Response } from 'express'
 
-import { markBatchTransactionFailed } from "../../helpers/licencesDB/markBatchTransactionFailed.js";
+import markBatchTransactionFailed, {
+  type MarkBatchTransactionFailedForm
+} from '../../helpers/licencesDB/markBatchTransactionFailed.js'
 
-
-export const handler: RequestHandler = async (request, response) => {
-
-  const success = markBatchTransactionFailed(request.body, request.session);
+export function handler(request: Request, response: Response): void {
+  const success = markBatchTransactionFailed(
+    request.body as MarkBatchTransactionFailedForm,
+    request.session
+  )
 
   response.json({
     success
-  });
-};
+  })
+}
 
-
-export default handler;
+export default handler

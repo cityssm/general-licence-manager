@@ -11,7 +11,7 @@ function getFirstPopulatedValue(...values) {
     }
     return '';
 }
-export const handler = (request, response) => {
+export default function handler(request, response) {
     let relatedLicence;
     if ((request.query.relatedLicenceId ?? '') !== '') {
         relatedLicence = getLicence(request.query.relatedLicenceId);
@@ -77,5 +77,4 @@ export const handler = (request, response) => {
         licence,
         relatedLicence
     });
-};
-export default handler;
+}

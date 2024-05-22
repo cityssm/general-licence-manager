@@ -2,7 +2,7 @@ import sqlite from 'better-sqlite3'
 
 import { licencesDB as databasePath } from '../../data/databasePaths.js'
 
-export function deleteRelatedLicence(
+export default function deleteRelatedLicence(
   licenceIdA: number | string,
   licenceIdB: number | string
 ): boolean {
@@ -20,5 +20,3 @@ export function deleteRelatedLicence(
 
   return result.changes > 0
 }
-
-export default deleteRelatedLicence

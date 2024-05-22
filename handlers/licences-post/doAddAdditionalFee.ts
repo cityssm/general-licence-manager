@@ -3,10 +3,7 @@ import type { Request, Response } from 'express'
 import addLicenceAdditionalFee from '../../helpers/licencesDB/addLicenceAdditionalFee.js'
 import type { LicenceAdditionalFee } from '../../types/recordTypes.js'
 
-export async function handler(
-  request: Request,
-  response: Response
-): Promise<void> {
+export default function handler(request: Request, response: Response): void {
   const feeDetails = addLicenceAdditionalFee(
     request.body.licenceId as string,
     request.body.licenceAdditionalFeeKey as string,
@@ -26,5 +23,3 @@ export async function handler(
     additionalFee
   })
 }
-
-export default handler

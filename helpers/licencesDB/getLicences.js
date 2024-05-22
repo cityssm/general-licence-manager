@@ -1,8 +1,8 @@
 import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js';
 import sqlite from 'better-sqlite3';
 import { licencesDB as databasePath } from '../../data/databasePaths.js';
-import { getLicenceFields } from './getLicenceFields.js';
-import { getLicenceTransactions } from './getLicenceTransactions.js';
+import getLicenceFields from './getLicenceFields.js';
+import getLicenceTransactions from './getLicenceTransactions.js';
 export default function getLicences(filters, options) {
     const database = sqlite(databasePath, {
         readonly: true

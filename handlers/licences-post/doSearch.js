@@ -1,5 +1,5 @@
 import getLicences from '../../helpers/licencesDB/getLicences.js';
-export async function handler(request, response) {
+export default function handler(request, response) {
     const licencesResponse = getLicences({
         licenceCategoryKey: request.body.licenceCategoryKey,
         licenceDetails: request.body.licenceDetails,
@@ -12,4 +12,3 @@ export async function handler(request, response) {
     });
     response.json(licencesResponse);
 }
-export default handler;

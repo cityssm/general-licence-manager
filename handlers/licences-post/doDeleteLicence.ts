@@ -1,16 +1,14 @@
-import type { RequestHandler } from "express";
+import type { Request, Response } from 'express'
 
-import { deleteLicence } from "../../helpers/licencesDB/deleteLicence.js";
+import deleteLicence from '../../helpers/licencesDB/deleteLicence.js'
 
-
-export const handler: RequestHandler = async (request, response) => {
-
-  const success = deleteLicence(request.body.licenceId, request.session);
+export default function handler(request: Request, response: Response): void {
+  const success = deleteLicence(
+    request.body.licenceId as string,
+    request.session
+  )
 
   response.json({
     success
-  });
-};
-
-
-export default handler;
+  })
+}

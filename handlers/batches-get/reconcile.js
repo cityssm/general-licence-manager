@@ -1,15 +1,15 @@
 import * as configFunctions from '../../helpers/functions.config.js';
 import { getBatchTransactions } from '../../helpers/licencesDB/getBatchTransactions.js';
-export const handler = (request, response) => {
+export default function handler(request, response) {
     const batchDate = request.params.batchDate;
     const batchTransactions = getBatchTransactions(batchDate);
     if (batchTransactions.length === 0) {
-        return response.redirect(configFunctions.getProperty('reverseProxy.urlPrefix') +
+        response.redirect(configFunctions.getProperty('reverseProxy.urlPrefix') +
             '/dashboard/?error=batchDateHasNoTransactions');
+        return;
     }
-    return response.render('batch-reconcile', {
-        headTitle: 'Reconcile Batch ' + batchTransactions[0].batchDateString,
+    response.render('batch-reconcile', {
+        headTitle: `Reconcile Batch ${batchTransactions[0].batchDateString}`,
         batchTransactions
     });
-};
-export default handler;
+}

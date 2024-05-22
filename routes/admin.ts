@@ -36,7 +36,7 @@ export const router = Router()
 router.get(
   '/licenceCategories',
   permissionHandlers.adminGetHandler,
-  handler_licenceCategories
+  handler_licenceCategories as RequestHandler
 )
 
 router.post(

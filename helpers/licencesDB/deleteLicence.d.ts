@@ -1,3 +1,2 @@
-import type * as expressSession from "express-session";
-export declare const deleteLicence: (licenceId: number | string, requestSession: expressSession.Session) => boolean;
-export default deleteLicence;
+import type { PartialSession } from '../../types/recordTypes.js';
+export default function deleteLicence(licenceId: number | string, requestSession: PartialSession): boolean;

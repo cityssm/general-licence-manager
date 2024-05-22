@@ -1,9 +1,9 @@
 import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js';
 import { getLicenceCategories } from '../../helpers/functions.cache.js';
 import * as configFunctions from '../../helpers/functions.config.js';
-import { getOutstandingBatches } from '../../helpers/licencesDB/getOutstandingBatches.js';
+import getOutstandingBatches from '../../helpers/licencesDB/getOutstandingBatches.js';
 const batchUpcomingDays = 5;
-export const handler = (request, response) => {
+export default function handler(request, response) {
     const unfilteredBatches = configFunctions.getProperty('settings.includeBatches') &&
         request.session.user.userProperties.canUpdate
         ? getOutstandingBatches()
@@ -18,5 +18,4 @@ export const handler = (request, response) => {
         batches,
         licenceCategories
     });
-};
-export default handler;
+}

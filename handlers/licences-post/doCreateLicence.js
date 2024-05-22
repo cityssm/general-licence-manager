@@ -1,9 +1,8 @@
-import { createLicence } from "../../helpers/licencesDB/createLicence.js";
-export const handler = async (request, response) => {
+import createLicence from '../../helpers/licencesDB/createLicence.js';
+export default function handler(request, response) {
     const licenceId = createLicence(request.body, request.session);
     response.json({
         success: true,
         licenceId
     });
-};
-export default handler;
+}

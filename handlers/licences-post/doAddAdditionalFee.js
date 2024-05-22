@@ -1,5 +1,5 @@
 import addLicenceAdditionalFee from '../../helpers/licencesDB/addLicenceAdditionalFee.js';
-export async function handler(request, response) {
+export default function handler(request, response) {
     const feeDetails = addLicenceAdditionalFee(request.body.licenceId, request.body.licenceAdditionalFeeKey, request.session);
     const additionalFee = {
         licenceAdditionalFeeKey: feeDetails.licenceCategoryAdditionalFee.licenceAdditionalFeeKey,
@@ -12,4 +12,3 @@ export async function handler(request, response) {
         additionalFee
     });
 }
-export default handler;

@@ -1,13 +1,14 @@
-import * as configFunctions from "../../helpers/functions.config.js";
-import * as dateTimeFunctions from "@cityssm/expressjs-server-js/dateTimeFns.js";
-export const handler = async (request, response) => {
+import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js';
+import * as configFunctions from '../../helpers/functions.config.js';
+export default function handler(request, response) {
     const licenceLengthFunctionName = request.body.licenceLengthFunction;
     const licenceLengthFunction = configFunctions.getLicenceLengthFunction(licenceLengthFunctionName);
-    if (!licenceLengthFunction) {
-        return response.json({
+    if (licenceLengthFunction === undefined) {
+        response.json({
             success: false,
-            errorMessage: "Unable to find licence length function: " + licenceLengthFunctionName
+            errorMessage: 'Unable to find licence length function: ' + licenceLengthFunctionName
         });
+        return;
     }
     const startDateString = request.body.startDateString;
     const startDate = dateTimeFunctions.dateStringToDate(startDateString);
@@ -16,5 +17,4 @@ export const handler = async (request, response) => {
         success: true,
         endDateString: dateTimeFunctions.dateToString(endDate)
     });
-};
-export default handler;
+}

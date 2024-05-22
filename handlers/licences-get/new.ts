@@ -1,6 +1,6 @@
 import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js'
 import { getCanadianBankName } from '@cityssm/get-canadian-bank-name'
-import type { RequestHandler } from 'express'
+import type { Request, Response } from 'express'
 
 import { getLicenceCategories } from '../../helpers/functions.cache.js'
 import * as configFunctions from '../../helpers/functions.config.js'
@@ -17,7 +17,7 @@ function getFirstPopulatedValue(...values: string[]): string {
   return ''
 }
 
-export const handler: RequestHandler = (request, response) => {
+export default function handler(request: Request, response: Response): void {
   let relatedLicence: Licence | undefined
 
   if ((request.query.relatedLicenceId ?? '') !== '') {
@@ -133,5 +133,3 @@ export const handler: RequestHandler = (request, response) => {
     relatedLicence
   })
 }
-
-export default handler

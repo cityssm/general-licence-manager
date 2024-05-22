@@ -1,27 +1,27 @@
 import sqlite from 'better-sqlite3'
-import { licencesDB as databasePath } from '../../data/databasePaths.js'
 
-import type * as recordTypes from '../../types/recordTypes'
+import { licencesDB as databasePath } from '../../data/databasePaths.js'
+import type { PartialSession } from '../../types/recordTypes.js'
 
 interface DeleteLicenceAdditionalFeeReturn {
   licenceFee: number
 }
 
-export const deleteLicenceAdditionalFee = (
+export default function deleteLicenceAdditionalFee(
   licenceId: string | number,
   licenceAdditionalFeeKey: string,
-  requestSession: recordTypes.PartialSession
-): DeleteLicenceAdditionalFeeReturn => {
+  requestSession: PartialSession
+): DeleteLicenceAdditionalFeeReturn {
   const database = sqlite(databasePath)
 
   const licenceFees = database
     .prepare(
-      'select licenceFee, additionalFeeAmount' +
-        ' from Licences l' +
-        ' left join LicenceAdditionalFees f on l.licenceId = f.licenceId' +
-        ' where l.licenceId = ?' +
-        ' and f.licenceAdditionalFeeKey = ?' +
-        ' and l.recordDelete_timeMillis is null'
+      `select licenceFee, additionalFeeAmount
+        from Licences l
+        left join LicenceAdditionalFees f on l.licenceId = f.licenceId
+        where l.licenceId = ?
+        and f.licenceAdditionalFeeKey = ?
+        and l.recordDelete_timeMillis is null`
     )
     .get(licenceId, licenceAdditionalFeeKey) as {
     licenceFee: number
@@ -32,9 +32,9 @@ export const deleteLicenceAdditionalFee = (
 
   database
     .prepare(
-      'delete from LicenceAdditionalFees' +
-        ' where licenceId = ?' +
-        ' and licenceAdditionalFeeKey = ?'
+      `delete from LicenceAdditionalFees
+        where licenceId = ?
+        and licenceAdditionalFeeKey = ?`
     )
     .run(licenceId, licenceAdditionalFeeKey)
 
@@ -42,11 +42,11 @@ export const deleteLicenceAdditionalFee = (
 
   database
     .prepare(
-      'update Licences' +
-        ' set licenceFee = ?,' +
-        ' recordUpdate_userName = ?,' +
-        ' recordUpdate_timeMillis = ?' +
-        ' where licenceId = ?'
+      `update Licences
+        set licenceFee = ?,
+        recordUpdate_userName = ?,
+        recordUpdate_timeMillis = ?
+        where licenceId = ?`
     )
     .run(newLicenceFee, requestSession.user.userName, rightNowMillis, licenceId)
 
@@ -56,5 +56,3 @@ export const deleteLicenceAdditionalFee = (
     licenceFee: newLicenceFee
   }
 }
-
-export default deleteLicenceAdditionalFee

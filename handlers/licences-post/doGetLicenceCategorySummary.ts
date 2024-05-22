@@ -3,10 +3,7 @@ import type { Request, Response } from 'express'
 
 import getLicences from '../../helpers/licencesDB/getLicences.js'
 
-export async function handler(
-  request: Request,
-  response: Response
-): Promise<void> {
+export default function handler(request: Request, response: Response): void {
   const licencesResponse = getLicences(
     {
       licenceCategoryKey: request.body.licenceCategoryKey,
@@ -27,5 +24,3 @@ export async function handler(
 
   response.json(licencesResponse)
 }
-
-export default handler

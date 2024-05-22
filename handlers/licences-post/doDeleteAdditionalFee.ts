@@ -1,18 +1,16 @@
-import type { RequestHandler } from "express";
+import type { Request, Response } from 'express'
 
-import { deleteLicenceAdditionalFee } from "../../helpers/licencesDB/deleteLicenceAdditionalFee.js";
+import deleteLicenceAdditionalFee from '../../helpers/licencesDB/deleteLicenceAdditionalFee.js'
 
-
-export const handler: RequestHandler = async (request, response) => {
-
+export default function handler(request: Request, response: Response): void {
   const feeDetails = deleteLicenceAdditionalFee(
-    request.body.licenceId, request.body.licenceAdditionalFeeKey, request.session);
+    request.body.licenceId as string,
+    request.body.licenceAdditionalFeeKey as string,
+    request.session
+  )
 
   response.json({
-    success: (feeDetails ? true : false),
+    success: true,
     licenceFee: feeDetails.licenceFee
-  });
-};
-
-
-export default handler;
+  })
+}

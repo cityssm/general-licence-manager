@@ -1,6 +1,6 @@
-import type * as recordTypes from '../../types/recordTypes';
+import type { PartialSession } from '../../types/recordTypes.js';
 interface DeleteLicenceAdditionalFeeReturn {
     licenceFee: number;
 }
-export declare const deleteLicenceAdditionalFee: (licenceId: string | number, licenceAdditionalFeeKey: string, requestSession: recordTypes.PartialSession) => DeleteLicenceAdditionalFeeReturn;
-export default deleteLicenceAdditionalFee;
+export default function deleteLicenceAdditionalFee(licenceId: string | number, licenceAdditionalFeeKey: string, requestSession: PartialSession): DeleteLicenceAdditionalFeeReturn;
+export {};

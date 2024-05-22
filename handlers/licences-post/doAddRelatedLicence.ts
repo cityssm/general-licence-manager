@@ -1,9 +1,9 @@
 import type { Request, Response } from 'express'
 
-import { addRelatedLicence } from '../../helpers/licencesDB/addRelatedLicence.js'
+import addRelatedLicence from '../../helpers/licencesDB/addRelatedLicence.js'
 import getLicences from '../../helpers/licencesDB/getLicences.js'
 
-export async function handler(request: Request, response: Response): Promise<void> {
+export default function handler(request: Request, response: Response): void {
   const success = addRelatedLicence(
     request.body.licenceId as string,
     request.body.relatedLicenceId as string
@@ -24,5 +24,3 @@ export async function handler(request: Request, response: Response): Promise<voi
     relatedLicences
   })
 }
-
-export default handler

@@ -1,5 +1,5 @@
-import { addLicenceAdditionalFee } from "../../helpers/licencesDB/addLicenceAdditionalFee.js";
-export const handler = async (request, response) => {
+import addLicenceAdditionalFee from '../../helpers/licencesDB/addLicenceAdditionalFee.js';
+export async function handler(request, response) {
     const feeDetails = addLicenceAdditionalFee(request.body.licenceId, request.body.licenceAdditionalFeeKey, request.session);
     const additionalFee = {
         licenceAdditionalFeeKey: feeDetails.licenceCategoryAdditionalFee.licenceAdditionalFeeKey,
@@ -7,9 +7,9 @@ export const handler = async (request, response) => {
         additionalFee: feeDetails.licenceCategoryAdditionalFee.additionalFee
     };
     response.json({
-        success: (additionalFee ? true : false),
+        success: true,
         licenceFee: feeDetails.licenceFee,
         additionalFee
     });
-};
+}
 export default handler;

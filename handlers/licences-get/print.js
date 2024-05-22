@@ -1,21 +1,23 @@
-import path from 'path';
+import path from 'node:path';
+import { convertHTMLToPDF } from '@cityssm/pdf-puppeteer';
 import * as ejs from 'ejs';
-import { getLicence } from '../../helpers/licencesDB/getLicence.js';
 import { getLicenceCategory } from '../../helpers/functions.cache.js';
 import * as configFunctions from '../../helpers/functions.config.js';
 import * as printFunctions from '../../helpers/functions.print.js';
-import convertHTMLToPDF from '@cityssm/pdf-puppeteer';
-export const handler = async (request, response, next) => {
+import getLicence from '../../helpers/licencesDB/getLicence.js';
+export async function handler(request, response, next) {
     const licenceId = request.params.licenceId;
     const licence = getLicence(licenceId);
-    if (!licence || !licence.issueDate) {
-        return next(configFunctions.getProperty('settings.licenceAlias') +
+    if (!licence?.issueDate) {
+        next(configFunctions.getProperty('settings.licenceAlias') +
             ' not available for printing.');
+        return;
     }
     const licenceCategory = getLicenceCategory(licence.licenceCategoryKey);
     if (!licenceCategory.printEJS || licenceCategory.printEJS === '') {
-        return next(configFunctions.getProperty('settings.licenceAlias') +
+        next(configFunctions.getProperty('settings.licenceAlias') +
             ' does not have a print template set.');
+        return;
     }
     const reportPath = path.join('.', 'print', licenceCategory.printEJS + '.ejs');
     await ejs.renderFile(reportPath, {
@@ -25,7 +27,8 @@ export const handler = async (request, response, next) => {
         licenceCategory
     }, {}, async (ejsError, ejsData) => {
         if (ejsError) {
-            return next(ejsError);
+            next(ejsError);
+            return;
         }
         const pdf = await convertHTMLToPDF(ejsData, {
             format: 'letter',
@@ -43,5 +46,5 @@ export const handler = async (request, response, next) => {
         response.setHeader('Content-Type', 'application/pdf');
         response.send(pdf);
     });
-};
+}
 export default handler;

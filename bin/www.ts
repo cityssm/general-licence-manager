@@ -2,7 +2,7 @@
 
 import { app } from '../app.js'
 
-import http from 'http'
+import http from 'node:http'
 
 import * as configFunctions from '../helpers/functions.config.js'
 
@@ -26,20 +26,23 @@ const onError = (error: ServerError) => {
   // handle specific listen errors with friendly messages
   switch (error.code) {
     // eslint-disable-next-line no-fallthrough
-    case 'EACCES':
+    case 'EACCES': {
       debugWWW('Requires elevated privileges')
       process.exit(1)
-    // break;
+      // break;
+    }
 
     // eslint-disable-next-line no-fallthrough
-    case 'EADDRINUSE':
+    case 'EADDRINUSE': {
       debugWWW('Port is already in use.')
       process.exit(1)
-    // break;
+      // break;
+    }
 
     // eslint-disable-next-line no-fallthrough
-    default:
+    default: {
       throw error
+    }
   }
 }
 

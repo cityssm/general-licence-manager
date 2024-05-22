@@ -4,14 +4,14 @@ import database_getLicenceCategory from './licencesDB/getLicenceCategory.js';
 const debug = Debug('general-licence-manager:cache');
 let licenceCategoriesList;
 const licenceCategoriesMap = new Map();
-export const getLicenceCategories = () => {
-    if (!licenceCategoriesList) {
+export function getLicenceCategories() {
+    if (licenceCategoriesList === undefined) {
         debug('Cache miss: getLicenceCategories');
         licenceCategoriesList = database_getLicenceCategories();
     }
     return licenceCategoriesList;
-};
-export const getLicenceCategory = (licenceCategoryKey) => {
+}
+export function getLicenceCategory(licenceCategoryKey) {
     if (!licenceCategoriesMap.has(licenceCategoryKey)) {
         debug('Cache miss: getLicenceCategory(' + licenceCategoryKey + ')');
         licenceCategoriesMap.set(licenceCategoryKey, database_getLicenceCategory(licenceCategoryKey, {
@@ -22,11 +22,12 @@ export const getLicenceCategory = (licenceCategoryKey) => {
         }));
     }
     return licenceCategoriesMap.get(licenceCategoryKey);
-};
-export const getLicenceCategoryAdditionalFee = (licenceAdditionalFeeKey) => {
+}
+export function getLicenceCategoryAdditionalFee(licenceAdditionalFeeKey) {
     const licenceCategories = getLicenceCategories();
     for (const licenceCategory of licenceCategories) {
-        const licenceCategoryAdditionalFees = getLicenceCategory(licenceCategory.licenceCategoryKey).licenceCategoryAdditionalFees;
+        const licenceCategoryAdditionalFees = getLicenceCategory(licenceCategory.licenceCategoryKey)
+            ?.licenceCategoryAdditionalFees ?? [];
         for (const licenceCategoryAdditionalFee of licenceCategoryAdditionalFees) {
             if (licenceCategoryAdditionalFee.licenceAdditionalFeeKey ===
                 licenceAdditionalFeeKey) {
@@ -35,8 +36,8 @@ export const getLicenceCategoryAdditionalFee = (licenceAdditionalFeeKey) => {
         }
     }
     return undefined;
-};
-export const clearAll = () => {
+}
+export function clearAll() {
     licenceCategoriesList = undefined;
     licenceCategoriesMap.clear();
-};
+}

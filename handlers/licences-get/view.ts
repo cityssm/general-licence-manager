@@ -1,35 +1,36 @@
-import type { RequestHandler } from "express";
+import type { Request, Response } from 'express'
 
-import * as configFunctions from "../../helpers/functions.config.js";
+import * as configFunctions from '../../helpers/functions.config.js'
+import getLicence from '../../helpers/licencesDB/getLicence.js'
+import { getLicenceCategory } from '../../helpers/licencesDB/getLicenceCategory.js'
 
-import { getLicence } from "../../helpers/licencesDB/getLicence.js";
-import { getLicenceCategory } from "../../helpers/licencesDB/getLicenceCategory.js";
+export function handler(request: Request, response: Response): void {
+  const licenceId = Number.parseInt(request.params.licenceId)
 
-export const handler: RequestHandler = (request, response) => {
-    const licenceId = Number.parseInt(request.params.licenceId);
+  const licence = getLicence(licenceId)
 
-    const licence = getLicence(licenceId);
+  if (licence === undefined) {
+    response.redirect(
+      configFunctions.getProperty('reverseProxy.urlPrefix') +
+        '/licences/?error=licenceIdNotFound'
+    )
+    return
+  }
 
-    if (!licence) {
-        return response.redirect(
-            configFunctions.getProperty("reverseProxy.urlPrefix") +
-                "/licences/?error=licenceIdNotFound"
-        );
-    }
+  const licenceCategory = getLicenceCategory(licence.licenceCategoryKey, {
+    includeApprovals: false,
+    includeFields: false,
+    includeFees: false,
+    includeAdditionalFees: false
+  })
 
-    const licenceCategory = getLicenceCategory(licence.licenceCategoryKey, {
-        includeApprovals: false,
-        includeFields: false,
-        includeFees: false,
-        includeAdditionalFees: false
-    });
+  response.render('licence-view', {
+    headTitle: `${configFunctions.getProperty('settings.licenceAlias')} #${
+      licence.licenceNumber
+    }`,
+    licence,
+    licenceCategory
+  })
+}
 
-    return response.render("licence-view", {
-        headTitle:
-            configFunctions.getProperty("settings.licenceAlias") + " #" + licence.licenceNumber,
-        licence,
-        licenceCategory
-    });
-};
-
-export default handler;
+export default handler

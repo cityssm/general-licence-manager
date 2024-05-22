@@ -1,16 +1,17 @@
-import sqlite from 'better-sqlite3'
-import { licencesDB as databasePath } from '../../data/databasePaths.js'
-
-import { getCanadianBankName } from '@cityssm/get-canadian-bank-name'
 import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js'
+import { getCanadianBankName } from '@cityssm/get-canadian-bank-name'
+import sqlite from 'better-sqlite3'
 
-import { getLicences } from './getLicences.js'
-import { getLicenceFields } from './getLicenceFields.js'
-import { getLicenceTransactions } from './getLicenceTransactions.js'
-
+import { licencesDB as databasePath } from '../../data/databasePaths.js'
 import type * as recordTypes from '../../types/recordTypes'
 
-export const getLicence = (licenceId: number | string): recordTypes.Licence => {
+import { getLicenceFields } from './getLicenceFields.js'
+import { getLicenceTransactions } from './getLicenceTransactions.js'
+import { getLicences } from './getLicences.js'
+
+export default function getLicence(
+  licenceId: number | string
+): recordTypes.Licence | undefined {
   const database = sqlite(databasePath, {
     readonly: true
   })
@@ -27,29 +28,26 @@ export const getLicence = (licenceId: number | string): recordTypes.Licence => {
 
   const licence = database
     .prepare(
-      'select licenceId, licenceCategoryKey,' +
-        ' licenceNumber,' +
-        ' licenseeName, licenseeBusinessName,' +
-        ' licenseeAddress1, licenseeAddress2,' +
-        ' licenseeCity, licenseeProvince, licenseePostalCode,' +
-        ' isRenewal,' +
-        ' startDate, userFn_dateIntegerToString(startDate) as startDateString,' +
-        ' endDate, userFn_dateIntegerToString(endDate) as endDateString,' +
-        ' issueDate, userFn_dateIntegerToString(issueDate) as issueDateString,' +
-        ' issueTime, userFn_timeIntegerToString(issueTime) as issueTimeString,' +
-        ' baseLicenceFee, baseReplacementFee,' +
-        ' licenceFee, replacementFee,' +
-        ' bankInstitutionNumber, bankTransitNumber, bankAccountNumber,' +
-        ' userFn_getCanadianBankName(bankInstitutionNumber, bankTransitNumber) as bankName,' +
-        ' recordCreate_userName, recordCreate_timeMillis,' +
-        ' recordUpdate_userName, recordUpdate_timeMillis' +
-        ' from Licences' +
-        ' where recordDelete_timeMillis is null' +
-        ' and licenceId = ?'
+      `select licenceId, licenceCategoryKey,
+        licenceNumber,
+        licenseeName, licenseeBusinessName,
+        licenseeAddress1, licenseeAddress2, licenseeCity, licenseeProvince, licenseePostalCode,
+        isRenewal,
+        startDate, userFn_dateIntegerToString(startDate) as startDateString,
+        endDate, userFn_dateIntegerToString(endDate) as endDateString,
+        issueDate, userFn_dateIntegerToString(issueDate) as issueDateString,
+        issueTime, userFn_timeIntegerToString(issueTime) as issueTimeString,
+        baseLicenceFee, baseReplacementFee, licenceFee, replacementFee,
+        bankInstitutionNumber, bankTransitNumber, bankAccountNumber,
+        userFn_getCanadianBankName(bankInstitutionNumber, bankTransitNumber) as bankName,
+        recordCreate_userName, recordCreate_timeMillis, recordUpdate_userName, recordUpdate_timeMillis
+        from Licences
+        where recordDelete_timeMillis is null
+        and licenceId = ?`
     )
-    .get(licenceId) as recordTypes.Licence
+    .get(licenceId) as recordTypes.Licence | undefined
 
-  if (licence) {
+  if (licence !== undefined) {
     licence.relatedLicences = getLicences(
       {
         relatedLicenceId: licenceId
@@ -68,23 +66,31 @@ export const getLicence = (licenceId: number | string): recordTypes.Licence => {
 
     licence.licenceApprovals = database
       .prepare(
-        'select a.licenceApprovalKey, 1 as isApproved,' +
-          ' c.licenceApproval, c.licenceApprovalDescription,' +
-          ' c.isRequiredForNew, c.isRequiredForRenewal, c.printKey, c.orderNumber' +
-          ' from LicenceApprovals a' +
-          ' left join LicenceCategoryApprovals c on a.licenceApprovalKey = c.LicenceApprovalKey' +
-          ' where a.licenceId = ?' +
-          ' union' +
-          ' select c.licenceApprovalKey, 0 as isApproved,' +
-          ' c.licenceApproval, c.licenceApprovalDescription,' +
-          ' c.isRequiredForNew, c.isRequiredForRenewal, c.printKey, c.orderNumber' +
-          ' from LicenceCategoryApprovals c' +
-          ' where c.recordDelete_timeMillis is null' +
-          ' and c.licenceCategoryKey = ?' +
-          ' and c.licenceApprovalKey not in (select licenceApprovalKey from LicenceApprovals where licenceId = ?)' +
-          ' order by c.orderNumber, c.licenceApproval'
+        `select a.licenceApprovalKey,
+          1 as isApproved,
+          c.licenceApproval, c.licenceApprovalDescription,
+          c.isRequiredForNew, c.isRequiredForRenewal,
+          c.printKey, c.orderNumber
+          from LicenceApprovals a
+          left join LicenceCategoryApprovals c on a.licenceApprovalKey = c.LicenceApprovalKey
+          where a.licenceId = ?
+          union
+          select c.licenceApprovalKey,
+          0 as isApproved,
+          c.licenceApproval, c.licenceApprovalDescription,
+          c.isRequiredForNew, c.isRequiredForRenewal,
+          c.printKey, c.orderNumber
+          from LicenceCategoryApprovals c
+          where c.recordDelete_timeMillis is null
+          and c.licenceCategoryKey = ?
+          and c.licenceApprovalKey not in (select licenceApprovalKey from LicenceApprovals where licenceId = ?)
+          order by c.orderNumber, c.licenceApproval`
       )
-      .all(licenceId, licence.licenceCategoryKey, licenceId) as recordTypes.LicenceApproval[]
+      .all(
+        licenceId,
+        licence.licenceCategoryKey,
+        licenceId
+      ) as recordTypes.LicenceApproval[]
 
     licence.licenceAdditionalFees = database
       .prepare(
@@ -103,5 +109,3 @@ export const getLicence = (licenceId: number | string): recordTypes.Licence => {
 
   return licence
 }
-
-export default getLicence

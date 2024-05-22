@@ -1,25 +1,30 @@
-import type { RequestHandler } from "express";
+import type { Request, Response } from 'express'
 
-import { addLicenceCategoryAdditionalFee } from "../../helpers/licencesDB/addLicenceCategoryAdditionalFee.js";
-import { getLicenceCategoryAdditionalFees } from "../../helpers/licencesDB/getLicenceCategoryAdditionalFees.js";
+import * as cacheFunctions from '../../helpers/functions.cache.js'
+import {
+  type AddLicenceCategoryAdditionalFeeForm,
+  addLicenceCategoryAdditionalFee
+} from '../../helpers/licencesDB/addLicenceCategoryAdditionalFee.js'
+import getLicenceCategoryAdditionalFees from '../../helpers/licencesDB/getLicenceCategoryAdditionalFees.js'
 
-import * as cacheFunctions from "../../helpers/functions.cache.js";
+export default async function handler(
+  request: Request,
+  response: Response
+): Promise<void> {
+  const licenceAdditionalFeeKey = addLicenceCategoryAdditionalFee(
+    request.body as AddLicenceCategoryAdditionalFeeForm,
+    request.session
+  )
 
+  cacheFunctions.clearAll()
 
-export const handler: RequestHandler = async (request, response) => {
-
-  const licenceAdditionalFeeKey = addLicenceCategoryAdditionalFee(request.body, request.session);
-
-  cacheFunctions.clearAll();
-
-  const licenceCategoryAdditionalFees = getLicenceCategoryAdditionalFees(request.body.licenceCategoryKey);
+  const licenceCategoryAdditionalFees = getLicenceCategoryAdditionalFees(
+    request.body.licenceCategoryKey as string
+  )
 
   response.json({
     success: true,
     licenceCategoryAdditionalFees,
     licenceAdditionalFeeKey
-  });
-};
-
-
-export default handler;
+  })
+}

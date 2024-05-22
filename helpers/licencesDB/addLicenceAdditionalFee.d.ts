@@ -1,8 +1,8 @@
-import type * as recordTypes from '../../types/recordTypes';
+import type { LicenceCategoryAdditionalFee, PartialSession } from '../../types/recordTypes.js';
 interface AddLicenceAdditionalFeeReturn {
     licenceFee: number;
     additionalFeeAmount: number;
-    licenceCategoryAdditionalFee: recordTypes.LicenceCategoryAdditionalFee;
+    licenceCategoryAdditionalFee: LicenceCategoryAdditionalFee;
 }
-export declare const addLicenceAdditionalFee: (licenceId: string | number, licenceAdditionalFeeKey: string, requestSession: recordTypes.PartialSession) => AddLicenceAdditionalFeeReturn;
-export default addLicenceAdditionalFee;
+export default function addLicenceAdditionalFee(licenceId: string | number, licenceAdditionalFeeKey: string, requestSession: PartialSession): AddLicenceAdditionalFeeReturn;
+export {};

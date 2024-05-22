@@ -1,8 +1,8 @@
 import type * as recordTypes from '../../types/recordTypes';
-export declare const getLicenceCategory: (licenceCategoryKey: string, options: {
+export declare function getLicenceCategory(licenceCategoryKey: string, options: {
     includeApprovals: boolean;
     includeFees: 'current' | 'all' | false;
     includeFields: boolean;
     includeAdditionalFees: boolean;
-}) => recordTypes.LicenceCategory;
+}): recordTypes.LicenceCategory;
 export default getLicenceCategory;

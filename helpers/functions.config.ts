@@ -1,8 +1,10 @@
-// eslint-disable-next-line node/no-unpublished-import
-import { ADWebAuthConfig } from '@cityssm/ad-web-auth-connector/types.js'
-import { config } from '../data/config.js'
+// eslint-disable-next-line eslint-comments/disable-enable-pair
+/* eslint-disable @typescript-eslint/indent */
 
-import type * as configTypes from '../types/configTypes'
+import type { ADWebAuthConfig } from '@cityssm/ad-web-auth-connector/types.js'
+
+import { config } from '../data/config.js'
+import type * as configTypes from '../types/configTypes.js'
 
 /*
  * SET UP FALLBACK VALUES

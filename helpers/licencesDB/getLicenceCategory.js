@@ -1,19 +1,19 @@
 import sqlite from 'better-sqlite3';
 import { licencesDB as databasePath } from '../../data/databasePaths.js';
-import { getLicenceCategoryFields } from './getLicenceCategoryFields.js';
+import getLicenceCategoryAdditionalFees from './getLicenceCategoryAdditionalFees.js';
 import { getLicenceCategoryApprovals } from './getLicenceCategoryApprovals.js';
 import { getLicenceCategoryFees } from './getLicenceCategoryFees.js';
-import { getLicenceCategoryAdditionalFees } from './getLicenceCategoryAdditionalFees.js';
-export const getLicenceCategory = (licenceCategoryKey, options) => {
+import { getLicenceCategoryFields } from './getLicenceCategoryFields.js';
+export function getLicenceCategory(licenceCategoryKey, options) {
     const database = sqlite(databasePath, {
         readonly: true
     });
     const licenceCategory = database
-        .prepare('select licenceCategoryKey, licenceCategory, bylawNumber, printEJS,' +
-        ' licenceLengthFunction, licenceLengthYears, licenceLengthMonths, licenceLengthDays,' +
-        ' recordDelete_timeMillis' +
-        ' from LicenceCategories' +
-        ' where licenceCategoryKey = ?')
+        .prepare(`select licenceCategoryKey, licenceCategory, bylawNumber, printEJS,
+        licenceLengthFunction, licenceLengthYears, licenceLengthMonths, licenceLengthDays,
+        recordDelete_timeMillis
+        from LicenceCategories
+        where licenceCategoryKey = ?`)
         .get(licenceCategoryKey);
     if (licenceCategory && options.includeApprovals) {
         licenceCategory.licenceCategoryApprovals = getLicenceCategoryApprovals(licenceCategoryKey, database);
@@ -30,5 +30,5 @@ export const getLicenceCategory = (licenceCategoryKey, options) => {
     }
     database.close();
     return licenceCategory;
-};
+}
 export default getLicenceCategory;

@@ -1,27 +1,30 @@
-import type { RequestHandler } from "express";
+import type { Request, Response } from 'express'
 
-import { addLicenceAdditionalFee } from "../../helpers/licencesDB/addLicenceAdditionalFee.js";
+import addLicenceAdditionalFee from '../../helpers/licencesDB/addLicenceAdditionalFee.js'
+import type { LicenceAdditionalFee } from '../../types/recordTypes.js'
 
-import * as recordTypes from "../../types/recordTypes";
-
-
-export const handler: RequestHandler = async (request, response) => {
-
+export async function handler(
+  request: Request,
+  response: Response
+): Promise<void> {
   const feeDetails = addLicenceAdditionalFee(
-    request.body.licenceId, request.body.licenceAdditionalFeeKey, request.session);
+    request.body.licenceId as string,
+    request.body.licenceAdditionalFeeKey as string,
+    request.session
+  )
 
-  const additionalFee: recordTypes.LicenceAdditionalFee = {
-    licenceAdditionalFeeKey: feeDetails.licenceCategoryAdditionalFee.licenceAdditionalFeeKey,
+  const additionalFee: LicenceAdditionalFee = {
+    licenceAdditionalFeeKey:
+      feeDetails.licenceCategoryAdditionalFee.licenceAdditionalFeeKey,
     additionalFeeAmount: feeDetails.additionalFeeAmount,
     additionalFee: feeDetails.licenceCategoryAdditionalFee.additionalFee
-  };
+  }
 
   response.json({
-    success: (additionalFee ? true : false),
+    success: true,
     licenceFee: feeDetails.licenceFee,
     additionalFee
-  });
-};
+  })
+}
 
-
-export default handler;
+export default handler

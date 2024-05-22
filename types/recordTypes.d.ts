@@ -11,7 +11,7 @@ export interface Record {
     recordDelete_dateString?: string;
 }
 export interface Licence extends Partial<LicenceCategory> {
-    licenceId: number | "";
+    licenceId: number | '';
     licenceCategoryKey: string;
     licenceNumber: string;
     licenseeName: string;
@@ -30,10 +30,10 @@ export interface Licence extends Partial<LicenceCategory> {
     issueDateString?: string;
     issueTime?: number;
     issueTimeString?: string;
-    baseLicenceFee: number | "";
-    baseReplacementFee: number | "";
-    licenceFee: number | "";
-    replacementFee: number | "";
+    baseLicenceFee: number | '';
+    baseReplacementFee: number | '';
+    licenceFee: number | '';
+    replacementFee: number | '';
     bankInstitutionNumber?: string;
     bankTransitNumber?: string;
     bankAccountNumber?: string;
@@ -124,9 +124,9 @@ export interface LicenceCategoryFee extends Record {
 }
 export interface LicenceCategoryAdditionalFee extends Record {
     licenceAdditionalFeeKey: string;
-    licenceCategoryKey?: string;
+    licenceCategoryKey: string;
     additionalFee: string;
-    additionalFeeType: "flat" | "percent" | "function";
+    additionalFeeType: 'flat' | 'percent' | 'function';
     additionalFeeNumber?: number;
     additionalFeeFunction?: string;
     isRequired: boolean;
@@ -152,13 +152,13 @@ export interface Batch {
 }
 export interface User {
     userName: string;
-    userProperties?: UserProperties;
+    userProperties: UserProperties;
 }
 export interface UserProperties {
     canUpdate: boolean;
     isAdmin: boolean;
 }
-declare module "express-session" {
+declare module 'express-session' {
     interface Session {
         user: User;
     }

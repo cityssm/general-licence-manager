@@ -1,5 +1,5 @@
 import { app } from '../app.js';
-import http from 'http';
+import http from 'node:http';
 import * as configFunctions from '../helpers/functions.config.js';
 import exitHook from 'exit-hook';
 import debug from 'debug';
@@ -10,14 +10,17 @@ const onError = (error) => {
         throw error;
     }
     switch (error.code) {
-        case 'EACCES':
+        case 'EACCES': {
             debugWWW('Requires elevated privileges');
             process.exit(1);
-        case 'EADDRINUSE':
+        }
+        case 'EADDRINUSE': {
             debugWWW('Port is already in use.');
             process.exit(1);
-        default:
+        }
+        default: {
             throw error;
+        }
     }
 };
 const onListening = (server) => {

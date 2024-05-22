@@ -1,2 +1,2 @@
-import * as recordTypes from "../types/recordTypes";
-export declare const calculateAdditionalFeeAmount: (licenceCategoryAdditionalFee: recordTypes.LicenceCategoryAdditionalFee, baseLicenceFee: number | string) => number;
+import type { LicenceCategoryAdditionalFee } from '../types/recordTypes.js';
+export declare const calculateAdditionalFeeAmount: (licenceCategoryAdditionalFee: LicenceCategoryAdditionalFee, baseLicenceFee: number | string) => number;

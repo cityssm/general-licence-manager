@@ -1,20 +1,16 @@
+import Debug from 'debug'
 import { Router } from 'express'
 
-import Debug from 'debug'
-
-import * as configFunctions from '../helpers/functions.config.js'
-
-import * as authenticationFunctions from '../helpers/functions.authentication.js'
-
 import { useTestDatabases } from '../data/databasePaths.js'
-
+import * as authenticationFunctions from '../helpers/functions.authentication.js'
+import * as configFunctions from '../helpers/functions.config.js'
 import type * as recordTypes from '../types/recordTypes'
 
 const debug = Debug('general-licence-manager:login')
 
 export const router = Router()
 
-const getSafeRedirectURL = (possibleRedirectURL = '') => {
+function getSafeRedirectURL(possibleRedirectURL = ''): string {
   const urlPrefix = configFunctions.getProperty('reverseProxy.urlPrefix')
 
   const urlToCheck = (
@@ -28,11 +24,12 @@ const getSafeRedirectURL = (possibleRedirectURL = '') => {
     case '/admin/licenceCategories':
     case '/admin/yearEnd':
     case '/licences':
-    case '/reports':
+    case '/reports': {
       return urlPrefix + urlToCheck
+    }
   }
 
-  return urlPrefix + '/dashboard'
+  return `${urlPrefix}/dashboard`
 }
 
 router
@@ -42,7 +39,7 @@ router
 
     if (request.session.user && request.cookies[sessionCookieName]) {
       const redirectURL = getSafeRedirectURL(
-        (request.query.redirect || '') as string
+        (request.query.redirect ?? '') as string
       )
 
       response.redirect(redirectURL)
@@ -59,18 +56,20 @@ router
     const userName = request.body.userName as string
     const passwordPlain = request.body.password as string
 
-    const redirectURL = getSafeRedirectURL(request.body.redirect)
+    const redirectURL = getSafeRedirectURL(
+      (request.body.redirect ?? '') as string
+    )
 
     let isAuthenticated = false
 
-    if (userName.charAt(0) === '*') {
+    if (userName.startsWith('*')) {
       if (useTestDatabases && userName === passwordPlain) {
         isAuthenticated = configFunctions
           .getProperty('users.testing')
           .includes(userName)
 
         if (isAuthenticated) {
-          debug('Authenticated testing user: ' + userName)
+          debug(`Authenticated testing user: ${userName}`)
         }
       }
     } else {
@@ -80,7 +79,7 @@ router
       )
     }
 
-    let userObject: recordTypes.User
+    let userObject: recordTypes.User | undefined
 
     if (isAuthenticated) {
       const userNameLowerCase = userName.toLowerCase()
@@ -114,7 +113,7 @@ router
       }
     }
 
-    if (isAuthenticated && userObject) {
+    if (isAuthenticated && userObject !== undefined) {
       request.session.user = userObject
 
       response.redirect(redirectURL)

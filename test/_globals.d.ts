@@ -1,3 +1,4 @@
+/// <reference types="cookie-parser" />
 /// <reference types="qs" />
 import type { Request } from "express";
 import type { Session } from "express-session";

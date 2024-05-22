@@ -1,15 +1,15 @@
 import sqlite from 'better-sqlite3'
-import { licencesDB as databasePath } from '../../data/databasePaths.js'
 
+import { licencesDB as databasePath } from '../../data/databasePaths.js'
 import type * as recordTypes from '../../types/recordTypes'
 
-export const getLicenceCategoryAdditionalFees = (
+export default function getLicenceCategoryAdditionalFees(
   licenceCategoryKey: string,
   database?: sqlite.Database
-): recordTypes.LicenceCategoryAdditionalFee[] => {
+): recordTypes.LicenceCategoryAdditionalFee[] {
   let doCloseDatabase = false
 
-  if (!database) {
+  if (database === undefined) {
     database = sqlite(databasePath, {
       readonly: true
     })
@@ -19,13 +19,13 @@ export const getLicenceCategoryAdditionalFees = (
 
   const licenceCategoryAdditionalFees = database
     .prepare(
-      'select licenceAdditionalFeeKey,' +
-        ' additionalFee, additionalFeeType, additionalFeeNumber, additionalFeeFunction,' +
-        ' isRequired, orderNumber' +
-        ' from LicenceCategoryAdditionalFees' +
-        ' where recordDelete_timeMillis is null' +
-        ' and licenceCategoryKey = ?' +
-        ' order by orderNumber, additionalFee'
+      `select licenceCategoryKey, licenceAdditionalFeeKey,
+        additionalFee, additionalFeeType, additionalFeeNumber, additionalFeeFunction,
+        isRequired, orderNumber
+        from LicenceCategoryAdditionalFees
+        where recordDelete_timeMillis is null
+        and licenceCategoryKey = ?
+        order by orderNumber, additionalFee`
     )
     .all(licenceCategoryKey) as recordTypes.LicenceCategoryAdditionalFee[]
 
@@ -35,5 +35,3 @@ export const getLicenceCategoryAdditionalFees = (
 
   return licenceCategoryAdditionalFees
 }
-
-export default getLicenceCategoryAdditionalFees

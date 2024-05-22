@@ -1,27 +1,36 @@
-import type { RequestHandler } from "express";
+import type { Request, Response } from 'express'
 
-import { updateLicenceCategoryAdditionalFee } from "../../helpers/licencesDB/updateLicenceCategoryAdditionalFee.js";
-import { getLicenceCategoryAdditionalFee } from "../../helpers/licencesDB/getLicenceCategoryAdditionalFee.js";
-import { getLicenceCategoryAdditionalFees } from "../../helpers/licencesDB/getLicenceCategoryAdditionalFees.js";
+import * as cacheFunctions from '../../helpers/functions.cache.js'
+import { getLicenceCategoryAdditionalFee } from '../../helpers/licencesDB/getLicenceCategoryAdditionalFee.js'
+import getLicenceCategoryAdditionalFees from '../../helpers/licencesDB/getLicenceCategoryAdditionalFees.js'
+import updateLicenceCategoryAdditionalFee, {
+  type UpdateLicenceCategoryAdditionalFeeForm
+} from '../../helpers/licencesDB/updateLicenceCategoryAdditionalFee.js'
+import type { LicenceCategoryAdditionalFee } from '../../types/recordTypes.js'
 
-import * as cacheFunctions from "../../helpers/functions.cache.js";
+export async function handler(
+  request: Request,
+  response: Response
+): Promise<void> {
+  const success = updateLicenceCategoryAdditionalFee(
+    request.body as UpdateLicenceCategoryAdditionalFeeForm,
+    request.session
+  )
 
+  cacheFunctions.clearAll()
 
-export const handler: RequestHandler = async (request, response) => {
+  const licenceCategoryAdditionalFee = getLicenceCategoryAdditionalFee(
+    request.body.licenceAdditionalFeeKey as string
+  ) as LicenceCategoryAdditionalFee
 
-  const success = updateLicenceCategoryAdditionalFee(request.body, request.session);
-
-  cacheFunctions.clearAll();
-
-  const licenceCategoryAdditionalFee = getLicenceCategoryAdditionalFee(request.body.licenceAdditionalFeeKey);
-
-  const licenceCategoryAdditionalFees = getLicenceCategoryAdditionalFees(licenceCategoryAdditionalFee.licenceCategoryKey);
+  const licenceCategoryAdditionalFees = getLicenceCategoryAdditionalFees(
+    licenceCategoryAdditionalFee.licenceCategoryKey
+  )
 
   response.json({
     success,
     licenceCategoryAdditionalFees
-  });
-};
+  })
+}
 
-
-export default handler;
+export default handler

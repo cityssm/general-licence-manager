@@ -1,5 +1,5 @@
-import type * as recordTypes from '../types/recordTypes.js';
-export declare const getLicenceCategories: () => recordTypes.LicenceCategory[];
-export declare const getLicenceCategory: (licenceCategoryKey: string) => recordTypes.LicenceCategory;
-export declare const getLicenceCategoryAdditionalFee: (licenceAdditionalFeeKey: string) => recordTypes.LicenceCategoryAdditionalFee;
-export declare const clearAll: () => void;
+import type { LicenceCategory, LicenceCategoryAdditionalFee } from '../types/recordTypes.js';
+export declare function getLicenceCategories(): LicenceCategory[];
+export declare function getLicenceCategory(licenceCategoryKey: string): LicenceCategory | undefined;
+export declare function getLicenceCategoryAdditionalFee(licenceAdditionalFeeKey: string): LicenceCategoryAdditionalFee | undefined;
+export declare function clearAll(): void;

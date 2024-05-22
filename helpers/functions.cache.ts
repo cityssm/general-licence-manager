@@ -1,26 +1,27 @@
 import Debug from 'debug'
 
-import type * as recordTypes from '../types/recordTypes.js'
+import type {
+  LicenceCategory,
+  LicenceCategoryAdditionalFee
+} from '../types/recordTypes.js'
 
 import database_getLicenceCategories from './licencesDB/getLicenceCategories.js'
 import database_getLicenceCategory from './licencesDB/getLicenceCategory.js'
 
 const debug = Debug('general-licence-manager:cache')
 
-let licenceCategoriesList: recordTypes.LicenceCategory[]
-const licenceCategoriesMap = new Map<string, recordTypes.LicenceCategory>()
+let licenceCategoriesList: LicenceCategory[] | undefined
+const licenceCategoriesMap = new Map<string, LicenceCategory>()
 
-export const getLicenceCategories = (): recordTypes.LicenceCategory[] => {
-  if (!licenceCategoriesList) {
+export function getLicenceCategories(): LicenceCategory[] {
+  if (licenceCategoriesList === undefined) {
     debug('Cache miss: getLicenceCategories')
     licenceCategoriesList = database_getLicenceCategories()
   }
   return licenceCategoriesList
 }
 
-export const getLicenceCategory = (
-  licenceCategoryKey: string
-): recordTypes.LicenceCategory => {
+export function getLicenceCategory(licenceCategoryKey: string): LicenceCategory | undefined {
   if (!licenceCategoriesMap.has(licenceCategoryKey)) {
     debug('Cache miss: getLicenceCategory(' + licenceCategoryKey + ')')
     licenceCategoriesMap.set(
@@ -37,21 +38,16 @@ export const getLicenceCategory = (
   return licenceCategoriesMap.get(licenceCategoryKey)
 }
 
-export const getLicenceCategoryAdditionalFee = (
-  licenceAdditionalFeeKey: string
-): recordTypes.LicenceCategoryAdditionalFee => {
+export function getLicenceCategoryAdditionalFee(licenceAdditionalFeeKey: string): LicenceCategoryAdditionalFee | undefined {
   const licenceCategories = getLicenceCategories()
 
   for (const licenceCategory of licenceCategories) {
-    const licenceCategoryAdditionalFees = getLicenceCategory(
-      licenceCategory.licenceCategoryKey
-    ).licenceCategoryAdditionalFees
+    const licenceCategoryAdditionalFees = getLicenceCategory(licenceCategory.licenceCategoryKey)
+      ?.licenceCategoryAdditionalFees ?? []
 
     for (const licenceCategoryAdditionalFee of licenceCategoryAdditionalFees) {
-      if (
-        licenceCategoryAdditionalFee.licenceAdditionalFeeKey ===
-        licenceAdditionalFeeKey
-      ) {
+      if (licenceCategoryAdditionalFee.licenceAdditionalFeeKey ===
+        licenceAdditionalFeeKey) {
         return licenceCategoryAdditionalFee
       }
     }
@@ -60,7 +56,7 @@ export const getLicenceCategoryAdditionalFee = (
   return undefined
 }
 
-export const clearAll = (): void => {
+export function clearAll(): void {
   licenceCategoriesList = undefined
   licenceCategoriesMap.clear()
 }

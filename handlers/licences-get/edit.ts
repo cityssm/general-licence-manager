@@ -1,34 +1,35 @@
-import type { RequestHandler } from "express";
+import type { Request, Response } from 'express'
 
-import * as configFunctions from "../../helpers/functions.config.js";
-import { getLicence } from "../../helpers/licencesDB/getLicence.js";
-import { getLicenceCategory } from "../../helpers/licencesDB/getLicenceCategory.js";
+import * as configFunctions from '../../helpers/functions.config.js'
+import getLicence from '../../helpers/licencesDB/getLicence.js'
+import { getLicenceCategory } from '../../helpers/licencesDB/getLicenceCategory.js'
 
+export function handler(request: Request, response: Response): void {
+  const licenceId = request.params.licenceId
 
-export const handler: RequestHandler = (request, response) => {
-
-  const licenceId = request.params.licenceId;
-
-  const licence = getLicence(licenceId);
+  const licence = getLicence(licenceId)
 
   if (!licence) {
-    return response.redirect(configFunctions.getProperty("reverseProxy.urlPrefix") + "/licences/?error=licenceIdNotFound");
+    response.redirect(
+      configFunctions.getProperty('reverseProxy.urlPrefix') +
+        '/licences/?error=licenceIdNotFound'
+    )
+    return
   }
 
   const licenceCategory = getLicenceCategory(licence.licenceCategoryKey, {
     includeApprovals: false,
     includeFields: false,
-    includeFees: "current",
+    includeFees: 'current',
     includeAdditionalFees: true
-  });
+  })
 
-  response.render("licence-edit", {
-    headTitle: configFunctions.getProperty("settings.licenceAlias") + " Update",
+  response.render('licence-edit', {
+    headTitle: configFunctions.getProperty('settings.licenceAlias') + ' Update',
     isCreate: false,
     licence,
     licenceCategories: [licenceCategory]
-  });
-};
+  })
+}
 
-
-export default handler;
+export default handler

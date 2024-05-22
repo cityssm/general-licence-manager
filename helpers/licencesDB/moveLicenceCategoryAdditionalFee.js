@@ -1,33 +1,36 @@
-import sqlite from "better-sqlite3";
-import { licencesDB as databasePath } from "../../data/databasePaths.js";
-import { getLicenceCategoryAdditionalFee } from "./getLicenceCategoryAdditionalFee.js";
-import { getLicenceCategoryAdditionalFees } from "./getLicenceCategoryAdditionalFees.js";
-const sql = "update LicenceCategoryAdditionalFees" +
-    " set orderNumber = ?," +
-    " recordUpdate_userName = ?," +
-    " recordUpdate_timeMillis = ?" +
-    " where licenceAdditionalFeeKey = ?";
-export const moveLicenceCategoryAdditionalFee = (licenceAdditionalFeeKey_from, licenceAdditionalFeeKey_to, requestSession) => {
+import sqlite from 'better-sqlite3';
+import { licencesDB as databasePath } from '../../data/databasePaths.js';
+import { getLicenceCategoryAdditionalFee } from './getLicenceCategoryAdditionalFee.js';
+import getLicenceCategoryAdditionalFees from './getLicenceCategoryAdditionalFees.js';
+const sql = `update LicenceCategoryAdditionalFees
+    set orderNumber = ?,
+    recordUpdate_userName = ?,
+    recordUpdate_timeMillis = ?
+    where licenceAdditionalFeeKey = ?`;
+export default function moveLicenceCategoryAdditionalFee(licenceAdditionalFeeKeyFrom, licenceAdditionalFeeKeyTo, requestSession) {
     const database = sqlite(databasePath);
-    const licenceCategoryAdditionalFee_from = getLicenceCategoryAdditionalFee(licenceAdditionalFeeKey_from, database);
-    const licenceCategoryAdditionalFees = getLicenceCategoryAdditionalFees(licenceCategoryAdditionalFee_from.licenceCategoryKey, database);
+    const licenceCategoryAdditionalFeeFrom = getLicenceCategoryAdditionalFee(licenceAdditionalFeeKeyFrom, database);
+    const licenceCategoryAdditionalFees = getLicenceCategoryAdditionalFees(licenceCategoryAdditionalFeeFrom.licenceCategoryKey, database);
     let expectedOrderNumber = 0;
     for (const licenceCategoryAdditionalFee of licenceCategoryAdditionalFees) {
-        if (licenceCategoryAdditionalFee.licenceAdditionalFeeKey === licenceAdditionalFeeKey_from) {
+        if (licenceCategoryAdditionalFee.licenceAdditionalFeeKey ===
+            licenceAdditionalFeeKeyFrom) {
             continue;
         }
         expectedOrderNumber += 1;
-        if (licenceCategoryAdditionalFee.licenceAdditionalFeeKey === licenceAdditionalFeeKey_to) {
-            database.prepare(sql)
-                .run(expectedOrderNumber, requestSession.user.userName, Date.now(), licenceAdditionalFeeKey_from);
+        if (licenceCategoryAdditionalFee.licenceAdditionalFeeKey ===
+            licenceAdditionalFeeKeyTo) {
+            database
+                .prepare(sql)
+                .run(expectedOrderNumber, requestSession.user.userName, Date.now(), licenceAdditionalFeeKeyFrom);
             expectedOrderNumber += 1;
         }
         if (licenceCategoryAdditionalFee.orderNumber !== expectedOrderNumber) {
-            database.prepare(sql)
+            database
+                .prepare(sql)
                 .run(expectedOrderNumber, requestSession.user.userName, Date.now(), licenceCategoryAdditionalFee.licenceAdditionalFeeKey);
         }
     }
     database.close();
-    return licenceCategoryAdditionalFee_from.licenceCategoryKey;
-};
-export default moveLicenceCategoryAdditionalFee;
+    return licenceCategoryAdditionalFeeFrom.licenceCategoryKey;
+}

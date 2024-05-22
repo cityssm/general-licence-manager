@@ -1,35 +1,35 @@
-import type { RequestHandler } from 'express'
+import path from 'node:path'
 
-import path from 'path'
+import { convertHTMLToPDF } from '@cityssm/pdf-puppeteer'
 import * as ejs from 'ejs'
+import type { NextFunction, Request, Response } from 'express'
 
-import { getLicence } from '../../helpers/licencesDB/getLicence.js'
 import { getLicenceCategory } from '../../helpers/functions.cache.js'
-
 import * as configFunctions from '../../helpers/functions.config.js'
 import * as printFunctions from '../../helpers/functions.print.js'
+import getLicence from '../../helpers/licencesDB/getLicence.js'
 
-import convertHTMLToPDF from '@cityssm/pdf-puppeteer'
-
-export const handler: RequestHandler = async (request, response, next) => {
+export async function handler(request: Request, response: Response, next: NextFunction): Promise<void> {
   const licenceId = request.params.licenceId
 
   const licence = getLicence(licenceId)
 
-  if (!licence || !licence.issueDate) {
-    return next(
+  if (!licence?.issueDate) {
+    next(
       configFunctions.getProperty('settings.licenceAlias') +
-        ' not available for printing.'
+      ' not available for printing.'
     )
+    return
   }
 
   const licenceCategory = getLicenceCategory(licence.licenceCategoryKey)
 
   if (!licenceCategory.printEJS || licenceCategory.printEJS === '') {
-    return next(
+    next(
       configFunctions.getProperty('settings.licenceAlias') +
-        ' does not have a print template set.'
+      ' does not have a print template set.'
     )
+    return
   }
 
   const reportPath = path.join('.', 'print', licenceCategory.printEJS + '.ejs')
@@ -45,7 +45,8 @@ export const handler: RequestHandler = async (request, response, next) => {
     {},
     async (ejsError, ejsData) => {
       if (ejsError) {
-        return next(ejsError)
+        next(ejsError)
+        return
       }
 
       const pdf = await convertHTMLToPDF(ejsData, {
@@ -57,17 +58,17 @@ export const handler: RequestHandler = async (request, response, next) => {
       response.setHeader(
         'Content-Disposition',
         'attachment;' +
-          ' filename=' +
-          configFunctions.getProperty('settings.licenceAlias').toLowerCase() +
-          '-' +
-          licenceId +
-          '-' +
-          licence.recordUpdate_timeMillis.toString() +
-          '.pdf'
+        ' filename=' +
+        configFunctions.getProperty('settings.licenceAlias').toLowerCase() +
+        '-' +
+        licenceId +
+        '-' +
+        licence.recordUpdate_timeMillis.toString() +
+        '.pdf'
       )
-  
+
       response.setHeader('Content-Type', 'application/pdf')
-  
+
       response.send(pdf)
     }
   )

@@ -19,9 +19,9 @@ export const getLicenceStats = () => {
         };
     }
     stats.startDateStringMin = dateTimeFunctions.dateIntegerToString(stats.startDateMin);
-    stats.startYearMin = Math.floor(stats.startDateMin / 10000);
+    stats.startYearMin = Math.floor(stats.startDateMin / 10_000);
     stats.startDateStringMax = dateTimeFunctions.dateIntegerToString(stats.startDateMax);
-    stats.startYearMax = Math.floor(stats.startDateMax / 10000);
+    stats.startYearMax = Math.floor(stats.startDateMax / 10_000);
     return stats;
 };
 export default getLicenceStats;

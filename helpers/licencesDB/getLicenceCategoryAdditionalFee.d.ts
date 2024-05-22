@@ -1,4 +1,4 @@
 import sqlite from 'better-sqlite3';
-import type * as recordTypes from '../../types/recordTypes';
-export declare const getLicenceCategoryAdditionalFee: (licenceAdditionalFeeKey: string, database?: sqlite.Database) => recordTypes.LicenceCategoryAdditionalFee;
+import type { LicenceCategoryAdditionalFee } from '../../types/recordTypes.js';
+export declare function getLicenceCategoryAdditionalFee(licenceAdditionalFeeKey: string, database?: sqlite.Database): LicenceCategoryAdditionalFee | undefined;
 export default getLicenceCategoryAdditionalFee;

@@ -1,5 +1,5 @@
-import { ADWebAuthConfig } from '@cityssm/ad-web-auth-connector/types.js';
-import type * as configTypes from '../types/configTypes';
+import type { ADWebAuthConfig } from '@cityssm/ad-web-auth-connector/types.js';
+import type * as configTypes from '../types/configTypes.js';
 export declare function getProperty(propertyName: 'application.applicationName'): string;
 export declare function getProperty(propertyName: 'application.logoURL'): string;
 export declare function getProperty(propertyName: 'application.httpPort'): number;

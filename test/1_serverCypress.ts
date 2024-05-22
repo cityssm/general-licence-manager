@@ -49,11 +49,11 @@ describe("general-licence-manager", () => {
 
       const childProcess = exec(cypressCommand);
 
-      childProcess.stdout.on("data", (data) => {
+      childProcess.stdout?.on("data", (data) => {
         console.log(data);
       });
 
-      childProcess.stderr.on("data", (data) => {
+      childProcess.stderr?.on("data", (data) => {
         console.error(data);
       });
 

@@ -1,5 +1,5 @@
-import type * as recordTypes from "../../types/recordTypes";
-interface UpdateLicenceCategoryAdditionalFeeForm {
+import type { PartialSession } from '../../types/recordTypes.js';
+export interface UpdateLicenceCategoryAdditionalFeeForm {
     licenceAdditionalFeeKey: string;
     additionalFee: string;
     additionalFeeType: string;
@@ -7,5 +7,4 @@ interface UpdateLicenceCategoryAdditionalFeeForm {
     additionalFeeFunction?: string;
     isRequired?: string;
 }
-export declare const updateLicenceCategoryAdditionalFee: (licenceCategoryAdditionalFeeForm: UpdateLicenceCategoryAdditionalFeeForm, requestSession: recordTypes.PartialSession) => boolean;
-export default updateLicenceCategoryAdditionalFee;
+export default function updateLicenceCategoryAdditionalFee(licenceCategoryAdditionalFeeForm: UpdateLicenceCategoryAdditionalFeeForm, requestSession: PartialSession): boolean;

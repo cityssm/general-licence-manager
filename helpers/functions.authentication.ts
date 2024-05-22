@@ -1,7 +1,7 @@
 import { AdWebAuthConnector } from '@cityssm/ad-web-auth-connector'
-import * as configFunctions from './functions.config.js'
-
 import ActiveDirectory from 'activedirectory2'
+
+import * as configFunctions from './functions.config.js'
 
 const userDomain = configFunctions.getProperty('application.userDomain')
 
@@ -11,7 +11,7 @@ async function authenticateViaActiveDirectory(
   userName: string,
   password: string
 ): Promise<boolean> {
-  return new Promise((resolve) => {
+  return await new Promise((resolve) => {
     try {
       const ad = new ActiveDirectory(activeDirectoryConfig)
 
@@ -57,7 +57,7 @@ export const authenticate = async (
   userName: string,
   password: string
 ): Promise<boolean> => {
-  if (!userName || userName === '' || !password || password === '') {
+  if ((userName ?? '') === '' || (password ?? '') === '') {
     return false
   }
 

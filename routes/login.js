@@ -1,11 +1,11 @@
-import { Router } from 'express';
 import Debug from 'debug';
-import * as configFunctions from '../helpers/functions.config.js';
-import * as authenticationFunctions from '../helpers/functions.authentication.js';
+import { Router } from 'express';
 import { useTestDatabases } from '../data/databasePaths.js';
+import * as authenticationFunctions from '../helpers/functions.authentication.js';
+import * as configFunctions from '../helpers/functions.config.js';
 const debug = Debug('general-licence-manager:login');
 export const router = Router();
-const getSafeRedirectURL = (possibleRedirectURL = '') => {
+function getSafeRedirectURL(possibleRedirectURL = '') {
     const urlPrefix = configFunctions.getProperty('reverseProxy.urlPrefix');
     const urlToCheck = (possibleRedirectURL.startsWith(urlPrefix)
         ? possibleRedirectURL.slice(urlPrefix.length)
@@ -15,17 +15,18 @@ const getSafeRedirectURL = (possibleRedirectURL = '') => {
         case '/admin/licenceCategories':
         case '/admin/yearEnd':
         case '/licences':
-        case '/reports':
+        case '/reports': {
             return urlPrefix + urlToCheck;
+        }
     }
-    return urlPrefix + '/dashboard';
-};
+    return `${urlPrefix}/dashboard`;
+}
 router
     .route('/')
     .get((request, response) => {
     const sessionCookieName = configFunctions.getProperty('session.cookieName');
     if (request.session.user && request.cookies[sessionCookieName]) {
-        const redirectURL = getSafeRedirectURL((request.query.redirect || ''));
+        const redirectURL = getSafeRedirectURL((request.query.redirect ?? ''));
         response.redirect(redirectURL);
     }
     else {
@@ -40,15 +41,15 @@ router
     .post(async (request, response) => {
     const userName = request.body.userName;
     const passwordPlain = request.body.password;
-    const redirectURL = getSafeRedirectURL(request.body.redirect);
+    const redirectURL = getSafeRedirectURL((request.body.redirect ?? ''));
     let isAuthenticated = false;
-    if (userName.charAt(0) === '*') {
+    if (userName.startsWith('*')) {
         if (useTestDatabases && userName === passwordPlain) {
             isAuthenticated = configFunctions
                 .getProperty('users.testing')
                 .includes(userName);
             if (isAuthenticated) {
-                debug('Authenticated testing user: ' + userName);
+                debug(`Authenticated testing user: ${userName}`);
             }
         }
     }
@@ -83,7 +84,7 @@ router
             };
         }
     }
-    if (isAuthenticated && userObject) {
+    if (isAuthenticated && userObject !== undefined) {
         request.session.user = userObject;
         response.redirect(redirectURL);
     }

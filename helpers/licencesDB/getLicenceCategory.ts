@@ -1,33 +1,31 @@
 import sqlite from 'better-sqlite3'
+
 import { licencesDB as databasePath } from '../../data/databasePaths.js'
-
-import { getLicenceCategoryFields } from './getLicenceCategoryFields.js'
-import { getLicenceCategoryApprovals } from './getLicenceCategoryApprovals.js'
-import { getLicenceCategoryFees } from './getLicenceCategoryFees.js'
-import { getLicenceCategoryAdditionalFees } from './getLicenceCategoryAdditionalFees.js'
-
 import type * as recordTypes from '../../types/recordTypes'
 
-export const getLicenceCategory = (
-  licenceCategoryKey: string,
+import getLicenceCategoryAdditionalFees from './getLicenceCategoryAdditionalFees.js'
+import { getLicenceCategoryApprovals } from './getLicenceCategoryApprovals.js'
+import { getLicenceCategoryFees } from './getLicenceCategoryFees.js'
+import { getLicenceCategoryFields } from './getLicenceCategoryFields.js'
+
+export function getLicenceCategory(licenceCategoryKey: string,
   options: {
     includeApprovals: boolean
     includeFees: 'current' | 'all' | false
     includeFields: boolean
     includeAdditionalFees: boolean
-  }
-): recordTypes.LicenceCategory => {
+  }): recordTypes.LicenceCategory {
   const database = sqlite(databasePath, {
     readonly: true
   })
 
   const licenceCategory = database
     .prepare(
-      'select licenceCategoryKey, licenceCategory, bylawNumber, printEJS,' +
-        ' licenceLengthFunction, licenceLengthYears, licenceLengthMonths, licenceLengthDays,' +
-        ' recordDelete_timeMillis' +
-        ' from LicenceCategories' +
-        ' where licenceCategoryKey = ?'
+      `select licenceCategoryKey, licenceCategory, bylawNumber, printEJS,
+        licenceLengthFunction, licenceLengthYears, licenceLengthMonths, licenceLengthDays,
+        recordDelete_timeMillis
+        from LicenceCategories
+        where licenceCategoryKey = ?`
     )
     .get(licenceCategoryKey) as recordTypes.LicenceCategory
 

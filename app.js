@@ -22,12 +22,11 @@ import routerReports from './routes/reports.js';
 import { version } from './version.js';
 const debugApp = debug('general-licence-manager:app');
 databaseInitializer.initLicencesDB();
-const __dirname = '.';
 export const app = express();
 if (!configFunctions.getProperty('reverseProxy.disableEtag')) {
     app.set('etag', false);
 }
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join('views'));
 app.set('view engine', 'ejs');
 if (!configFunctions.getProperty('reverseProxy.disableCompression')) {
     app.use(compression());
@@ -79,12 +78,13 @@ app.use((request, response, next) => {
     }
     next();
 });
-const sessionChecker = (request, response, next) => {
+function sessionChecker(request, response, next) {
     if (request.session.user && request.cookies[sessionCookieName]) {
-        return next();
+        next();
+        return;
     }
-    return response.redirect(`${urlPrefix}/login?redirect=${request.originalUrl}`);
-};
+    response.redirect(`${urlPrefix}/login?redirect=${request.originalUrl}`);
+}
 app.use((request, response, next) => {
     response.locals.buildNumber = version;
     response.locals.user = request.session.user;
@@ -96,29 +96,29 @@ app.use((request, response, next) => {
     response.locals.urlPrefix = configFunctions.getProperty('reverseProxy.urlPrefix');
     next();
 });
-app.get(urlPrefix + '/', sessionChecker, (_request, response) => {
-    response.redirect(urlPrefix + '/dashboard');
+app.get(`${urlPrefix}/`, sessionChecker, (_request, response) => {
+    response.redirect(`${urlPrefix}/dashboard`);
 });
-app.use(urlPrefix + '/dashboard', sessionChecker, routerDashboard);
-app.use(urlPrefix + '/licences', sessionChecker, routerLicences);
+app.use(`${urlPrefix}/dashboard`, sessionChecker, routerDashboard);
+app.use(`${urlPrefix}/licences`, sessionChecker, routerLicences);
 if (configFunctions.getProperty('settings.includeBatches')) {
-    app.use(urlPrefix + '/batches', sessionChecker, routerBatches);
+    app.use(`${urlPrefix}/batches`, sessionChecker, routerBatches);
 }
-app.use(urlPrefix + '/reports', sessionChecker, routerReports);
-app.use(urlPrefix + '/admin', sessionChecker, routerAdmin);
-app.all(urlPrefix + '/keepAlive', (_request, response) => {
+app.use(`${urlPrefix}/reports`, sessionChecker, routerReports);
+app.use(`${urlPrefix}/admin`, sessionChecker, routerAdmin);
+app.all(`${urlPrefix}/keepAlive`, (_request, response) => {
     response.json(true);
 });
-app.use(urlPrefix + '/login', routerLogin);
-app.get(urlPrefix + '/logout', (request, response) => {
+app.use(`${urlPrefix}/login`, routerLogin);
+app.get(`${urlPrefix}/logout`, (request, response) => {
     if (request.session.user && request.cookies[sessionCookieName]) {
-        request.session.destroy(null);
-        request.session = undefined;
-        response.clearCookie(sessionCookieName);
-        response.redirect(urlPrefix + '/');
+        request.session.destroy(() => {
+            response.clearCookie(sessionCookieName);
+            response.redirect(`${urlPrefix}/`);
+        });
     }
     else {
-        response.redirect(urlPrefix + '/login');
+        response.redirect(`${urlPrefix}/login`);
     }
 });
 app.use((_request, _response, next) => {

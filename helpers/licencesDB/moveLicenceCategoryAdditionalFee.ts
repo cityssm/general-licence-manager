@@ -1,61 +1,76 @@
-import sqlite from "better-sqlite3";
-import { licencesDB as databasePath } from "../../data/databasePaths.js";
+import sqlite from 'better-sqlite3'
+import type * as expressSession from 'express-session'
 
-import { getLicenceCategoryAdditionalFee } from "./getLicenceCategoryAdditionalFee.js";
-import { getLicenceCategoryAdditionalFees } from "./getLicenceCategoryAdditionalFees.js";
+import { licencesDB as databasePath } from '../../data/databasePaths.js'
+import type { LicenceCategoryAdditionalFee } from '../../types/recordTypes.js'
 
-import type * as expressSession from "express-session";
+import { getLicenceCategoryAdditionalFee } from './getLicenceCategoryAdditionalFee.js'
+import getLicenceCategoryAdditionalFees from './getLicenceCategoryAdditionalFees.js'
 
+const sql = `update LicenceCategoryAdditionalFees
+    set orderNumber = ?,
+    recordUpdate_userName = ?,
+    recordUpdate_timeMillis = ?
+    where licenceAdditionalFeeKey = ?`
 
-const sql = "update LicenceCategoryAdditionalFees" +
-  " set orderNumber = ?," +
-  " recordUpdate_userName = ?," +
-  " recordUpdate_timeMillis = ?" +
-  " where licenceAdditionalFeeKey = ?";
+export default function moveLicenceCategoryAdditionalFee(
+  licenceAdditionalFeeKeyFrom: string,
+  licenceAdditionalFeeKeyTo: string,
+  requestSession: expressSession.Session
+): string {
+  const database = sqlite(databasePath)
 
+  const licenceCategoryAdditionalFeeFrom = getLicenceCategoryAdditionalFee(
+    licenceAdditionalFeeKeyFrom,
+    database
+  ) as LicenceCategoryAdditionalFee
 
-export const moveLicenceCategoryAdditionalFee =
-  (licenceAdditionalFeeKey_from: string, licenceAdditionalFeeKey_to: string, requestSession: expressSession.Session): string => {
+  const licenceCategoryAdditionalFees = getLicenceCategoryAdditionalFees(
+    licenceCategoryAdditionalFeeFrom.licenceCategoryKey,
+    database
+  )
 
-    const database = sqlite(databasePath);
+  let expectedOrderNumber = 0
 
-    const licenceCategoryAdditionalFee_from = getLicenceCategoryAdditionalFee(licenceAdditionalFeeKey_from, database);
-
-    const licenceCategoryAdditionalFees = getLicenceCategoryAdditionalFees(licenceCategoryAdditionalFee_from.licenceCategoryKey, database);
-
-    let expectedOrderNumber = 0;
-
-    for (const licenceCategoryAdditionalFee of licenceCategoryAdditionalFees) {
-
-      if (licenceCategoryAdditionalFee.licenceAdditionalFeeKey === licenceAdditionalFeeKey_from) {
-        continue;
-      }
-
-      expectedOrderNumber += 1;
-
-      if (licenceCategoryAdditionalFee.licenceAdditionalFeeKey === licenceAdditionalFeeKey_to) {
-        database.prepare(sql)
-          .run(expectedOrderNumber,
-            requestSession.user.userName,
-            Date.now(),
-            licenceAdditionalFeeKey_from);
-
-        expectedOrderNumber += 1;
-      }
-
-      if (licenceCategoryAdditionalFee.orderNumber !== expectedOrderNumber) {
-        database.prepare(sql)
-          .run(expectedOrderNumber,
-            requestSession.user.userName,
-            Date.now(),
-            licenceCategoryAdditionalFee.licenceAdditionalFeeKey);
-      }
+  for (const licenceCategoryAdditionalFee of licenceCategoryAdditionalFees) {
+    if (
+      licenceCategoryAdditionalFee.licenceAdditionalFeeKey ===
+      licenceAdditionalFeeKeyFrom
+    ) {
+      continue
     }
 
-    database.close();
+    expectedOrderNumber += 1
 
-    return licenceCategoryAdditionalFee_from.licenceCategoryKey;
-  };
+    if (
+      licenceCategoryAdditionalFee.licenceAdditionalFeeKey ===
+      licenceAdditionalFeeKeyTo
+    ) {
+      database
+        .prepare(sql)
+        .run(
+          expectedOrderNumber,
+          requestSession.user.userName,
+          Date.now(),
+          licenceAdditionalFeeKeyFrom
+        )
 
+      expectedOrderNumber += 1
+    }
 
-export default moveLicenceCategoryAdditionalFee;
+    if (licenceCategoryAdditionalFee.orderNumber !== expectedOrderNumber) {
+      database
+        .prepare(sql)
+        .run(
+          expectedOrderNumber,
+          requestSession.user.userName,
+          Date.now(),
+          licenceCategoryAdditionalFee.licenceAdditionalFeeKey
+        )
+    }
+  }
+
+  database.close()
+
+  return licenceCategoryAdditionalFeeFrom.licenceCategoryKey
+}

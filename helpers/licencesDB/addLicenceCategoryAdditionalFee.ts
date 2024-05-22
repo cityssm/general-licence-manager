@@ -1,49 +1,54 @@
-import sqlite from "better-sqlite3";
-import { licencesDB as databasePath } from "../../data/databasePaths.js";
+import sqlite from 'better-sqlite3'
 
-import { getUnusedLicenceAdditionalFeeKey } from "./getUnusedKey.js";
+import { licencesDB as databasePath } from '../../data/databasePaths.js'
+import type { PartialSession } from '../../types/recordTypes.js'
 
-import type * as recordTypes from "../../types/recordTypes";
+import { getUnusedLicenceAdditionalFeeKey } from './getUnusedKey.js'
 
-interface AddLicenceCategoryAdditionalFeeForm {
-  licenceCategoryKey: string;
-  additionalFee: string;
+export interface AddLicenceCategoryAdditionalFeeForm {
+  licenceCategoryKey: string
+  additionalFee: string
 }
 
-export const addLicenceCategoryAdditionalFee =
-  (licenceCategoryAdditionalFeeForm: AddLicenceCategoryAdditionalFeeForm, requestSession: recordTypes.PartialSession): string => {
+export function addLicenceCategoryAdditionalFee(
+  licenceCategoryAdditionalFeeForm: AddLicenceCategoryAdditionalFeeForm,
+  requestSession: PartialSession
+): string {
+  const licenceAdditionalFeeKey = getUnusedLicenceAdditionalFeeKey(
+    licenceCategoryAdditionalFeeForm.licenceCategoryKey,
+    licenceCategoryAdditionalFeeForm.additionalFee
+  )
 
-    const licenceAdditionalFeeKey =
-      getUnusedLicenceAdditionalFeeKey(licenceCategoryAdditionalFeeForm.licenceCategoryKey, licenceCategoryAdditionalFeeForm.additionalFee);
+  const database = sqlite(databasePath)
 
-    const database = sqlite(databasePath);
+  const rightNowMillis = Date.now()
 
-    const rightNowMillis = Date.now();
+  database
+    .prepare(
+      `insert into licenceCategoryAdditionalFees (
+        licenceAdditionalFeeKey, licenceCategoryKey,
+        additionalFee, additionalFeeType, additionalFeeNumber, additionalFeeFunction,
+        isRequired,
+        recordCreate_userName, recordCreate_timeMillis, recordUpdate_userName, recordUpdate_timeMillis)
+        values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    )
+    .run(
+      licenceAdditionalFeeKey,
+      licenceCategoryAdditionalFeeForm.licenceCategoryKey,
+      licenceCategoryAdditionalFeeForm.additionalFee,
+      'flat',
+      0,
+      '',
+      0,
+      requestSession.user.userName,
+      rightNowMillis,
+      requestSession.user.userName,
+      rightNowMillis
+    )
 
-    database
-      .prepare("insert into licenceCategoryAdditionalFees" +
-        "(licenceAdditionalFeeKey, licenceCategoryKey, additionalFee," +
-        " additionalFeeType, additionalFeeNumber, additionalFeeFunction," +
-        " isRequired," +
-        " recordCreate_userName, recordCreate_timeMillis," +
-        " recordUpdate_userName, recordUpdate_timeMillis)" +
-        " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
-      .run(licenceAdditionalFeeKey,
-        licenceCategoryAdditionalFeeForm.licenceCategoryKey,
-        licenceCategoryAdditionalFeeForm.additionalFee,
-        "flat",
-        0,
-        "",
-        0,
-        requestSession.user.userName,
-        rightNowMillis,
-        requestSession.user.userName,
-        rightNowMillis);
+  database.close()
 
-    database.close();
+  return licenceAdditionalFeeKey
+}
 
-    return licenceAdditionalFeeKey;
-  };
-
-
-export default addLicenceCategoryAdditionalFee;
+export default addLicenceCategoryAdditionalFee

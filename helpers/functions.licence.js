@@ -1,16 +1,18 @@
-import * as configFunctions from "./functions.config.js";
+import * as configFunctions from './functions.config.js';
 export const calculateAdditionalFeeAmount = (licenceCategoryAdditionalFee, baseLicenceFee) => {
-    const baseLicenceFeeFloat = typeof (baseLicenceFee) === "string"
+    const baseLicenceFeeFloat = typeof baseLicenceFee === 'string'
         ? Number.parseFloat(baseLicenceFee)
         : baseLicenceFee;
-    let additionalFeeAmount = licenceCategoryAdditionalFee.additionalFeeNumber;
+    let additionalFeeAmount = licenceCategoryAdditionalFee.additionalFeeNumber ?? 0;
     switch (licenceCategoryAdditionalFee.additionalFeeType) {
-        case "percent":
+        case 'percent': {
             additionalFeeAmount = baseLicenceFeeFloat * (additionalFeeAmount / 100);
             break;
-        case "function":
-            additionalFeeAmount = configFunctions.getAdditionalFeeFunction(licenceCategoryAdditionalFee.additionalFeeFunction)(baseLicenceFeeFloat);
+        }
+        case 'function': {
+            additionalFeeAmount = configFunctions.getAdditionalFeeFunction(licenceCategoryAdditionalFee.additionalFeeFunction ?? '')(baseLicenceFeeFloat);
             break;
+        }
     }
     return additionalFeeAmount;
 };

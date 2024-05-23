@@ -7,7 +7,7 @@ const tablesToPurge = [
     'LicenceCategoryAdditionalFees',
     'LicenceCategories'
 ];
-export default function deleteLicenceCategory(licenceCategoryKey, requestSession) {
+export default function deleteLicenceCategory(licenceCategoryKey, sessionUser) {
     const database = sqlite(databasePath);
     const row = database
         .prepare('select licenceId from Licences where licenceCategoryKey = ?')
@@ -26,7 +26,7 @@ export default function deleteLicenceCategory(licenceCategoryKey, requestSession
             set recordDelete_userName = ?,
             recordDelete_timeMillis = ?
             where licenceCategoryKey = ?`)
-                .run(requestSession.user.userName, Date.now(), licenceCategoryKey);
+                .run(sessionUser.userName, Date.now(), licenceCategoryKey);
         }
     }
     database.close();

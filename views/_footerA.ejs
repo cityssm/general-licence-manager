@@ -4,7 +4,7 @@
     <div class="content has-text-right">
       <p class="has-text-grey-dark">
         <strong>
-          <%= configFunctions.getProperty("application.applicationName") %>
+          <%= configFunctions.getConfigProperty("application.applicationName") %>
         </strong><br />
         Build <%= buildNumber %><br />
         <a class="has-text-grey-dark" href="https://cityssm.github.io/general-licence-manager/docs" target="_blank" rel="nofollow noreferrer">Help</a>
@@ -14,13 +14,13 @@
 </footer>
 <script>
   window.exports = window.exports || {};
-  window.exports.licenceAlias = "<%= configFunctions.getProperty("settings.licenceAlias") %>";
-  window.exports.licenceAliasPlural = "<%= configFunctions.getProperty("settings.licenceAliasPlural") %>";
-  window.exports.licenseeAlias = "<%= configFunctions.getProperty("settings.licenseeAlias") %>";
-  window.exports.licenseeAliasPlural = "<%= configFunctions.getProperty("settings.licenseeAliasPlural") %>";
-  window.exports.renewalAlias = "<%= configFunctions.getProperty("settings.renewalAlias") %>";
-  window.exports.includeBatches = <%= configFunctions.getProperty("settings.includeBatches") %>;
-  window.exports.includeReplacementFee = <%= configFunctions.getProperty("settings.includeReplacementFee") %>;
+  window.exports.licenceAlias = "<%= configFunctions.getConfigProperty("settings.licenceAlias") %>";
+  window.exports.licenceAliasPlural = "<%= configFunctions.getConfigProperty("settings.licenceAliasPlural") %>";
+  window.exports.licenseeAlias = "<%= configFunctions.getConfigProperty("settings.licenseeAlias") %>";
+  window.exports.licenseeAliasPlural = "<%= configFunctions.getConfigProperty("settings.licenseeAliasPlural") %>";
+  window.exports.renewalAlias = "<%= configFunctions.getConfigProperty("settings.renewalAlias") %>";
+  window.exports.includeBatches = <%= configFunctions.getConfigProperty("settings.includeBatches") %>;
+  window.exports.includeReplacementFee = <%= configFunctions.getConfigProperty("settings.includeReplacementFee") %>;
 </script>
 <script src="<%= urlPrefix %>/lib/cityssm-bulma-js/bulma-js.js"></script>
 <script src="<%= urlPrefix %>/lib/cityssm-bulma-webapp-js/dist/cityssm.min.js"></script>

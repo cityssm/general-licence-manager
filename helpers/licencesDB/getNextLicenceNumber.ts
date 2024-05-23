@@ -138,7 +138,7 @@ export default function getNextLicenceNumber(
 
   let licenceNumber = ''
 
-  switch (configFunctions.getProperty('defaults.licenceNumberFunction')) {
+  switch (configFunctions.getConfigProperty('defaults.licenceNumberFunction')) {
     case 'category-fourDigits': {
       licenceNumber = getCategoryNDigitsLicenceNumber(
         database,

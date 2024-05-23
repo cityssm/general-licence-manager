@@ -1,4 +1,3 @@
-import type * as recordTypes from '../../types/recordTypes';
 export interface CreateLicenceForm {
     licenceCategoryKey: string;
     licenceNumber: string;
@@ -22,4 +21,4 @@ export interface CreateLicenceForm {
     licenceApprovalKeys?: string;
     [fieldOrApprovalKey: string]: string;
 }
-export default function createLicence(licenceForm: CreateLicenceForm, requestSession: recordTypes.PartialSession): number;
+export default function createLicence(licenceForm: CreateLicenceForm, sessionUser: GLMUser): number;

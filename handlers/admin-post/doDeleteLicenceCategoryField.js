@@ -1,5 +1,5 @@
 import * as cacheFunctions from '../../helpers/functions.cache.js';
-import { deleteLicenceCategoryField } from '../../helpers/licencesDB/deleteLicenceCategoryField.js';
+import deleteLicenceCategoryField from '../../helpers/licencesDB/deleteLicenceCategoryField.js';
 import getLicenceCategoryField from '../../helpers/licencesDB/getLicenceCategoryField.js';
 import getLicenceCategoryFields from '../../helpers/licencesDB/getLicenceCategoryFields.js';
 export default function handler(request, response) {
@@ -11,7 +11,7 @@ export default function handler(request, response) {
         });
     }
     else {
-        deleteLicenceCategoryField(licenceFieldKey, request.session);
+        deleteLicenceCategoryField(licenceFieldKey, request.session.user);
         cacheFunctions.clearAll();
         const licenceCategoryFields = getLicenceCategoryFields(licenceCategoryField.licenceCategoryKey);
         response.json({

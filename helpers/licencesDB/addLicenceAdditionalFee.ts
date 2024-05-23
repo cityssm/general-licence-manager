@@ -1,10 +1,7 @@
 import sqlite from 'better-sqlite3'
 
 import { licencesDB as databasePath } from '../../data/databasePaths.js'
-import type {
-  LicenceCategoryAdditionalFee,
-  PartialSession
-} from '../../types/recordTypes.js'
+import type { LicenceCategoryAdditionalFee } from '../../types/recordTypes.js'
 import * as licenceFunctions from '../functions.licence.js'
 
 import getLicenceCategoryAdditionalFee from './getLicenceCategoryAdditionalFee.js'
@@ -18,7 +15,7 @@ interface AddLicenceAdditionalFeeReturn {
 export default function addLicenceAdditionalFee(
   licenceId: string | number,
   licenceAdditionalFeeKey: string,
-  requestSession: PartialSession
+  sessionUser: GLMUser
 ): AddLicenceAdditionalFeeReturn {
   const database = sqlite(databasePath)
 
@@ -64,7 +61,7 @@ export default function addLicenceAdditionalFee(
         recordUpdate_timeMillis = ?
         where licenceId = ?`
     )
-    .run(newLicenceFee, requestSession.user.userName, rightNowMillis, licenceId)
+    .run(newLicenceFee, sessionUser.userName, rightNowMillis, licenceId)
 
   database.close()
 

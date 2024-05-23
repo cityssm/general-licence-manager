@@ -1,40 +1,33 @@
-import sqlite from "better-sqlite3";
-import { licencesDB as databasePath } from "../../data/databasePaths.js";
+import sqlite from 'better-sqlite3'
 
-import type * as expressSession from "express-session";
+import { licencesDB as databasePath } from '../../data/databasePaths.js'
 
+export default function deleteLicenceCategoryField(
+  licenceFieldKey: string,
+  sessionUser: GLMUser
+): boolean {
+  const database = sqlite(databasePath)
 
-export const deleteLicenceCategoryField =
-  (licenceFieldKey: string, requestSession: expressSession.Session): boolean => {
+  const row = database
+    .prepare('select licenceId from LicenceFields where licenceFieldKey = ?')
+    .get(licenceFieldKey)
 
-    const database = sqlite(databasePath);
+  if (row === undefined) {
+    database
+      .prepare('delete from LicenceCategoryFields where licenceFieldKey = ?')
+      .run(licenceFieldKey)
+  } else {
+    database
+      .prepare(
+        `update LicenceCategoryFields
+          set recordDelete_userName = ?,
+          recordDelete_timeMillis = ?
+          where licenceFieldKey = ?`
+      )
+      .run(sessionUser.userName, Date.now(), licenceFieldKey)
+  }
 
-    const row = database
-      .prepare("select licenceId from LicenceFields" +
-        " where licenceFieldKey = ?")
-      .get(licenceFieldKey);
+  database.close()
 
-    if (row) {
-
-      database.prepare("update LicenceCategoryFields" +
-        " set recordDelete_userName = ?," +
-        " recordDelete_timeMillis = ?" +
-        " where licenceFieldKey = ?")
-        .run(requestSession.user.userName,
-          Date.now(),
-          licenceFieldKey);
-
-    } else {
-
-      database.prepare("delete from LicenceCategoryFields" +
-        " where licenceFieldKey = ?")
-        .run(licenceFieldKey);
-    }
-
-    database.close();
-
-    return true;
-  };
-
-
-export default deleteLicenceCategoryField;
+  return true
+}

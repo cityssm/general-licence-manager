@@ -188,22 +188,16 @@ export interface Batch {
  * User
  */
 
-export interface User {
-  userName: string
-  userProperties: UserProperties
-}
-
-export interface UserProperties {
-  canUpdate: boolean
-  isAdmin: boolean
+declare global {
+  export interface GLMUser {
+    userName: string
+    canUpdate: boolean
+    isAdmin: boolean
+  }
 }
 
 declare module 'express-session' {
   interface Session {
-    user: User
+    user?: GLMUser
   }
-}
-
-export interface PartialSession {
-  user: User
 }

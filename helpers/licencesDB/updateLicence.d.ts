@@ -1,4 +1,3 @@
-import type * as expressSession from 'express-session';
 export interface UpdateLicenceForm {
     licenceId: string;
     licenceNumber: string;
@@ -23,4 +22,4 @@ export interface UpdateLicenceForm {
     licenceApprovalKeys?: string;
     [fieldOrApprovalKey: string]: string;
 }
-export default function updateLicence(licenceForm: UpdateLicenceForm, requestSession: expressSession.Session): boolean;
+export default function updateLicence(licenceForm: UpdateLicenceForm, sessionUser: GLMUser): boolean;

@@ -6,7 +6,7 @@ import deleteLicenceCategory from '../../helpers/licencesDB/deleteLicenceCategor
 export default function handler(request: Request, response: Response): void {
   const licenceCategoryKey = request.body.licenceCategoryKey as string
 
-  deleteLicenceCategory(licenceCategoryKey, request.session)
+  deleteLicenceCategory(licenceCategoryKey, request.session.user as GLMUser)
 
   cacheFunctions.clearAll()
   const licenceCategories = cacheFunctions.getLicenceCategories()

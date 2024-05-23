@@ -3,7 +3,7 @@
 
 <head>
   <title>
-    Login: <%= configFunctions.getProperty("application.applicationName") %>
+    Login: <%= configFunctions.getConfigProperty("application.applicationName") %>
   </title>
 
   <meta charset="utf-8">
@@ -20,11 +20,11 @@
       <main class="box mx-3 my-3">
         <div class="columns is-vcentered">
           <div class="column has-text-centered" aria-hidden="true">
-            <img src="<%= urlPrefix + configFunctions.getProperty("application.logoURL") %>" alt="" />
+            <img src="<%= urlPrefix + configFunctions.getConfigProperty("application.logoURL") %>" alt="" />
           </div>
           <div class="column">
             <h1 class="title is-3 has-text-centered">
-              <%= configFunctions.getProperty("application.applicationName") %>
+              <%= configFunctions.getConfigProperty("application.applicationName") %>
             </h1>
             <form id="form--login" method="post" action="<%= urlPrefix %>/login" aria-label="Login Form">
               <input name="_csrf" type="hidden" value="<%= csrfToken %>" />
@@ -33,7 +33,7 @@
               <label class="sr-only" for="login--userName">User Name</label>
               <div class="field has-addons">
                 <div class="control">
-                  <span class="button is-static" aria-label="User Domain"><%= configFunctions.getProperty("application.userDomain") %>\</span>
+                  <span class="button is-static" aria-label="User Domain"><%= configFunctions.getConfigProperty("application.userDomain") %>\</span>
                 </div>
                 <div class="control is-expanded has-tooltip-right" data-tooltip="User Name">
                   <input class="input" id="login--userName" name="userName" type="text" placeholder="User Name" value="<%= userName %>" autocomplete="username" autofocus required />

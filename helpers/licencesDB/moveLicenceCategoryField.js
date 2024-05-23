@@ -7,7 +7,7 @@ const sql = `update LicenceCategoryFields
     recordUpdate_userName = ?,
     recordUpdate_timeMillis = ?
     where licenceFieldKey = ?`;
-export default function moveLicenceCategoryField(licenceFieldKeyFrom, licenceFieldKeyTo, requestSession) {
+export default function moveLicenceCategoryField(licenceFieldKeyFrom, licenceFieldKeyTo, sessionUser) {
     const database = sqlite(databasePath);
     const licenceCategoryFieldFrom = getLicenceCategoryField(licenceFieldKeyFrom, database);
     const licenceCategoryFields = getLicenceCategoryFields(licenceCategoryFieldFrom.licenceCategoryKey, database);
@@ -20,13 +20,13 @@ export default function moveLicenceCategoryField(licenceFieldKeyFrom, licenceFie
         if (licenceCategoryField.licenceFieldKey === licenceFieldKeyTo) {
             database
                 .prepare(sql)
-                .run(expectedOrderNumber, requestSession.user.userName, Date.now(), licenceFieldKeyFrom);
+                .run(expectedOrderNumber, sessionUser.userName, Date.now(), licenceFieldKeyFrom);
             expectedOrderNumber += 1;
         }
         if (licenceCategoryField.orderNumber !== expectedOrderNumber) {
             database
                 .prepare(sql)
-                .run(expectedOrderNumber, requestSession.user.userName, Date.now(), licenceCategoryField.licenceFieldKey);
+                .run(expectedOrderNumber, sessionUser.userName, Date.now(), licenceCategoryField.licenceFieldKey);
         }
     }
     database.close();

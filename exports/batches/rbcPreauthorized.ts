@@ -13,7 +13,7 @@ import {
   rightPad
 } from './batchHelpers.js'
 
-const batchExportConfig = configFunctions.getProperty(
+const batchExportConfig = configFunctions.getConfigProperty(
   'exports.batches'
 ) as ConfigBatchExport_RBCPreauthorized
 

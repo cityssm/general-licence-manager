@@ -8,7 +8,7 @@
         <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
         <li class="is-active"><a href="#" aria-current="page">
           <span class="icon is-small"><i class="fas fa-certificate" aria-hidden="true"></i></span>
-          <span><%= configFunctions.getProperty("settings.licenceAliasPlural") %></span>
+          <span><%= configFunctions.getConfigProperty("settings.licenceAliasPlural") %></span>
         </a></li>
       </ol>
     </nav>
@@ -16,27 +16,27 @@
     <div class="columns">
       <div class="column">
         <h1 class="title is-1">
-          Find a <%= configFunctions.getProperty("settings.licenceAlias") %>
+          Find a <%= configFunctions.getConfigProperty("settings.licenceAlias") %>
         </h1>
 
-        <% if (user.userProperties.canUpdate) { %>
+        <% if (user.canUpdate) { %>
           <div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
-            <a class="button is-circle is-primary has-tooltip-left" data-tooltip="Create a New <%= configFunctions.getProperty("settings.licenceAlias") %>" href="<%= urlPrefix %>/licences/new">
+            <a class="button is-circle is-primary has-tooltip-left" data-tooltip="Create a New <%= configFunctions.getConfigProperty("settings.licenceAlias") %>" href="<%= urlPrefix %>/licences/new">
               <i class="fas fa-plus" aria-hidden="true"></i>
-              <span class="sr-only">Create a New <%= configFunctions.getProperty("settings.licenceAlias") %></span>
+              <span class="sr-only">Create a New <%= configFunctions.getConfigProperty("settings.licenceAlias") %></span>
             </a>
           </div>
         <% } %>
 
         <div class="box">
-          <form id="form--filters" role="search" aria-label="<%= configFunctions.getProperty("settings.licenceAlias") %> Filters">
+          <form id="form--filters" role="search" aria-label="<%= configFunctions.getConfigProperty("settings.licenceAlias") %> Filters">
             <input id="filter--limit" name="limit" type="hidden" value="50" />
             <input id="filter--offset" name="offset" type="hidden" value="0" />
             <div class="columns">
               <div class="column">
                 <div class="field">
                   <label class="label" for="filter--licenceCategoryKey">
-                    <%= configFunctions.getProperty("settings.licenceAlias") %> Category
+                    <%= configFunctions.getConfigProperty("settings.licenceAlias") %> Category
                   </label>
                   <div class="control has-icons-left">
                     <div class="select is-fullwidth">
@@ -57,7 +57,7 @@
               </div>
               <div class="column">
                 <div class="field">
-                  <label class="label" for="filter--licenceDetails"><%= configFunctions.getProperty("settings.licenceAlias") %> Details</label>
+                  <label class="label" for="filter--licenceDetails"><%= configFunctions.getConfigProperty("settings.licenceAlias") %> Details</label>
                   <div class="control has-icons-left">
                     <input class="input" id="filter--licenceDetails" name="licenceDetails" type="text" />
                     <span class="icon is-small is-left">
@@ -70,7 +70,7 @@
             <div class="columns">
               <div class="column">
                 <div class="field">
-                  <label class="label" for="filter--licensee"><%= configFunctions.getProperty("settings.licenseeAlias") %></label>
+                  <label class="label" for="filter--licensee"><%= configFunctions.getConfigProperty("settings.licenseeAlias") %></label>
                   <div class="control has-icons-left">
                     <input class="input" id="filter--licensee" name="licensee" type="text" />
                     <span class="icon is-small is-left">
@@ -101,7 +101,7 @@
           </form>
         </div>
 
-        <div class="is-block-print" id="container--searchResults" aria-label="<%= configFunctions.getProperty("settings.licenceAlias") %> Search Results"></div>
+        <div class="is-block-print" id="container--searchResults" aria-label="<%= configFunctions.getConfigProperty("settings.licenceAlias") %> Search Results"></div>
       </div>
       <div class="column is-3 is-hidden-print">
         <%- include('_menu-licences'); -%>

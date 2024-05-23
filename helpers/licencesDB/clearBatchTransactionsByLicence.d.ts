@@ -1,2 +1,1 @@
-import type { PartialSession } from '../../types/recordTypes.js';
-export default function clearBatchTransactionsByLicence(licenceId: number | string, requestSession: PartialSession): boolean;
+export default function clearBatchTransactionsByLicence(licenceId: number | string, sessionUser: GLMUser): boolean;

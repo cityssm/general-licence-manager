@@ -1,4 +1,4 @@
-import type { LicenceTransaction, PartialSession } from '../../types/recordTypes.js';
+import type { LicenceTransaction } from '../../types/recordTypes.js';
 export interface CreateOrUpdateBatchTransactionForm {
     licenceId: string | number;
     batchDateString: string;
@@ -10,5 +10,5 @@ interface CreateOrUpdateBatchTransactionReturn {
     transactionIndex?: number;
     batchTransactions?: LicenceTransaction[];
 }
-export default function createOrUpdateBatchTransaction(transactionForm: CreateOrUpdateBatchTransactionForm, requestSession: PartialSession): CreateOrUpdateBatchTransactionReturn;
+export default function createOrUpdateBatchTransaction(transactionForm: CreateOrUpdateBatchTransactionForm, sessionUser: GLMUser): CreateOrUpdateBatchTransactionReturn;
 export {};

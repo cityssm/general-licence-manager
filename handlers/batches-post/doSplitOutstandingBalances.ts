@@ -32,7 +32,7 @@ export default function handler(request: Request, response: Response): void {
           batchDateString,
           transactionAmount: (transactionAmount + leftoverPennies).toFixed(2)
         },
-        request.session
+        request.session.user as GLMUser
       )
 
       leftoverPennies = 0

@@ -9,18 +9,18 @@ export default async function handler(request, response, next) {
     const licenceId = request.params.licenceId;
     const licence = getLicence(licenceId);
     if (!licence?.issueDate) {
-        next(configFunctions.getProperty('settings.licenceAlias') +
+        next(configFunctions.getConfigProperty('settings.licenceAlias') +
             ' not available for printing.');
         return;
     }
     const licenceCategory = getLicenceCategory(licence.licenceCategoryKey);
     if (licenceCategory === undefined ||
         (licenceCategory.printEJS ?? '') === '') {
-        next(configFunctions.getProperty('settings.licenceAlias') +
+        next(configFunctions.getConfigProperty('settings.licenceAlias') +
             ' does not have a print template set.');
         return;
     }
-    const reportPath = path.join('.', 'print', licenceCategory.printEJS + '.ejs');
+    const reportPath = path.join('.', 'print', `${licenceCategory.printEJS}.ejs`);
     await ejs.renderFile(reportPath, {
         configFunctions,
         printFunctions,
@@ -38,7 +38,7 @@ export default async function handler(request, response, next) {
         });
         response.setHeader('Content-Disposition', 'attachment;' +
             ' filename=' +
-            configFunctions.getProperty('settings.licenceAlias').toLowerCase() +
+            configFunctions.getConfigProperty('settings.licenceAlias').toLowerCase() +
             '-' +
             licenceId +
             '-' +

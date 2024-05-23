@@ -8,7 +8,7 @@ import updateLicenceCategory, {
 export default function handler(request: Request, response: Response): void {
   const success = updateLicenceCategory(
     request.body as UpdateLicenceCategoryForm,
-    request.session
+    request.session.user as GLMUser
   )
 
   cacheFunctions.clearAll()

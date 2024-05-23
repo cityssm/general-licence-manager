@@ -5,7 +5,7 @@ export default function handler(request, response) {
     const licenceId = Number.parseInt(request.params.licenceId);
     const licence = getLicence(licenceId);
     if (licence === undefined) {
-        response.redirect(configFunctions.getProperty('reverseProxy.urlPrefix') +
+        response.redirect(configFunctions.getConfigProperty('reverseProxy.urlPrefix') +
             '/licences/?error=licenceIdNotFound');
         return;
     }
@@ -16,7 +16,7 @@ export default function handler(request, response) {
         includeAdditionalFees: false
     });
     response.render('licence-view', {
-        headTitle: `${configFunctions.getProperty('settings.licenceAlias')} #${licence.licenceNumber}`,
+        headTitle: `${configFunctions.getConfigProperty('settings.licenceAlias')} #${licence.licenceNumber}`,
         licence,
         licenceCategory
     });

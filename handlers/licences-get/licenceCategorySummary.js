@@ -5,7 +5,7 @@ export default function handler(_request, response) {
     const licenceCategories = getLicenceCategories();
     const licenceStats = getLicenceStats();
     response.render('licence-licenceCategorySummary', {
-        headTitle: `${configFunctions.getProperty('settings.licenceAlias')} Category Summary`,
+        headTitle: `${configFunctions.getConfigProperty('settings.licenceAlias')} Category Summary`,
         licenceCategories,
         licenceStats
     });

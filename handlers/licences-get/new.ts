@@ -47,13 +47,13 @@ export default function handler(request: Request, response: Response): void {
   const licenseeCity = getFirstPopulatedValue(
     request.query.licenseeCity as string,
     relatedLicence?.licenseeCity ?? '',
-    configFunctions.getProperty('defaults.licenseeCity')
+    configFunctions.getConfigProperty('defaults.licenseeCity')
   )
 
   const licenseeProvince = getFirstPopulatedValue(
     request.query.licenseeProvince as string,
     relatedLicence?.licenseeProvince ?? '',
-    configFunctions.getProperty('defaults.licenseeProvince')
+    configFunctions.getConfigProperty('defaults.licenseeProvince')
   )
 
   const licenseePostalCode = getFirstPopulatedValue(
@@ -126,7 +126,7 @@ export default function handler(request: Request, response: Response): void {
   }
 
   response.render('licence-edit', {
-    headTitle: configFunctions.getProperty('settings.licenceAlias') + ' Create',
+    headTitle: configFunctions.getConfigProperty('settings.licenceAlias') + ' Create',
     isCreate: true,
     licenceCategories,
     licence,

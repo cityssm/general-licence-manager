@@ -4,14 +4,14 @@ import {
   dateStringToDate
 } from '@cityssm/expressjs-server-js/dateTimeFns.js'
 
-import { getProperty } from '../../helpers/functions.config.js'
+import { getConfigProperty } from '../../helpers/functions.config.js'
 import type { ConfigBatchExport_CPA005 } from '../../types/configTypes.js'
 import type { LicenceTransaction } from '../../types/recordTypes.js'
 import type { GetBatchExportReturn } from '../batchExport.js'
 
 import { calculateFileCreationNumber } from './batchHelpers.js'
 
-const batchExportConfig = getProperty(
+const batchExportConfig = getConfigProperty(
   'exports.batches'
 ) as ConfigBatchExport_CPA005
 

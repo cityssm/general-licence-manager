@@ -1,7 +1,6 @@
 import sqlite from 'better-sqlite3'
 
 import { licencesDB as databasePath } from '../../data/databasePaths.js'
-import type { PartialSession } from '../../types/recordTypes.js'
 
 import getLicenceCategoryApproval from './getLicenceCategoryApproval.js'
 import getLicenceCategoryApprovals from './getLicenceCategoryApprovals.js'
@@ -15,7 +14,7 @@ const sql = `update LicenceCategoryApprovals
 export default function moveLicenceCategoryApproval(
   licenceApprovalKeyFrom: string,
   licenceApprovalKeyTo: string,
-  requestSession: PartialSession
+  sessionUser: GLMUser
 ): string {
   const database = sqlite(databasePath)
 
@@ -43,7 +42,7 @@ export default function moveLicenceCategoryApproval(
         .prepare(sql)
         .run(
           expectedOrderNumber,
-          requestSession.user.userName,
+          sessionUser.userName,
           Date.now(),
           licenceApprovalKeyFrom
         )
@@ -56,7 +55,7 @@ export default function moveLicenceCategoryApproval(
         .prepare(sql)
         .run(
           expectedOrderNumber,
-          requestSession.user.userName,
+          sessionUser.userName,
           Date.now(),
           licenceCategoryApproval.licenceApprovalKey
         )

@@ -1,11 +1,10 @@
 import sqlite from 'better-sqlite3'
 
 import { licencesDB as databasePath } from '../../data/databasePaths.js'
-import type { PartialSession } from '../../types/recordTypes.js'
 
 export default function deleteLicenceCategoryAdditionalFee(
   licenceAdditionalFeeKey: string,
-  requestSession: PartialSession
+  sessionUser: GLMUser
 ): boolean {
   const database = sqlite(databasePath)
 
@@ -31,7 +30,7 @@ export default function deleteLicenceCategoryAdditionalFee(
           recordDelete_timeMillis = ?
           where licenceAdditionalFeeKey = ?`
       )
-      .run(requestSession.user.userName, Date.now(), licenceAdditionalFeeKey)
+      .run(sessionUser.userName, Date.now(), licenceAdditionalFeeKey)
   }
 
   database.close()

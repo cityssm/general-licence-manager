@@ -11,7 +11,7 @@
 </nav>
 
 <h1 class="title is-1">
-  <%= configFunctions.getProperty("settings.licenceAlias") %> Reports
+  <%= configFunctions.getConfigProperty("settings.licenceAlias") %> Reports
 </h1>
 
 <%
@@ -25,7 +25,7 @@
 <div class="columns">
   <div class="column">
     <div class="panel">
-      <h2 class="panel-heading"><%= configFunctions.getProperty("settings.licenceAliasPlural") %></h2>
+      <h2 class="panel-heading"><%= configFunctions.getConfigProperty("settings.licenceAliasPlural") %></h2>
       <div class="panel-block align-items-flex-start">
         <div class="has-text-centered my-2 ml-2 mr-4">
           <span class="icon has-text-info" title="CSV">
@@ -59,10 +59,10 @@
         </div>
         <div class="is-flex-grow-1">
           <h3 class="title is-5 is-marginless">
-            Full <%= configFunctions.getProperty("settings.licenceAlias") %> List
+            Full <%= configFunctions.getConfigProperty("settings.licenceAlias") %> List
           </h3>
           <p>
-            All active <%= configFunctions.getProperty("settings.licenceAliasPlural").toLowerCase() %>.
+            All active <%= configFunctions.getConfigProperty("settings.licenceAliasPlural").toLowerCase() %>.
           </p>
           <form class="mt-2" action="<%= urlPrefix %>/reports/licences-formatted" method="get">
             <div class="field has-addons">
@@ -70,8 +70,8 @@
                 <div class="select is-fullwidth">
                   <select name="issued" aria-label="Issued Status">
                     <option value="">(All Licences)</option>
-                    <option value="true">Issued <%= configFunctions.getProperty("settings.licenceAliasPlural") %> Only</option>
-                    <option value="false">Unissued <%= configFunctions.getProperty("settings.licenceAliasPlural") %></option>
+                    <option value="true">Issued <%= configFunctions.getConfigProperty("settings.licenceAliasPlural") %> Only</option>
+                    <option value="false">Unissued <%= configFunctions.getConfigProperty("settings.licenceAliasPlural") %></option>
                   </select>
                 </div>
               </div>
@@ -91,12 +91,12 @@
           </span>
         </div>
         <div class="is-flex-grow-1">
-          <h3 class="title is-5 is-marginless"><%= configFunctions.getProperty("settings.licenceAlias") %> Details by <%= configFunctions.getProperty("settings.licenceAlias") %> Category</h3>
+          <h3 class="title is-5 is-marginless"><%= configFunctions.getConfigProperty("settings.licenceAlias") %> Details by <%= configFunctions.getConfigProperty("settings.licenceAlias") %> Category</h3>
           <form class="mt-2" action="<%= urlPrefix %>/reports/licences-byLicenceCategory" method="get">
             <div class="field has-addons">
               <div class="control is-expanded">
                 <div class="select is-fullwidth">
-                  <select name="licenceCategoryKey" aria-label="<%= configFunctions.getProperty("settings.licenceAlias") %> Category">
+                  <select name="licenceCategoryKey" aria-label="<%= configFunctions.getConfigProperty("settings.licenceAlias") %> Category">
                     <% for (const licenceCategory of licenceCategories) { %>
                       <option value="<%= licenceCategory.licenceCategoryKey %>">
                         <%= licenceCategory.licenceCategory %>
@@ -115,10 +115,10 @@
         </div>
       </div>
     </div>
-    <% if (configFunctions.getProperty("customReports").length > 0) { %>
+    <% if (configFunctions.getConfigProperty("customReports").length > 0) { %>
       <div class="panel">
         <h2 class="panel-heading">Custom Reports</h2>
-        <% for (const customReport of configFunctions.getProperty("customReports")) { %>
+        <% for (const customReport of configFunctions.getConfigProperty("customReports")) { %>
           <% uid = stringFns.getUID(); %>
           <a class="panel-block align-items-flex-start"
             href="<%= urlPrefix %>/reports/<%= customReport.reportName %>"
@@ -157,10 +157,10 @@
         </div>
         <div>
           <h3 class="title is-5 is-marginless" id="h--<%= uid %>">
-            <%= configFunctions.getProperty("settings.licenceAlias") %> Category Summary
+            <%= configFunctions.getConfigProperty("settings.licenceAlias") %> Category Summary
           </h3>
           <p id="p--<%= uid %>">
-            Break down <%= configFunctions.getProperty("settings.licenceAlias").toLowerCase() %> categories by date range.
+            Break down <%= configFunctions.getConfigProperty("settings.licenceAlias").toLowerCase() %> categories by date range.
           </p>
         </div>
       </a>

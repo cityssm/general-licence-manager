@@ -9,7 +9,7 @@ export default async function handler(_request, response) {
     const additionalFeeFunctionNames = getAdditionalFeeFunctionNames() ?? [];
     const printEJSList = await getPrintEJSList();
     response.render('admin-licenceCategories', {
-        headTitle: `${configFunctions.getProperty('settings.licenceAlias')} Categories`,
+        headTitle: `${configFunctions.getConfigProperty('settings.licenceAlias')} Categories`,
         licenceCategories,
         licenceLengthFunctionNames,
         additionalFeeFunctionNames,

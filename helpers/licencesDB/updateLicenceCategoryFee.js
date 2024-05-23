@@ -1,7 +1,7 @@
 import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js';
 import sqlite from 'better-sqlite3';
 import { licencesDB as databasePath } from '../../data/databasePaths.js';
-export default function updateLicenceCategoryFee(licenceCategoryFeeForm, requestSession) {
+export default function updateLicenceCategoryFee(licenceCategoryFeeForm, sessionUser) {
     const database = sqlite(databasePath);
     database
         .prepare(`update LicenceCategoryFees
@@ -21,7 +21,7 @@ export default function updateLicenceCategoryFee(licenceCategoryFeeForm, request
         ? undefined
         : licenceCategoryFeeForm.renewalFee, licenceCategoryFeeForm.replacementFee === ''
         ? undefined
-        : licenceCategoryFeeForm.replacementFee, requestSession.user.userName, Date.now(), licenceCategoryFeeForm.licenceFeeId);
+        : licenceCategoryFeeForm.replacementFee, sessionUser.userName, Date.now(), licenceCategoryFeeForm.licenceFeeId);
     database.close();
     return true;
 }

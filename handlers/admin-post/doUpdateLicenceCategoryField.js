@@ -3,7 +3,7 @@ import getLicenceCategoryField from '../../helpers/licencesDB/getLicenceCategory
 import getLicenceCategoryFields from '../../helpers/licencesDB/getLicenceCategoryFields.js';
 import updateLicenceCategoryField from '../../helpers/licencesDB/updateLicenceCategoryField.js';
 export default function handler(request, response) {
-    const success = updateLicenceCategoryField(request.body, request.session);
+    const success = updateLicenceCategoryField(request.body, request.session.user);
     cacheFunctions.clearAll();
     const licenceCategoryField = getLicenceCategoryField(request.body.licenceFieldKey);
     const licenceCategoryFields = getLicenceCategoryFields(licenceCategoryField.licenceCategoryKey);

@@ -37,7 +37,7 @@ describe('Update - Licences', () => {
 
     cy.get("input[name='baseLicenceFee']").should('have.value', '')
 
-    if (configFunctions.getProperty('settings.includeReplacementFee')) {
+    if (configFunctions.getConfigProperty('settings.includeReplacementFee')) {
       cy.get("input[name='baseReplacementFee']").should('have.value', '')
     }
 
@@ -50,7 +50,7 @@ describe('Update - Licences', () => {
 
     cy.get("input[name='baseLicenceFee']").should('not.have.value', '')
 
-    if (configFunctions.getProperty('settings.includeReplacementFee')) {
+    if (configFunctions.getConfigProperty('settings.includeReplacementFee')) {
       cy.get("input[name='baseReplacementFee']").should('not.have.value', '')
     }
 
@@ -117,12 +117,12 @@ describe('Update - Licences', () => {
 
     cy.get("input[name='licenseeCity']").should(
       'have.value',
-      configFunctions.getProperty('defaults.licenseeCity')
+      configFunctions.getConfigProperty('defaults.licenseeCity')
     )
 
     cy.get("input[name='licenseeProvince']").should(
       'have.value',
-      configFunctions.getProperty('defaults.licenseeProvince')
+      configFunctions.getConfigProperty('defaults.licenseeProvince')
     )
 
     cy.get("input[name^='field--']").each(($fieldElement, index) => {

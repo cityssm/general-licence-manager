@@ -7,7 +7,7 @@ import getLicenceCategoryFees from '../../helpers/licencesDB/getLicenceCategoryF
 export default function handler(request: Request, response: Response): void {
   const licenceFeeId = addLicenceCategoryFee(
     request.body.licenceCategoryKey as string,
-    request.session
+    request.session.user as GLMUser
   )
 
   cacheFunctions.clearAll()

@@ -1,7 +1,6 @@
 import sqlite from 'better-sqlite3'
 
 import { licencesDB as databasePath } from '../../data/databasePaths.js'
-import type { PartialSession } from '../../types/recordTypes.js'
 
 import { getUnusedLicenceApprovalKey } from './getUnusedKey.js'
 
@@ -12,7 +11,7 @@ export interface AddLicenceCategoryApprovalForm {
 
 export default function addLicenceCategoryApproval(
   licenceCategoryApprovalForm: AddLicenceCategoryApprovalForm,
-  requestSession: PartialSession
+  sessionUser: GLMUser
 ): string {
   const licenceApprovalKey = getUnusedLicenceApprovalKey(
     licenceCategoryApprovalForm.licenceCategoryKey,
@@ -34,9 +33,9 @@ export default function addLicenceCategoryApproval(
       licenceApprovalKey,
       licenceCategoryApprovalForm.licenceCategoryKey,
       licenceCategoryApprovalForm.licenceApproval,
-      requestSession.user.userName,
+      sessionUser.userName,
       rightNowMillis,
-      requestSession.user.userName,
+      sessionUser.userName,
       rightNowMillis
     )
 

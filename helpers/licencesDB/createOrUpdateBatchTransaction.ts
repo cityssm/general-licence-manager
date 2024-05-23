@@ -2,10 +2,7 @@ import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js'
 import sqlite from 'better-sqlite3'
 
 import { licencesDB as databasePath } from '../../data/databasePaths.js'
-import type {
-  LicenceTransaction,
-  PartialSession
-} from '../../types/recordTypes.js'
+import type { LicenceTransaction } from '../../types/recordTypes.js'
 import * as configFunctions from '../functions.config.js'
 
 import getNextLicenceTransactionIndex from './getNextLicenceTransactionIndex.js'
@@ -39,7 +36,7 @@ function isBankingInformationIncomplete(bankRecord: BankRecord): boolean {
 
 export default function createOrUpdateBatchTransaction(
   transactionForm: CreateOrUpdateBatchTransactionForm,
-  requestSession: PartialSession
+  sessionUser: GLMUser
 ): CreateOrUpdateBatchTransactionReturn {
   const database = sqlite(databasePath)
 
@@ -61,7 +58,7 @@ export default function createOrUpdateBatchTransaction(
 
     return {
       success: false,
-      message: `${configFunctions.getProperty(
+      message: `${configFunctions.getConfigProperty(
         'settings.licenceAlias'
       )} is not available for updates (licenceId = ${
         transactionForm.licenceId
@@ -69,7 +66,7 @@ export default function createOrUpdateBatchTransaction(
     }
   } else if (isBankingInformationIncomplete(bankRecord)) {
     message = `Banking information is incomplete on the ${configFunctions
-      .getProperty('settings.licenceAlias')
+      .getConfigProperty('settings.licenceAlias')
       .toLowerCase()}.`
   }
 
@@ -134,7 +131,7 @@ export default function createOrUpdateBatchTransaction(
             and transactionIndex = ?`
         )
         .run(
-          requestSession.user.userName,
+          sessionUser.userName,
           rightNowMillis,
           transactionForm.licenceId,
           transactionIndex
@@ -152,7 +149,7 @@ export default function createOrUpdateBatchTransaction(
               and transactionIndex <> ?`
           )
           .run(
-            requestSession.user.userName,
+            sessionUser.userName,
             rightNowMillis,
             transactionForm.licenceId,
             batchDate,
@@ -179,7 +176,7 @@ export default function createOrUpdateBatchTransaction(
           bankRecord.bankTransitNumber,
           bankRecord.bankAccountNumber,
           transactionForm.transactionAmount,
-          requestSession.user.userName,
+          sessionUser.userName,
           rightNowMillis,
           transactionForm.licenceId,
           transactionIndex
@@ -213,9 +210,9 @@ export default function createOrUpdateBatchTransaction(
         bankRecord.bankAccountNumber,
         batchDate,
         transactionForm.transactionAmount,
-        requestSession.user.userName,
+        sessionUser.userName,
         rightNowMillis,
-        requestSession.user.userName,
+        sessionUser.userName,
         rightNowMillis
       )
   }

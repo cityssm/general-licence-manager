@@ -11,7 +11,7 @@ import type { LicenceCategoryField } from '../../types/recordTypes.js'
 export default function handler(request: Request, response: Response): void {
   const success = updateLicenceCategoryField(
     request.body as UpdateLicenceCategoryFieldForm,
-    request.session
+    request.session.user as GLMUser
   )
 
   cacheFunctions.clearAll()

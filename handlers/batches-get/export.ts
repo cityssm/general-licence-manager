@@ -10,7 +10,7 @@ export default function handler(request: Request, response: Response): void {
 
   if (batchExport === undefined) {
     response.redirect(
-      configFunctions.getProperty('reverseProxy.urlPrefix') +
+      configFunctions.getConfigProperty('reverseProxy.urlPrefix') +
         '/dashboard/?error=batchExportError'
     )
     return

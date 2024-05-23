@@ -1,4 +1,3 @@
-import type { PartialSession } from '../../types/recordTypes.js';
 export interface AddLicenceTransactionForm {
     licenceId: number | string;
     transactionAmount: number | string;
@@ -10,4 +9,4 @@ export interface AddLicenceTransactionForm {
     externalReceiptNumber: string;
     transactionNote: string;
 }
-export default function addLicenceTransaction(licenceTransactionForm: AddLicenceTransactionForm, requestSession: PartialSession): number;
+export default function addLicenceTransaction(licenceTransactionForm: AddLicenceTransactionForm, sessionUser: GLMUser): number;

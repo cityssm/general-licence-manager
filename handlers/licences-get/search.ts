@@ -7,7 +7,7 @@ export default function handler(_request: Request, response: Response): void {
   const licenceCategories = getLicenceCategories()
 
   response.render('licence-search', {
-    headTitle: configFunctions.getProperty('settings.licenceAliasPlural'),
+    headTitle: configFunctions.getConfigProperty('settings.licenceAliasPlural'),
     licenceCategories
   })
 }

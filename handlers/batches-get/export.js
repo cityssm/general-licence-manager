@@ -4,7 +4,7 @@ export default function handler(request, response) {
     const batchDate = Number.parseInt(request.params.batchDate, 10);
     const batchExport = getBatchExport(batchDate);
     if (batchExport === undefined) {
-        response.redirect(configFunctions.getProperty('reverseProxy.urlPrefix') +
+        response.redirect(configFunctions.getConfigProperty('reverseProxy.urlPrefix') +
             '/dashboard/?error=batchExportError');
         return;
     }

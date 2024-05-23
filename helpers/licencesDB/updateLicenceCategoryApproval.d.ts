@@ -1,4 +1,3 @@
-import type { PartialSession } from '../../types/recordTypes.js';
 export interface UpdateLicenceCategoryApprovalForm {
     licenceApprovalKey: string;
     licenceApproval: string;
@@ -7,4 +6,4 @@ export interface UpdateLicenceCategoryApprovalForm {
     isRequiredForRenewal?: string;
     printKey: string;
 }
-export default function updateLicenceCategoryApproval(licenceCategoryApprovalForm: UpdateLicenceCategoryApprovalForm, requestSession: PartialSession): boolean;
+export default function updateLicenceCategoryApproval(licenceCategoryApprovalForm: UpdateLicenceCategoryApprovalForm, sessionUser: GLMUser): boolean;

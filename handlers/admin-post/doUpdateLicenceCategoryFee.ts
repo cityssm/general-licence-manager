@@ -10,7 +10,7 @@ import updateLicenceCategoryFee, {
 export default function handler(request: Request, response: Response): void {
   const success = updateLicenceCategoryFee(
     request.body as UpdateLicenceCategoryFeeForm,
-    request.session
+    request.session.user as GLMUser
   )
 
   cacheFunctions.clearAll()

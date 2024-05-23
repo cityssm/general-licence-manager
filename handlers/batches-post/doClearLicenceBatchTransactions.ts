@@ -11,7 +11,7 @@ export default function handler(request: Request, response: Response): void {
   for (const licenceId of licenceIds) {
     success = Math.min(
       success,
-      clearBatchTransactionsByLicence(licenceId, request.session) ? 1 : 0
+      clearBatchTransactionsByLicence(licenceId, request.session.user as GLMUser) ? 1 : 0
     )
   }
 

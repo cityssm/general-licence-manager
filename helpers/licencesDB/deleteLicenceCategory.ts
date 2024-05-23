@@ -1,7 +1,6 @@
 import sqlite from 'better-sqlite3'
 
 import { licencesDB as databasePath } from '../../data/databasePaths.js'
-import type { PartialSession } from '../../types/recordTypes.js'
 
 const tablesToPurge = [
   'LicenceCategoryFields',
@@ -13,7 +12,7 @@ const tablesToPurge = [
 
 export default function deleteLicenceCategory(
   licenceCategoryKey: string,
-  requestSession: PartialSession
+  sessionUser: GLMUser
 ): boolean {
   const database = sqlite(databasePath)
 
@@ -36,7 +35,7 @@ export default function deleteLicenceCategory(
             recordDelete_timeMillis = ?
             where licenceCategoryKey = ?`
         )
-        .run(requestSession.user.userName, Date.now(), licenceCategoryKey)
+        .run(sessionUser.userName, Date.now(), licenceCategoryKey)
     }
   }
 

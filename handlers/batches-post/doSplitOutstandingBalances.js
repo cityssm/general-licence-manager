@@ -13,7 +13,7 @@ export default function handler(request, response) {
                 licenceId,
                 batchDateString,
                 transactionAmount: (transactionAmount + leftoverPennies).toFixed(2)
-            }, request.session);
+            }, request.session.user);
             leftoverPennies = 0;
         }
     }

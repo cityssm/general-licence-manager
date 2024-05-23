@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 
 import * as cacheFunctions from '../../helpers/functions.cache.js'
-import { deleteLicenceCategoryApproval } from '../../helpers/licencesDB/deleteLicenceCategoryApproval.js'
+import deleteLicenceCategoryApproval from '../../helpers/licencesDB/deleteLicenceCategoryApproval.js'
 import getLicenceCategoryApproval from '../../helpers/licencesDB/getLicenceCategoryApproval.js'
 import getLicenceCategoryApprovals from '../../helpers/licencesDB/getLicenceCategoryApprovals.js'
 
@@ -15,7 +15,10 @@ export default function handler(request: Request, response: Response): void {
       success: false
     })
   } else {
-    deleteLicenceCategoryApproval(licenceApprovalKey, request.session)
+    deleteLicenceCategoryApproval(
+      licenceApprovalKey,
+      request.session.user as GLMUser
+    )
 
     cacheFunctions.clearAll()
     const licenceCategoryApprovals = getLicenceCategoryApprovals(

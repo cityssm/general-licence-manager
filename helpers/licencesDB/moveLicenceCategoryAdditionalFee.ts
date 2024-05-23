@@ -1,5 +1,4 @@
 import sqlite from 'better-sqlite3'
-import type * as expressSession from 'express-session'
 
 import { licencesDB as databasePath } from '../../data/databasePaths.js'
 import type { LicenceCategoryAdditionalFee } from '../../types/recordTypes.js'
@@ -16,7 +15,7 @@ const sql = `update LicenceCategoryAdditionalFees
 export default function moveLicenceCategoryAdditionalFee(
   licenceAdditionalFeeKeyFrom: string,
   licenceAdditionalFeeKeyTo: string,
-  requestSession: expressSession.Session
+  sessionUser: GLMUser
 ): string {
   const database = sqlite(databasePath)
 
@@ -50,7 +49,7 @@ export default function moveLicenceCategoryAdditionalFee(
         .prepare(sql)
         .run(
           expectedOrderNumber,
-          requestSession.user.userName,
+          sessionUser.userName,
           Date.now(),
           licenceAdditionalFeeKeyFrom
         )
@@ -63,7 +62,7 @@ export default function moveLicenceCategoryAdditionalFee(
         .prepare(sql)
         .run(
           expectedOrderNumber,
-          requestSession.user.userName,
+          sessionUser.userName,
           Date.now(),
           licenceCategoryAdditionalFee.licenceAdditionalFeeKey
         )

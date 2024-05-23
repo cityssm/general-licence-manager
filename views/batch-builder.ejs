@@ -19,7 +19,7 @@
   <div class="message-header">Important Notes</div>
   <div class="message-body">
     <p>
-      Only those <%= configFunctions.getProperty("settings.licenceAliasPlural").toLowerCase() %>
+      Only those <%= configFunctions.getConfigProperty("settings.licenceAliasPlural").toLowerCase() %>
       marked as issued with outstanding balances can be included in batches.
     </p>
   </div>
@@ -28,7 +28,7 @@
 <% if (licences.length === 0) { %>
   <div class="message is-info">
     <p class="message-body">
-      There are no <%= configFunctions.getProperty("settings.licenceAliasPlural") %>
+      There are no <%= configFunctions.getConfigProperty("settings.licenceAliasPlural") %>
       available for batch processing.
     </p>
   </div>
@@ -40,7 +40,7 @@
           <div class="level is-mobile">
             <div class="level-left">
               <div class="level-item">
-                <%= configFunctions.getProperty("settings.licenceAlias") %>
+                <%= configFunctions.getConfigProperty("settings.licenceAlias") %>
               </div>
             </div>
             <div class="level-right">
@@ -104,7 +104,7 @@
                 <div class="level-item">
                   <div class="dropdown has-text-weight-normal">
                     <div class="dropdown-trigger">
-                      <button class="button is-white is-small" data-tooltip="<%= configFunctions.getProperty("settings.licenceAlias") %> Options" type="button" aria-label="<%= configFunctions.getProperty("settings.licenceAlias") %> Options">
+                      <button class="button is-white is-small" data-tooltip="<%= configFunctions.getConfigProperty("settings.licenceAlias") %> Options" type="button" aria-label="<%= configFunctions.getConfigProperty("settings.licenceAlias") %> Options">
                         <i class="fas fa-bars" aria-hidden="true"></i>
                       </button>
                     </div>
@@ -116,7 +116,7 @@
                         </a>
                         <a class="dropdown-item is-clear-licence-button" role="button" href="#">
                           <span class="icon"><i class="fas fa-eraser" aria-hidden="true"></i></span>
-                          <span>Clear All Amounts for <%= configFunctions.getProperty("settings.licenceAlias") %></span>
+                          <span>Clear All Amounts for <%= configFunctions.getConfigProperty("settings.licenceAlias") %></span>
                         </a>
                       </div>
                     </div>

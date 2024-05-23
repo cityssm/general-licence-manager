@@ -6,7 +6,7 @@ export default function handler(request: Request, response: Response): void {
   const feeDetails = deleteLicenceAdditionalFee(
     request.body.licenceId as string,
     request.body.licenceAdditionalFeeKey as string,
-    request.session
+    request.session.user as GLMUser
   )
 
   response.json({

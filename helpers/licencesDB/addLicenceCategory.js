@@ -1,7 +1,7 @@
 import sqlite from 'better-sqlite3';
 import { licencesDB as databasePath } from '../../data/databasePaths.js';
 import { getUnusedLicenceCategoryKey } from './getUnusedKey.js';
-export default function addLicenceCategory(licenceCategoryForm, requestSession) {
+export default function addLicenceCategory(licenceCategoryForm, sessionUser) {
     const licenceCategoryKey = (licenceCategoryForm.licenceCategoryKey ?? '') === ''
         ? getUnusedLicenceCategoryKey(licenceCategoryForm.licenceCategory)
         : licenceCategoryForm.licenceCategoryKey;
@@ -12,7 +12,7 @@ export default function addLicenceCategory(licenceCategoryForm, requestSession) 
         licenceCategoryKey, licenceCategory,
         recordCreate_userName, recordCreate_timeMillis, recordUpdate_userName, recordUpdate_timeMillis)
         values (?, ?, ?, ?, ?, ?)`)
-        .run(licenceCategoryKey, licenceCategoryForm.licenceCategory, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
+        .run(licenceCategoryKey, licenceCategoryForm.licenceCategory, sessionUser.userName, rightNowMillis, sessionUser.userName, rightNowMillis);
     database.close();
     return licenceCategoryKey;
 }

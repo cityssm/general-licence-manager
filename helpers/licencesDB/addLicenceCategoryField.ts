@@ -1,7 +1,6 @@
 import sqlite from 'better-sqlite3'
 
 import { licencesDB as databasePath } from '../../data/databasePaths.js'
-import type { PartialSession } from '../../types/recordTypes.js'
 
 import { getUnusedLicenceFieldKey } from './getUnusedKey.js'
 
@@ -12,7 +11,7 @@ export interface AddLicenceCategoryFieldForm {
 
 export default function addLicenceCategoryField(
   licenceCategoryFieldForm: AddLicenceCategoryFieldForm,
-  requestSession: PartialSession
+  sessionUser: GLMUser
 ): string {
   const licenceFieldKey = getUnusedLicenceFieldKey(
     licenceCategoryFieldForm.licenceCategoryKey,
@@ -34,9 +33,9 @@ export default function addLicenceCategoryField(
       licenceFieldKey,
       licenceCategoryFieldForm.licenceCategoryKey,
       licenceCategoryFieldForm.licenceField,
-      requestSession.user.userName,
+      sessionUser.userName,
       rightNowMillis,
-      requestSession.user.userName,
+      sessionUser.userName,
       rightNowMillis
     )
 

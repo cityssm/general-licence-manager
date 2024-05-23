@@ -21,7 +21,7 @@ export function getBatchExport(
     return undefined
   }
 
-  const batchExportConfig = configFunctions.getProperty('exports.batches')
+  const batchExportConfig = configFunctions.getConfigProperty('exports.batches')
 
   if (!batchExportConfig) {
     return undefined

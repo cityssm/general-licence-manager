@@ -7,7 +7,7 @@
   <meta name="csrf-token" content="<%= csrfToken %>">
 
   <title>
-    <%= headTitle %>: <%= configFunctions.getProperty("application.applicationName") %>
+    <%= headTitle %>: <%= configFunctions.getConfigProperty("application.applicationName") %>
   </title>
 
   <link rel="icon" href="<%= urlPrefix %>/images/favicon.png" />
@@ -20,8 +20,8 @@
     <div class="container">
       <div class="navbar-brand">
         <a class="navbar-item" href="<%= urlPrefix %>/dashboard">
-          <img class="mr-3" src="<%= urlPrefix + configFunctions.getProperty("application.logoURL") %>" alt="" height="28" />
-          <strong><%= configFunctions.getProperty("application.applicationName") %></strong>
+          <img class="mr-3" src="<%= urlPrefix + configFunctions.getConfigProperty("application.logoURL") %>" alt="" height="28" />
+          <strong><%= configFunctions.getConfigProperty("application.applicationName") %></strong>
         </a>
 
         <a class="navbar-burger burger is-hidden-print" role="button" aria-label="Menu" aria-expanded="false">
@@ -38,7 +38,7 @@
             <span class="icon mr-1">
               <i class="fas fa-fw fa-certificate" aria-hidden="true"></i>
             </span>
-            <span><%= configFunctions.getProperty("settings.licenceAliasPlural") %></span>
+            <span><%= configFunctions.getConfigProperty("settings.licenceAliasPlural") %></span>
           </a>
 
           <div class="navbar-item has-dropdown">
@@ -82,6 +82,6 @@
   <main class="container pt-2 px-3 mr-auto has-min-page-height"
     data-session-keep-alive-millis="<%= configFunctions.keepAliveMillis %>"
     data-url-prefix="<%= urlPrefix %>"
-    data-can-update="<%= user.userProperties.canUpdate ? "true" : "false" %>"
-    data-is-admin="<%= user.userProperties.isAdmin ? "true" : "false" %>"
+    data-can-update="<%= user.canUpdate ? "true" : "false" %>"
+    data-is-admin="<%= user.isAdmin ? "true" : "false" %>"
     aria-label="Main Content">

@@ -1,10 +1,7 @@
 import sqlite from 'better-sqlite3'
 
 import { licencesDB as databasePath } from '../../data/databasePaths.js'
-import type {
-  LicenceCategoryField,
-  PartialSession
-} from '../../types/recordTypes.js'
+import type { LicenceCategoryField } from '../../types/recordTypes.js'
 
 import getLicenceCategoryField from './getLicenceCategoryField.js'
 import getLicenceCategoryFields from './getLicenceCategoryFields.js'
@@ -18,7 +15,7 @@ const sql = `update LicenceCategoryFields
 export default function moveLicenceCategoryField(
   licenceFieldKeyFrom: string,
   licenceFieldKeyTo: string,
-  requestSession: PartialSession
+  sessionUser: GLMUser
 ): string {
   const database = sqlite(databasePath)
 
@@ -46,7 +43,7 @@ export default function moveLicenceCategoryField(
         .prepare(sql)
         .run(
           expectedOrderNumber,
-          requestSession.user.userName,
+          sessionUser.userName,
           Date.now(),
           licenceFieldKeyFrom
         )
@@ -59,7 +56,7 @@ export default function moveLicenceCategoryField(
         .prepare(sql)
         .run(
           expectedOrderNumber,
-          requestSession.user.userName,
+          sessionUser.userName,
           Date.now(),
           licenceCategoryField.licenceFieldKey
         )

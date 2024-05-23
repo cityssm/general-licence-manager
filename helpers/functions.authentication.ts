@@ -8,9 +8,9 @@ import type { ConfigActiveDirectory } from '../types/configTypes.js'
 
 import * as configFunctions from './functions.config.js'
 
-const userDomain = configFunctions.getProperty('application.userDomain')
+const userDomain = configFunctions.getConfigProperty('application.userDomain')
 
-const activeDirectoryConfig = configFunctions.getProperty('activeDirectory')
+const activeDirectoryConfig = configFunctions.getConfigProperty('activeDirectory')
 
 async function authenticateViaActiveDirectory(
   userName: string,
@@ -23,7 +23,7 @@ async function authenticateViaActiveDirectory(
       )
 
       ad.authenticate(
-        userDomain + '\\' + userName,
+        `${userDomain}\\${userName}`,
         password,
         async (error, auth) => {
           if (error) {
@@ -39,7 +39,7 @@ async function authenticateViaActiveDirectory(
   })
 }
 
-const adWebAuthConfig = configFunctions.getProperty('adWebAuthConfig')
+const adWebAuthConfig = configFunctions.getConfigProperty('adWebAuthConfig')
 const adWebAuth =
   adWebAuthConfig === undefined
     ? undefined

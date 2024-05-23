@@ -2,7 +2,7 @@ import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js'
 import sqlite from 'better-sqlite3';
 import { licencesDB as databasePath } from '../../data/databasePaths.js';
 import getNextLicenceTransactionIndex from './getNextLicenceTransactionIndex.js';
-export default function addLicenceTransaction(licenceTransactionForm, requestSession) {
+export default function addLicenceTransaction(licenceTransactionForm, sessionUser) {
     const database = sqlite(databasePath);
     const rightNow = new Date();
     const transactionIndex = getNextLicenceTransactionIndex(licenceTransactionForm.licenceId, database);
@@ -25,7 +25,7 @@ export default function addLicenceTransaction(licenceTransactionForm, requestSes
         : dateTimeFunctions.dateToTimeInteger(rightNow), licenceTransactionForm.includeInBatch &&
         licenceTransactionForm.includeInBatch !== ''
         ? transactionDate
-        : undefined, licenceTransactionForm.bankTransitNumber, licenceTransactionForm.bankInstitutionNumber, licenceTransactionForm.bankAccountNumber, licenceTransactionForm.externalReceiptNumber, licenceTransactionForm.transactionAmount, licenceTransactionForm.transactionNote, requestSession.user.userName, rightNow.getTime(), requestSession.user.userName, rightNow.getTime());
+        : undefined, licenceTransactionForm.bankTransitNumber, licenceTransactionForm.bankInstitutionNumber, licenceTransactionForm.bankAccountNumber, licenceTransactionForm.externalReceiptNumber, licenceTransactionForm.transactionAmount, licenceTransactionForm.transactionNote, sessionUser.userName, rightNow.getTime(), sessionUser.userName, rightNow.getTime());
     database.close();
     return transactionIndex;
 }

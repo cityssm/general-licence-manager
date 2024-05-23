@@ -8,7 +8,7 @@ export function getBatchExport(batchDate) {
     if (outstandingBatchTransactions.length === 0) {
         return undefined;
     }
-    const batchExportConfig = configFunctions.getProperty('exports.batches');
+    const batchExportConfig = configFunctions.getConfigProperty('exports.batches');
     if (!batchExportConfig) {
         return undefined;
     }

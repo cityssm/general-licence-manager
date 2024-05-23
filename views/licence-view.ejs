@@ -5,10 +5,10 @@
     <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
     <li><a href="<%= urlPrefix %>/licences">
       <span class="icon is-small"><i class="fas fa-certificate" aria-hidden="true"></i></span>
-      <span><%= configFunctions.getProperty("settings.licenceAliasPlural") %></span></a>
+      <span><%= configFunctions.getConfigProperty("settings.licenceAliasPlural") %></span></a>
     </li>
     <li class="is-active"><a href="#" aria-current="page">
-      <%= configFunctions.getProperty("settings.licenceAlias") %> #<%= licence.licenceNumber %>
+      <%= configFunctions.getConfigProperty("settings.licenceAlias") %> #<%= licence.licenceNumber %>
     </a></li>
   </ol>
 </nav>
@@ -17,7 +17,7 @@
   <div class="level-left">
     <div class="level-item">
       <h1 class="title is-1">
-        <%= configFunctions.getProperty("settings.licenceAlias") %> #<%= licence.licenceNumber %>
+        <%= configFunctions.getConfigProperty("settings.licenceAlias") %> #<%= licence.licenceNumber %>
       </h1>
     </div>
   </div>
@@ -25,17 +25,17 @@
     <div class="level-right is-hidden-print">
       <a class="level-item button is-link" href="<%= urlPrefix %>/licences/<%= licence.licenceId %>/print" target="_blank">
         <span class="icon"><i class="fas fa-print" aria-hidden="true"></i></span>
-        <span>Print <%= configFunctions.getProperty("settings.licenceAlias") %></span>
+        <span>Print <%= configFunctions.getConfigProperty("settings.licenceAlias") %></span>
       </a>
     </div>
     <% } %>
 </div>
 
-<% if (user.userProperties.canUpdate) { %>
+<% if (user.canUpdate) { %>
   <div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
-    <a class="button is-circle is-primary has-tooltip-left" data-tooltip="Update <%= configFunctions.getProperty("settings.licenceAlias") %>" href="<%= urlPrefix %>/licences/<%= licence.licenceId %>/edit">
+    <a class="button is-circle is-primary has-tooltip-left" data-tooltip="Update <%= configFunctions.getConfigProperty("settings.licenceAlias") %>" href="<%= urlPrefix %>/licences/<%= licence.licenceId %>/edit">
       <i class="fas fa-pencil-alt" aria-hidden="true"></i>
-      <span class="sr-only">Update <%= configFunctions.getProperty("settings.licenceAlias") %></span>
+      <span class="sr-only">Update <%= configFunctions.getConfigProperty("settings.licenceAlias") %></span>
     </a>
   </div>
 <% } %>
@@ -45,7 +45,7 @@
     <div class="panel">
       <div class="panel-block">
         <p>
-          <strong id="licenceView--licenceCategory"><%= configFunctions.getProperty("settings.licenceAlias") %> Category</strong><br />
+          <strong id="licenceView--licenceCategory"><%= configFunctions.getConfigProperty("settings.licenceAlias") %> Category</strong><br />
           <span aria-labelledby="licenceView--licenceCategory">
             <%= licenceCategory.licenceCategory %>
             <%= (licenceCategory.recordDelete_timeMillis ? " (Inactive)" : "") %>
@@ -58,17 +58,17 @@
     <div class="column is-7">
       <div class="panel">
         <h2 class="panel-heading">
-          Related <%= configFunctions.getProperty("settings.licenceAliasPlural") %>
+          Related <%= configFunctions.getConfigProperty("settings.licenceAliasPlural") %>
         </h2>
         <% for (const relatedLicence of licence.relatedLicences) { %>
           <div class="panel-block is-block">
-            <a class="has-text-weight-bold" href="<%= urlPrefix %>/licences/<%= relatedLicence.licenceId %>" target="_blank"><%= configFunctions.getProperty("settings.licenceAlias") %> #<%= relatedLicence.licenceNumber %></a><br />
+            <a class="has-text-weight-bold" href="<%= urlPrefix %>/licences/<%= relatedLicence.licenceId %>" target="_blank"><%= configFunctions.getConfigProperty("settings.licenceAlias") %> #<%= relatedLicence.licenceNumber %></a><br />
             <div class="columns pt-0 is-size-7">
               <div class="column">
-                <span data-tooltip="<%= configFunctions.getProperty("settings.licenceAlias") %> Category"><%= relatedLicence.licenceCategory %></span>
+                <span data-tooltip="<%= configFunctions.getConfigProperty("settings.licenceAlias") %> Category"><%= relatedLicence.licenceCategory %></span>
               </div>
               <div class="column">
-                <span data-tooltip="<%= configFunctions.getProperty("settings.licenseeAlias") %> Name"><%= relatedLicence.licenseeName %></span>
+                <span data-tooltip="<%= configFunctions.getConfigProperty("settings.licenseeAlias") %> Name"><%= relatedLicence.licenseeName %></span>
               </div>
               <div class="column">
                 <span data-tooltip="Start Date"><%= relatedLicence.startDateString %></span>
@@ -94,7 +94,7 @@
   <div class="column is-5">
     <div class="panel">
       <h2 class="panel-heading">
-        <%= configFunctions.getProperty("settings.licenseeAlias") %> Information
+        <%= configFunctions.getConfigProperty("settings.licenseeAlias") %> Information
       </h2>
       <div class="panel-block is-block" aria-label="Licensee Name and Address">
         <%= licence.licenseeName %><br />
@@ -108,7 +108,7 @@
         <%= licence.licenseeCity %>, <%= licence.licenseeProvince %><br />
         <%= licence.licenseePostalCode %>
       </div>
-      <% if (configFunctions.getProperty("settings.includeBatches") && ((licence.bankInstitutionNumber && licence.bankInstitutionNumber !== "") || (licence.bankTransitNumber && licence.bankTransitNumber !== "") || (licence.bankAccountNumber && licence.bankAccountNumber !== ""))) { %>
+      <% if (configFunctions.getConfigProperty("settings.includeBatches") && ((licence.bankInstitutionNumber && licence.bankInstitutionNumber !== "") || (licence.bankTransitNumber && licence.bankTransitNumber !== "") || (licence.bankAccountNumber && licence.bankAccountNumber !== ""))) { %>
         <div class="panel-block">
           <div class="columns">
             <div class="column">
@@ -200,7 +200,7 @@
         <% } else { %>
           <div class="message is-warning is-small">
             <p class="message-body">
-              This <%= configFunctions.getProperty("settings.licenceAlias").toLowerCase() %> has not been issued.
+              This <%= configFunctions.getConfigProperty("settings.licenceAlias").toLowerCase() %> has not been issued.
             </p>
           </div>
         <% } %>
@@ -224,7 +224,7 @@
           <tbody>
             <% if (licence.baseLicenceFee !== licence.licenceFee || licence.licenceAdditionalFees.length > 0) { %>
               <tr>
-                <td class="has-text-weight-bold" colspan="2">Base <%= configFunctions.getProperty("settings.licenceAlias") %> Fee</td>
+                <td class="has-text-weight-bold" colspan="2">Base <%= configFunctions.getConfigProperty("settings.licenceAlias") %> Fee</td>
                 <td class="has-text-right">$<%= licence.baseLicenceFee ? licence.baseLicenceFee.toFixed(2) : "" %></td>
               </tr>
             <% } %>
@@ -238,10 +238,10 @@
           </tbody>
           <tfoot>
             <tr>
-              <td class="has-text-weight-bold" colspan="2">Total <%= configFunctions.getProperty("settings.licenceAlias") %> Fee</td>
+              <td class="has-text-weight-bold" colspan="2">Total <%= configFunctions.getConfigProperty("settings.licenceAlias") %> Fee</td>
               <td class="has-text-weight-bold has-text-right">$<%= licence.licenceFee ? licence.licenceFee.toFixed(2) : "" %></td>
             </tr>
-            <% if (configFunctions.getProperty("settings.includeReplacementFee")) { %>
+            <% if (configFunctions.getConfigProperty("settings.includeReplacementFee")) { %>
               <tr>
                 <td colspan="2">Replacement Fee</td>
                 <td class="has-text-right">$<%= licence.replacementFee ? licence.replacementFee.toFixed(2) : "" %></td>

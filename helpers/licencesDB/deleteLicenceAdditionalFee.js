@@ -1,6 +1,6 @@
 import sqlite from 'better-sqlite3';
 import { licencesDB as databasePath } from '../../data/databasePaths.js';
-export default function deleteLicenceAdditionalFee(licenceId, licenceAdditionalFeeKey, requestSession) {
+export default function deleteLicenceAdditionalFee(licenceId, licenceAdditionalFeeKey, sessionUser) {
     const database = sqlite(databasePath);
     const licenceFees = database
         .prepare(`select licenceFee, additionalFeeAmount
@@ -23,7 +23,7 @@ export default function deleteLicenceAdditionalFee(licenceId, licenceAdditionalF
         recordUpdate_userName = ?,
         recordUpdate_timeMillis = ?
         where licenceId = ?`)
-        .run(newLicenceFee, requestSession.user.userName, rightNowMillis, licenceId);
+        .run(newLicenceFee, sessionUser.userName, rightNowMillis, licenceId);
     database.close();
     return {
         licenceFee: newLicenceFee

@@ -17,7 +17,7 @@ export default function saveLicenceApprovals(
   }
 
   for (const licenceApprovalKey of licenceApprovalKeys) {
-    if (licenceForm['approval--' + licenceApprovalKey]) {
+    if (licenceForm[`approval--${licenceApprovalKey}`]) {
       database
         .prepare(
           'insert into LicenceApprovals (licenceId, licenceApprovalKey) values (?, ?)'

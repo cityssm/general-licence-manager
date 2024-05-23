@@ -1,7 +1,6 @@
 import sqlite from 'better-sqlite3'
 
 import { licencesDB as databasePath } from '../../data/databasePaths.js'
-import type { PartialSession } from '../../types/recordTypes.js'
 
 export interface UpdateLicenceCategoryAdditionalFeeForm {
   licenceAdditionalFeeKey: string
@@ -14,7 +13,7 @@ export interface UpdateLicenceCategoryAdditionalFeeForm {
 
 export default function updateLicenceCategoryAdditionalFee(
   licenceCategoryAdditionalFeeForm: UpdateLicenceCategoryAdditionalFeeForm,
-  requestSession: PartialSession
+  sessionUser: GLMUser
 ): boolean {
   const database = sqlite(databasePath)
 
@@ -36,7 +35,7 @@ export default function updateLicenceCategoryAdditionalFee(
       licenceCategoryAdditionalFeeForm.additionalFeeNumber,
       licenceCategoryAdditionalFeeForm.additionalFeeFunction ?? '',
       licenceCategoryAdditionalFeeForm.isRequired ? 1 : 0,
-      requestSession.user.userName,
+      sessionUser.userName,
       Date.now(),
       licenceCategoryAdditionalFeeForm.licenceAdditionalFeeKey
     )

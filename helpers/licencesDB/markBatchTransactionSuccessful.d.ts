@@ -1,4 +1,3 @@
-import type { PartialSession } from '../../types/recordTypes.js';
 export interface MarkBatchTransactionSuccessfulForm {
     licenceId: string;
     transactionIndex: string;
@@ -6,4 +5,4 @@ export interface MarkBatchTransactionSuccessfulForm {
     batchDate: string;
     externalReceiptNumber: string;
 }
-export default function markBatchTransactionSuccessful(transaction: MarkBatchTransactionSuccessfulForm, requestSession: PartialSession): boolean;
+export default function markBatchTransactionSuccessful(transaction: MarkBatchTransactionSuccessfulForm, sessionUser: GLMUser): boolean;

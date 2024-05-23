@@ -5,7 +5,7 @@ import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js'
 import sqlite from 'better-sqlite3'
 
 import { licencesDB as databasePath } from '../../data/databasePaths.js'
-import type { LicenceCategory, PartialSession } from '../../types/recordTypes.js'
+import type { LicenceCategory } from '../../types/recordTypes.js'
 import * as cacheFunctions from '../functions.cache.js'
 import * as configFunctions from '../functions.config.js'
 import * as licenceFunctions from '../functions.licence.js'
@@ -31,7 +31,9 @@ function userFunction_getEndDate(
   licenceCategoryKey: string,
   startDateNumber: number
 ): number {
-  const licenceCategory = cacheFunctions.getLicenceCategory(licenceCategoryKey) as LicenceCategory
+  const licenceCategory = cacheFunctions.getLicenceCategory(
+    licenceCategoryKey
+  ) as LicenceCategory
 
   const startDate = dateTimeFunctions.dateIntegerToDate(startDateNumber)
 
@@ -69,9 +71,7 @@ function userFunction_getEndDate(
   return dateTimeFunctions.dateToInteger(endDate)
 }
 
-export default function refreshDatabase(
-  requestSession: PartialSession
-): boolean {
+export default function refreshDatabase(sessionUser: GLMUser): boolean {
   const database = sqlite(databasePath)
 
   database.function('userFn_getCurrentFee', userFunction_getCurrentFee)
@@ -86,7 +86,7 @@ export default function refreshDatabase(
         where recordDelete_timeMillis is null
         and issueDate is null`
     )
-    .run(requestSession.user.userName, Date.now())
+    .run(sessionUser.userName, Date.now())
 
   // Delete all transactions
   database
@@ -96,7 +96,7 @@ export default function refreshDatabase(
       recordDelete_timeMillis = ?
       where recordDelete_timeMillis is null`
     )
-    .run(requestSession.user.userName, Date.now())
+    .run(sessionUser.userName, Date.now())
 
   // Delete all additional fees
   database.prepare('delete from LicenceAdditionalFees').run()
@@ -124,12 +124,7 @@ export default function refreshDatabase(
         where recordDelete_timeMillis is null
         and issueDate is not null`
     )
-    .run(
-      startDateNumber,
-      startDateNumber,
-      requestSession.user.userName,
-      Date.now()
-    )
+    .run(startDateNumber, startDateNumber, sessionUser.userName, Date.now())
 
   // Apply any required additional fees
   const licencesWithFees = database
@@ -194,7 +189,7 @@ export default function refreshDatabase(
         where recordDelete_timeMillis is null
         and issueDate is not null`
     )
-    .run(requestSession.user.userName, Date.now())
+    .run(sessionUser.userName, Date.now())
 
   database.close()
 

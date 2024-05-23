@@ -36,7 +36,7 @@
 <div <%- (isJanuary ? "" : "class='is-hidden'") %> id="yearEnd--process">
   <div class="panel">
     <h2 class="panel-heading">
-      Step 1: Backup Current <%= configFunctions.getProperty("settings.licenceAliasPlural") %>
+      Step 1: Backup Current <%= configFunctions.getConfigProperty("settings.licenceAliasPlural") %>
     </h2>
     <div class="panel-block is-block">
       <div class="columns">
@@ -47,9 +47,9 @@
             </div>
             <div class="media-content">
               <h3 class="title is-4 is-marginless">
-                <a href="<%- urlPrefix %>/reports/licences-formatted?issued=false">All Unissued <%= configFunctions.getProperty("settings.licenceAliasPlural") %></a>
+                <a href="<%- urlPrefix %>/reports/licences-formatted?issued=false">All Unissued <%= configFunctions.getConfigProperty("settings.licenceAliasPlural") %></a>
               </h3>
-              <p>After the refresh process, these <%= configFunctions.getProperty("settings.licenceAliasPlural").toLowerCase() %> will be deleted.</p>
+              <p>After the refresh process, these <%= configFunctions.getConfigProperty("settings.licenceAliasPlural").toLowerCase() %> will be deleted.</p>
             </div>
           </div>
           <div class="media">
@@ -58,9 +58,9 @@
             </div>
             <div class="media-content">
               <h3 class="title is-4 is-marginless">
-                <a href="<%- urlPrefix %>/reports/licences-formatted?issued=true">All Issued <%= configFunctions.getProperty("settings.licenceAliasPlural") %></a>
+                <a href="<%- urlPrefix %>/reports/licences-formatted?issued=true">All Issued <%= configFunctions.getConfigProperty("settings.licenceAliasPlural") %></a>
               </h3>
-              <p>After the refresh process, these <%= configFunctions.getProperty("settings.licenceAliasPlural").toLowerCase() %> will still exist, but will no longer be issued.</p>
+              <p>After the refresh process, these <%= configFunctions.getConfigProperty("settings.licenceAliasPlural").toLowerCase() %> will still exist, but will no longer be issued.</p>
             </div>
           </div>
           <div class="media">
@@ -104,7 +104,7 @@
 
   <div class="panel">
     <h2 class="panel-heading">
-      Step 2: Refresh <%= configFunctions.getProperty("settings.licenceAlias") %> Records
+      Step 2: Refresh <%= configFunctions.getConfigProperty("settings.licenceAlias") %> Records
     </h2>
     <div class="panel-block is-block">
       <div class="columns">
@@ -116,9 +116,9 @@
                 that consists of the following steps.
               </p>
               <ol>
-                <li><strong>Delete all</strong> non-issued <%= configFunctions.getProperty("settings.licenceAliasPlural").toLowerCase() %>.</li>
+                <li><strong>Delete all</strong> non-issued <%= configFunctions.getConfigProperty("settings.licenceAliasPlural").toLowerCase() %>.</li>
                 <li><strong>Purge all</strong> approvals, additional fees, and transactions.</li>
-                <li>Mark all <%= configFunctions.getProperty("settings.licenceAliasPlural").toLowerCase() %> as renewals.</li>
+                <li>Mark all <%= configFunctions.getConfigProperty("settings.licenceAliasPlural").toLowerCase() %> as renewals.</li>
                 <li>Update all fees with their current rates.</li>
                 <li>Apply all mandatory additional fees.</li>
                 <li><strong>Unissue all licences.</strong></li>
@@ -127,7 +127,7 @@
           </div>
           <div class="message is-warning">
             <p class="message-body">
-              Be sure to update all applicable <%= configFunctions.getProperty("settings.licenceAlias").toLowerCase() %>
+              Be sure to update all applicable <%= configFunctions.getConfigProperty("settings.licenceAlias").toLowerCase() %>
               prior to refreshing to ensure the proper amounts are applied.
             </p>
           </div>

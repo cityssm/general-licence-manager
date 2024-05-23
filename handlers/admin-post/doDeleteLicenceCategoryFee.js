@@ -11,7 +11,7 @@ export default function handler(request, response) {
         });
     }
     else {
-        deleteLicenceCategoryFee(licenceFeeId, request.session);
+        deleteLicenceCategoryFee(licenceFeeId, request.session.user);
         cacheFunctions.clearAll();
         const licenceCategoryFees = getLicenceCategoryFees(licenceCategoryFee.licenceCategoryKey, 'all');
         response.json({

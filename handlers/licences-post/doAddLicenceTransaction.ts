@@ -8,7 +8,7 @@ import getLicenceTransactions from '../../helpers/licencesDB/getLicenceTransacti
 export default function handler(request: Request, response: Response): void {
   const transactionIndex = addLicenceTransaction(
     request.body as AddLicenceTransactionForm,
-    request.session
+    request.session.user as GLMUser
   )
   const licenceTransactions = getLicenceTransactions(
     request.body.licenceId as string

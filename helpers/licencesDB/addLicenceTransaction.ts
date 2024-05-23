@@ -5,7 +5,6 @@ import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js'
 import sqlite from 'better-sqlite3'
 
 import { licencesDB as databasePath } from '../../data/databasePaths.js'
-import type { PartialSession } from '../../types/recordTypes.js'
 
 import getNextLicenceTransactionIndex from './getNextLicenceTransactionIndex.js'
 
@@ -23,7 +22,7 @@ export interface AddLicenceTransactionForm {
 
 export default function addLicenceTransaction(
   licenceTransactionForm: AddLicenceTransactionForm,
-  requestSession: PartialSession
+  sessionUser: GLMUser
 ): number {
   const database = sqlite(databasePath)
 
@@ -71,9 +70,9 @@ export default function addLicenceTransaction(
       licenceTransactionForm.externalReceiptNumber,
       licenceTransactionForm.transactionAmount,
       licenceTransactionForm.transactionNote,
-      requestSession.user.userName,
+      sessionUser.userName,
       rightNow.getTime(),
-      requestSession.user.userName,
+      sessionUser.userName,
       rightNow.getTime()
     )
 

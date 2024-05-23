@@ -7,7 +7,7 @@ import markBatchTransactionFailed, {
 export function handler(request: Request, response: Response): void {
   const success = markBatchTransactionFailed(
     request.body as MarkBatchTransactionFailedForm,
-    request.session
+    request.session.user as GLMUser
   )
 
   response.json({

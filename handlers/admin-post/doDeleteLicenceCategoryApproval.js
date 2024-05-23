@@ -1,5 +1,5 @@
 import * as cacheFunctions from '../../helpers/functions.cache.js';
-import { deleteLicenceCategoryApproval } from '../../helpers/licencesDB/deleteLicenceCategoryApproval.js';
+import deleteLicenceCategoryApproval from '../../helpers/licencesDB/deleteLicenceCategoryApproval.js';
 import getLicenceCategoryApproval from '../../helpers/licencesDB/getLicenceCategoryApproval.js';
 import getLicenceCategoryApprovals from '../../helpers/licencesDB/getLicenceCategoryApprovals.js';
 export default function handler(request, response) {
@@ -11,7 +11,7 @@ export default function handler(request, response) {
         });
     }
     else {
-        deleteLicenceCategoryApproval(licenceApprovalKey, request.session);
+        deleteLicenceCategoryApproval(licenceApprovalKey, request.session.user);
         cacheFunctions.clearAll();
         const licenceCategoryApprovals = getLicenceCategoryApprovals(licenceCategoryApproval.licenceCategoryKey);
         response.json({

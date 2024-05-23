@@ -17,7 +17,10 @@ export default function handler(request: Request, response: Response): void {
       success: false
     })
   } else {
-    deleteLicenceCategoryAdditionalFee(licenceAdditionalFeeKey, request.session)
+    deleteLicenceCategoryAdditionalFee(
+      licenceAdditionalFeeKey,
+      request.session.user as GLMUser
+    )
 
     cacheFunctions.clearAll()
 

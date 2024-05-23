@@ -2,7 +2,6 @@ import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js'
 import sqlite from 'better-sqlite3'
 
 import { licencesDB as databasePath } from '../../data/databasePaths.js'
-import type * as recordTypes from '../../types/recordTypes'
 import * as cacheFunctions from '../functions.cache.js'
 import * as licenceFunctions from '../functions.licence.js'
 
@@ -37,7 +36,7 @@ export interface CreateLicenceForm {
 
 export default function createLicence(
   licenceForm: CreateLicenceForm,
-  requestSession: recordTypes.PartialSession
+  sessionUser: GLMUser
 ): number {
   const database = sqlite(databasePath)
 
@@ -92,9 +91,9 @@ export default function createLicence(
       licenceForm.baseReplacementFee,
       licenceForm.baseLicenceFee,
       licenceForm.baseReplacementFee,
-      requestSession.user.userName,
+      sessionUser.userName,
       rightNowMillis,
-      requestSession.user.userName,
+      sessionUser.userName,
       rightNowMillis
     )
 

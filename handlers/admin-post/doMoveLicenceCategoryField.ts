@@ -11,7 +11,7 @@ export default function handler(request: Request, response: Response): void {
   const licenceCategoryKey = moveLicenceCategoryField(
     licenceFieldKeyFrom,
     licenceFieldKeyTo,
-    request.session
+    request.session.user as GLMUser
   )
 
   cacheFunctions.clearAll()

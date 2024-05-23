@@ -1,12 +1,11 @@
 import sqlite from 'better-sqlite3'
-import type * as expressSession from 'express-session'
 
 import { licencesDB as databasePath } from '../../data/databasePaths.js'
 
 export default function deleteLicenceTransaction(
   licenceId: number | string,
   transactionIndex: number | string,
-  requestSession: expressSession.Session
+  sessionUser: GLMUser
 ): boolean {
   const database = sqlite(databasePath)
 
@@ -18,7 +17,7 @@ export default function deleteLicenceTransaction(
         where licenceId = ?
         and transactionIndex = ?`
     )
-    .run(requestSession.user.userName, Date.now(), licenceId, transactionIndex)
+    .run(sessionUser.userName, Date.now(), licenceId, transactionIndex)
 
   database.close()
 

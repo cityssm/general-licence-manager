@@ -1,11 +1,10 @@
 import sqlite from 'better-sqlite3'
 
 import { licencesDB as databasePath } from '../../data/databasePaths.js'
-import type { PartialSession } from '../../types/recordTypes.js'
 
 export default function addLicenceCategoryFee(
   licenceCategoryKey: string,
-  requestSession: PartialSession
+  sessionUser: GLMUser
 ): number {
   const database = sqlite(databasePath)
 
@@ -19,9 +18,9 @@ export default function addLicenceCategoryFee(
     )
     .run(
       licenceCategoryKey,
-      requestSession.user.userName,
+      sessionUser.userName,
       rightNowMillis,
-      requestSession.user.userName,
+      sessionUser.userName,
       rightNowMillis
     )
 

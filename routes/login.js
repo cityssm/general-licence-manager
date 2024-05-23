@@ -6,7 +6,7 @@ import * as configFunctions from '../helpers/functions.config.js';
 const debug = Debug('general-licence-manager:login');
 export const router = Router();
 function getSafeRedirectURL(possibleRedirectURL = '') {
-    const urlPrefix = configFunctions.getProperty('reverseProxy.urlPrefix');
+    const urlPrefix = configFunctions.getConfigProperty('reverseProxy.urlPrefix');
     const urlToCheck = (possibleRedirectURL.startsWith(urlPrefix)
         ? possibleRedirectURL.slice(urlPrefix.length)
         : possibleRedirectURL).toLowerCase();
@@ -24,7 +24,7 @@ function getSafeRedirectURL(possibleRedirectURL = '') {
 router
     .route('/')
     .get((request, response) => {
-    const sessionCookieName = configFunctions.getProperty('session.cookieName');
+    const sessionCookieName = configFunctions.getConfigProperty('session.cookieName');
     if (request.session.user && request.cookies[sessionCookieName]) {
         const redirectURL = getSafeRedirectURL((request.query.redirect ?? ''));
         response.redirect(redirectURL);
@@ -46,7 +46,7 @@ router
     if (userName.startsWith('*')) {
         if (useTestDatabases && userName === passwordPlain) {
             isAuthenticated = configFunctions
-                .getProperty('users.testing')
+                .getConfigProperty('users.testing')
                 .includes(userName);
             if (isAuthenticated) {
                 debug(`Authenticated testing user: ${userName}`);
@@ -60,27 +60,25 @@ router
     if (isAuthenticated) {
         const userNameLowerCase = userName.toLowerCase();
         const canLogin = configFunctions
-            .getProperty('users.canLogin')
+            .getConfigProperty('users.canLogin')
             .some((currentUserName) => {
             return userNameLowerCase === currentUserName.toLowerCase();
         });
         if (canLogin) {
             const canUpdate = configFunctions
-                .getProperty('users.canUpdate')
+                .getConfigProperty('users.canUpdate')
                 .some((currentUserName) => {
                 return userNameLowerCase === currentUserName.toLowerCase();
             });
             const isAdmin = configFunctions
-                .getProperty('users.isAdmin')
+                .getConfigProperty('users.isAdmin')
                 .some((currentUserName) => {
                 return userNameLowerCase === currentUserName.toLowerCase();
             });
             userObject = {
                 userName: userNameLowerCase,
-                userProperties: {
-                    canUpdate,
-                    isAdmin
-                }
+                canUpdate,
+                isAdmin
             };
         }
     }

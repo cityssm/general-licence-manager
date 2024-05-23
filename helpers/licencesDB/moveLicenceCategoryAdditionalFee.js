@@ -7,7 +7,7 @@ const sql = `update LicenceCategoryAdditionalFees
     recordUpdate_userName = ?,
     recordUpdate_timeMillis = ?
     where licenceAdditionalFeeKey = ?`;
-export default function moveLicenceCategoryAdditionalFee(licenceAdditionalFeeKeyFrom, licenceAdditionalFeeKeyTo, requestSession) {
+export default function moveLicenceCategoryAdditionalFee(licenceAdditionalFeeKeyFrom, licenceAdditionalFeeKeyTo, sessionUser) {
     const database = sqlite(databasePath);
     const licenceCategoryAdditionalFeeFrom = getLicenceCategoryAdditionalFee(licenceAdditionalFeeKeyFrom, database);
     const licenceCategoryAdditionalFees = getLicenceCategoryAdditionalFees(licenceCategoryAdditionalFeeFrom.licenceCategoryKey, database);
@@ -22,13 +22,13 @@ export default function moveLicenceCategoryAdditionalFee(licenceAdditionalFeeKey
             licenceAdditionalFeeKeyTo) {
             database
                 .prepare(sql)
-                .run(expectedOrderNumber, requestSession.user.userName, Date.now(), licenceAdditionalFeeKeyFrom);
+                .run(expectedOrderNumber, sessionUser.userName, Date.now(), licenceAdditionalFeeKeyFrom);
             expectedOrderNumber += 1;
         }
         if (licenceCategoryAdditionalFee.orderNumber !== expectedOrderNumber) {
             database
                 .prepare(sql)
-                .run(expectedOrderNumber, requestSession.user.userName, Date.now(), licenceCategoryAdditionalFee.licenceAdditionalFeeKey);
+                .run(expectedOrderNumber, sessionUser.userName, Date.now(), licenceCategoryAdditionalFee.licenceAdditionalFeeKey);
         }
     }
     database.close();

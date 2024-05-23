@@ -5,7 +5,6 @@ import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js'
 import sqlite from 'better-sqlite3'
 
 import { licencesDB as databasePath } from '../../data/databasePaths.js'
-import type { PartialSession } from '../../types/recordTypes.js'
 
 export interface UpdateLicenceCategoryFeeForm {
   licenceFeeId: number | string
@@ -18,7 +17,7 @@ export interface UpdateLicenceCategoryFeeForm {
 
 export default function updateLicenceCategoryFee(
   licenceCategoryFeeForm: UpdateLicenceCategoryFeeForm,
-  requestSession: PartialSession
+  sessionUser: GLMUser
 ): boolean {
   const database = sqlite(databasePath)
 
@@ -52,7 +51,7 @@ export default function updateLicenceCategoryFee(
       licenceCategoryFeeForm.replacementFee === ''
         ? undefined
         : licenceCategoryFeeForm.replacementFee,
-      requestSession.user.userName,
+      sessionUser.userName,
       Date.now(),
       licenceCategoryFeeForm.licenceFeeId
     )

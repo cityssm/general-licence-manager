@@ -3,7 +3,7 @@
 <div class="level">
   <div class="level-left has-flex-shrink-1">
     <h1 class="title is-1">
-      <%= configFunctions.getProperty("application.applicationName") %>
+      <%= configFunctions.getConfigProperty("application.applicationName") %>
     </h1>
   </div>
 </div>
@@ -11,7 +11,7 @@
 <% if (licenceCategories.length === 0) { %>
   <div class="message is-warning">
     <p class="message-body">
-      <strong>There are no active <%= configFunctions.getProperty("settings.licenceAlias").toLowerCase() %> categories available.</strong>
+      <strong>There are no active <%= configFunctions.getConfigProperty("settings.licenceAlias").toLowerCase() %> categories available.</strong>
     </p>
   </div>
 <% } %>
@@ -28,12 +28,12 @@
             <% let uid = "uid--" + stringFns.getUID(); %>
             <h2 class="title is-4 is-marginless">
               <a href="<%= urlPrefix %>/licences" aria-describedby="<%= uid %>">
-              <%= configFunctions.getProperty("settings.licenceAliasPlural") %></a>
+              <%= configFunctions.getConfigProperty("settings.licenceAliasPlural") %></a>
             </h2>
-            <p id="<%= uid %>">View and maintain <%= configFunctions.getProperty("settings.licenceAliasPlural").toLowerCase() %>.</p>
+            <p id="<%= uid %>">View and maintain <%= configFunctions.getConfigProperty("settings.licenceAliasPlural").toLowerCase() %>.</p>
           </div>
         </div>
-        <% if (user.userProperties.canUpdate) { %>
+        <% if (user.canUpdate) { %>
           <div class="media">
             <div class="media-left" aria-hidden="true">
               <span class="fa-layers fa-fw fa-3x">
@@ -43,14 +43,14 @@
             </div>
             <div class="media-content has-text-black">
               <h2 class="title is-4 is-marginless">
-                <a href="<%= urlPrefix %>/licences/new">Create a New <%= configFunctions.getProperty("settings.licenceAlias") %></a>
+                <a href="<%= urlPrefix %>/licences/new">Create a New <%= configFunctions.getConfigProperty("settings.licenceAlias") %></a>
               </h2>
             </div>
           </div>
         <% } %>
       </div>
     </div>
-    <% if (configFunctions.getProperty("settings.includeBatches") && user.userProperties.canUpdate) { %>
+    <% if (configFunctions.getConfigProperty("settings.includeBatches") && user.canUpdate) { %>
       <div class="card mt-5">
         <div class="card-content">
           <div class="media">
@@ -134,7 +134,7 @@
         </div>
       </div>
     </div>
-    <% if (user.userProperties.isAdmin) { %>
+    <% if (user.isAdmin) { %>
       <div class="card mt-5">
         <div class="card-content">
           <div class="media">
@@ -145,16 +145,16 @@
               <% uid = "uid--" + stringFns.getUID(); %>
               <h2 class="title is-4 is-marginless">
                 <a href="<%= urlPrefix %>/admin/licenceCategories" aria-describedby="<%= uid %>">
-                  <%= configFunctions.getProperty("settings.licenceAlias") %> Categories
+                  <%= configFunctions.getConfigProperty("settings.licenceAlias") %> Categories
                 </a>
               </h2>
               <p id="<%= uid %>">
-                Add new <%= configFunctions.getProperty("settings.licenceAlias").toLowerCase() %> types.
-                Maintain existing <%= configFunctions.getProperty("settings.licenceAlias").toLowerCase() %> types.
+                Add new <%= configFunctions.getConfigProperty("settings.licenceAlias").toLowerCase() %> types.
+                Maintain existing <%= configFunctions.getConfigProperty("settings.licenceAlias").toLowerCase() %> types.
               </p>
             </div>
           </div>
-          <% if (configFunctions.getProperty("settings.includeYearEnd")) { %>
+          <% if (configFunctions.getConfigProperty("settings.includeYearEnd")) { %>
             <div class="media">
               <div class="media-left" aria-hidden="true">
                 <span class="fa-layers fa-fw fa-3x">
@@ -170,7 +170,7 @@
                   </a>
                 </h2>
                 <p id="<%= uid %>">
-                  Resets <%= configFunctions.getProperty("settings.licenceAliasPlural").toLowerCase() %> to prepare for the next year.
+                  Resets <%= configFunctions.getConfigProperty("settings.licenceAliasPlural").toLowerCase() %> to prepare for the next year.
                 </p>
               </div>
             </div>

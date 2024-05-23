@@ -1,5 +1,5 @@
 <%
-  const urlPrefix = configFunctions.getProperty("reverseProxy.urlPrefix");
+  const urlPrefix = configFunctions.getConfigProperty("reverseProxy.urlPrefix");
   const isShortTermRental = (licenceCategory.licenceCategory.trim().toLowerCase() === "short term rental");
 %><html>
 <head>
@@ -12,7 +12,7 @@
 
     html {
       font-family: Arial, sans-serif;
-      background-image: url('http://localhost:<%= configFunctions.getProperty("application.httpPort") %><%= urlPrefix %>/_private/ssm-shield.svg');
+      background-image: url('http://localhost:<%= configFunctions.getConfigProperty("application.httpPort") %><%= urlPrefix %>/_private/ssm-shield.svg');
       background-position: center 150px;
       background-repeat: no-repeat;
       background-size: 600px;
@@ -100,7 +100,7 @@
       <table class="mt-2 mb-2">
         <tr>
           <td style="width:150px;padding-right:20px">
-            <img src="http://localhost:<%= configFunctions.getProperty("application.httpPort") %><%= urlPrefix %>/_private/ssm-shield-color.svg" alt="" style="width:100%" />
+            <img src="http://localhost:<%= configFunctions.getConfigProperty("application.httpPort") %><%= urlPrefix %>/_private/ssm-shield-color.svg" alt="" style="width:100%" />
           </td>
           <td style="width:50%;vertical-align:middle">
             Clerk's Department<br />

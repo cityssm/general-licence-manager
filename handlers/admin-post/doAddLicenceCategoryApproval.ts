@@ -9,7 +9,7 @@ import getLicenceCategoryApprovals from '../../helpers/licencesDB/getLicenceCate
 export default function handler(request: Request, response: Response): void {
   const licenceApprovalKey = addLicenceCategoryApproval(
     request.body as AddLicenceCategoryApprovalForm,
-    request.session
+    request.session.user as GLMUser
   )
 
   cacheFunctions.clearAll()

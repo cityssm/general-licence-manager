@@ -1,64 +1,27 @@
+import { Configurator } from '@cityssm/configurator';
+import { configDefaultValues } from '../data/config.defaultValues.js';
 import { config } from '../data/config.js';
-const configFallbackValues = new Map();
-configFallbackValues.set('application.applicationName', 'General Licence Manager');
-configFallbackValues.set('application.logoURL', '/images/stamp.png');
-configFallbackValues.set('application.httpPort', 7000);
-configFallbackValues.set('application.useTestDatabases', false);
-configFallbackValues.set('reverseProxy.disableCompression', false);
-configFallbackValues.set('reverseProxy.disableEtag', false);
-configFallbackValues.set('reverseProxy.urlPrefix', '');
-configFallbackValues.set('session.cookieName', 'general-licence-manager-user-sid');
-configFallbackValues.set('session.secret', 'cityssm/general-licence-manager');
-configFallbackValues.set('session.maxAgeMillis', 60 * 60 * 1000);
-configFallbackValues.set('session.doKeepAlive', false);
-configFallbackValues.set('users.testing', []);
-configFallbackValues.set('users.canLogin', ['administrator']);
-configFallbackValues.set('users.canUpdate', []);
-configFallbackValues.set('users.isAdmin', ['administrator']);
-configFallbackValues.set('defaults.licenceNumberFunction', 'year-fourDigits');
-configFallbackValues.set('defaults.licenseeCity', '');
-configFallbackValues.set('defaults.licenseeProvince', 'ON');
-configFallbackValues.set('settings.licenceAlias', 'Licence');
-configFallbackValues.set('settings.licenceAliasPlural', 'Licences');
-configFallbackValues.set('settings.licenseeAlias', 'Licensee');
-configFallbackValues.set('settings.licenseeAliasPlural', 'Licensees');
-configFallbackValues.set('settings.renewalAlias', 'Renewal');
-configFallbackValues.set('settings.includeRelated', true);
-configFallbackValues.set('settings.includeBatches', false);
-configFallbackValues.set('settings.includeReplacementFee', true);
-configFallbackValues.set('settings.includeYearEnd', false);
-configFallbackValues.set('licenceLengthFunctions', {});
-configFallbackValues.set('additionalFeeFunctions', {});
-configFallbackValues.set('customReports', []);
-export function getProperty(propertyName) {
-    const propertyNameSplit = propertyName.split('.');
-    let currentObject = config;
-    for (const propertyNamePiece of propertyNameSplit) {
-        if (Object.prototype.hasOwnProperty.call(currentObject, propertyNamePiece)) {
-            currentObject = currentObject[propertyNamePiece];
-            continue;
-        }
-        return configFallbackValues.get(propertyName);
-    }
-    return currentObject;
+const configurator = new Configurator(configDefaultValues, config);
+export function getConfigProperty(propertyName, fallbackValue) {
+    return configurator.getConfigProperty(propertyName, fallbackValue);
 }
-export const keepAliveMillis = getProperty('session.doKeepAlive')
-    ? Math.max(getProperty('session.maxAgeMillis') / 2, getProperty('session.maxAgeMillis') - 10 * 60 * 1000)
+export const keepAliveMillis = getConfigProperty('session.doKeepAlive')
+    ? Math.max(getConfigProperty('session.maxAgeMillis') / 2, getConfigProperty('session.maxAgeMillis') - 10 * 60 * 1000)
     : 0;
 export function getLicenceLengthFunctionNames() {
-    return Object.keys(getProperty('licenceLengthFunctions'));
+    return Object.keys(getConfigProperty('licenceLengthFunctions'));
 }
 export function getLicenceLengthFunction(licenceLengthFunctionName) {
-    return getProperty('licenceLengthFunctions')[licenceLengthFunctionName];
+    return getConfigProperty('licenceLengthFunctions')[licenceLengthFunctionName];
 }
 export function getAdditionalFeeFunctionNames() {
-    return Object.keys(getProperty('additionalFeeFunctions')) || [];
+    return Object.keys(getConfigProperty('additionalFeeFunctions')) || [];
 }
 export function getAdditionalFeeFunction(additionalFeeFunctionName) {
-    return getProperty('additionalFeeFunctions')[additionalFeeFunctionName];
+    return getConfigProperty('additionalFeeFunctions')[additionalFeeFunctionName];
 }
 export function getCustomReport(reportName) {
-    return getProperty('customReports').find((possibleReportDefinition) => {
+    return getConfigProperty('customReports').find((possibleReportDefinition) => {
         return possibleReportDefinition.reportName === reportName;
     });
 }

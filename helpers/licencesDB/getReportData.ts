@@ -13,10 +13,10 @@ import * as configFunctions from '../functions.config.js'
 export type ReportParameters = Record<string, string | number>
 
 const licenceAliasSQL = camelCase(
-  configFunctions.getProperty('settings.licenceAlias')
+  configFunctions.getConfigProperty('settings.licenceAlias')
 )
 const licenseeAliasSQL = camelCase(
-  configFunctions.getProperty('settings.licenseeAlias')
+  configFunctions.getConfigProperty('settings.licenseeAlias')
 )
 
 const licenceId = `${licenceAliasSQL}Id`
@@ -237,7 +237,7 @@ export default function getReportData(
             userFn_timeIntegerToString(t.transactionTime) as transactionTimeString,
             t.transactionAmount,
             ${
-              configFunctions.getProperty('settings.includeBatches')
+              configFunctions.getConfigProperty('settings.includeBatches')
                 ? ` userFn_dateIntegerToString(t.batchDate) as batchDateString,
                       userFn_getCanadianBankName(t.bankInstitutionNumber, t.bankTransitNumber) as bankName,
                       t.bankInstitutionNumber,

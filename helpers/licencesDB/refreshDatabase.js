@@ -38,7 +38,7 @@ function userFunction_getEndDate(licenceCategoryKey, startDateNumber) {
     }
     return dateTimeFunctions.dateToInteger(endDate);
 }
-export default function refreshDatabase(requestSession) {
+export default function refreshDatabase(sessionUser) {
     const database = sqlite(databasePath);
     database.function('userFn_getCurrentFee', userFunction_getCurrentFee);
     database.function('userFn_getEndDate', userFunction_getEndDate);
@@ -48,13 +48,13 @@ export default function refreshDatabase(requestSession) {
         recordDelete_timeMillis = ?
         where recordDelete_timeMillis is null
         and issueDate is null`)
-        .run(requestSession.user.userName, Date.now());
+        .run(sessionUser.userName, Date.now());
     database
         .prepare(`update LicenceTransactions
       set recordDelete_userName  = ?,
       recordDelete_timeMillis = ?
       where recordDelete_timeMillis is null`)
-        .run(requestSession.user.userName, Date.now());
+        .run(sessionUser.userName, Date.now());
     database.prepare('delete from LicenceAdditionalFees').run();
     database.prepare('delete from LicenceApprovals').run();
     const startDateNumber = dateTimeFunctions.dateToInteger(new Date());
@@ -71,7 +71,7 @@ export default function refreshDatabase(requestSession) {
         recordUpdate_timeMillis = ?
         where recordDelete_timeMillis is null
         and issueDate is not null`)
-        .run(startDateNumber, startDateNumber, requestSession.user.userName, Date.now());
+        .run(startDateNumber, startDateNumber, sessionUser.userName, Date.now());
     const licencesWithFees = database
         .prepare(`select licenceId, licenceCategoryKey, baseLicenceFee
         from Licences
@@ -106,7 +106,7 @@ export default function refreshDatabase(requestSession) {
         recordUpdate_timeMillis = ?
         where recordDelete_timeMillis is null
         and issueDate is not null`)
-        .run(requestSession.user.userName, Date.now());
+        .run(sessionUser.userName, Date.now());
     database.close();
     return true;
 }

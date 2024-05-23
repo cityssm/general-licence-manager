@@ -9,7 +9,7 @@ import getLicenceCategoryAdditionalFees from '../../helpers/licencesDB/getLicenc
 export default function handler(request: Request, response: Response): void {
   const licenceAdditionalFeeKey = addLicenceCategoryAdditionalFee(
     request.body as AddLicenceCategoryAdditionalFeeForm,
-    request.session
+    request.session.user as GLMUser
   )
 
   cacheFunctions.clearAll()

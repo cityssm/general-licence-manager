@@ -1,4 +1,3 @@
-import type { PartialSession } from '../../types/recordTypes.js';
 export interface UpdateLicenceCategoryFeeForm {
     licenceFeeId: number | string;
     effectiveStartDateString: string;
@@ -7,4 +6,4 @@ export interface UpdateLicenceCategoryFeeForm {
     renewalFee: number | string;
     replacementFee: number | string;
 }
-export default function updateLicenceCategoryFee(licenceCategoryFeeForm: UpdateLicenceCategoryFeeForm, requestSession: PartialSession): boolean;
+export default function updateLicenceCategoryFee(licenceCategoryFeeForm: UpdateLicenceCategoryFeeForm, sessionUser: GLMUser): boolean;

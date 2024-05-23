@@ -7,7 +7,7 @@ import addRelatedLicence from './addRelatedLicence.js';
 import getNextLicenceNumber from './getNextLicenceNumber.js';
 import saveLicenceApprovals from './saveLicenceApprovals.js';
 import saveLicenceFields from './saveLicenceFields.js';
-export default function createLicence(licenceForm, requestSession) {
+export default function createLicence(licenceForm, sessionUser) {
     const database = sqlite(databasePath);
     let licenceNumber = licenceForm.licenceNumber;
     const licenceCategory = cacheFunctions.getLicenceCategory(licenceForm.licenceCategoryKey);
@@ -29,7 +29,7 @@ export default function createLicence(licenceForm, requestSession) {
         recordCreate_userName, recordCreate_timeMillis,
         recordUpdate_userName, recordUpdate_timeMillis)
         values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
-        .run(licenceForm.licenceCategoryKey, licenceNumber, licenceForm.licenseeName, licenceForm.licenseeBusinessName, licenceForm.licenseeAddress1, licenceForm.licenseeAddress2, licenceForm.licenseeCity, licenceForm.licenseeProvince, licenceForm.licenseePostalCode, licenceForm.bankInstitutionNumber, licenceForm.bankTransitNumber, licenceForm.bankAccountNumber, licenceForm.isRenewal ? 1 : 0, dateTimeFunctions.dateStringToInteger(licenceForm.startDateString), dateTimeFunctions.dateStringToInteger(licenceForm.endDateString), licenceForm.baseLicenceFee, licenceForm.baseReplacementFee, licenceForm.baseLicenceFee, licenceForm.baseReplacementFee, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
+        .run(licenceForm.licenceCategoryKey, licenceNumber, licenceForm.licenseeName, licenceForm.licenseeBusinessName, licenceForm.licenseeAddress1, licenceForm.licenseeAddress2, licenceForm.licenseeCity, licenceForm.licenseeProvince, licenceForm.licenseePostalCode, licenceForm.bankInstitutionNumber, licenceForm.bankTransitNumber, licenceForm.bankAccountNumber, licenceForm.isRenewal ? 1 : 0, dateTimeFunctions.dateStringToInteger(licenceForm.startDateString), dateTimeFunctions.dateStringToInteger(licenceForm.endDateString), licenceForm.baseLicenceFee, licenceForm.baseReplacementFee, licenceForm.baseLicenceFee, licenceForm.baseReplacementFee, sessionUser.userName, rightNowMillis, sessionUser.userName, rightNowMillis);
     const licenceId = result.lastInsertRowid;
     if (licenceForm.relatedLicenceId) {
         addRelatedLicence(licenceId, licenceForm.relatedLicenceId, database);

@@ -3,7 +3,7 @@ import getLicenceCategoryFee from '../../helpers/licencesDB/getLicenceCategoryFe
 import getLicenceCategoryFees from '../../helpers/licencesDB/getLicenceCategoryFees.js';
 import updateLicenceCategoryFee from '../../helpers/licencesDB/updateLicenceCategoryFee.js';
 export default function handler(request, response) {
-    const success = updateLicenceCategoryFee(request.body, request.session);
+    const success = updateLicenceCategoryFee(request.body, request.session.user);
     cacheFunctions.clearAll();
     const licenceCategoryFee = getLicenceCategoryFee(request.body.licenceFeeId);
     const licenceCategoryFees = getLicenceCategoryFees(licenceCategoryFee?.licenceCategoryKey ?? '', 'all');

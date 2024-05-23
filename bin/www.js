@@ -29,7 +29,7 @@ function onListening(server) {
         debug(`Listening on ${bind}`);
     }
 }
-const httpPort = configFunctions.getProperty('application.httpPort');
+const httpPort = configFunctions.getConfigProperty('application.httpPort');
 const httpServer = http.createServer(app);
 httpServer.listen(httpPort);
 httpServer.on('error', onError);

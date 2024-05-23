@@ -10,7 +10,7 @@ export default function handler(_request: Request, response: Response): void {
   const licenceStats = getLicenceStats()
 
   response.render('licence-licenceCategorySummary', {
-    headTitle: `${configFunctions.getProperty(
+    headTitle: `${configFunctions.getConfigProperty(
       'settings.licenceAlias'
     )} Category Summary`,
     licenceCategories,

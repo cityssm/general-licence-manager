@@ -15,7 +15,7 @@ export default function handler(request: Request, response: Response): void {
       success: false
     })
   } else {
-    deleteLicenceCategoryFee(licenceFeeId, request.session)
+    deleteLicenceCategoryFee(licenceFeeId, request.session.user as GLMUser)
 
     cacheFunctions.clearAll()
     const licenceCategoryFees = getLicenceCategoryFees(

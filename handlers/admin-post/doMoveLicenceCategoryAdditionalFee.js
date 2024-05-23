@@ -6,7 +6,7 @@ export default function handler(request, response) {
         .licenceAdditionalFeeKey_from;
     const licenceAdditionalFeeKeyTo = request.body
         .licenceAdditionalFeeKey_to;
-    const licenceCategoryKey = moveLicenceCategoryAdditionalFee(licenceAdditionalFeeKeyFrom, licenceAdditionalFeeKeyTo, request.session);
+    const licenceCategoryKey = moveLicenceCategoryAdditionalFee(licenceAdditionalFeeKeyFrom, licenceAdditionalFeeKeyTo, request.session.user);
     cacheFunctions.clearAll();
     const licenceCategoryAdditionalFees = getLicenceCategoryAdditionalFees(licenceCategoryKey);
     response.json({

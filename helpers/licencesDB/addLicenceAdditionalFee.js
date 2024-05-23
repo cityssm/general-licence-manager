@@ -2,7 +2,7 @@ import sqlite from 'better-sqlite3';
 import { licencesDB as databasePath } from '../../data/databasePaths.js';
 import * as licenceFunctions from '../functions.licence.js';
 import getLicenceCategoryAdditionalFee from './getLicenceCategoryAdditionalFee.js';
-export default function addLicenceAdditionalFee(licenceId, licenceAdditionalFeeKey, requestSession) {
+export default function addLicenceAdditionalFee(licenceId, licenceAdditionalFeeKey, sessionUser) {
     const database = sqlite(databasePath);
     const licenceFees = database
         .prepare(`select baseLicenceFee, licenceFee
@@ -25,7 +25,7 @@ export default function addLicenceAdditionalFee(licenceId, licenceAdditionalFeeK
         recordUpdate_userName = ?,
         recordUpdate_timeMillis = ?
         where licenceId = ?`)
-        .run(newLicenceFee, requestSession.user.userName, rightNowMillis, licenceId);
+        .run(newLicenceFee, sessionUser.userName, rightNowMillis, licenceId);
     database.close();
     return {
         licenceFee: newLicenceFee,

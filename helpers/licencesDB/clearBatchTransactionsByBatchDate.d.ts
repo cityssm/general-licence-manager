@@ -1,2 +1,1 @@
-import type { PartialSession } from '../../types/recordTypes';
-export default function clearBatchTransactionsByBatchDate(batchDateString: string, requestSession: PartialSession): boolean;
+export default function clearBatchTransactionsByBatchDate(batchDateString: string, sessionUser: GLMUser): boolean;

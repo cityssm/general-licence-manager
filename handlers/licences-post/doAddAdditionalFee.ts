@@ -7,7 +7,7 @@ export default function handler(request: Request, response: Response): void {
   const feeDetails = addLicenceAdditionalFee(
     request.body.licenceId as string,
     request.body.licenceAdditionalFeeKey as string,
-    request.session
+    request.session.user as GLMUser
   )
 
   const additionalFee: LicenceAdditionalFee = {

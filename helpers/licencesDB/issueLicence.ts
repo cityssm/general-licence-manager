@@ -2,12 +2,11 @@ import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js'
 import sqlite from 'better-sqlite3'
 
 import { licencesDB as databasePath } from '../../data/databasePaths.js'
-import type { PartialSession } from '../../types/recordTypes.js'
 
 export function issueLicenceWithDate(
   licenceId: number | string,
   issueDate: Date,
-  requestSession: PartialSession
+  sessionUser: GLMUser
 ): boolean {
   const database = sqlite(databasePath)
 
@@ -25,7 +24,7 @@ export function issueLicenceWithDate(
     .run(
       dateTimeFunctions.dateToInteger(issueDate),
       dateTimeFunctions.dateToTimeInteger(issueDate),
-      requestSession.user.userName,
+      sessionUser.userName,
       rightNow.getTime(),
       licenceId
     )
@@ -37,7 +36,7 @@ export function issueLicenceWithDate(
 
 export default function issueLicence(
   licenceId: number | string,
-  requestSession: PartialSession
+  sessionUser: GLMUser
 ): boolean {
-  return issueLicenceWithDate(licenceId, new Date(), requestSession)
+  return issueLicenceWithDate(licenceId, new Date(), sessionUser)
 }

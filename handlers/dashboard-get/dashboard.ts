@@ -3,6 +3,7 @@ import type { Request, Response } from 'express'
 
 import { getLicenceCategories } from '../../helpers/functions.cache.js'
 import * as configFunctions from '../../helpers/functions.config.js'
+import { userCanUpdate } from '../../helpers/functions.user.js'
 import getOutstandingBatches from '../../helpers/licencesDB/getOutstandingBatches.js'
 
 const batchUpcomingDays = 5
@@ -10,8 +11,8 @@ const batchUpcomingDays = 5
 export default function handler(request: Request, response: Response): void {
   // Batches
   const unfilteredBatches =
-    configFunctions.getProperty('settings.includeBatches') &&
-    request.session.user.userProperties.canUpdate
+    configFunctions.getConfigProperty('settings.includeBatches') &&
+    userCanUpdate(request)
       ? getOutstandingBatches()
       : []
 

@@ -50,7 +50,7 @@ router.post('/doUpdateLicenceCategoryAdditionalFee', permissionHandlers.adminPos
 router.post('/doMoveLicenceCategoryAdditionalFee', permissionHandlers.adminPostHandler, handler_doMoveLicenceCategoryAdditionalFee);
 router.post('/doDeleteLicenceCategoryAdditionalFee', permissionHandlers.adminPostHandler, handler_doDeleteLicenceCategoryAdditionalFee);
 router.post('/doBackupDatabase', permissionHandlers.adminPostHandler, handler_doBackupDatabase);
-if (configFunctions.getProperty('settings.includeYearEnd')) {
+if (configFunctions.getConfigProperty('settings.includeYearEnd')) {
     router.get('/yearEnd', permissionHandlers.adminGetHandler, handler_yearEnd);
     router.post('/doRefreshDatabase', permissionHandlers.adminPostHandler, handler_doRefreshDatabase);
 }

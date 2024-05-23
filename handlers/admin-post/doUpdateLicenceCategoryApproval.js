@@ -3,7 +3,7 @@ import getLicenceCategoryApproval from '../../helpers/licencesDB/getLicenceCateg
 import getLicenceCategoryApprovals from '../../helpers/licencesDB/getLicenceCategoryApprovals.js';
 import updateLicenceCategoryApproval from '../../helpers/licencesDB/updateLicenceCategoryApproval.js';
 export default function handler(request, response) {
-    const success = updateLicenceCategoryApproval(request.body, request.session);
+    const success = updateLicenceCategoryApproval(request.body, request.session.user);
     cacheFunctions.clearAll();
     const licenceCategoryApproval = getLicenceCategoryApproval(request.body.licenceApprovalKey);
     const licenceCategoryApprovals = getLicenceCategoryApprovals(licenceCategoryApproval.licenceCategoryKey);

@@ -4,14 +4,13 @@ import { Router } from 'express'
 import { useTestDatabases } from '../data/databasePaths.js'
 import * as authenticationFunctions from '../helpers/functions.authentication.js'
 import * as configFunctions from '../helpers/functions.config.js'
-import type * as recordTypes from '../types/recordTypes'
 
 const debug = Debug('general-licence-manager:login')
 
 export const router = Router()
 
 function getSafeRedirectURL(possibleRedirectURL = ''): string {
-  const urlPrefix = configFunctions.getProperty('reverseProxy.urlPrefix')
+  const urlPrefix = configFunctions.getConfigProperty('reverseProxy.urlPrefix')
 
   const urlToCheck = (
     possibleRedirectURL.startsWith(urlPrefix)
@@ -35,7 +34,8 @@ function getSafeRedirectURL(possibleRedirectURL = ''): string {
 router
   .route('/')
   .get((request, response) => {
-    const sessionCookieName = configFunctions.getProperty('session.cookieName')
+    const sessionCookieName =
+      configFunctions.getConfigProperty('session.cookieName')
 
     if (request.session.user && request.cookies[sessionCookieName]) {
       const redirectURL = getSafeRedirectURL(
@@ -65,7 +65,7 @@ router
     if (userName.startsWith('*')) {
       if (useTestDatabases && userName === passwordPlain) {
         isAuthenticated = configFunctions
-          .getProperty('users.testing')
+          .getConfigProperty('users.testing')
           .includes(userName)
 
         if (isAuthenticated) {
@@ -79,36 +79,34 @@ router
       )
     }
 
-    let userObject: recordTypes.User | undefined
+    let userObject: GLMUser | undefined
 
     if (isAuthenticated) {
       const userNameLowerCase = userName.toLowerCase()
 
       const canLogin = configFunctions
-        .getProperty('users.canLogin')
+        .getConfigProperty('users.canLogin')
         .some((currentUserName) => {
           return userNameLowerCase === currentUserName.toLowerCase()
         })
 
       if (canLogin) {
         const canUpdate = configFunctions
-          .getProperty('users.canUpdate')
+          .getConfigProperty('users.canUpdate')
           .some((currentUserName) => {
             return userNameLowerCase === currentUserName.toLowerCase()
           })
 
         const isAdmin = configFunctions
-          .getProperty('users.isAdmin')
+          .getConfigProperty('users.isAdmin')
           .some((currentUserName) => {
             return userNameLowerCase === currentUserName.toLowerCase()
           })
 
         userObject = {
           userName: userNameLowerCase,
-          userProperties: {
-            canUpdate,
-            isAdmin
-          }
+          canUpdate,
+          isAdmin
         }
       }
     }

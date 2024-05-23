@@ -4,7 +4,7 @@ import moveLicenceCategoryApproval from '../../helpers/licencesDB/moveLicenceCat
 export default function handler(request, response) {
     const licenceApprovalKeyFrom = request.body.licenceApprovalKey_from;
     const licenceApprovalKeyTo = request.body.licenceApprovalKey_to;
-    const licenceCategoryKey = moveLicenceCategoryApproval(licenceApprovalKeyFrom, licenceApprovalKeyTo, request.session);
+    const licenceCategoryKey = moveLicenceCategoryApproval(licenceApprovalKeyFrom, licenceApprovalKeyTo, request.session.user);
     cacheFunctions.clearAll();
     const licenceCategoryApprovals = getLicenceCategoryApprovals(licenceCategoryKey);
     response.json({

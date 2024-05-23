@@ -4,7 +4,7 @@ export default function handler(request, response) {
     const licenceIds = request.body.licenceIds;
     let success = 1;
     for (const licenceId of licenceIds) {
-        success = Math.min(success, clearBatchTransactionsByLicence(licenceId, request.session) ? 1 : 0);
+        success = Math.min(success, clearBatchTransactionsByLicence(licenceId, request.session.user) ? 1 : 0);
     }
     const batchTransactions = getOutstandingBatchTransactions();
     response.json({

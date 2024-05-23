@@ -11,7 +11,7 @@ import type { LicenceCategoryAdditionalFee } from '../../types/recordTypes.js'
 export default function handler(request: Request, response: Response): void {
   const success = updateLicenceCategoryAdditionalFee(
     request.body as UpdateLicenceCategoryAdditionalFeeForm,
-    request.session
+    request.session.user as GLMUser
   )
 
   cacheFunctions.clearAll()

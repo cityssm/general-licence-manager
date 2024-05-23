@@ -4,7 +4,7 @@ import moveLicenceCategoryField from '../../helpers/licencesDB/moveLicenceCatego
 export default function handler(request, response) {
     const licenceFieldKeyFrom = request.body.licenceFieldKey_from;
     const licenceFieldKeyTo = request.body.licenceFieldKey_to;
-    const licenceCategoryKey = moveLicenceCategoryField(licenceFieldKeyFrom, licenceFieldKeyTo, request.session);
+    const licenceCategoryKey = moveLicenceCategoryField(licenceFieldKeyFrom, licenceFieldKeyTo, request.session.user);
     cacheFunctions.clearAll();
     const licenceCategoryFields = getLicenceCategoryFields(licenceCategoryKey);
     response.json({

@@ -11,7 +11,7 @@ export default function handler(request: Request, response: Response): void {
 
   if (licence === undefined) {
     response.redirect(
-      configFunctions.getProperty('reverseProxy.urlPrefix') +
+      configFunctions.getConfigProperty('reverseProxy.urlPrefix') +
         '/licences/?error=licenceIdNotFound'
     )
     return
@@ -25,7 +25,7 @@ export default function handler(request: Request, response: Response): void {
   })
 
   response.render('licence-view', {
-    headTitle: `${configFunctions.getProperty('settings.licenceAlias')} #${
+    headTitle: `${configFunctions.getConfigProperty('settings.licenceAlias')} #${
       licence.licenceNumber
     }`,
     licence,

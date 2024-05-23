@@ -7,7 +7,7 @@ export default function handler(request: Request, response: Response): void {
   const success = deleteLicenceTransaction(
     request.body.licenceId as string,
     request.body.transactionIndex as string,
-    request.session
+    request.session.user as GLMUser
   )
   const licenceTransactions = getLicenceTransactions(
     request.body.licenceId as string

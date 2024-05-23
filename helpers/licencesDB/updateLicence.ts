@@ -1,6 +1,5 @@
 import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js'
 import sqlite from 'better-sqlite3'
-import type * as expressSession from 'express-session'
 
 import { licencesDB as databasePath } from '../../data/databasePaths.js'
 import type { LicenceCategoryAdditionalFee } from '../../types/recordTypes.js'
@@ -37,7 +36,7 @@ export interface UpdateLicenceForm {
 
 export default function updateLicence(
   licenceForm: UpdateLicenceForm,
-  requestSession: expressSession.Session
+  sessionUser: GLMUser
 ): boolean {
   const database = sqlite(databasePath)
 
@@ -87,7 +86,7 @@ export default function updateLicence(
       licenceForm.baseReplacementFee,
       licenceForm.baseLicenceFee, // replace and recalculate
       licenceForm.baseReplacementFee, // replace and recalculate
-      requestSession.user.userName,
+      sessionUser.userName,
       rightNowMillis,
       licenceForm.licenceId
     )
@@ -124,10 +123,11 @@ export default function updateLicence(
   // Check for additional fees to update
   const currentAdditionalFees = database
     .prepare(
-      'select' +
-        ' licenceAdditionalFeeKey, additionalFeeType, additionalFeeNumber, additionalFeeFunction' +
-        ' from LicenceCategoryAdditionalFees' +
-        ' where licenceAdditionalFeeKey in (select licenceAdditionalFeeKey from LicenceAdditionalFees where licenceId = ?)'
+      `select
+        licenceAdditionalFeeKey,
+        additionalFeeType, additionalFeeNumber, additionalFeeFunction
+        from LicenceCategoryAdditionalFees
+        where licenceAdditionalFeeKey in (select licenceAdditionalFeeKey from LicenceAdditionalFees where licenceId = ?)`
     )
     .all(licenceForm.licenceId) as LicenceCategoryAdditionalFee[]
 
@@ -139,10 +139,10 @@ export default function updateLicence(
 
     database
       .prepare(
-        'update LicenceAdditionalFees' +
-          ' set additionalFeeAmount = ?' +
-          ' where licenceId = ?' +
-          ' and licenceAdditionalFeeKey = ?'
+        `update LicenceAdditionalFees
+          set additionalFeeAmount = ?
+          where licenceId = ?
+          and licenceAdditionalFeeKey = ?`
       )
       .run(
         additionalFeeAmount,
@@ -152,15 +152,15 @@ export default function updateLicence(
 
     database
       .prepare(
-        'update Licences' +
-          ' set licenceFee = licenceFee + ?' +
-          ' where licenceId = ?'
+        `update Licences
+          set licenceFee = licenceFee + ?
+          where licenceId = ?`
       )
       .run(additionalFeeAmount.toFixed(2), licenceForm.licenceId)
   }
 
   // Update bank information on outstanding batch entries
-  if (configFunctions.getProperty('settings.includeBatches')) {
+  if (configFunctions.getConfigProperty('settings.includeBatches')) {
     database
       .prepare(
         `update LicenceTransactions
@@ -179,7 +179,7 @@ export default function updateLicence(
         licenceForm.bankInstitutionNumber,
         licenceForm.bankTransitNumber,
         licenceForm.bankAccountNumber,
-        requestSession.user.userName,
+        sessionUser.userName,
         rightNowMillis,
         licenceForm.licenceId,
         licenceForm.bankInstitutionNumber,

@@ -1,6 +1,6 @@
 import sqlite from 'better-sqlite3';
 import { licencesDB as databasePath } from '../../data/databasePaths.js';
-export default function updateLicenceCategoryField(licenceCategoryFieldForm, requestSession) {
+export default function updateLicenceCategoryField(licenceCategoryFieldForm, sessionUser) {
     const database = sqlite(databasePath);
     database
         .prepare(`update LicenceCategoryFields
@@ -14,7 +14,7 @@ export default function updateLicenceCategoryField(licenceCategoryFieldForm, req
         recordUpdate_userName = ?,
         recordUpdate_timeMillis = ?
         where licenceFieldKey = ?`)
-        .run(licenceCategoryFieldForm.licenceField, licenceCategoryFieldForm.licenceFieldDescription, licenceCategoryFieldForm.isRequired ? 1 : 0, licenceCategoryFieldForm.minimumLength, licenceCategoryFieldForm.maximumLength, licenceCategoryFieldForm.pattern, licenceCategoryFieldForm.printKey, requestSession.user.userName, Date.now(), licenceCategoryFieldForm.licenceFieldKey);
+        .run(licenceCategoryFieldForm.licenceField, licenceCategoryFieldForm.licenceFieldDescription, licenceCategoryFieldForm.isRequired ? 1 : 0, licenceCategoryFieldForm.minimumLength, licenceCategoryFieldForm.maximumLength, licenceCategoryFieldForm.pattern, licenceCategoryFieldForm.printKey, sessionUser.userName, Date.now(), licenceCategoryFieldForm.licenceFieldKey);
     database.close();
     return true;
 }

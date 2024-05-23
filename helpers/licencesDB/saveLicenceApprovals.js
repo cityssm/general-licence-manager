@@ -7,7 +7,7 @@ export default function saveLicenceApprovals(licenceId, licenceApprovalKeys, lic
         doCloseDatabase = true;
     }
     for (const licenceApprovalKey of licenceApprovalKeys) {
-        if (licenceForm['approval--' + licenceApprovalKey]) {
+        if (licenceForm[`approval--${licenceApprovalKey}`]) {
             database
                 .prepare('insert into LicenceApprovals (licenceId, licenceApprovalKey) values (?, ?)')
                 .run(licenceId, licenceApprovalKey);

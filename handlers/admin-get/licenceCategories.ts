@@ -22,7 +22,7 @@ export default async function handler(
   const printEJSList = await getPrintEJSList()
 
   response.render('admin-licenceCategories', {
-    headTitle: `${configFunctions.getProperty(
+    headTitle: `${configFunctions.getConfigProperty(
       'settings.licenceAlias'
     )} Categories`,
     licenceCategories,

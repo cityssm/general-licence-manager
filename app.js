@@ -23,12 +23,12 @@ import { version } from './version.js';
 const debugApp = debug('general-licence-manager:app');
 databaseInitializer.initLicencesDB();
 export const app = express();
-if (!configFunctions.getProperty('reverseProxy.disableEtag')) {
+if (!configFunctions.getConfigProperty('reverseProxy.disableEtag')) {
     app.set('etag', false);
 }
 app.set('views', path.join('views'));
 app.set('view engine', 'ejs');
-if (!configFunctions.getProperty('reverseProxy.disableCompression')) {
+if (!configFunctions.getConfigProperty('reverseProxy.disableCompression')) {
     app.use(compression());
 }
 app.use((request, _response, next) => {
@@ -43,10 +43,10 @@ app.use(cookieParser());
 app.use(csurf({ cookie: true }));
 const limiter = rateLimit({
     windowMs: 1000,
-    max: 25 * Math.max(3, configFunctions.getProperty('users.canLogin').length)
+    max: 25 * Math.max(3, configFunctions.getConfigProperty('users.canLogin').length)
 });
 app.use(limiter);
-const urlPrefix = configFunctions.getProperty('reverseProxy.urlPrefix');
+const urlPrefix = configFunctions.getConfigProperty('reverseProxy.urlPrefix');
 if (urlPrefix !== '') {
     debugApp('urlPrefix = ' + urlPrefix);
 }
@@ -54,7 +54,7 @@ app.use(urlPrefix, express.static(path.join('public')));
 app.use(urlPrefix + '/lib/fa', express.static(path.join('node_modules', '@fortawesome', 'fontawesome-free')));
 app.use(urlPrefix + '/lib/cityssm-bulma-webapp-js', express.static(path.join('node_modules', '@cityssm', 'bulma-webapp-js')));
 app.use(urlPrefix + '/lib/cityssm-bulma-js', express.static(path.join('node_modules', '@cityssm', 'bulma-js', 'dist')));
-const sessionCookieName = configFunctions.getProperty('session.cookieName');
+const sessionCookieName = configFunctions.getConfigProperty('session.cookieName');
 const FileStoreSession = FileStore(session);
 app.use(session({
     store: new FileStoreSession({
@@ -63,12 +63,12 @@ app.use(session({
         retries: 20
     }),
     name: sessionCookieName,
-    secret: configFunctions.getProperty('session.secret'),
+    secret: configFunctions.getConfigProperty('session.secret'),
     resave: true,
     saveUninitialized: false,
     rolling: true,
     cookie: {
-        maxAge: configFunctions.getProperty('session.maxAgeMillis'),
+        maxAge: configFunctions.getConfigProperty('session.maxAgeMillis'),
         sameSite: 'strict'
     }
 }));
@@ -93,7 +93,7 @@ app.use((request, response, next) => {
     response.locals.dateTimeFns = dateTimeFns;
     response.locals.stringFns = stringFns;
     response.locals.htmlFns = htmlFns;
-    response.locals.urlPrefix = configFunctions.getProperty('reverseProxy.urlPrefix');
+    response.locals.urlPrefix = configFunctions.getConfigProperty('reverseProxy.urlPrefix');
     next();
 });
 app.get(`${urlPrefix}/`, sessionChecker, (_request, response) => {
@@ -101,7 +101,7 @@ app.get(`${urlPrefix}/`, sessionChecker, (_request, response) => {
 });
 app.use(`${urlPrefix}/dashboard`, sessionChecker, routerDashboard);
 app.use(`${urlPrefix}/licences`, sessionChecker, routerLicences);
-if (configFunctions.getProperty('settings.includeBatches')) {
+if (configFunctions.getConfigProperty('settings.includeBatches')) {
     app.use(`${urlPrefix}/batches`, sessionChecker, routerBatches);
 }
 app.use(`${urlPrefix}/reports`, sessionChecker, routerReports);

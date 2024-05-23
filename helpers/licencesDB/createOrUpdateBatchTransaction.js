@@ -8,7 +8,7 @@ function isBankingInformationIncomplete(bankRecord) {
         (bankRecord.bankTransitNumber ?? '') === '' ||
         (bankRecord.bankAccountNumber ?? '') === '');
 }
-export default function createOrUpdateBatchTransaction(transactionForm, requestSession) {
+export default function createOrUpdateBatchTransaction(transactionForm, sessionUser) {
     const database = sqlite(databasePath);
     let message;
     const bankRecord = database
@@ -22,12 +22,12 @@ export default function createOrUpdateBatchTransaction(transactionForm, requestS
         database.close();
         return {
             success: false,
-            message: `${configFunctions.getProperty('settings.licenceAlias')} is not available for updates (licenceId = ${transactionForm.licenceId}).`
+            message: `${configFunctions.getConfigProperty('settings.licenceAlias')} is not available for updates (licenceId = ${transactionForm.licenceId}).`
         };
     }
     else if (isBankingInformationIncomplete(bankRecord)) {
         message = `Banking information is incomplete on the ${configFunctions
-            .getProperty('settings.licenceAlias')
+            .getConfigProperty('settings.licenceAlias')
             .toLowerCase()}.`;
     }
     const batchDate = dateTimeFunctions.dateStringToInteger(transactionForm.batchDateString);
@@ -65,7 +65,7 @@ export default function createOrUpdateBatchTransaction(transactionForm, requestS
             recordDelete_timeMillis = ?
             where licenceId = ?
             and transactionIndex = ?`)
-                .run(requestSession.user.userName, rightNowMillis, transactionForm.licenceId, transactionIndex);
+                .run(sessionUser.userName, rightNowMillis, transactionForm.licenceId, transactionIndex);
         }
         else {
             if (currentTransactionRecord.transactionCount > 1) {
@@ -77,7 +77,7 @@ export default function createOrUpdateBatchTransaction(transactionForm, requestS
               where licenceId = ?
               and batchDate = ?
               and transactionIndex <> ?`)
-                    .run(requestSession.user.userName, rightNowMillis, transactionForm.licenceId, batchDate, transactionIndex);
+                    .run(sessionUser.userName, rightNowMillis, transactionForm.licenceId, batchDate, transactionIndex);
             }
             runResult = database
                 .prepare(`update LicenceTransactions
@@ -91,7 +91,7 @@ export default function createOrUpdateBatchTransaction(transactionForm, requestS
             recordDelete_timeMillis = null
             where licenceId = ?
             and transactionIndex = ?`)
-                .run(bankRecord.bankInstitutionNumber, bankRecord.bankTransitNumber, bankRecord.bankAccountNumber, transactionForm.transactionAmount, requestSession.user.userName, rightNowMillis, transactionForm.licenceId, transactionIndex);
+                .run(bankRecord.bankInstitutionNumber, bankRecord.bankTransitNumber, bankRecord.bankAccountNumber, transactionForm.transactionAmount, sessionUser.userName, rightNowMillis, transactionForm.licenceId, transactionIndex);
         }
     }
     else if (!doDelete) {
@@ -105,7 +105,7 @@ export default function createOrUpdateBatchTransaction(transactionForm, requestS
           recordCreate_userName, recordCreate_timeMillis,
           recordUpdate_userName, recordUpdate_timeMillis)
           values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
-            .run(transactionForm.licenceId, transactionIndex, batchDate, 0, bankRecord.bankInstitutionNumber, bankRecord.bankTransitNumber, bankRecord.bankAccountNumber, batchDate, transactionForm.transactionAmount, requestSession.user.userName, rightNowMillis, requestSession.user.userName, rightNowMillis);
+            .run(transactionForm.licenceId, transactionIndex, batchDate, 0, bankRecord.bankInstitutionNumber, bankRecord.bankTransitNumber, bankRecord.bankAccountNumber, batchDate, transactionForm.transactionAmount, sessionUser.userName, rightNowMillis, sessionUser.userName, rightNowMillis);
     }
     database.close();
     return {

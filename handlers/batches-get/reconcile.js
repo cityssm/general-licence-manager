@@ -4,7 +4,7 @@ export default function handler(request, response) {
     const batchDate = request.params.batchDate;
     const batchTransactions = getBatchTransactions(batchDate);
     if (batchTransactions.length === 0) {
-        response.redirect(configFunctions.getProperty('reverseProxy.urlPrefix') +
+        response.redirect(configFunctions.getConfigProperty('reverseProxy.urlPrefix') +
             '/dashboard/?error=batchDateHasNoTransactions');
         return;
     }

@@ -5,18 +5,18 @@
     <li><a href="<%= urlPrefix %>/dashboard">Home</a></li>
     <li><a href="<%= urlPrefix %>/licences">
       <span class="icon is-small"><i class="fas fa-certificate" aria-hidden="true"></i></span>
-      <span><%= configFunctions.getProperty("settings.licenceAliasPlural") %></span></a>
+      <span><%= configFunctions.getConfigProperty("settings.licenceAliasPlural") %></span></a>
     </li>
     <% if (isCreate) { %>
       <li class="is-active">
         <a href="#" aria-current="page">
-          Create a New <%= configFunctions.getProperty("settings.licenceAlias") %>
+          Create a New <%= configFunctions.getConfigProperty("settings.licenceAlias") %>
         </a>
       </li>
     <% } else { %>
       <li>
         <a href="<%= urlPrefix %>/licences/<%= licence.licenceId %>">
-          <%= configFunctions.getProperty("settings.licenceAlias") %> #<%= licence.licenceNumber %>
+          <%= configFunctions.getConfigProperty("settings.licenceAlias") %> #<%= licence.licenceNumber %>
         </a>
       </li>
       <li class="is-active">
@@ -29,7 +29,7 @@
 </nav>
 
 <h1 class="title is-1">
-  <%= isCreate ? "Create a New " + configFunctions.getProperty("settings.licenceAlias") : configFunctions.getProperty("settings.licenceAlias") + " #" + licence.licenceNumber %>
+  <%= isCreate ? "Create a New " + configFunctions.getConfigProperty("settings.licenceAlias") : configFunctions.getConfigProperty("settings.licenceAlias") + " #" + licence.licenceNumber %>
 </h1>
 
 <% if (!isCreate && licenceCategories[0].recordDelete_timeMillis && !licence.issueDate) { %>
@@ -37,16 +37,16 @@
     <div class="message-body">
       <div class="columns">
         <div class="column">
-          <p class="has-text-weight-bold">This <%= configFunctions.getProperty("settings.licenceAlias").toLowerCase() %> cannot be issued.</p>
+          <p class="has-text-weight-bold">This <%= configFunctions.getConfigProperty("settings.licenceAlias").toLowerCase() %> cannot be issued.</p>
           <p>
-            The category selected for this <%= configFunctions.getProperty("settings.licenceAlias").toLowerCase() %> is no longer active.
+            The category selected for this <%= configFunctions.getConfigProperty("settings.licenceAlias").toLowerCase() %> is no longer active.
           </p>
         </div>
         <div class="column is-narrow">
           <p class="has-text-right">
             <button class="button is-success" id="is-renew-licence-button" type="button">
               <span class="icon is-small"><i class="fas fa-copy" aria-hidden="true"></i></span>
-              <span>Copy Details to a New <%= configFunctions.getProperty("settings.licenceAlias") %></span>
+              <span>Copy Details to a New <%= configFunctions.getConfigProperty("settings.licenceAlias") %></span>
             </button>
           </p>
         </div>
@@ -66,7 +66,7 @@
             <div class="column">
               <div class="field">
                 <label class="label" for="licenceEdit--licenceCategoryKey">
-                  <%= configFunctions.getProperty("settings.licenceAlias") %> Category
+                  <%= configFunctions.getConfigProperty("settings.licenceAlias") %> Category
                 </label>
                 <div class="control is-expanded">
                   <div class="select is-fullwidth">
@@ -103,7 +103,7 @@
             </div>
             <div class="column">
               <label class="label" for="licenceEdit--licenceNumber">
-                <%= configFunctions.getProperty("settings.licenceAlias") %> Number
+                <%= configFunctions.getConfigProperty("settings.licenceAlias") %> Number
               </label>
               <div class="field has-addons">
                 <div class="control is-expanded">
@@ -116,35 +116,35 @@
                 <div class="control">
                   <button class="button has-tooltip-left is-unlock-button" data-tooltip="Unlock Field" type="button">
                     <i class="fas fa-unlock" aria-hidden="true"></i>
-                    <span class="is-sr-only">Unlock <%= configFunctions.getProperty("settings.licenceAlias") %> Number Field</span>
+                    <span class="is-sr-only">Unlock <%= configFunctions.getConfigProperty("settings.licenceAlias") %> Number Field</span>
                   </button>
                 </div>
               </div>
               <% if (isCreate) { %>
-                <p class="help">Leave the <%= configFunctions.getProperty("settings.licenceAlias") %> Number blank to generate on save.</p>
+                <p class="help">Leave the <%= configFunctions.getConfigProperty("settings.licenceAlias") %> Number blank to generate on save.</p>
               <% } %>
             </div>
           </div>
           <div class="facheck">
             <input id="licenceEdit--isRenewal" name="isRenewal" type="checkbox" <%= licence.isRenewal ? "checked" : "" %> />
             <label for="licenceEdit--isRenewal">
-              <%= configFunctions.getProperty("settings.licenceAlias") %>
+              <%= configFunctions.getConfigProperty("settings.licenceAlias") %>
               is
-              <%= configFunctions.getProperty("settings.renewalAlias") %>
+              <%= configFunctions.getConfigProperty("settings.renewalAlias") %>
             </label>
           </div>
         </div>
       </div>
     </div>
-    <% if ((!isCreate && (configFunctions.getProperty("settings.includeRelated") || licence.relatedLicences.length > 0)) || (isCreate && relatedLicence)) { %>
+    <% if ((!isCreate && (configFunctions.getConfigProperty("settings.includeRelated") || licence.relatedLicences.length > 0)) || (isCreate && relatedLicence)) { %>
       <div class="column">
         <% if (isCreate && relatedLicence) { %>
           <div class="message is-info">
             <div class="message-body">
               <input name="relatedLicenceId" type="hidden" value="<%= relatedLicence.licenceId %>" />
               <p>
-                This new <%= configFunctions.getProperty("settings.licenceAlias").toLowerCase() %> will related to
-                <%= configFunctions.getProperty("settings.licenceAlias").toLowerCase() %> #<%= relatedLicence.licenceNumber %>.
+                This new <%= configFunctions.getConfigProperty("settings.licenceAlias").toLowerCase() %> will related to
+                <%= configFunctions.getConfigProperty("settings.licenceAlias").toLowerCase() %> #<%= relatedLicence.licenceNumber %>.
               </p>
               <p class="mt-2 has-text-right">
                 <button class="button is-info" id="is-cancel-related-licence-id-button" type="button">
@@ -161,13 +161,13 @@
             <div class="panel-heading">
               <div class="level is-mobile">
                 <div class="level-left">
-                  <h2 class="level-item has-text-weight-bold">Related <%= configFunctions.getProperty("settings.licenceAliasPlural") %></h2>
+                  <h2 class="level-item has-text-weight-bold">Related <%= configFunctions.getConfigProperty("settings.licenceAliasPlural") %></h2>
                 </div>
                 <div class="level-right">
                   <div class="dropdown is-right has-text-weight-normal">
                     <div class="dropdown-trigger">
                       <button class="button level-item is-success is-small" type="button">
-                        <span>Add Related <%= configFunctions.getProperty("settings.licenceAlias") %></span>
+                        <span>Add Related <%= configFunctions.getConfigProperty("settings.licenceAlias") %></span>
                         <span class="icon"><i class="fas fa-caret-down" aria-hidden="true"></i></span>
                       </button>
                     </div>
@@ -175,11 +175,11 @@
                       <div class="dropdown-content">
                         <a id="button--addRelatedLicence" class="dropdown-item" href="#">
                           <i class="fas fa-fw fa-search" aria-hidden="true"></i>
-                          From Existing <%= configFunctions.getProperty("settings.licenceAlias") %>
+                          From Existing <%= configFunctions.getConfigProperty("settings.licenceAlias") %>
                         </a>
                         <a class="dropdown-item" href="<%= urlPrefix %>/licences/new?relatedLicenceId=<%= licence.licenceId %>" target="_blank">
                           <i class="fas fa-fw fa-plus" aria-hidden="true"></i>
-                          Create a New <%= configFunctions.getProperty("settings.licenceAlias") %>
+                          Create a New <%= configFunctions.getConfigProperty("settings.licenceAlias") %>
                         </a>
                       </div>
                     </div>
@@ -197,11 +197,11 @@
     <div class="column">
       <div class="panel">
         <h2 class="panel-heading">
-          <%= configFunctions.getProperty("settings.licenseeAlias") %> Information
+          <%= configFunctions.getConfigProperty("settings.licenseeAlias") %> Information
         </h2>
         <div class="panel-block is-block">
           <div class="field">
-            <label class="label" for="licenceEdit--licenseeName"><%= configFunctions.getProperty("settings.licenseeAlias") %> Name</label>
+            <label class="label" for="licenceEdit--licenseeName"><%= configFunctions.getConfigProperty("settings.licenseeAlias") %> Name</label>
             <div class="control has-icons-right">
               <input class="input" id="licenceEdit--licenseeName" name="licenseeName" type="text" value="<%= licence.licenseeName %>" maxlength="100" required />
               <span class="icon is-right" aria-hidden="true">
@@ -253,7 +253,7 @@
             </div>
           </div>
         </div>
-        <% if (configFunctions.getProperty("settings.includeBatches")) { %>
+        <% if (configFunctions.getConfigProperty("settings.includeBatches")) { %>
           <div class="panel-block is-block">
             <div class="message is-info is-small">
               <p class="message-body">
@@ -407,7 +407,7 @@
             <% } else { %>
               <div class="message is-warning is-small">
                 <p class="message-body">
-                  This <%= configFunctions.getProperty("settings.licenceAlias").toLowerCase() %> has not been issued.
+                  This <%= configFunctions.getConfigProperty("settings.licenceAlias").toLowerCase() %> has not been issued.
                 </p>
               </div>
             <% } %>
@@ -460,7 +460,7 @@
                 <% hasBaseLicenceFee = true; %>
                 <tr>
                   <td class="is-vcentered has-text-weight-bold" colspan="2">
-                    <label for="licenceEdit--baseLicenceFee">Base <%= configFunctions.getProperty("settings.licenceAlias") %> Fee</label>
+                    <label for="licenceEdit--baseLicenceFee">Base <%= configFunctions.getConfigProperty("settings.licenceAlias") %> Fee</label>
                   </td>
                   <td class="has-text-right">
                     <div class="control has-icons-left">
@@ -492,7 +492,7 @@
               <tfoot>
                 <tr>
                   <td class="is-vcentered has-text-weight-bold" colspan="2">
-                    <label for="licenceEdit--licenceFee">Total <%= configFunctions.getProperty("settings.licenceAlias") %> Fee</label>
+                    <label for="licenceEdit--licenceFee">Total <%= configFunctions.getConfigProperty("settings.licenceAlias") %> Fee</label>
                   </td>
                   <td class="has-text-weight-bold has-text-right">
                     <div class="control has-icons-left">
@@ -504,7 +504,7 @@
                   </td>
                   <td></td>
                 </tr>
-                <% if (configFunctions.getProperty("settings.includeReplacementFee")) { %>
+                <% if (configFunctions.getConfigProperty("settings.includeReplacementFee")) { %>
                   <tr>
                     <td class="is-vcentered" colspan="2">
                       <label for="licenceEdit--replacementFee">Replacement Fee</label>
@@ -525,7 +525,7 @@
           </table>
 
           <input id="licenceEdit--baseReplacementFee" name="baseReplacementFee" type="hidden" value="<%= licence.baseReplacementFee ? licence.baseReplacementFee.toFixed(2) : "" %>" />
-          <% if (!configFunctions.getProperty("settings.includeReplacementFee")) { %>
+          <% if (!configFunctions.getConfigProperty("settings.includeReplacementFee")) { %>
             <input id="licenceEdit--replacementFee" name="replacementFee" type="hidden" value="<%= licence.replacementFee ? licence.replacementFee.toFixed(2) : "" %>" />
           <% } %>
           <% if (!hasBaseLicenceFee) { %>
@@ -561,7 +561,7 @@
     </div>
   </div>
   <%
-    const submitButtonText = (isCreate ? "Create" : "Update") + " " + configFunctions.getProperty("settings.licenceAlias");
+    const submitButtonText = (isCreate ? "Create" : "Update") + " " + configFunctions.getConfigProperty("settings.licenceAlias");
   %>
   <div class="fixed-container is-fixed-bottom-right mx-4 my-4 has-text-right is-hidden-print">
     <button class="button is-circle is-success has-tooltip-left" data-tooltip="<%= submitButtonText %>" type="submit">
@@ -578,11 +578,11 @@
       <% if (licence.issueDate) { %>
         <a class="button is-link" href="<%= urlPrefix %>/licences/<%= licence.licenceId %>/print" target="_blank">
           <span class="icon"><i class="fas fa-print" aria-hidden="true"></i></span>
-          <span>Print <%= configFunctions.getProperty("settings.licenceAlias") %></span>
+          <span>Print <%= configFunctions.getConfigProperty("settings.licenceAlias") %></span>
         </a>
       <% } else if (!licenceCategories[0].recordDelete_timeMillis) { %>
         <button class="button is-primary" id="is-issue-licence-button" type="button">
-          Issue <%= configFunctions.getProperty("settings.licenceAlias") %>
+          Issue <%= configFunctions.getConfigProperty("settings.licenceAlias") %>
         </button>
       <% } %>
       <div class="dropdown is-right has-text-left">
@@ -599,12 +599,12 @@
             <% if (licence.issueDate) { %>
               <a class="dropdown-item" id="is-renew-licence-button" role="button" href="#">
                 <span class="icon is-small"><i class="fas fa-stamp" aria-hidden="true"></i></span>
-                Renew <%= configFunctions.getProperty("settings.licenceAlias") %>
+                Renew <%= configFunctions.getConfigProperty("settings.licenceAlias") %>
               </a>
             <% } %>
             <a class="dropdown-item" id="is-delete-licence-button" role="button" href="#">
               <span class="icon is-small"><i class="fas fa-trash-alt has-text-danger" aria-hidden="true"></i></span>
-              Delete <%= configFunctions.getProperty("settings.licenceAlias") %>
+              Delete <%= configFunctions.getConfigProperty("settings.licenceAlias") %>
             </a>
           </div>
         </div>

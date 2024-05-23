@@ -5,7 +5,7 @@ import issueLicence from '../../helpers/licencesDB/issueLicence.js'
 export default function handler(request: Request, response: Response): void {
   const success = issueLicence(
     request.body.licenceId as string,
-    request.session
+    request.session.user as GLMUser
   )
 
   response.json({

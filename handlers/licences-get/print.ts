@@ -20,7 +20,7 @@ export default async function handler(
 
   if (!licence?.issueDate) {
     next(
-      configFunctions.getProperty('settings.licenceAlias') +
+      configFunctions.getConfigProperty('settings.licenceAlias') +
         ' not available for printing.'
     )
     return
@@ -33,13 +33,13 @@ export default async function handler(
     (licenceCategory.printEJS ?? '') === ''
   ) {
     next(
-      configFunctions.getProperty('settings.licenceAlias') +
+      configFunctions.getConfigProperty('settings.licenceAlias') +
         ' does not have a print template set.'
     )
     return
   }
 
-  const reportPath = path.join('.', 'print', licenceCategory.printEJS + '.ejs')
+  const reportPath = path.join('.', 'print', `${licenceCategory.printEJS}.ejs`)
 
   await ejs.renderFile(
     reportPath,
@@ -66,7 +66,7 @@ export default async function handler(
         'Content-Disposition',
         'attachment;' +
           ' filename=' +
-          configFunctions.getProperty('settings.licenceAlias').toLowerCase() +
+          configFunctions.getConfigProperty('settings.licenceAlias').toLowerCase() +
           '-' +
           licenceId +
           '-' +

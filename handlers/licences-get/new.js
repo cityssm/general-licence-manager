@@ -20,8 +20,8 @@ export default function handler(request, response) {
     const licenseeBusinessName = getFirstPopulatedValue(request.query.licenseeBusinessName, relatedLicence?.licenseeBusinessName ?? '');
     const licenseeAddress1 = getFirstPopulatedValue(request.query.licenseeAddress1, relatedLicence?.licenseeAddress1 ?? '');
     const licenseeAddress2 = getFirstPopulatedValue(request.query.licenseeAddress2, relatedLicence?.licenseeAddress2 ?? '');
-    const licenseeCity = getFirstPopulatedValue(request.query.licenseeCity, relatedLicence?.licenseeCity ?? '', configFunctions.getProperty('defaults.licenseeCity'));
-    const licenseeProvince = getFirstPopulatedValue(request.query.licenseeProvince, relatedLicence?.licenseeProvince ?? '', configFunctions.getProperty('defaults.licenseeProvince'));
+    const licenseeCity = getFirstPopulatedValue(request.query.licenseeCity, relatedLicence?.licenseeCity ?? '', configFunctions.getConfigProperty('defaults.licenseeCity'));
+    const licenseeProvince = getFirstPopulatedValue(request.query.licenseeProvince, relatedLicence?.licenseeProvince ?? '', configFunctions.getConfigProperty('defaults.licenseeProvince'));
     const licenseePostalCode = getFirstPopulatedValue(request.query.licenseePostalCode, relatedLicence?.licenseePostalCode ?? '');
     const bankInstitutionNumber = getFirstPopulatedValue(request.query.bankInstitutionNumber, relatedLicence?.bankInstitutionNumber ?? '');
     const bankTransitNumber = getFirstPopulatedValue(request.query.bankTransitNumber, relatedLicence?.bankTransitNumber ?? '');
@@ -71,7 +71,7 @@ export default function handler(request, response) {
         licenceAdditionalFees: []
     };
     response.render('licence-edit', {
-        headTitle: configFunctions.getProperty('settings.licenceAlias') + ' Create',
+        headTitle: configFunctions.getConfigProperty('settings.licenceAlias') + ' Create',
         isCreate: true,
         licenceCategories,
         licence,

@@ -1,6 +1,6 @@
 import sqlite from 'better-sqlite3';
 import { licencesDB as databasePath } from '../../data/databasePaths.js';
-export default function markBatchTransactionFailed(transaction, requestSession) {
+export default function markBatchTransactionFailed(transaction, sessionUser) {
     const database = sqlite(databasePath);
     const transactionAmountFixed = Number.parseFloat(transaction.transactionAmount).toFixed(2);
     const result = database
@@ -14,7 +14,7 @@ export default function markBatchTransactionFailed(transaction, requestSession) 
         and transactionIndex = ?
         and batchDate = ?
         and recordDelete_timeMillis is null`)
-        .run(`Failed amount = $${transactionAmountFixed}`, transaction.externalReceiptNumber, requestSession.user.userName, Date.now(), transaction.licenceId, transaction.transactionIndex, transaction.batchDate);
+        .run(`Failed amount = $${transactionAmountFixed}`, transaction.externalReceiptNumber, sessionUser.userName, Date.now(), transaction.licenceId, transaction.transactionIndex, transaction.batchDate);
     database.close();
     return result.changes > 0;
 }

@@ -5,8 +5,8 @@ import camelCase from 'camelcase';
 import { licencesDB as databasePath } from '../../data/databasePaths.js';
 import * as cacheFunctions from '../functions.cache.js';
 import * as configFunctions from '../functions.config.js';
-const licenceAliasSQL = camelCase(configFunctions.getProperty('settings.licenceAlias'));
-const licenseeAliasSQL = camelCase(configFunctions.getProperty('settings.licenseeAlias'));
+const licenceAliasSQL = camelCase(configFunctions.getConfigProperty('settings.licenceAlias'));
+const licenseeAliasSQL = camelCase(configFunctions.getConfigProperty('settings.licenseeAlias'));
 const licenceId = `${licenceAliasSQL}Id`;
 const licenceNumber = `${licenceAliasSQL}Number`;
 const licenceCategory = `${licenceAliasSQL}Category`;
@@ -164,7 +164,7 @@ export default function getReportData(reportName, reportParameters) {
             userFn_dateIntegerToString(t.transactionDate) as transactionDateString,
             userFn_timeIntegerToString(t.transactionTime) as transactionTimeString,
             t.transactionAmount,
-            ${configFunctions.getProperty('settings.includeBatches')
+            ${configFunctions.getConfigProperty('settings.includeBatches')
                     ? ` userFn_dateIntegerToString(t.batchDate) as batchDateString,
                       userFn_getCanadianBankName(t.bankInstitutionNumber, t.bankTransitNumber) as bankName,
                       t.bankInstitutionNumber,

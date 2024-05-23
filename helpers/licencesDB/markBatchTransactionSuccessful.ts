@@ -1,7 +1,6 @@
 import sqlite from 'better-sqlite3'
 
 import { licencesDB as databasePath } from '../../data/databasePaths.js'
-import type { PartialSession } from '../../types/recordTypes.js'
 
 export interface MarkBatchTransactionSuccessfulForm {
   licenceId: string
@@ -13,7 +12,7 @@ export interface MarkBatchTransactionSuccessfulForm {
 
 export default function markBatchTransactionSuccessful(
   transaction: MarkBatchTransactionSuccessfulForm,
-  requestSession: PartialSession
+  sessionUser: GLMUser
 ): boolean {
   const database = sqlite(databasePath)
 
@@ -33,7 +32,7 @@ export default function markBatchTransactionSuccessful(
     .run(
       transaction.transactionAmount,
       transaction.externalReceiptNumber,
-      requestSession.user.userName,
+      sessionUser.userName,
       Date.now(),
       transaction.licenceId,
       transaction.transactionIndex,

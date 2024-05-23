@@ -181,7 +181,7 @@ router.post(
  * Year-End
  */
 
-if (configFunctions.getProperty('settings.includeYearEnd')) {
+if (configFunctions.getConfigProperty('settings.includeYearEnd')) {
   router.get('/yearEnd', permissionHandlers.adminGetHandler, handler_yearEnd)
 
   router.post(

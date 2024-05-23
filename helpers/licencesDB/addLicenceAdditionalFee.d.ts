@@ -1,8 +1,8 @@
-import type { LicenceCategoryAdditionalFee, PartialSession } from '../../types/recordTypes.js';
+import type { LicenceCategoryAdditionalFee } from '../../types/recordTypes.js';
 interface AddLicenceAdditionalFeeReturn {
     licenceFee: number;
     additionalFeeAmount: number;
     licenceCategoryAdditionalFee: LicenceCategoryAdditionalFee;
 }
-export default function addLicenceAdditionalFee(licenceId: string | number, licenceAdditionalFeeKey: string, requestSession: PartialSession): AddLicenceAdditionalFeeReturn;
+export default function addLicenceAdditionalFee(licenceId: string | number, licenceAdditionalFeeKey: string, sessionUser: GLMUser): AddLicenceAdditionalFeeReturn;
 export {};

@@ -1,7 +1,6 @@
 import sqlite from 'better-sqlite3'
 
 import { licencesDB as databasePath } from '../../data/databasePaths.js'
-import type { PartialSession } from '../../types/recordTypes.js'
 
 export interface UpdateLicenceCategoryFieldForm {
   licenceFieldKey: string
@@ -16,7 +15,7 @@ export interface UpdateLicenceCategoryFieldForm {
 
 export default function updateLicenceCategoryField(
   licenceCategoryFieldForm: UpdateLicenceCategoryFieldForm,
-  requestSession: PartialSession
+  sessionUser: GLMUser
 ): boolean {
   const database = sqlite(databasePath)
 
@@ -42,7 +41,7 @@ export default function updateLicenceCategoryField(
       licenceCategoryFieldForm.maximumLength,
       licenceCategoryFieldForm.pattern,
       licenceCategoryFieldForm.printKey,
-      requestSession.user.userName,
+      sessionUser.userName,
       Date.now(),
       licenceCategoryFieldForm.licenceFieldKey
     )

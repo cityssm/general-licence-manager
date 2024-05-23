@@ -33,7 +33,7 @@
       data-transaction-amount="<%= transaction.transactionAmount.toFixed(2) %>">
       <div class="columns">
         <div class="column">
-          <a class="has-text-weight-bold" href="<%= urlPrefix %>/licences/<%= transaction.licenceId %>" target="_blank"><%= configFunctions.getProperty("settings.licenceAlias") %> #<%= transaction.licenceNumber %></a><br />
+          <a class="has-text-weight-bold" href="<%= urlPrefix %>/licences/<%= transaction.licenceId %>" target="_blank"><%= configFunctions.getConfigProperty("settings.licenceAlias") %> #<%= transaction.licenceNumber %></a><br />
           <%= transaction.licenceCategory %><br />
           <%= transaction.licenseeName %>
         </div>

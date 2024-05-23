@@ -6,7 +6,7 @@ import getOutstandingBatchTransactions from '../../helpers/licencesDB/getOutstan
 export default function handler(request: Request, response: Response): void {
   const success = clearBatchTransactionsByBatchDate(
     request.body.batchDateString as string,
-    request.session
+    request.session.user as GLMUser
   )
   const batchTransactions = getOutstandingBatchTransactions()
 

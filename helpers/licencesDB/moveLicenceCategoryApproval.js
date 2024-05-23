@@ -7,7 +7,7 @@ const sql = `update LicenceCategoryApprovals
     recordUpdate_userName = ?,
     recordUpdate_timeMillis = ?
     where licenceApprovalKey = ?`;
-export default function moveLicenceCategoryApproval(licenceApprovalKeyFrom, licenceApprovalKeyTo, requestSession) {
+export default function moveLicenceCategoryApproval(licenceApprovalKeyFrom, licenceApprovalKeyTo, sessionUser) {
     const database = sqlite(databasePath);
     const licenceCategoryApprovalFrom = getLicenceCategoryApproval(licenceApprovalKeyFrom, database);
     const licenceCategoryApprovals = getLicenceCategoryApprovals(licenceCategoryApprovalFrom.licenceCategoryKey, database);
@@ -20,13 +20,13 @@ export default function moveLicenceCategoryApproval(licenceApprovalKeyFrom, lice
         if (licenceCategoryApproval.licenceApprovalKey === licenceApprovalKeyTo) {
             database
                 .prepare(sql)
-                .run(expectedOrderNumber, requestSession.user.userName, Date.now(), licenceApprovalKeyFrom);
+                .run(expectedOrderNumber, sessionUser.userName, Date.now(), licenceApprovalKeyFrom);
             expectedOrderNumber += 1;
         }
         if (licenceCategoryApproval.orderNumber !== expectedOrderNumber) {
             database
                 .prepare(sql)
-                .run(expectedOrderNumber, requestSession.user.userName, Date.now(), licenceCategoryApproval.licenceApprovalKey);
+                .run(expectedOrderNumber, sessionUser.userName, Date.now(), licenceCategoryApproval.licenceApprovalKey);
         }
     }
     database.close();

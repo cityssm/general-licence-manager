@@ -1,8 +1,8 @@
 import { EFTGenerator } from '@cityssm/eft-generator';
 import { dateIntegerToDate, dateStringToDate } from '@cityssm/expressjs-server-js/dateTimeFns.js';
-import { getProperty } from '../../helpers/functions.config.js';
+import { getConfigProperty } from '../../helpers/functions.config.js';
 import { calculateFileCreationNumber } from './batchHelpers.js';
-const batchExportConfig = getProperty('exports.batches');
+const batchExportConfig = getConfigProperty('exports.batches');
 export default function getBatchExport(outstandingBatchTransactions) {
     const batchDate = dateStringToDate(outstandingBatchTransactions[0].batchDateString);
     const fileCreationNumber = calculateFileCreationNumber(batchDate);

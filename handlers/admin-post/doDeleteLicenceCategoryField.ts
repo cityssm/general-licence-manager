@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 
 import * as cacheFunctions from '../../helpers/functions.cache.js'
-import { deleteLicenceCategoryField } from '../../helpers/licencesDB/deleteLicenceCategoryField.js'
+import deleteLicenceCategoryField from '../../helpers/licencesDB/deleteLicenceCategoryField.js'
 import getLicenceCategoryField from '../../helpers/licencesDB/getLicenceCategoryField.js'
 import getLicenceCategoryFields from '../../helpers/licencesDB/getLicenceCategoryFields.js'
 
@@ -15,7 +15,7 @@ export default function handler(request: Request, response: Response): void {
       success: false
     })
   } else {
-    deleteLicenceCategoryField(licenceFieldKey, request.session)
+    deleteLicenceCategoryField(licenceFieldKey, request.session.user as GLMUser)
 
     cacheFunctions.clearAll()
     const licenceCategoryFields = getLicenceCategoryFields(

@@ -3,7 +3,7 @@ import getLicenceCategoryAdditionalFee from '../../helpers/licencesDB/getLicence
 import getLicenceCategoryAdditionalFees from '../../helpers/licencesDB/getLicenceCategoryAdditionalFees.js';
 import updateLicenceCategoryAdditionalFee from '../../helpers/licencesDB/updateLicenceCategoryAdditionalFee.js';
 export default function handler(request, response) {
-    const success = updateLicenceCategoryAdditionalFee(request.body, request.session);
+    const success = updateLicenceCategoryAdditionalFee(request.body, request.session.user);
     cacheFunctions.clearAll();
     const licenceCategoryAdditionalFee = getLicenceCategoryAdditionalFee(request.body.licenceAdditionalFeeKey);
     const licenceCategoryAdditionalFees = getLicenceCategoryAdditionalFees(licenceCategoryAdditionalFee.licenceCategoryKey);

@@ -3,7 +3,7 @@ import getLicenceCategories from '../../helpers/licencesDB/getLicenceCategories.
 export default function handler(_request, response) {
     const licenceCategories = getLicenceCategories();
     response.render('licence-search', {
-        headTitle: configFunctions.getProperty('settings.licenceAliasPlural'),
+        headTitle: configFunctions.getConfigProperty('settings.licenceAliasPlural'),
         licenceCategories
     });
 }

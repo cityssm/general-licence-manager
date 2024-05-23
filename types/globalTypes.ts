@@ -1,4 +1,5 @@
 export interface GLM {
+  urlPrefix: string
   populateAliases: (containerElement: HTMLElement) => void
   getBankName: (
     bankInstitutionNumber: string,

@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const urlPrefix = document.querySelector('main').dataset.urlPrefix;
     const batchDate = document.querySelector('#batchReconcile--batchDate').value;
@@ -108,4 +110,3 @@
         failButtonElement.addEventListener('click', markTransactionAsFailed);
     }
 })();
-export {};

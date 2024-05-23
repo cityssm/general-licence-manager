@@ -1,9 +1,13 @@
 /* eslint-disable unicorn/prefer-module */
 
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types'
-import type { GLM } from '../types/globalTypes'
+import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
+
+import type { GLM } from '../../types/globalTypes.js'
 
 declare const cityssm: cityssmGlobal
+const glm: Partial<GLM> = {
+  urlPrefix: document.querySelector('main')?.dataset.urlPrefix
+}
 
 ;(() => {
   const urlPrefix = document.querySelector('main').dataset.urlPrefix
@@ -40,34 +44,30 @@ declare const cityssm: cityssmGlobal
     'Saturday'
   ]
 
-  const glm: GLM = {
-    populateAliases: (containerElement) => {
-      for (const settingName of aliasSettingNames) {
-        populateAliases(containerElement, settingName)
-      }
-    },
-
-    getBankName: (
-      bankInstitutionNumber,
-      bankTransitNumber,
-      callbackFunction
-    ) => {
-      cityssm.postJSON(
-        urlPrefix + '/licences/doGetBankName',
-        {
-          bankInstitutionNumber,
-          bankTransitNumber
-        },
-        (responseJSON: { bankName: string }) => {
-          callbackFunction(responseJSON.bankName)
-        }
-      )
-    },
-
-    getDayName: (dateString: string) => {
-      return dayNames[cityssm.dateStringToDate(dateString).getDay()]
+  glm.populateAliases = (containerElement) => {
+    for (const settingName of aliasSettingNames) {
+      populateAliases(containerElement, settingName)
     }
   }
 
-  exports.glm = glm
+  glm.getBankName = (
+    bankInstitutionNumber,
+    bankTransitNumber,
+    callbackFunction
+  ) => {
+    cityssm.postJSON(
+      urlPrefix + '/licences/doGetBankName',
+      {
+        bankInstitutionNumber,
+        bankTransitNumber
+      },
+      (responseJSON: { bankName: string }) => {
+        callbackFunction(responseJSON.bankName)
+      }
+    )
+  }
+
+  glm.getDayName = (dateString: string) => {
+    return dayNames[cityssm.dateStringToDate(dateString).getDay()]
+  }
 })()

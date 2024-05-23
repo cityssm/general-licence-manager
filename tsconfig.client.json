@@ -6,7 +6,10 @@
     "declaration": true,
     "noImplicitAny": false,
     "removeComments": true,
-    "allowUnreachableCode": false
+    "allowUnreachableCode": false,
+    "skipLibCheck": true,
+    "strictNullChecks": true,
+    "esModuleInterop": true
   },
   "compileOnSave": true,
   "buildOnSave": true,

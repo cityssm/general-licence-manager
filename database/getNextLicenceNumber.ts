@@ -2,7 +2,7 @@ import sqlite from 'better-sqlite3'
 import slugify from 'slugify'
 
 import { licencesDB as databasePath } from '../data/databasePaths.js'
-import * as configFunctions from '../helpers/functions.config.js'
+import { getConfigProperty } from '../helpers/functions.config.js'
 
 export function getCategorySlug(
   licenceCategory: string,
@@ -138,7 +138,7 @@ export default function getNextLicenceNumber(
 
   let licenceNumber = ''
 
-  switch (configFunctions.getConfigProperty('defaults.licenceNumberFunction')) {
+  switch (getConfigProperty('defaults.licenceNumberFunction')) {
     case 'category-fourDigits': {
       licenceNumber = getCategoryNDigitsLicenceNumber(
         database,

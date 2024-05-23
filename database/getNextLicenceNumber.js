@@ -1,7 +1,7 @@
 import sqlite from 'better-sqlite3';
 import slugify from 'slugify';
 import { licencesDB as databasePath } from '../data/databasePaths.js';
-import * as configFunctions from '../helpers/functions.config.js';
+import { getConfigProperty } from '../helpers/functions.config.js';
 export function getCategorySlug(licenceCategory, maxLength = 10) {
     let categorySlug = slugify(licenceCategory.toUpperCase()).slice(0, Math.max(0, maxLength + 1));
     if (categorySlug.length <= maxLength) {
@@ -73,7 +73,7 @@ export default function getNextLicenceNumber(licenceDetails, database) {
         doCloseDatabase = true;
     }
     let licenceNumber = '';
-    switch (configFunctions.getConfigProperty('defaults.licenceNumberFunction')) {
+    switch (getConfigProperty('defaults.licenceNumberFunction')) {
         case 'category-fourDigits': {
             licenceNumber = getCategoryNDigitsLicenceNumber(database, licenceDetails.licenceCategory, 4, false);
             break;

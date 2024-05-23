@@ -7,7 +7,7 @@ import Debug from 'debug'
 import exitHook from 'exit-hook'
 
 import { app } from '../app.js'
-import * as configFunctions from '../helpers/functions.config.js'
+import { getConfigProperty } from '../helpers/functions.config.js'
 
 const debug = Debug('general-licence-manager:www')
 
@@ -59,7 +59,7 @@ function onListening(server: http.Server): void {
  * Initialize HTTP
  */
 
-const httpPort = configFunctions.getConfigProperty('application.httpPort')
+const httpPort = getConfigProperty('application.httpPort')
 
 const httpServer = http.createServer(app)
 

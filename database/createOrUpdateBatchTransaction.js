@@ -1,7 +1,7 @@
 import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js';
 import sqlite from 'better-sqlite3';
 import { licencesDB as databasePath } from '../data/databasePaths.js';
-import * as configFunctions from '../helpers/functions.config.js';
+import { getConfigProperty } from '../helpers/functions.config.js';
 import getNextLicenceTransactionIndex from './getNextLicenceTransactionIndex.js';
 function isBankingInformationIncomplete(bankRecord) {
     return ((bankRecord.bankInstitutionNumber ?? '') === '' ||
@@ -22,13 +22,11 @@ export default function createOrUpdateBatchTransaction(transactionForm, sessionU
         database.close();
         return {
             success: false,
-            message: `${configFunctions.getConfigProperty('settings.licenceAlias')} is not available for updates (licenceId = ${transactionForm.licenceId}).`
+            message: `${getConfigProperty('settings.licenceAlias')} is not available for updates (licenceId = ${transactionForm.licenceId}).`
         };
     }
     else if (isBankingInformationIncomplete(bankRecord)) {
-        message = `Banking information is incomplete on the ${configFunctions
-            .getConfigProperty('settings.licenceAlias')
-            .toLowerCase()}.`;
+        message = `Banking information is incomplete on the ${getConfigProperty('settings.licenceAlias').toLowerCase()}.`;
     }
     const batchDate = dateTimeFunctions.dateStringToInteger(transactionForm.batchDateString);
     const currentTransactionRecord = database

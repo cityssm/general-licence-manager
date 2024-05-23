@@ -3,7 +3,7 @@ import sqlite from 'better-sqlite3'
 
 import { licencesDB as databasePath } from '../data/databasePaths.js'
 import type { LicenceTransaction } from '../types/recordTypes.js'
-import * as configFunctions from '../helpers/functions.config.js'
+import { getConfigProperty } from '../helpers/functions.config.js'
 
 import getNextLicenceTransactionIndex from './getNextLicenceTransactionIndex.js'
 
@@ -58,16 +58,16 @@ export default function createOrUpdateBatchTransaction(
 
     return {
       success: false,
-      message: `${configFunctions.getConfigProperty(
+      message: `${getConfigProperty(
         'settings.licenceAlias'
       )} is not available for updates (licenceId = ${
         transactionForm.licenceId
       }).`
     }
   } else if (isBankingInformationIncomplete(bankRecord)) {
-    message = `Banking information is incomplete on the ${configFunctions
-      .getConfigProperty('settings.licenceAlias')
-      .toLowerCase()}.`
+    message = `Banking information is incomplete on the ${getConfigProperty(
+      'settings.licenceAlias'
+    ).toLowerCase()}.`
   }
 
   // Look for an existing batch transaction

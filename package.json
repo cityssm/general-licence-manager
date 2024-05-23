@@ -73,8 +73,7 @@
     "@types/express": "^4.17.21",
     "@types/express-session": "^1.18.0",
     "@types/gulp": "^4.0.17",
-    "@types/gulp-changed": "^0.0.39",
-    "@types/gulp-minify": "^3.1.5",
+    "@types/gulp-sass": "^5.0.4",
     "@types/http-errors": "^2.0.4",
     "@types/mocha": "^10.0.6",
     "@types/node-windows": "^0.1.6",
@@ -85,8 +84,8 @@
     "cypress-axe": "^1.5.0",
     "eslint-config-cityssm": "^2.1.0",
     "gulp": "^5.0.0",
-    "gulp-changed": "^5.0.2",
-    "gulp-minify": "^3.1.0",
-    "nodemon": "^3.1.0"
+    "gulp-sass": "^5.1.0",
+    "nodemon": "^3.1.0",
+    "sass": "^1.77.2"
   }
 }

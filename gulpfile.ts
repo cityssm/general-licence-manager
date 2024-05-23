@@ -1,33 +1,30 @@
 import gulp from 'gulp'
-import changed from 'gulp-changed'
-import minify from 'gulp-minify'
+import gulpSass from 'gulp-sass'
+import * as dartSass from 'sass'
+
+const sass = gulpSass(dartSass)
 
 /*
- * Minify public/javascripts
+ * Compile SASS
  */
 
-const publicJavascriptsDestination = 'public/javascripts'
+const publicSCSSDestination = 'public/stylesheets'
 
-function publicJavascriptsMinFunction(): NodeJS.ReadWriteStream {
+function publicSCSSFunction(): NodeJS.ReadWriteStream {
   return gulp
-    .src('public-typescript/*.js', { allowEmpty: true })
-    .pipe(
-      changed(publicJavascriptsDestination, {
-        extension: '.min.js'
-      })
-    )
-    .pipe(minify({ noSource: true, ext: { min: '.min.js' } }))
-    .pipe(gulp.dest(publicJavascriptsDestination))
+    .src('public-scss/*.scss')
+    .pipe(sass({ outputStyle: 'compressed', includePaths: ['node_modules'] }))
+    .pipe(gulp.dest(publicSCSSDestination))
 }
 
-gulp.task('public-javascript-min', publicJavascriptsMinFunction)
+gulp.task('public-scss', publicSCSSFunction)
 
 /*
  * Watch
  */
 
 function watchFunction(): void {
-  gulp.watch('public-typescript/*.js', publicJavascriptsMinFunction)
+  gulp.watch('public-scss/*.scss', publicSCSSFunction)
 }
 
 gulp.task('watch', watchFunction)
@@ -37,6 +34,7 @@ gulp.task('watch', watchFunction)
  */
 
 gulp.task('default', () => {
-  publicJavascriptsMinFunction()
+  publicSCSSFunction()
+
   watchFunction()
 })

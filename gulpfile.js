@@ -1,22 +1,20 @@
 import gulp from 'gulp';
-import changed from 'gulp-changed';
-import minify from 'gulp-minify';
-const publicJavascriptsDestination = 'public/javascripts';
-function publicJavascriptsMinFunction() {
+import gulpSass from 'gulp-sass';
+import * as dartSass from 'sass';
+const sass = gulpSass(dartSass);
+const publicSCSSDestination = 'public/stylesheets';
+function publicSCSSFunction() {
     return gulp
-        .src('public-typescript/*.js', { allowEmpty: true })
-        .pipe(changed(publicJavascriptsDestination, {
-        extension: '.min.js'
-    }))
-        .pipe(minify({ noSource: true, ext: { min: '.min.js' } }))
-        .pipe(gulp.dest(publicJavascriptsDestination));
+        .src('public-scss/*.scss')
+        .pipe(sass({ outputStyle: 'compressed', includePaths: ['node_modules'] }))
+        .pipe(gulp.dest(publicSCSSDestination));
 }
-gulp.task('public-javascript-min', publicJavascriptsMinFunction);
+gulp.task('public-scss', publicSCSSFunction);
 function watchFunction() {
-    gulp.watch('public-typescript/*.js', publicJavascriptsMinFunction);
+    gulp.watch('public-scss/*.scss', publicSCSSFunction);
 }
 gulp.task('watch', watchFunction);
 gulp.task('default', () => {
-    publicJavascriptsMinFunction();
+    publicSCSSFunction();
     watchFunction();
 });

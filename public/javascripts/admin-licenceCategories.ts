@@ -8,7 +8,6 @@ import type * as recordTypes from '../types/recordTypes.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
-
 ;(() => {
   const glm: GLM = exports.glm
 
@@ -216,7 +215,6 @@ declare const bulmaJS: BulmaJS
             '#licenceCategoryFieldEdit--licenceFieldKey'
           ) as HTMLInputElement
         ).value = licenceFieldKey
-
         ;(
           modalElement.querySelector(
             '#licenceCategoryFieldEdit--licenceField'
@@ -253,13 +251,11 @@ declare const bulmaJS: BulmaJS
         maximumLengthElement.value =
           licenceCategoryField.maximumLength.toString()
         maximumLengthElement.min = licenceCategoryField.minimumLength.toString()
-
         ;(
           modalElement.querySelector(
             '#licenceCategoryFieldEdit--pattern'
           ) as HTMLInputElement
         ).value = licenceCategoryField.pattern
-
         ;(
           modalElement.querySelector(
             '#licenceCategoryFieldEdit--printKey'
@@ -268,7 +264,6 @@ declare const bulmaJS: BulmaJS
       },
       onshown: (modalElement, closeModalFunction) => {
         editLicenceCategoryFieldModalCloseFunction = closeModalFunction
-
         ;(
           modalElement.querySelector(
             '#licenceCategoryFieldEdit--licenceField'
@@ -507,13 +502,11 @@ declare const bulmaJS: BulmaJS
     cityssm.openHtmlModal('licenceCategoryApproval-edit', {
       onshow: (modalElement) => {
         glm.populateAliases(modalElement)
-
         ;(
           modalElement.querySelector(
             '#licenceCategoryApprovalEdit--licenceApprovalKey'
           ) as HTMLInputElement
         ).value = licenceApprovalKey
-
         ;(
           modalElement.querySelector(
             '#licenceCategoryApprovalEdit--licenceApproval'
@@ -782,7 +775,6 @@ declare const bulmaJS: BulmaJS
     cityssm.openHtmlModal('licenceCategoryFee-edit', {
       onshow: (modalElement) => {
         glm.populateAliases(modalElement)
-
         ;(
           modalElement.querySelector(
             '#licenceCategoryFeeEdit--licenceFeeId'
@@ -798,7 +790,6 @@ declare const bulmaJS: BulmaJS
             '#licenceCategoryFeeEdit--effectiveEndDateString'
           ) as HTMLInputElement
         ).value = licenceCategoryFee.effectiveEndDateString
-
         ;(
           modalElement.querySelector(
             '#licenceCategoryFeeEdit--licenceFee'
@@ -830,7 +821,6 @@ declare const bulmaJS: BulmaJS
       },
       onshown: (modalElement, closeModalFunction) => {
         editLicenceCategoryFeeModalCloseFunction = closeModalFunction
-
         ;(
           modalElement.querySelector(
             '#licenceCategoryFeeEdit--effectiveStartDateString'
@@ -1062,13 +1052,11 @@ declare const bulmaJS: BulmaJS
         glm.populateAliases(modalElement)
 
         editLicenceCategoryAdditionalFeeModalElement = modalElement
-
         ;(
           modalElement.querySelector(
             '#licenceCategoryAdditionalFeeEdit--licenceAdditionalFeeKey'
           ) as HTMLInputElement
         ).value = licenceAdditionalFeeKey
-
         ;(
           modalElement.querySelector(
             '#licenceCategoryAdditionalFeeEdit--additionalFee'
@@ -1538,7 +1526,6 @@ declare const bulmaJS: BulmaJS
       }
 
       licenceLengthFunctionElement.value = licenceCategory.licenceLengthFunction
-
       ;(
         editModalElement.querySelector(
           '#licenceCategoryEdit--licenceLengthYears'
@@ -1576,7 +1563,6 @@ declare const bulmaJS: BulmaJS
         editModalElement = modalElement
 
         glm.populateAliases(modalElement)
-
         ;(
           modalElement.querySelector(
             '#licenceCategoryEdit--licenceCategoryKey'
@@ -1630,7 +1616,6 @@ declare const bulmaJS: BulmaJS
       },
       onshown: (modalElement, closeModalFunction) => {
         categoryCloseModalFunction = closeModalFunction
-
         ;(
           modalElement.querySelector(
             '#licenceCategoryEdit--licenceCategory'

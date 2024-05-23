@@ -8,18 +8,18 @@
     "removeComments": true,
     "allowUnreachableCode": false
   },
-  "files": [
-    "public-typescript/admin-cleanup.ts",
-    "public-typescript/admin-licenceCategories.ts",
-    "public-typescript/admin-yearEnd.ts",
-    "public-typescript/batch-builder.ts",
-    "public-typescript/batch-reconcile.ts",
-    "public-typescript/licence-edit.ts",
-    "public-typescript/licence-licenceCategorySummary.ts",
-    "public-typescript/licence-search.ts",
-    "public-typescript/main.ts",
-    "public-typescript/report-search.ts"
-  ],
   "compileOnSave": true,
-  "buildOnSave": true
+  "buildOnSave": true,
+  "include": ["public/javascripts/*"],
+  "exclude": [
+    "bin/*",
+    "cypress/*",
+    "data/*",
+    "database/*",
+    "handlers/*",
+    "helpers/*",
+    "routes/*",
+    "test/*",
+    "types/*"
+  ]
 }

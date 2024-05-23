@@ -1,10 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    const urlPrefix = document.querySelector("main").dataset.urlPrefix;
-    const aliasSettingNames = ["licenceAlias", "licenceAliasPlural",
-        "licenseeAlias", "licenseeAliasPlural",
-        "renewalAlias"];
+    const urlPrefix = document.querySelector('main').dataset.urlPrefix;
+    const aliasSettingNames = [
+        'licenceAlias',
+        'licenceAliasPlural',
+        'licenseeAlias',
+        'licenseeAliasPlural',
+        'renewalAlias'
+    ];
     const populateAliases = (containerElement, settingName) => {
         const alias = exports[settingName];
         const elements = containerElement.querySelectorAll("[data-setting='" + settingName + "']");
@@ -12,7 +14,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
             element.textContent = alias;
         }
     };
-    const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const dayNames = [
+        'Sunday',
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday'
+    ];
     const glm = {
         populateAliases: (containerElement) => {
             for (const settingName of aliasSettingNames) {
@@ -20,7 +30,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         },
         getBankName: (bankInstitutionNumber, bankTransitNumber, callbackFunction) => {
-            cityssm.postJSON(urlPrefix + "/licences/doGetBankName", {
+            cityssm.postJSON(urlPrefix + '/licences/doGetBankName', {
                 bankInstitutionNumber,
                 bankTransitNumber
             }, (responseJSON) => {
@@ -33,3 +43,4 @@ Object.defineProperty(exports, "__esModule", { value: true });
     };
     exports.glm = glm;
 })();
+export {};

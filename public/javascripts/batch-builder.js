@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     var _a;
-    const glm = exports.glm;
     const urlPrefix = (_a = document.querySelector('main')) === null || _a === void 0 ? void 0 : _a.dataset.urlPrefix;
     const licenceAlias = exports.licenceAlias;
     const transactionBatchesTableElement = document.querySelector('#table--transactionBatches');

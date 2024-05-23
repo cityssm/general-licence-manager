@@ -8,10 +8,8 @@ import type * as recordTypes from '../types/recordTypes'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
-
+declare const glm: GLM
 ;(() => {
-  const glm = exports.glm as GLM
-
   const urlPrefix = document.querySelector('main')?.dataset.urlPrefix
 
   const licenceAlias = exports.licenceAlias as string

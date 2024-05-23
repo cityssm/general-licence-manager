@@ -8,10 +8,8 @@ import type * as recordTypes from '../types/recordTypes'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
-
+declare const glm: GLM
 ;(() => {
-  const glm: GLM = exports.glm
-
   const urlPrefix = document.querySelector('main').dataset.urlPrefix
 
   const licenceAlias = exports.licenceAlias as string
@@ -870,7 +868,6 @@ declare const bulmaJS: BulmaJS
         (responseJSON: { success: boolean; licenceFee?: number }) => {
           if (responseJSON.success) {
             additionalFeeRowElement.remove()
-
             ;(
               document.querySelector(
                 '#licenceEdit--licenceFee'
@@ -943,7 +940,6 @@ declare const bulmaJS: BulmaJS
           additionalFeeTableElement
             .querySelector('tbody')
             .append(additionalFeeRowElement)
-
           ;(
             document.querySelector(
               '#licenceEdit--licenceFee'
@@ -962,7 +958,6 @@ declare const bulmaJS: BulmaJS
         addAdditionalFeeCloseModalFunction = closeModalFunction
 
         bulmaJS.toggleHtmlClipped()
-
         ;(
           modalElement.querySelector(
             '#additionalFeeAdd--licenceId'
@@ -1291,7 +1286,6 @@ declare const bulmaJS: BulmaJS
     cityssm.openHtmlModal('transaction-add', {
       onshow: (modalElement) => {
         glm.populateAliases(modalElement)
-
         ;(
           modalElement.querySelector(
             '#transactionAdd--licenceId'
@@ -1325,7 +1319,6 @@ declare const bulmaJS: BulmaJS
         modalElement.querySelector(
           '#transactionAdd--outstandingBalance'
         ).textContent = outstandingBalance.toFixed(2)
-
         ;(
           modalElement.querySelector(
             '#transactionAdd--transactionAmount'
@@ -1342,7 +1335,6 @@ declare const bulmaJS: BulmaJS
       onshown: (modalElement, closeModalFunction) => {
         addTransactionModalElement = modalElement
         addTransactionCloseModalFunction = closeModalFunction
-
         ;(
           modalElement.querySelector(
             '#transactionAdd--transactionAmount'
@@ -1408,7 +1400,6 @@ declare const bulmaJS: BulmaJS
                 bankInstitutionNumberElement.value
               addTransaction_bankTransitNumberElement.value =
                 bankTransitNumberElement.value
-
               ;(
                 modalElement.querySelector(
                   '#transactionAdd--bankName'
@@ -1418,7 +1409,6 @@ declare const bulmaJS: BulmaJS
                   '#licenceEdit--bankName'
                 ) as HTMLInputElement
               ).value
-
               ;(
                 modalElement.querySelector(
                   '#transactionAdd--bankAccountNumber'

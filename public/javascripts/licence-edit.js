@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    const glm = exports.glm;
     const urlPrefix = document.querySelector('main').dataset.urlPrefix;
     const licenceAlias = exports.licenceAlias;
     const licenceAliasPlural = exports.licenceAliasPlural;

@@ -1,10 +1,10 @@
 import { getBatchExport } from '../../exports/batchExport.js';
-import * as configFunctions from '../../helpers/functions.config.js';
+import { getConfigProperty } from '../../helpers/functions.config.js';
 export default function handler(request, response) {
     const batchDate = Number.parseInt(request.params.batchDate, 10);
     const batchExport = getBatchExport(batchDate);
     if (batchExport === undefined) {
-        response.redirect(configFunctions.getConfigProperty('reverseProxy.urlPrefix') +
+        response.redirect(getConfigProperty('reverseProxy.urlPrefix') +
             '/dashboard/?error=batchExportError');
         return;
     }

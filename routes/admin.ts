@@ -27,7 +27,7 @@ import handler_doUpdateLicenceCategoryApproval from '../handlers/admin-post/doUp
 import handler_doUpdateLicenceCategoryFee from '../handlers/admin-post/doUpdateLicenceCategoryFee.js'
 import handler_doUpdateLicenceCategoryField from '../handlers/admin-post/doUpdateLicenceCategoryField.js'
 import * as permissionHandlers from '../handlers/permissions.js'
-import * as configFunctions from '../helpers/functions.config.js'
+import { getConfigProperty } from '../helpers/functions.config.js'
 
 export const router = Router()
 
@@ -181,7 +181,7 @@ router.post(
  * Year-End
  */
 
-if (configFunctions.getConfigProperty('settings.includeYearEnd')) {
+if (getConfigProperty('settings.includeYearEnd')) {
   router.get('/yearEnd', permissionHandlers.adminGetHandler, handler_yearEnd)
 
   router.post(

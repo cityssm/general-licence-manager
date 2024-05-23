@@ -1,7 +1,7 @@
 import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js';
 import sqlite from 'better-sqlite3';
 import { licencesDB as databasePath } from '../data/databasePaths.js';
-import * as configFunctions from '../helpers/functions.config.js';
+import { getConfigProperty } from '../helpers/functions.config.js';
 import * as licenceFunctions from '../helpers/functions.licence.js';
 import saveLicenceApprovals from './saveLicenceApprovals.js';
 import saveLicenceFields from './saveLicenceFields.js';
@@ -67,7 +67,7 @@ export default function updateLicence(licenceForm, sessionUser) {
           where licenceId = ?`)
             .run(additionalFeeAmount.toFixed(2), licenceForm.licenceId);
     }
-    if (configFunctions.getConfigProperty('settings.includeBatches')) {
+    if (getConfigProperty('settings.includeBatches')) {
         database
             .prepare(`update LicenceTransactions
           set bankInstitutionNumber = ?,

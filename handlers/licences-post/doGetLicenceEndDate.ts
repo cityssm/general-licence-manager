@@ -1,20 +1,19 @@
 import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js'
 import type { Request, Response } from 'express'
 
-import * as configFunctions from '../../helpers/functions.config.js'
+import { getLicenceLengthFunction } from '../../helpers/functions.config.js'
 
 export default function handler(request: Request, response: Response): void {
   const licenceLengthFunctionName = request.body.licenceLengthFunction as string
 
-  const licenceLengthFunction = configFunctions.getLicenceLengthFunction(
+  const licenceLengthFunction = getLicenceLengthFunction(
     licenceLengthFunctionName
   )
 
   if (licenceLengthFunction === undefined) {
     response.json({
       success: false,
-      errorMessage:
-        'Unable to find licence length function: ' + licenceLengthFunctionName
+      errorMessage: `Unable to find licence length function: ${licenceLengthFunctionName}`
     })
     return
   }

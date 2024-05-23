@@ -5,10 +5,10 @@ import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js'
 import sqlite from 'better-sqlite3'
 
 import { licencesDB as databasePath } from '../data/databasePaths.js'
-import type { LicenceCategory } from '../types/recordTypes.js'
 import * as cacheFunctions from '../helpers/functions.cache.js'
-import * as configFunctions from '../helpers/functions.config.js'
+import { getLicenceLengthFunction } from '../helpers/functions.config.js'
 import * as licenceFunctions from '../helpers/functions.licence.js'
+import type { LicenceCategory } from '../types/recordTypes.js'
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 function userFunction_getCurrentFee(
@@ -43,7 +43,7 @@ function userFunction_getEndDate(
     licenceCategory.licenceLengthFunction &&
     licenceCategory.licenceLengthFunction !== ''
   ) {
-    const licenceLengthFunction = configFunctions.getLicenceLengthFunction(
+    const licenceLengthFunction = getLicenceLengthFunction(
       licenceCategory.licenceLengthFunction
     )
 
@@ -92,9 +92,9 @@ export default function refreshDatabase(sessionUser: GLMUser): boolean {
   database
     .prepare(
       `update LicenceTransactions
-      set recordDelete_userName  = ?,
-      recordDelete_timeMillis = ?
-      where recordDelete_timeMillis is null`
+        set recordDelete_userName  = ?,
+        recordDelete_timeMillis = ?
+        where recordDelete_timeMillis is null`
     )
     .run(sessionUser.userName, Date.now())
 

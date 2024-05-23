@@ -1,9 +1,9 @@
 import type { RequestHandler, Response } from 'express'
 
-import * as configFunctions from '../helpers/functions.config.js'
+import { getConfigProperty } from '../helpers/functions.config.js'
 import * as userFunctions from '../helpers/functions.user.js'
 
-const urlPrefix = configFunctions.getConfigProperty('reverseProxy.urlPrefix')
+const urlPrefix = getConfigProperty('reverseProxy.urlPrefix')
 
 export const forbiddenJSON = (response: Response): Response => {
   return response.status(403).json({

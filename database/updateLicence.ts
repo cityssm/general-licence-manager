@@ -2,9 +2,9 @@ import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js'
 import sqlite from 'better-sqlite3'
 
 import { licencesDB as databasePath } from '../data/databasePaths.js'
-import type { LicenceCategoryAdditionalFee } from '../types/recordTypes.js'
-import * as configFunctions from '../helpers/functions.config.js'
+import { getConfigProperty } from '../helpers/functions.config.js'
 import * as licenceFunctions from '../helpers/functions.licence.js'
+import type { LicenceCategoryAdditionalFee } from '../types/recordTypes.js'
 
 import saveLicenceApprovals from './saveLicenceApprovals.js'
 import saveLicenceFields from './saveLicenceFields.js'
@@ -160,7 +160,7 @@ export default function updateLicence(
   }
 
   // Update bank information on outstanding batch entries
-  if (configFunctions.getConfigProperty('settings.includeBatches')) {
+  if (getConfigProperty('settings.includeBatches')) {
     database
       .prepare(
         `update LicenceTransactions

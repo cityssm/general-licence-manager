@@ -6,11 +6,11 @@ import ActiveDirectory from 'activedirectory2'
 
 import type { ConfigActiveDirectory } from '../types/configTypes.js'
 
-import * as configFunctions from './functions.config.js'
+import { getConfigProperty } from './functions.config.js'
 
-const userDomain = configFunctions.getConfigProperty('application.userDomain')
+const userDomain = getConfigProperty('application.userDomain')
 
-const activeDirectoryConfig = configFunctions.getConfigProperty('activeDirectory')
+const activeDirectoryConfig = getConfigProperty('activeDirectory')
 
 async function authenticateViaActiveDirectory(
   userName: string,
@@ -39,7 +39,7 @@ async function authenticateViaActiveDirectory(
   })
 }
 
-const adWebAuthConfig = configFunctions.getConfigProperty('adWebAuthConfig')
+const adWebAuthConfig = getConfigProperty('adWebAuthConfig')
 const adWebAuth =
   adWebAuthConfig === undefined
     ? undefined

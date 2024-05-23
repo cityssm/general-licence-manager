@@ -1,12 +1,12 @@
 import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js';
-import * as configFunctions from '../../helpers/functions.config.js';
+import { getLicenceLengthFunction } from '../../helpers/functions.config.js';
 export default function handler(request, response) {
     const licenceLengthFunctionName = request.body.licenceLengthFunction;
-    const licenceLengthFunction = configFunctions.getLicenceLengthFunction(licenceLengthFunctionName);
+    const licenceLengthFunction = getLicenceLengthFunction(licenceLengthFunctionName);
     if (licenceLengthFunction === undefined) {
         response.json({
             success: false,
-            errorMessage: 'Unable to find licence length function: ' + licenceLengthFunctionName
+            errorMessage: `Unable to find licence length function: ${licenceLengthFunctionName}`
         });
         return;
     }

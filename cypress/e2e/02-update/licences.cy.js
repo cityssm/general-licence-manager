@@ -1,7 +1,7 @@
-import * as configFunctions from '../../../helpers/functions.config.js';
 import { getCanadianBankName } from '@cityssm/get-canadian-bank-name';
+import { getConfigProperty } from '../../../helpers/functions.config.js';
 import { testUpdate } from '../../../test/_globals.js';
-import { logout, login, ajaxDelayMillis } from '../../support/index.js';
+import { ajaxDelayMillis, login, logout } from '../../support/index.js';
 describe('Update - Licences', () => {
     beforeEach(() => {
         logout();
@@ -22,13 +22,13 @@ describe('Update - Licences', () => {
         cy.checkA11y();
         cy.get("select[name='licenceCategoryKey']").select(0);
         cy.get("input[name='baseLicenceFee']").should('have.value', '');
-        if (configFunctions.getConfigProperty('settings.includeReplacementFee')) {
+        if (getConfigProperty('settings.includeReplacementFee')) {
             cy.get("input[name='baseReplacementFee']").should('have.value', '');
         }
         cy.get("select[name='licenceCategoryKey'] option").should('have.lengthOf.gt', 1);
         cy.get("select[name='licenceCategoryKey']").select(1);
         cy.get("input[name='baseLicenceFee']").should('not.have.value', '');
-        if (configFunctions.getConfigProperty('settings.includeReplacementFee')) {
+        if (getConfigProperty('settings.includeReplacementFee')) {
             cy.get("input[name='baseReplacementFee']").should('not.have.value', '');
         }
         cy.get("input[name='licenceNumber']").should('have.attr', 'readonly');
@@ -70,8 +70,8 @@ describe('Update - Licences', () => {
                 }
             });
         });
-        cy.get("input[name='licenseeCity']").should('have.value', configFunctions.getConfigProperty('defaults.licenseeCity'));
-        cy.get("input[name='licenseeProvince']").should('have.value', configFunctions.getConfigProperty('defaults.licenseeProvince'));
+        cy.get("input[name='licenseeCity']").should('have.value', getConfigProperty('defaults.licenseeCity'));
+        cy.get("input[name='licenseeProvince']").should('have.value', getConfigProperty('defaults.licenseeProvince'));
         cy.get("input[name^='field--']").each(($fieldElement, index) => {
             $fieldElement.val('Field ' + index);
         });

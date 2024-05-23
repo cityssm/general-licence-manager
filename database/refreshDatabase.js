@@ -2,7 +2,7 @@ import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js'
 import sqlite from 'better-sqlite3';
 import { licencesDB as databasePath } from '../data/databasePaths.js';
 import * as cacheFunctions from '../helpers/functions.cache.js';
-import * as configFunctions from '../helpers/functions.config.js';
+import { getLicenceLengthFunction } from '../helpers/functions.config.js';
 import * as licenceFunctions from '../helpers/functions.licence.js';
 function userFunction_getCurrentFee(licenceCategoryKey, feeName) {
     const licenceCategory = cacheFunctions.getLicenceCategory(licenceCategoryKey);
@@ -18,7 +18,7 @@ function userFunction_getEndDate(licenceCategoryKey, startDateNumber) {
     let endDate = startDate;
     if (licenceCategory.licenceLengthFunction &&
         licenceCategory.licenceLengthFunction !== '') {
-        const licenceLengthFunction = configFunctions.getLicenceLengthFunction(licenceCategory.licenceLengthFunction);
+        const licenceLengthFunction = getLicenceLengthFunction(licenceCategory.licenceLengthFunction);
         if (licenceLengthFunction) {
             endDate = licenceLengthFunction(startDate);
         }
@@ -51,9 +51,9 @@ export default function refreshDatabase(sessionUser) {
         .run(sessionUser.userName, Date.now());
     database
         .prepare(`update LicenceTransactions
-      set recordDelete_userName  = ?,
-      recordDelete_timeMillis = ?
-      where recordDelete_timeMillis is null`)
+        set recordDelete_userName  = ?,
+        recordDelete_timeMillis = ?
+        where recordDelete_timeMillis is null`)
         .run(sessionUser.userName, Date.now());
     database.prepare('delete from LicenceAdditionalFees').run();
     database.prepare('delete from LicenceApprovals').run();

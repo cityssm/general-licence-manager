@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 
-import * as configFunctions from '../../helpers/functions.config.js'
 import { getBatchTransactions } from '../../database/getBatchTransactions.js'
+import { getConfigProperty } from '../../helpers/functions.config.js'
 
 export default function handler(request: Request, response: Response): void {
   const batchDate = request.params.batchDate
@@ -10,7 +10,7 @@ export default function handler(request: Request, response: Response): void {
 
   if (batchTransactions.length === 0) {
     response.redirect(
-      configFunctions.getConfigProperty('reverseProxy.urlPrefix') +
+      getConfigProperty('reverseProxy.urlPrefix') +
         '/dashboard/?error=batchDateHasNoTransactions'
     )
     return

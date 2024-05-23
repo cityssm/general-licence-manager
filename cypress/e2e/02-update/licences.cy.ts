@@ -1,11 +1,10 @@
 /* eslint-disable unicorn/filename-case, promise/catch-or-return, promise/always-return, promise/no-nesting */
 
-import * as configFunctions from '../../../helpers/functions.config.js'
 import { getCanadianBankName } from '@cityssm/get-canadian-bank-name'
 
+import { getConfigProperty } from '../../../helpers/functions.config.js'
 import { testUpdate } from '../../../test/_globals.js'
-
-import { logout, login, ajaxDelayMillis } from '../../support/index.js'
+import { ajaxDelayMillis, login, logout } from '../../support/index.js'
 
 describe('Update - Licences', () => {
   beforeEach(() => {
@@ -37,7 +36,7 @@ describe('Update - Licences', () => {
 
     cy.get("input[name='baseLicenceFee']").should('have.value', '')
 
-    if (configFunctions.getConfigProperty('settings.includeReplacementFee')) {
+    if (getConfigProperty('settings.includeReplacementFee')) {
       cy.get("input[name='baseReplacementFee']").should('have.value', '')
     }
 
@@ -50,7 +49,7 @@ describe('Update - Licences', () => {
 
     cy.get("input[name='baseLicenceFee']").should('not.have.value', '')
 
-    if (configFunctions.getConfigProperty('settings.includeReplacementFee')) {
+    if (getConfigProperty('settings.includeReplacementFee')) {
       cy.get("input[name='baseReplacementFee']").should('not.have.value', '')
     }
 
@@ -117,12 +116,12 @@ describe('Update - Licences', () => {
 
     cy.get("input[name='licenseeCity']").should(
       'have.value',
-      configFunctions.getConfigProperty('defaults.licenseeCity')
+      getConfigProperty('defaults.licenseeCity')
     )
 
     cy.get("input[name='licenseeProvince']").should(
       'have.value',
-      configFunctions.getConfigProperty('defaults.licenseeProvince')
+      getConfigProperty('defaults.licenseeProvince')
     )
 
     cy.get("input[name^='field--']").each(($fieldElement, index) => {

@@ -1,8 +1,8 @@
 import { AdWebAuthConnector } from '@cityssm/ad-web-auth-connector';
 import ActiveDirectory from 'activedirectory2';
-import * as configFunctions from './functions.config.js';
-const userDomain = configFunctions.getConfigProperty('application.userDomain');
-const activeDirectoryConfig = configFunctions.getConfigProperty('activeDirectory');
+import { getConfigProperty } from './functions.config.js';
+const userDomain = getConfigProperty('application.userDomain');
+const activeDirectoryConfig = getConfigProperty('activeDirectory');
 async function authenticateViaActiveDirectory(userName, password) {
     return await new Promise((resolve) => {
         try {
@@ -19,7 +19,7 @@ async function authenticateViaActiveDirectory(userName, password) {
         }
     });
 }
-const adWebAuthConfig = configFunctions.getConfigProperty('adWebAuthConfig');
+const adWebAuthConfig = getConfigProperty('adWebAuthConfig');
 const adWebAuth = adWebAuthConfig === undefined
     ? undefined
     : new AdWebAuthConnector(adWebAuthConfig);

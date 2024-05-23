@@ -26,7 +26,7 @@ import handler_doUpdateLicenceCategoryApproval from '../handlers/admin-post/doUp
 import handler_doUpdateLicenceCategoryFee from '../handlers/admin-post/doUpdateLicenceCategoryFee.js';
 import handler_doUpdateLicenceCategoryField from '../handlers/admin-post/doUpdateLicenceCategoryField.js';
 import * as permissionHandlers from '../handlers/permissions.js';
-import * as configFunctions from '../helpers/functions.config.js';
+import { getConfigProperty } from '../helpers/functions.config.js';
 export const router = Router();
 router.get('/licenceCategories', permissionHandlers.adminGetHandler, handler_licenceCategories);
 router.post('/doGetLicenceCategories', permissionHandlers.adminPostHandler, handler_doGetLicenceCategories);
@@ -50,7 +50,7 @@ router.post('/doUpdateLicenceCategoryAdditionalFee', permissionHandlers.adminPos
 router.post('/doMoveLicenceCategoryAdditionalFee', permissionHandlers.adminPostHandler, handler_doMoveLicenceCategoryAdditionalFee);
 router.post('/doDeleteLicenceCategoryAdditionalFee', permissionHandlers.adminPostHandler, handler_doDeleteLicenceCategoryAdditionalFee);
 router.post('/doBackupDatabase', permissionHandlers.adminPostHandler, handler_doBackupDatabase);
-if (configFunctions.getConfigProperty('settings.includeYearEnd')) {
+if (getConfigProperty('settings.includeYearEnd')) {
     router.get('/yearEnd', permissionHandlers.adminGetHandler, handler_yearEnd);
     router.post('/doRefreshDatabase', permissionHandlers.adminPostHandler, handler_doRefreshDatabase);
 }

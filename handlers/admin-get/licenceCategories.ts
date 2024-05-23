@@ -1,9 +1,9 @@
 import type { Request, Response } from 'express'
 
 import * as cacheFunctions from '../../helpers/functions.cache.js'
-import * as configFunctions from '../../helpers/functions.config.js'
 import {
   getAdditionalFeeFunctionNames,
+  getConfigProperty,
   getLicenceLengthFunctionNames
 } from '../../helpers/functions.config.js'
 import { getPrintEJSList } from '../../helpers/functions.print.js'
@@ -22,9 +22,7 @@ export default async function handler(
   const printEJSList = await getPrintEJSList()
 
   response.render('admin-licenceCategories', {
-    headTitle: `${configFunctions.getConfigProperty(
-      'settings.licenceAlias'
-    )} Categories`,
+    headTitle: `${getConfigProperty('settings.licenceAlias')} Categories`,
     licenceCategories,
     licenceLengthFunctionNames,
     additionalFeeFunctionNames,

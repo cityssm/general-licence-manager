@@ -1,6 +1,6 @@
 import type { LicenceCategoryAdditionalFee } from '../types/recordTypes.js'
 
-import * as configFunctions from './functions.config.js'
+import { getAdditionalFeeFunction } from './functions.config.js'
 
 export function calculateAdditionalFeeAmount(
   licenceCategoryAdditionalFee: LicenceCategoryAdditionalFee,
@@ -21,7 +21,7 @@ export function calculateAdditionalFeeAmount(
     }
 
     case 'function': {
-      additionalFeeAmount = configFunctions.getAdditionalFeeFunction(
+      additionalFeeAmount = getAdditionalFeeFunction(
         licenceCategoryAdditionalFee.additionalFeeFunction ?? ''
       )(baseLicenceFeeFloat)
 

@@ -1,8 +1,8 @@
 import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js';
 import { toModernJulianDate } from '@cityssm/modern-julian-date';
-import * as configFunctions from '../../helpers/functions.config.js';
+import { getConfigProperty } from '../../helpers/functions.config.js';
 import { calculateCustomerNumber, calculateFileCreationNumber, leftPad, rightPad } from './batchHelpers.js';
-const batchExportConfig = configFunctions.getConfigProperty('exports.batches');
+const batchExportConfig = getConfigProperty('exports.batches');
 const NEWLINE = '\n';
 const HEADER_LINE1 = '$$AAPASTD0152[' +
     (!batchExportConfig || batchExportConfig.isTesting ? 'TEST' : 'PROD') +

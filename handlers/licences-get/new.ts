@@ -4,7 +4,7 @@ import type { Request, Response } from 'express'
 
 import getLicence from '../../database/getLicence.js'
 import { getLicenceCategories } from '../../helpers/functions.cache.js'
-import * as configFunctions from '../../helpers/functions.config.js'
+import { getConfigProperty } from '../../helpers/functions.config.js'
 import type { Licence } from '../../types/recordTypes.js'
 
 function getFirstPopulatedValue(...values: string[]): string {
@@ -47,13 +47,13 @@ export default function handler(request: Request, response: Response): void {
   const licenseeCity = getFirstPopulatedValue(
     request.query.licenseeCity as string,
     relatedLicence?.licenseeCity ?? '',
-    configFunctions.getConfigProperty('defaults.licenseeCity')
+    getConfigProperty('defaults.licenseeCity')
   )
 
   const licenseeProvince = getFirstPopulatedValue(
     request.query.licenseeProvince as string,
     relatedLicence?.licenseeProvince ?? '',
-    configFunctions.getConfigProperty('defaults.licenseeProvince')
+    getConfigProperty('defaults.licenseeProvince')
   )
 
   const licenseePostalCode = getFirstPopulatedValue(
@@ -126,7 +126,7 @@ export default function handler(request: Request, response: Response): void {
   }
 
   response.render('licence-edit', {
-    headTitle: `${configFunctions.getConfigProperty('settings.licenceAlias')} Create`,
+    headTitle: `${getConfigProperty('settings.licenceAlias')} Create`,
     isCreate: true,
     licenceCategories,
     licence,

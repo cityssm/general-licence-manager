@@ -8,16 +8,12 @@ import camelCase from 'camelcase'
 
 import { licencesDB as databasePath } from '../data/databasePaths.js'
 import * as cacheFunctions from '../helpers/functions.cache.js'
-import * as configFunctions from '../helpers/functions.config.js'
+import { getConfigProperty, getCustomReport } from '../helpers/functions.config.js'
 
 export type ReportParameters = Record<string, string | number>
 
-const licenceAliasSQL = camelCase(
-  configFunctions.getConfigProperty('settings.licenceAlias')
-)
-const licenseeAliasSQL = camelCase(
-  configFunctions.getConfigProperty('settings.licenseeAlias')
-)
+const licenceAliasSQL = camelCase(getConfigProperty('settings.licenceAlias'))
+const licenseeAliasSQL = camelCase(getConfigProperty('settings.licenseeAlias'))
 
 const licenceId = `${licenceAliasSQL}Id`
 const licenceNumber = `${licenceAliasSQL}Number`
@@ -105,7 +101,7 @@ export default function getReportData(
   let sql: string
   let sqlParameters: Array<string | number> = []
 
-  const customReport = configFunctions.getCustomReport(reportName)
+  const customReport = getCustomReport(reportName)
 
   if (customReport) {
     sql = customReport.sql
@@ -237,7 +233,7 @@ export default function getReportData(
             userFn_timeIntegerToString(t.transactionTime) as transactionTimeString,
             t.transactionAmount,
             ${
-              configFunctions.getConfigProperty('settings.includeBatches')
+              getConfigProperty('settings.includeBatches')
                 ? ` userFn_dateIntegerToString(t.batchDate) as batchDateString,
                       userFn_getCanadianBankName(t.bankInstitutionNumber, t.bankTransitNumber) as bankName,
                       t.bankInstitutionNumber,

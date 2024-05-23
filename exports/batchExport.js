@@ -1,5 +1,5 @@
-import * as configFunctions from '../helpers/functions.config.js';
 import { getBatchTransactions } from '../database/getBatchTransactions.js';
+import { getConfigProperty } from '../helpers/functions.config.js';
 import cpa005_getBatchExport from './batches/cpa005.js';
 import rbcPreauthorized_getBatchExport from './batches/rbcPreauthorized.js';
 export function getBatchExport(batchDate) {
@@ -8,7 +8,7 @@ export function getBatchExport(batchDate) {
     if (outstandingBatchTransactions.length === 0) {
         return undefined;
     }
-    const batchExportConfig = configFunctions.getConfigProperty('exports.batches');
+    const batchExportConfig = getConfigProperty('exports.batches');
     if (!batchExportConfig) {
         return undefined;
     }

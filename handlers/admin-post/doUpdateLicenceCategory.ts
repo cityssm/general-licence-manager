@@ -3,7 +3,7 @@ import type { Request, Response } from 'express'
 import * as cacheFunctions from '../../helpers/functions.cache.js'
 import updateLicenceCategory, {
   type UpdateLicenceCategoryForm
-} from '../../helpers/licencesDB/updateLicenceCategory.js'
+} from '../../database/updateLicenceCategory.js'
 
 export default function handler(request: Request, response: Response): void {
   const success = updateLicenceCategory(

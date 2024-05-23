@@ -1,5 +1,5 @@
-import clearBatchTransactionsByBatchDate from '../../helpers/licencesDB/clearBatchTransactionsByBatchDate.js';
-import getOutstandingBatchTransactions from '../../helpers/licencesDB/getOutstandingBatchTransactions.js';
+import clearBatchTransactionsByBatchDate from '../../database/clearBatchTransactionsByBatchDate.js';
+import getOutstandingBatchTransactions from '../../database/getOutstandingBatchTransactions.js';
 export default function handler(request, response) {
     const success = clearBatchTransactionsByBatchDate(request.body.batchDateString, request.session.user);
     const batchTransactions = getOutstandingBatchTransactions();

@@ -49,7 +49,7 @@ function onListening(server: http.Server): void {
 
   if (addr !== null) {
     const bind =
-      typeof addr === 'string' ? 'pipe ' + addr : `port ${addr.port.toString()}`
+      typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port.toString()}`
 
     debug(`Listening on ${bind}`)
   }

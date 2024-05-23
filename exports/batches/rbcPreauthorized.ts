@@ -155,8 +155,7 @@ export const getBatchExport = (
 
   return {
     fileContentType: 'text/plain',
-    fileName:
-      'batch-' + outstandingBatchTransactions[0].batchDate.toString() + '.txt',
+    fileName: `batch-${outstandingBatchTransactions[0].batchDate.toString()}.txt`,
     fileData: output
   }
 }

@@ -1,4 +1,4 @@
-import getLicenceCategory from '../../helpers/licencesDB/getLicenceCategory.js';
+import getLicenceCategory from '../../database/getLicenceCategory.js';
 export default function handler(request, response) {
     const licenceCategory = getLicenceCategory(request.body.licenceCategoryKey, {
         includeApprovals: true,

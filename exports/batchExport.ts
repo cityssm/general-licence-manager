@@ -1,5 +1,5 @@
 import * as configFunctions from '../helpers/functions.config.js'
-import { getBatchTransactions } from '../helpers/licencesDB/getBatchTransactions.js'
+import { getBatchTransactions } from '../database/getBatchTransactions.js'
 
 import cpa005_getBatchExport from './batches/cpa005.js'
 import rbcPreauthorized_getBatchExport from './batches/rbcPreauthorized.js'

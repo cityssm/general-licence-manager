@@ -1,12 +1,11 @@
-import * as configFunctions from '../../helpers/functions.config.js';
-import getLicence from '../../helpers/licencesDB/getLicence.js';
-import getLicenceCategory from '../../helpers/licencesDB/getLicenceCategory.js';
+import getLicence from '../../database/getLicence.js';
+import getLicenceCategory from '../../database/getLicenceCategory.js';
+import { getConfigProperty } from '../../helpers/functions.config.js';
 export default function handler(request, response) {
     const licenceId = Number.parseInt(request.params.licenceId);
     const licence = getLicence(licenceId);
     if (licence === undefined) {
-        response.redirect(configFunctions.getConfigProperty('reverseProxy.urlPrefix') +
-            '/licences/?error=licenceIdNotFound');
+        response.redirect(`${getConfigProperty('reverseProxy.urlPrefix')}/licences/?error=licenceIdNotFound`);
         return;
     }
     const licenceCategory = getLicenceCategory(licence.licenceCategoryKey, {
@@ -16,7 +15,7 @@ export default function handler(request, response) {
         includeAdditionalFees: false
     });
     response.render('licence-view', {
-        headTitle: `${configFunctions.getConfigProperty('settings.licenceAlias')} #${licence.licenceNumber}`,
+        headTitle: `${getConfigProperty('settings.licenceAlias')} #${licence.licenceNumber}`,
         licence,
         licenceCategory
     });

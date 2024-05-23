@@ -2,9 +2,9 @@ import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js'
 import { getCanadianBankName } from '@cityssm/get-canadian-bank-name'
 import type { Request, Response } from 'express'
 
+import getLicence from '../../database/getLicence.js'
 import { getLicenceCategories } from '../../helpers/functions.cache.js'
 import * as configFunctions from '../../helpers/functions.config.js'
-import getLicence from '../../helpers/licencesDB/getLicence.js'
 import type { Licence } from '../../types/recordTypes.js'
 
 function getFirstPopulatedValue(...values: string[]): string {
@@ -126,7 +126,7 @@ export default function handler(request: Request, response: Response): void {
   }
 
   response.render('licence-edit', {
-    headTitle: configFunctions.getConfigProperty('settings.licenceAlias') + ' Create',
+    headTitle: `${configFunctions.getConfigProperty('settings.licenceAlias')} Create`,
     isCreate: true,
     licenceCategories,
     licence,

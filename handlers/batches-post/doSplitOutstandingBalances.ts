@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 
-import createOrUpdateBatchTransaction from '../../helpers/licencesDB/createOrUpdateBatchTransaction.js'
-import getOutstandingBatchTransactions from '../../helpers/licencesDB/getOutstandingBatchTransactions.js'
+import createOrUpdateBatchTransaction from '../../database/createOrUpdateBatchTransaction.js'
+import getOutstandingBatchTransactions from '../../database/getOutstandingBatchTransactions.js'
 
 export default function handler(request: Request, response: Response): void {
   const licenceOutstandingBalances: Array<{

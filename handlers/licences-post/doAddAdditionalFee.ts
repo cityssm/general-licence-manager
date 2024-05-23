@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 
-import addLicenceAdditionalFee from '../../helpers/licencesDB/addLicenceAdditionalFee.js'
+import addLicenceAdditionalFee from '../../database/addLicenceAdditionalFee.js'
 import type { LicenceAdditionalFee } from '../../types/recordTypes.js'
 
 export default function handler(request: Request, response: Response): void {

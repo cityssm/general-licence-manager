@@ -1,5 +1,5 @@
 import papaparse from 'papaparse';
-import getReportData from '../../helpers/licencesDB/getReportData.js';
+import getReportData from '../../database/getReportData.js';
 export default function handler(request, response) {
     const reportName = request.params.reportName;
     const rows = getReportData(reportName, request.query);

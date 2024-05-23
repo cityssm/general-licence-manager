@@ -1,6 +1,6 @@
 import Debug from 'debug';
-import database_getLicenceCategories from './licencesDB/getLicenceCategories.js';
-import database_getLicenceCategory from './licencesDB/getLicenceCategory.js';
+import database_getLicenceCategories from '../database/getLicenceCategories.js';
+import database_getLicenceCategory from '../database/getLicenceCategory.js';
 const debug = Debug('general-licence-manager:cache');
 let licenceCategoriesList;
 const licenceCategoriesMap = new Map();

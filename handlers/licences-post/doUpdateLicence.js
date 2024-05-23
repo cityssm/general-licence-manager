@@ -1,4 +1,4 @@
-import updateLicence from '../../helpers/licencesDB/updateLicence.js';
+import updateLicence from '../../database/updateLicence.js';
 export default function handler(request, response) {
     const success = updateLicence(request.body, request.session.user);
     response.json({

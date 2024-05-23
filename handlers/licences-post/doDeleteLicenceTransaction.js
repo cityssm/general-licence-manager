@@ -1,5 +1,5 @@
-import deleteLicenceTransaction from '../../helpers/licencesDB/deleteLicenceTransaction.js';
-import getLicenceTransactions from '../../helpers/licencesDB/getLicenceTransactions.js';
+import deleteLicenceTransaction from '../../database/deleteLicenceTransaction.js';
+import getLicenceTransactions from '../../database/getLicenceTransactions.js';
 export default function handler(request, response) {
     const success = deleteLicenceTransaction(request.body.licenceId, request.body.transactionIndex, request.session.user);
     const licenceTransactions = getLicenceTransactions(request.body.licenceId);

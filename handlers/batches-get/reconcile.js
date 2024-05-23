@@ -1,5 +1,5 @@
 import * as configFunctions from '../../helpers/functions.config.js';
-import { getBatchTransactions } from '../../helpers/licencesDB/getBatchTransactions.js';
+import { getBatchTransactions } from '../../database/getBatchTransactions.js';
 export default function handler(request, response) {
     const batchDate = request.params.batchDate;
     const batchTransactions = getBatchTransactions(batchDate);

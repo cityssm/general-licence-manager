@@ -1,8 +1,8 @@
 import assert from 'node:assert';
-import getLicence from '../helpers/licencesDB/getLicence.js';
-import getLicences from '../helpers/licencesDB/getLicences.js';
-import getNextLicenceNumber from '../helpers/licencesDB/getNextLicenceNumber.js';
-import * as unusedKey from '../helpers/licencesDB/getUnusedKey.js';
+import getLicence from '../database/getLicence.js';
+import getLicences from '../database/getLicences.js';
+import getNextLicenceNumber from '../database/getNextLicenceNumber.js';
+import * as unusedKey from '../database/getUnusedKey.js';
 describe('licencesDB', () => {
     it('should execute getLicence(licenceId: number)', () => {
         getLicence(1);

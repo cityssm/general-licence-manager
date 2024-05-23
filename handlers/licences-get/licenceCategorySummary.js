@@ -1,11 +1,11 @@
-import * as configFunctions from '../../helpers/functions.config.js';
-import getLicenceCategories from '../../helpers/licencesDB/getLicenceCategories.js';
-import getLicenceStats from '../../helpers/licencesDB/getLicenceStats.js';
+import getLicenceCategories from '../../database/getLicenceCategories.js';
+import getLicenceStats from '../../database/getLicenceStats.js';
+import { getConfigProperty } from '../../helpers/functions.config.js';
 export default function handler(_request, response) {
     const licenceCategories = getLicenceCategories();
     const licenceStats = getLicenceStats();
     response.render('licence-licenceCategorySummary', {
-        headTitle: `${configFunctions.getConfigProperty('settings.licenceAlias')} Category Summary`,
+        headTitle: `${getConfigProperty('settings.licenceAlias')} Category Summary`,
         licenceCategories,
         licenceStats
     });

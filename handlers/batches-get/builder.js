@@ -1,5 +1,5 @@
-import getBatchableLicences from '../../helpers/licencesDB/getBatchableLicences.js';
-import getOutstandingBatchTransactions from '../../helpers/licencesDB/getOutstandingBatchTransactions.js';
+import getBatchableLicences from '../../database/getBatchableLicences.js';
+import getOutstandingBatchTransactions from '../../database/getOutstandingBatchTransactions.js';
 export default function handler(_request, response) {
     const licences = getBatchableLicences();
     const batchTransactions = getOutstandingBatchTransactions();

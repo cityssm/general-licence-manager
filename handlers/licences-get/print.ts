@@ -4,10 +4,10 @@ import { convertHTMLToPDF } from '@cityssm/pdf-puppeteer'
 import * as ejs from 'ejs'
 import type { NextFunction, Request, Response } from 'express'
 
+import getLicence from '../../database/getLicence.js'
 import { getLicenceCategory } from '../../helpers/functions.cache.js'
 import * as configFunctions from '../../helpers/functions.config.js'
 import * as printFunctions from '../../helpers/functions.print.js'
-import getLicence from '../../helpers/licencesDB/getLicence.js'
 
 export default async function handler(
   request: Request,
@@ -20,8 +20,9 @@ export default async function handler(
 
   if (!licence?.issueDate) {
     next(
-      configFunctions.getConfigProperty('settings.licenceAlias') +
-        ' not available for printing.'
+      `${configFunctions.getConfigProperty(
+        'settings.licenceAlias'
+      )} not available for printing.`
     )
     return
   }
@@ -62,16 +63,15 @@ export default async function handler(
         preferCSSPageSize: true
       })
 
+      const fileName = `${configFunctions
+        .getConfigProperty('settings.licenceAlias')
+        .toLowerCase()}-${licenceId}-${(
+        licence.recordUpdate_timeMillis ?? 0
+      ).toString()}.pdf`
+
       response.setHeader(
         'Content-Disposition',
-        'attachment;' +
-          ' filename=' +
-          configFunctions.getConfigProperty('settings.licenceAlias').toLowerCase() +
-          '-' +
-          licenceId +
-          '-' +
-          (licence.recordUpdate_timeMillis ?? 0).toString() +
-          '.pdf'
+        `attachment; filename=${fileName}`
       )
 
       response.setHeader('Content-Type', 'application/pdf')

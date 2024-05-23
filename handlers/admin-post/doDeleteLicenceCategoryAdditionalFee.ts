@@ -1,9 +1,9 @@
 import type { Request, Response } from 'express'
 
 import * as cacheFunctions from '../../helpers/functions.cache.js'
-import deleteLicenceCategoryAdditionalFee from '../../helpers/licencesDB/deleteLicenceCategoryAdditionalFee.js'
-import getLicenceCategoryAdditionalFee from '../../helpers/licencesDB/getLicenceCategoryAdditionalFee.js'
-import getLicenceCategoryAdditionalFees from '../../helpers/licencesDB/getLicenceCategoryAdditionalFees.js'
+import deleteLicenceCategoryAdditionalFee from '../../database/deleteLicenceCategoryAdditionalFee.js'
+import getLicenceCategoryAdditionalFee from '../../database/getLicenceCategoryAdditionalFee.js'
+import getLicenceCategoryAdditionalFees from '../../database/getLicenceCategoryAdditionalFees.js'
 
 export default function handler(request: Request, response: Response): void {
   const licenceAdditionalFeeKey = request.body.licenceAdditionalFeeKey as string

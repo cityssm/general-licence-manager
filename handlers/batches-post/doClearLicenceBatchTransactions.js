@@ -1,5 +1,5 @@
-import clearBatchTransactionsByLicence from '../../helpers/licencesDB/clearBatchTransactionsByLicence.js';
-import getOutstandingBatchTransactions from '../../helpers/licencesDB/getOutstandingBatchTransactions.js';
+import clearBatchTransactionsByLicence from '../../database/clearBatchTransactionsByLicence.js';
+import getOutstandingBatchTransactions from '../../database/getOutstandingBatchTransactions.js';
 export default function handler(request, response) {
     const licenceIds = request.body.licenceIds;
     let success = 1;

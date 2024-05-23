@@ -2,8 +2,8 @@ import type { Request, Response } from 'express'
 
 import createOrUpdateBatchTransaction, {
   type CreateOrUpdateBatchTransactionForm
-} from '../../helpers/licencesDB/createOrUpdateBatchTransaction.js'
-import getOutstandingBatchTransactions from '../../helpers/licencesDB/getOutstandingBatchTransactions.js'
+} from '../../database/createOrUpdateBatchTransaction.js'
+import getOutstandingBatchTransactions from '../../database/getOutstandingBatchTransactions.js'
 
 export default function handler(request: Request, response: Response): void {
   const results = createOrUpdateBatchTransaction(

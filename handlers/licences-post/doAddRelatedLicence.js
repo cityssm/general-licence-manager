@@ -1,5 +1,5 @@
-import addRelatedLicence from '../../helpers/licencesDB/addRelatedLicence.js';
-import getLicences from '../../helpers/licencesDB/getLicences.js';
+import addRelatedLicence from '../../database/addRelatedLicence.js';
+import getLicences from '../../database/getLicences.js';
 export default function handler(request, response) {
     const success = addRelatedLicence(request.body.licenceId, request.body.relatedLicenceId);
     const relatedLicences = getLicences({

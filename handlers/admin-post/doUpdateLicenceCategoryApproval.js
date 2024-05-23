@@ -1,7 +1,7 @@
 import * as cacheFunctions from '../../helpers/functions.cache.js';
-import getLicenceCategoryApproval from '../../helpers/licencesDB/getLicenceCategoryApproval.js';
-import getLicenceCategoryApprovals from '../../helpers/licencesDB/getLicenceCategoryApprovals.js';
-import updateLicenceCategoryApproval from '../../helpers/licencesDB/updateLicenceCategoryApproval.js';
+import getLicenceCategoryApproval from '../../database/getLicenceCategoryApproval.js';
+import getLicenceCategoryApprovals from '../../database/getLicenceCategoryApprovals.js';
+import updateLicenceCategoryApproval from '../../database/updateLicenceCategoryApproval.js';
 export default function handler(request, response) {
     const success = updateLicenceCategoryApproval(request.body, request.session.user);
     cacheFunctions.clearAll();

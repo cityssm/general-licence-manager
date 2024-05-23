@@ -1,8 +1,8 @@
 import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js';
 import { getCanadianBankName } from '@cityssm/get-canadian-bank-name';
+import getLicence from '../../database/getLicence.js';
 import { getLicenceCategories } from '../../helpers/functions.cache.js';
 import * as configFunctions from '../../helpers/functions.config.js';
-import getLicence from '../../helpers/licencesDB/getLicence.js';
 function getFirstPopulatedValue(...values) {
     for (const value of values) {
         if ((value ?? '') !== '') {
@@ -71,7 +71,7 @@ export default function handler(request, response) {
         licenceAdditionalFees: []
     };
     response.render('licence-edit', {
-        headTitle: configFunctions.getConfigProperty('settings.licenceAlias') + ' Create',
+        headTitle: `${configFunctions.getConfigProperty('settings.licenceAlias')} Create`,
         isCreate: true,
         licenceCategories,
         licence,

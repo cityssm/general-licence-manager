@@ -1,4 +1,4 @@
-import getLicences from '../../helpers/licencesDB/getLicences.js';
+import getLicences from '../../database/getLicences.js';
 export default function handler(request, response) {
     const licences = getLicences({
         notRelatedLicenceId: request.body.licenceId,

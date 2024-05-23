@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 
-import getLicenceCategory from '../../helpers/licencesDB/getLicenceCategory.js'
+import getLicenceCategory from '../../database/getLicenceCategory.js'
 
 export default function handler(request: Request, response: Response): void {
   const licenceCategory = getLicenceCategory(

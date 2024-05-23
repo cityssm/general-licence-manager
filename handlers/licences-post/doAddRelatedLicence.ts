@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 
-import addRelatedLicence from '../../helpers/licencesDB/addRelatedLicence.js'
-import getLicences from '../../helpers/licencesDB/getLicences.js'
+import addRelatedLicence from '../../database/addRelatedLicence.js'
+import getLicences from '../../database/getLicences.js'
 
 export default function handler(request: Request, response: Response): void {
   const success = addRelatedLicence(

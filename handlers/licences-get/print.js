@@ -1,16 +1,15 @@
 import path from 'node:path';
 import { convertHTMLToPDF } from '@cityssm/pdf-puppeteer';
 import * as ejs from 'ejs';
+import getLicence from '../../database/getLicence.js';
 import { getLicenceCategory } from '../../helpers/functions.cache.js';
 import * as configFunctions from '../../helpers/functions.config.js';
 import * as printFunctions from '../../helpers/functions.print.js';
-import getLicence from '../../helpers/licencesDB/getLicence.js';
 export default async function handler(request, response, next) {
     const licenceId = request.params.licenceId;
     const licence = getLicence(licenceId);
     if (!licence?.issueDate) {
-        next(configFunctions.getConfigProperty('settings.licenceAlias') +
-            ' not available for printing.');
+        next(`${configFunctions.getConfigProperty('settings.licenceAlias')} not available for printing.`);
         return;
     }
     const licenceCategory = getLicenceCategory(licence.licenceCategoryKey);
@@ -36,14 +35,10 @@ export default async function handler(request, response, next) {
             printBackground: true,
             preferCSSPageSize: true
         });
-        response.setHeader('Content-Disposition', 'attachment;' +
-            ' filename=' +
-            configFunctions.getConfigProperty('settings.licenceAlias').toLowerCase() +
-            '-' +
-            licenceId +
-            '-' +
-            (licence.recordUpdate_timeMillis ?? 0).toString() +
-            '.pdf');
+        const fileName = `${configFunctions
+            .getConfigProperty('settings.licenceAlias')
+            .toLowerCase()}-${licenceId}-${(licence.recordUpdate_timeMillis ?? 0).toString()}.pdf`;
+        response.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
         response.setHeader('Content-Type', 'application/pdf');
         response.send(pdf);
     });

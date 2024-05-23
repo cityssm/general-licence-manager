@@ -36,7 +36,7 @@ export const updateGetHandler: RequestHandler = (request, response, next) => {
     return
   }
 
-  response.redirect(urlPrefix + '/dashboard')
+  response.redirect(`${urlPrefix}/dashboard`)
 }
 
 export const updatePostHandler: RequestHandler = (request, response, next) => {

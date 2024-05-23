@@ -1,11 +1,11 @@
 import type { Request, Response } from 'express'
 
 import * as cacheFunctions from '../../helpers/functions.cache.js'
-import getLicenceCategoryAdditionalFee from '../../helpers/licencesDB/getLicenceCategoryAdditionalFee.js'
-import getLicenceCategoryAdditionalFees from '../../helpers/licencesDB/getLicenceCategoryAdditionalFees.js'
+import getLicenceCategoryAdditionalFee from '../../database/getLicenceCategoryAdditionalFee.js'
+import getLicenceCategoryAdditionalFees from '../../database/getLicenceCategoryAdditionalFees.js'
 import updateLicenceCategoryAdditionalFee, {
   type UpdateLicenceCategoryAdditionalFeeForm
-} from '../../helpers/licencesDB/updateLicenceCategoryAdditionalFee.js'
+} from '../../database/updateLicenceCategoryAdditionalFee.js'
 import type { LicenceCategoryAdditionalFee } from '../../types/recordTypes.js'
 
 export default function handler(request: Request, response: Response): void {

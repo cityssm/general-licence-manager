@@ -2,7 +2,7 @@ import type { Request, Response } from 'express'
 
 import markBatchTransactionFailed, {
   type MarkBatchTransactionFailedForm
-} from '../../helpers/licencesDB/markBatchTransactionFailed.js'
+} from '../../database/markBatchTransactionFailed.js'
 
 export function handler(request: Request, response: Response): void {
   const success = markBatchTransactionFailed(

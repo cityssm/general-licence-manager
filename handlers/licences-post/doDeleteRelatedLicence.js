@@ -1,5 +1,5 @@
-import deleteRelatedLicence from '../../helpers/licencesDB/deleteRelatedLicence.js';
-import getLicences from '../../helpers/licencesDB/getLicences.js';
+import deleteRelatedLicence from '../../database/deleteRelatedLicence.js';
+import getLicences from '../../database/getLicences.js';
 export default function handler(request, response) {
     const success = deleteRelatedLicence(request.body.licenceId, request.body.relatedLicenceId);
     const relatedLicences = getLicences({

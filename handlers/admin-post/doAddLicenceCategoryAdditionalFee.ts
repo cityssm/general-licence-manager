@@ -3,8 +3,8 @@ import type { Request, Response } from 'express'
 import * as cacheFunctions from '../../helpers/functions.cache.js'
 import addLicenceCategoryAdditionalFee, {
   type AddLicenceCategoryAdditionalFeeForm
-} from '../../helpers/licencesDB/addLicenceCategoryAdditionalFee.js'
-import getLicenceCategoryAdditionalFees from '../../helpers/licencesDB/getLicenceCategoryAdditionalFees.js'
+} from '../../database/addLicenceCategoryAdditionalFee.js'
+import getLicenceCategoryAdditionalFees from '../../database/getLicenceCategoryAdditionalFees.js'
 
 export default function handler(request: Request, response: Response): void {
   const licenceAdditionalFeeKey = addLicenceCategoryAdditionalFee(

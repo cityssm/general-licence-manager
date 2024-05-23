@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 
-import deleteLicenceTransaction from '../../helpers/licencesDB/deleteLicenceTransaction.js'
-import getLicenceTransactions from '../../helpers/licencesDB/getLicenceTransactions.js'
+import deleteLicenceTransaction from '../../database/deleteLicenceTransaction.js'
+import getLicenceTransactions from '../../database/getLicenceTransactions.js'
 
 export default function handler(request: Request, response: Response): void {
   const success = deleteLicenceTransaction(

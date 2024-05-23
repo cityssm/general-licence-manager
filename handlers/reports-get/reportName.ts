@@ -3,7 +3,7 @@ import papaparse from 'papaparse'
 
 import getReportData, {
   type ReportParameters
-} from '../../helpers/licencesDB/getReportData.js'
+} from '../../database/getReportData.js'
 
 export default function handler(request: Request, response: Response): void {
   const reportName = request.params.reportName

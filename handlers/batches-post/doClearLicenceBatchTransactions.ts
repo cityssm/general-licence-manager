@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 
-import clearBatchTransactionsByLicence from '../../helpers/licencesDB/clearBatchTransactionsByLicence.js'
-import getOutstandingBatchTransactions from '../../helpers/licencesDB/getOutstandingBatchTransactions.js'
+import clearBatchTransactionsByLicence from '../../database/clearBatchTransactionsByLicence.js'
+import getOutstandingBatchTransactions from '../../database/getOutstandingBatchTransactions.js'
 
 export default function handler(request: Request, response: Response): void {
   const licenceIds: [] = request.body.licenceIds

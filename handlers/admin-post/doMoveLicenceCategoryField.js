@@ -1,6 +1,6 @@
 import * as cacheFunctions from '../../helpers/functions.cache.js';
-import getLicenceCategoryFields from '../../helpers/licencesDB/getLicenceCategoryFields.js';
-import moveLicenceCategoryField from '../../helpers/licencesDB/moveLicenceCategoryField.js';
+import getLicenceCategoryFields from '../../database/getLicenceCategoryFields.js';
+import moveLicenceCategoryField from '../../database/moveLicenceCategoryField.js';
 export default function handler(request, response) {
     const licenceFieldKeyFrom = request.body.licenceFieldKey_from;
     const licenceFieldKeyTo = request.body.licenceFieldKey_to;

@@ -1,6 +1,6 @@
 import * as cacheFunctions from '../../helpers/functions.cache.js';
-import getLicenceCategoryApprovals from '../../helpers/licencesDB/getLicenceCategoryApprovals.js';
-import moveLicenceCategoryApproval from '../../helpers/licencesDB/moveLicenceCategoryApproval.js';
+import getLicenceCategoryApprovals from '../../database/getLicenceCategoryApprovals.js';
+import moveLicenceCategoryApproval from '../../database/moveLicenceCategoryApproval.js';
 export default function handler(request, response) {
     const licenceApprovalKeyFrom = request.body.licenceApprovalKey_from;
     const licenceApprovalKeyTo = request.body.licenceApprovalKey_to;

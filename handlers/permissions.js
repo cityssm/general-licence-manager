@@ -26,7 +26,7 @@ export const updateGetHandler = (request, response, next) => {
         next();
         return;
     }
-    response.redirect(urlPrefix + '/dashboard');
+    response.redirect(`${urlPrefix}/dashboard`);
 };
 export const updatePostHandler = (request, response, next) => {
     if (userFunctions.userCanUpdate(request)) {

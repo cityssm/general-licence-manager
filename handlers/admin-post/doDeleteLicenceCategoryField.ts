@@ -1,9 +1,9 @@
 import type { Request, Response } from 'express'
 
 import * as cacheFunctions from '../../helpers/functions.cache.js'
-import deleteLicenceCategoryField from '../../helpers/licencesDB/deleteLicenceCategoryField.js'
-import getLicenceCategoryField from '../../helpers/licencesDB/getLicenceCategoryField.js'
-import getLicenceCategoryFields from '../../helpers/licencesDB/getLicenceCategoryFields.js'
+import deleteLicenceCategoryField from '../../database/deleteLicenceCategoryField.js'
+import getLicenceCategoryField from '../../database/getLicenceCategoryField.js'
+import getLicenceCategoryFields from '../../database/getLicenceCategoryFields.js'
 
 export default function handler(request: Request, response: Response): void {
   const licenceFieldKey = request.body.licenceFieldKey as string

@@ -1,17 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    const urlPrefix = document.querySelector('main').dataset.urlPrefix;
+    var _a;
     const includeReplacementFee = exports.includeReplacementFee;
     let licenceCategories = exports.licenceCategories;
     const licenceCategoriesContainerElement = document.querySelector('#container--licenceCategories');
     const licenceCategorySearchElement = document.querySelector('#searchFilter--licenceCategory');
-    const renderLicenceCategories = () => {
+    function renderLicenceCategories() {
         if (licenceCategories.length === 0) {
-            licenceCategoriesContainerElement.innerHTML =
-                '<div class="message is-warning">' +
-                    '<p class="message-body">There are no categories available.</p>' +
-                    '</div>';
+            licenceCategoriesContainerElement.innerHTML = `<div class="message is-warning">
+        <p class="message-body">There are no categories available.</p>
+        </div>`;
             return;
         }
         let displayCount = 0;
@@ -39,27 +38,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
             panelBlockElement.dataset.licenceCategoryKey =
                 licenceCategory.licenceCategoryKey;
             panelBlockElement.setAttribute('role', 'button');
-            panelBlockElement.innerHTML =
-                '<div class="columns is-multiline is-mobile">' +
-                    ('<div class="column is-6-tablet is-12-mobile">' +
-                        '<strong>' +
-                        cityssm.escapeHTML(licenceCategory.licenceCategory) +
-                        '</strong><br />' +
-                        '<span class="is-size-7">' +
-                        cityssm.escapeHTML(licenceCategory.bylawNumber) +
-                        '</span>' +
-                        '</div>') +
-                    ('<div class="column is-6-mobile has-text-centered">' +
-                        (licenceCategory.hasEffectiveFee
-                            ? '<i class="fas fa-check has-text-success"></i><br /><span class="is-size-7">Effective Fee</span>'
-                            : '<i class="fas fa-exclamation-triangle has-text-danger"></i><br /><span class="is-size-7">No Effective Fee</span>') +
-                        '</div>') +
-                    ('<div class="column is-6-mobile has-text-centered">' +
-                        (licenceCategory.printEJS === ''
-                            ? '<i class="fas fa-exclamation-triangle has-text-danger"></i><br /><span class="is-size-7">No Print Template</span>'
-                            : '<i class="fas fa-check has-text-success"></i><br /><span class="is-size-7">Print Template</span>') +
-                        '</div>') +
-                    '</div>';
+            panelBlockElement.innerHTML = `<div class="columns is-multiline is-mobile">
+          <div class="column is-6-tablet is-12-mobile">
+            <strong>
+              ${cityssm.escapeHTML(licenceCategory.licenceCategory)}
+            </strong><br />
+            <span class="is-size-7">
+              ${cityssm.escapeHTML(licenceCategory.bylawNumber)}
+            </span>
+          </div>
+          <div class="column is-6-mobile has-text-centered">
+            ${licenceCategory.hasEffectiveFee
+                ? '<i class="fas fa-check has-text-success"></i><br /><span class="is-size-7">Effective Fee</span>'
+                : '<i class="fas fa-exclamation-triangle has-text-danger"></i><br /><span class="is-size-7">No Effective Fee</span>'}
+          </div>
+          <div class="column is-6-mobile has-text-centered">
+            ${licenceCategory.printEJS === ''
+                ? '<i class="fas fa-exclamation-triangle has-text-danger"></i><br /><span class="is-size-7">No Print Template</span>'
+                : '<i class="fas fa-check has-text-success"></i><br /><span class="is-size-7">Print Template</span>'}
+          </div>
+        </div>`;
             panelBlockElement.addEventListener('click', openEditLicenceCategoryModalByClick);
             panelElement.append(panelBlockElement);
         }
@@ -68,32 +66,32 @@ Object.defineProperty(exports, "__esModule", { value: true });
             licenceCategoriesContainerElement.append(panelElement);
         }
         else {
-            licenceCategoriesContainerElement.innerHTML =
-                '<div class="message is-info">' +
-                    '<p class="message-body">There are no categories available that meet the search criteria.</p>' +
-                    '</div>';
+            licenceCategoriesContainerElement.innerHTML = `<div class="message is-info">
+        <p class="message-body">There are no categories available that meet the search criteria.</p>
+        </div>`;
         }
-    };
-    const getLicenceCategories = () => {
-        licenceCategoriesContainerElement.innerHTML =
-            '<p class="has-text-centered has-text-grey-lighter">' +
-                '<i class="fas fa-3x fa-circle-notch fa-spin" aria-hidden="true"></i><br />' +
-                '<em>Loading categories...</em>' +
-                '</p>';
-        cityssm.postJSON(urlPrefix + '/admin/doGetLicenceCategories', {}, (responseJSON) => {
+    }
+    function getLicenceCategories() {
+        licenceCategoriesContainerElement.innerHTML = `<p class="has-text-centered has-text-grey-lighter">
+      <i class="fas fa-3x fa-circle-notch fa-spin" aria-hidden="true"></i><br />
+      <em>Loading categories...</em>
+      </p>`;
+        cityssm.postJSON(`${glm.urlPrefix}/admin/doGetLicenceCategories`, {}, (rawResponseJSON) => {
+            const responseJSON = rawResponseJSON;
             licenceCategories = responseJSON.licenceCategories;
             renderLicenceCategories();
         });
-    };
+    }
     licenceCategorySearchElement.addEventListener('keyup', renderLicenceCategories);
     let doRefreshOnClose = false;
     let editModalElement;
     let licenceCategoryFields;
-    const openEditLicenceCategoryFieldModal = (licenceFieldKey) => {
+    function openEditLicenceCategoryFieldModal(licenceFieldKey) {
         let editLicenceCategoryFieldModalCloseFunction;
-        const updateLicenceCategoryFieldSubmitFunction = (formEvent) => {
+        function updateLicenceCategoryFieldSubmitFunction(formEvent) {
             formEvent.preventDefault();
-            cityssm.postJSON(urlPrefix + '/admin/doUpdateLicenceCategoryField', formEvent.currentTarget, (responseJSON) => {
+            cityssm.postJSON(`${glm.urlPrefix}/admin/doUpdateLicenceCategoryField`, formEvent.currentTarget, (rawResponseJSON) => {
+                const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     licenceCategoryFields = responseJSON.licenceCategoryFields;
                     editLicenceCategoryFieldModalCloseFunction();
@@ -101,11 +99,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     doRefreshOnClose = true;
                 }
             });
-        };
-        const deleteLicenceCategoryFieldFunction = () => {
-            cityssm.postJSON(urlPrefix + '/admin/doDeleteLicenceCategoryField', {
+        }
+        function deleteLicenceCategoryFieldFunction() {
+            cityssm.postJSON(`${glm.urlPrefix}/admin/doDeleteLicenceCategoryField`, {
                 licenceFieldKey
-            }, (responseJSON) => {
+            }, (rawResponseJSON) => {
+                const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     licenceCategoryFields = responseJSON.licenceCategoryFields;
                     renderLicenceCategoryFields();
@@ -113,8 +112,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     doRefreshOnClose = true;
                 }
             });
-        };
-        const confirmDeleteLicenceCategoryFieldFunction = (clickEvent) => {
+        }
+        function confirmDeleteLicenceCategoryFieldFunction(clickEvent) {
             clickEvent.preventDefault();
             bulmaJS.confirm({
                 title: 'Delete Field',
@@ -125,12 +124,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     callbackFunction: deleteLicenceCategoryFieldFunction
                 }
             });
-        };
+        }
         const licenceCategoryField = licenceCategoryFields.find((possibleField) => {
             return possibleField.licenceFieldKey === licenceFieldKey;
         });
         cityssm.openHtmlModal('licenceCategoryField-edit', {
-            onshow: (modalElement) => {
+            onshow(modalElement) {
                 ;
                 modalElement.querySelector('#licenceCategoryFieldEdit--licenceFieldKey').value = licenceFieldKey;
                 modalElement.querySelector('#licenceCategoryFieldEdit--licenceField').value = licenceCategoryField.licenceField;
@@ -152,37 +151,36 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 modalElement.querySelector('#licenceCategoryFieldEdit--pattern').value = licenceCategoryField.pattern;
                 modalElement.querySelector('#licenceCategoryFieldEdit--printKey').value = licenceCategoryField.printKey;
             },
-            onshown: (modalElement, closeModalFunction) => {
+            onshown(modalElement, closeModalFunction) {
+                var _a, _b;
                 editLicenceCategoryFieldModalCloseFunction = closeModalFunction;
                 modalElement.querySelector('#licenceCategoryFieldEdit--licenceField').focus();
-                modalElement
-                    .querySelector('#form--licenceCategoryFieldEdit')
-                    .addEventListener('submit', updateLicenceCategoryFieldSubmitFunction);
-                modalElement
-                    .querySelector('.is-delete-button')
-                    .addEventListener('click', confirmDeleteLicenceCategoryFieldFunction);
+                (_a = modalElement
+                    .querySelector('form')) === null || _a === void 0 ? void 0 : _a.addEventListener('submit', updateLicenceCategoryFieldSubmitFunction);
+                (_b = modalElement
+                    .querySelector('.is-delete-button')) === null || _b === void 0 ? void 0 : _b.addEventListener('click', confirmDeleteLicenceCategoryFieldFunction);
                 bulmaJS.init(modalElement);
             },
-            onhidden: () => {
+            onhidden() {
                 ;
                 document.querySelector("#form--licenceCategoryFieldAdd button[type='submit']").focus();
             }
         });
-    };
-    const openEditLicenceCategoryFieldModalByClick = (clickEvent) => {
+    }
+    function openEditLicenceCategoryFieldModalByClick(clickEvent) {
+        var _a;
         clickEvent.preventDefault();
-        const licenceFieldKey = clickEvent.currentTarget.dataset
-            .licenceFieldKey;
+        const licenceFieldKey = (_a = clickEvent.currentTarget.dataset.licenceFieldKey) !== null && _a !== void 0 ? _a : '';
         openEditLicenceCategoryFieldModal(licenceFieldKey);
-    };
+    }
     const licenceCategoryField_dragDataPrefix = 'licenceFieldKey:';
-    const licenceCategoryField_dragstart = (dragEvent) => {
+    function licenceCategoryField_dragstart(dragEvent) {
         dragEvent.dataTransfer.dropEffect = 'move';
         const data = licenceCategoryField_dragDataPrefix +
             dragEvent.target.dataset.licenceFieldKey;
         dragEvent.dataTransfer.setData('text/plain', data);
-    };
-    const licenceCategoryField_dragover = (dragEvent) => {
+    }
+    function licenceCategoryField_dragover(dragEvent) {
         if (dragEvent.dataTransfer
             .getData('text/plain')
             .startsWith(licenceCategoryField_dragDataPrefix)) {
@@ -197,34 +195,34 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 dropElement.style.borderTop = '20px solid #ededed';
             }
         }
-    };
-    const licenceCategoryField_dragleave = (dragEvent) => {
+    }
+    function licenceCategoryField_dragleave(dragEvent) {
         const dropElement = dragEvent.currentTarget;
         dropElement.style.borderTopWidth = '0px';
-    };
-    const licenceCategoryField_drop = (dragEvent) => {
+    }
+    function licenceCategoryField_drop(dragEvent) {
         dragEvent.preventDefault();
         const licenceFieldKey_from = dragEvent.dataTransfer
             .getData('text/plain')
             .slice(licenceCategoryField_dragDataPrefix.length);
         const licenceFieldKey_to = dragEvent.currentTarget.dataset
             .licenceFieldKey;
-        cityssm.postJSON(urlPrefix + '/admin/doMoveLicenceCategoryField', {
+        cityssm.postJSON(`${glm.urlPrefix}/admin/doMoveLicenceCategoryField`, {
             licenceFieldKey_from,
             licenceFieldKey_to
-        }, (responseJSON) => {
+        }, (rawResponseJSON) => {
+            const responseJSON = rawResponseJSON;
             licenceCategoryFields = responseJSON.licenceCategoryFields;
             renderLicenceCategoryFields();
             doRefreshOnClose = true;
         });
-    };
-    const renderLicenceCategoryFields = () => {
+    }
+    function renderLicenceCategoryFields() {
         const fieldsContainerElement = editModalElement.querySelector('#container--licenceCategoryFields');
         if (licenceCategoryFields.length === 0) {
-            fieldsContainerElement.innerHTML =
-                '<div class="message is-info">' +
-                    '<p class="message-body">There are no additional fields captured with this category.</p>' +
-                    '</div>';
+            fieldsContainerElement.innerHTML = `<div class="message is-info">
+          <p class="message-body">There are no additional fields captured with this category.</p>
+          </div>`;
         }
         else {
             const fieldsPanelElement = document.createElement('div');
@@ -236,22 +234,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     categoryField.licenceFieldKey;
                 panelBlockElement.style.transition = 'border-width 80ms';
                 panelBlockElement.setAttribute('role', 'button');
-                panelBlockElement.innerHTML =
-                    '<div class="columns is-mobile">' +
-                        ('<div class="column">' +
-                            '<h4>' +
-                            cityssm.escapeHTML(categoryField.licenceField) +
-                            '</h4>' +
-                            '<p class="is-size-7">' +
-                            cityssm.escapeHTML(categoryField.licenceFieldDescription) +
-                            '</p>' +
-                            '</div>') +
-                        (categoryField.isRequired
-                            ? '<div class="column is-narrow">' +
-                                '<i class="fas fa-asterisk" aria-hidden="true"</i>' +
-                                '</div>'
-                            : '') +
-                        '</div>';
+                panelBlockElement.innerHTML = `<div class="columns is-mobile">
+            <div class="column">
+              <h4>${cityssm.escapeHTML(categoryField.licenceField)}</h4>
+              <p class="is-size-7">
+                ${cityssm.escapeHTML(categoryField.licenceFieldDescription)}
+              </p>
+              </div>
+              ${categoryField.isRequired
+                    ? '<div class="column is-narrow"><i class="fas fa-asterisk" aria-hidden="true"</i></div>'
+                    : ''}</div>`;
                 panelBlockElement.addEventListener('click', openEditLicenceCategoryFieldModalByClick);
                 if (licenceCategoryFields.length > 1) {
                     panelBlockElement.draggable = true;
@@ -265,13 +257,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
             fieldsContainerElement.innerHTML = '';
             fieldsContainerElement.append(fieldsPanelElement);
         }
-    };
+    }
     let licenceCategoryApprovals;
-    const openEditLicenceCategoryApprovalModal = (licenceApprovalKey) => {
+    function openEditLicenceCategoryApprovalModal(licenceApprovalKey) {
         let editLicenceCategoryApprovalModalCloseFunction;
-        const updateLicenceCategoryApprovalSubmitFunction = (formEvent) => {
+        function updateLicenceCategoryApprovalSubmitFunction(formEvent) {
             formEvent.preventDefault();
-            cityssm.postJSON(urlPrefix + '/admin/doUpdateLicenceCategoryApproval', formEvent.currentTarget, (responseJSON) => {
+            cityssm.postJSON(`${glm.urlPrefix}/admin/doUpdateLicenceCategoryApproval`, formEvent.currentTarget, (rawResponseJSON) => {
+                const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     licenceCategoryApprovals = responseJSON.licenceCategoryApprovals;
                     editLicenceCategoryApprovalModalCloseFunction();
@@ -279,11 +272,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     doRefreshOnClose = true;
                 }
             });
-        };
-        const deleteLicenceCategoryApprovalFunction = () => {
-            cityssm.postJSON(urlPrefix + '/admin/doDeleteLicenceCategoryApproval', {
+        }
+        function deleteLicenceCategoryApprovalFunction() {
+            cityssm.postJSON(`${glm.urlPrefix}/admin/doDeleteLicenceCategoryApproval`, {
                 licenceApprovalKey
-            }, (responseJSON) => {
+            }, (rawResponseJSON) => {
+                const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     licenceCategoryApprovals = responseJSON.licenceCategoryApprovals;
                     renderLicenceCategoryApprovals();
@@ -291,8 +285,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     doRefreshOnClose = true;
                 }
             });
-        };
-        const confirmDeleteLicenceCategoryApprovalFunction = (clickEvent) => {
+        }
+        function confirmDeleteLicenceCategoryApprovalFunction(clickEvent) {
             clickEvent.preventDefault();
             bulmaJS.confirm({
                 title: 'Delete Approval',
@@ -303,12 +297,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     callbackFunction: deleteLicenceCategoryApprovalFunction
                 }
             });
-        };
+        }
         const licenceCategoryApproval = licenceCategoryApprovals.find((possibleField) => {
             return possibleField.licenceApprovalKey === licenceApprovalKey;
         });
         cityssm.openHtmlModal('licenceCategoryApproval-edit', {
-            onshow: (modalElement) => {
+            onshow(modalElement) {
                 glm.populateAliases(modalElement);
                 modalElement.querySelector('#licenceCategoryApprovalEdit--licenceApprovalKey').value = licenceApprovalKey;
                 modalElement.querySelector('#licenceCategoryApprovalEdit--licenceApproval').value = licenceCategoryApproval.licenceApproval;
@@ -324,32 +318,31 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 ;
                 modalElement.querySelector('#licenceCategoryApprovalEdit--printKey').value = licenceCategoryApproval.printKey;
             },
-            onshown: (modalElement, closeModalFunction) => {
+            onshown(modalElement, closeModalFunction) {
+                var _a, _b;
                 editLicenceCategoryApprovalModalCloseFunction = closeModalFunction;
-                modalElement
-                    .querySelector('#form--licenceCategoryApprovalEdit')
-                    .addEventListener('submit', updateLicenceCategoryApprovalSubmitFunction);
-                modalElement
-                    .querySelector('.is-delete-button')
-                    .addEventListener('click', confirmDeleteLicenceCategoryApprovalFunction);
+                (_a = modalElement
+                    .querySelector('form')) === null || _a === void 0 ? void 0 : _a.addEventListener('submit', updateLicenceCategoryApprovalSubmitFunction);
+                (_b = modalElement
+                    .querySelector('.is-delete-button')) === null || _b === void 0 ? void 0 : _b.addEventListener('click', confirmDeleteLicenceCategoryApprovalFunction);
                 bulmaJS.init(modalElement);
             }
         });
-    };
-    const openEditLicenceCategoryApprovalModalByClick = (clickEvent) => {
+    }
+    function openEditLicenceCategoryApprovalModalByClick(clickEvent) {
         clickEvent.preventDefault();
         const licenceApprovalKey = clickEvent.currentTarget.dataset
             .licenceApprovalKey;
         openEditLicenceCategoryApprovalModal(licenceApprovalKey);
-    };
+    }
     const licenceCategoryApproval_dragDataPrefix = 'licenceApprovalKey:';
-    const licenceCategoryApproval_dragstart = (dragEvent) => {
+    function licenceCategoryApproval_dragstart(dragEvent) {
         dragEvent.dataTransfer.dropEffect = 'move';
         const data = licenceCategoryApproval_dragDataPrefix +
             dragEvent.target.dataset.licenceApprovalKey;
         dragEvent.dataTransfer.setData('text/plain', data);
-    };
-    const licenceCategoryApproval_dragover = (dragEvent) => {
+    }
+    function licenceCategoryApproval_dragover(dragEvent) {
         if (dragEvent.dataTransfer
             .getData('text/plain')
             .startsWith(licenceCategoryApproval_dragDataPrefix)) {
@@ -364,34 +357,34 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 dropElement.style.borderTop = '20px solid #ededed';
             }
         }
-    };
-    const licenceCategoryApproval_dragleave = (dragEvent) => {
+    }
+    function licenceCategoryApproval_dragleave(dragEvent) {
         const dropElement = dragEvent.currentTarget;
         dropElement.style.borderTopWidth = '0px';
-    };
-    const licenceCategoryApproval_drop = (dragEvent) => {
+    }
+    function licenceCategoryApproval_drop(dragEvent) {
         dragEvent.preventDefault();
         const licenceApprovalKey_from = dragEvent.dataTransfer
             .getData('text/plain')
             .slice(licenceCategoryApproval_dragDataPrefix.length);
         const licenceApprovalKey_to = dragEvent.currentTarget
             .dataset.licenceApprovalKey;
-        cityssm.postJSON(urlPrefix + '/admin/doMoveLicenceCategoryApproval', {
+        cityssm.postJSON(`${glm.urlPrefix}/admin/doMoveLicenceCategoryApproval`, {
             licenceApprovalKey_from,
             licenceApprovalKey_to
-        }, (responseJSON) => {
+        }, (rawResponseJSON) => {
+            const responseJSON = rawResponseJSON;
             licenceCategoryApprovals = responseJSON.licenceCategoryApprovals;
             renderLicenceCategoryApprovals();
             doRefreshOnClose = true;
         });
-    };
-    const renderLicenceCategoryApprovals = () => {
+    }
+    function renderLicenceCategoryApprovals() {
         const approvalsContainerElement = editModalElement.querySelector('#container--licenceCategoryApprovals');
         if (licenceCategoryApprovals.length === 0) {
-            approvalsContainerElement.innerHTML =
-                '<div class="message is-info">' +
-                    '<p class="message-body">There are no approvals associated with this category.</p>' +
-                    '</div>';
+            approvalsContainerElement.innerHTML = `<div class="message is-info">
+        <p class="message-body">There are no approvals associated with this category.</p>
+        </div>`;
         }
         else {
             const approvalsPanelElement = document.createElement('div');
@@ -402,23 +395,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 panelBlockElement.dataset.licenceApprovalKey =
                     categoryApproval.licenceApprovalKey;
                 panelBlockElement.setAttribute('role', 'button');
-                panelBlockElement.innerHTML =
-                    '<div class="columns is-mobile">' +
-                        ('<div class="column">' +
-                            '<h4>' +
-                            cityssm.escapeHTML(categoryApproval.licenceApproval) +
-                            '</h4>' +
-                            '<p class="is-size-7">' +
-                            cityssm.escapeHTML(categoryApproval.licenceApprovalDescription) +
-                            '</p>' +
-                            '</div>') +
-                        (categoryApproval.isRequiredForNew ||
-                            categoryApproval.isRequiredForRenewal
-                            ? '<div class="column is-narrow">' +
-                                '<i class="fas fa-asterisk" aria-hidden="true"</i>' +
-                                '</div>'
-                            : '') +
-                        '</div>';
+                panelBlockElement.innerHTML = `<div class="columns is-mobile">
+          <div class="column">
+            <h4>
+              ${cityssm.escapeHTML(categoryApproval.licenceApproval)}
+            </h4>
+            <p class="is-size-7">
+              ${cityssm.escapeHTML(categoryApproval.licenceApprovalDescription)}
+            </p>
+          </div>
+          ${categoryApproval.isRequiredForNew ||
+                    categoryApproval.isRequiredForRenewal
+                    ? '<div class="column is-narrow"><i class="fas fa-asterisk" aria-hidden="true"</i></div>'
+                    : ''}</div>`;
                 panelBlockElement.addEventListener('click', openEditLicenceCategoryApprovalModalByClick);
                 if (licenceCategoryApprovals.length > 1) {
                     panelBlockElement.draggable = true;
@@ -432,13 +421,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
             approvalsContainerElement.innerHTML = '';
             approvalsContainerElement.append(approvalsPanelElement);
         }
-    };
+    }
     let licenceCategoryFees;
     const openEditLicenceCategoryFeeModal = (licenceFeeId) => {
         let editLicenceCategoryFeeModalCloseFunction;
         const updateLicenceCategoryFeeSubmitFunction = (formEvent) => {
             formEvent.preventDefault();
-            cityssm.postJSON(urlPrefix + '/admin/doUpdateLicenceCategoryFee', formEvent.currentTarget, (responseJSON) => {
+            cityssm.postJSON(`${glm.urlPrefix}/admin/doUpdateLicenceCategoryFee`, formEvent.currentTarget, (rawResponseJSON) => {
+                const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     doRefreshOnClose = true;
                     licenceCategoryFees = responseJSON.licenceCategoryFees;
@@ -447,10 +437,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 }
             });
         };
-        const deleteLicenceCategoryFeeFunction = () => {
-            cityssm.postJSON(urlPrefix + '/admin/doDeleteLicenceCategoryFee', {
+        function deleteLicenceCategoryFeeFunction() {
+            cityssm.postJSON(`${glm.urlPrefix}/admin/doDeleteLicenceCategoryFee`, {
                 licenceFeeId
-            }, (responseJSON) => {
+            }, (rawResponseJSON) => {
+                const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     licenceCategoryFees = responseJSON.licenceCategoryFees;
                     renderLicenceCategoryFees();
@@ -458,8 +449,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     editLicenceCategoryFeeModalCloseFunction();
                 }
             });
-        };
-        const confirmDeleteLicenceCategoryFeeFunction = (clickEvent) => {
+        }
+        function confirmDeleteLicenceCategoryFeeFunction(clickEvent) {
             clickEvent.preventDefault();
             bulmaJS.confirm({
                 title: 'Delete Fee',
@@ -470,12 +461,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     callbackFunction: deleteLicenceCategoryFeeFunction
                 }
             });
-        };
+        }
         const licenceCategoryFee = licenceCategoryFees.find((possibleField) => {
             return possibleField.licenceFeeId === licenceFeeId;
         });
         cityssm.openHtmlModal('licenceCategoryFee-edit', {
-            onshow: (modalElement) => {
+            onshow(modalElement) {
+                var _a, _b;
                 glm.populateAliases(modalElement);
                 modalElement.querySelector('#licenceCategoryFeeEdit--licenceFeeId').value = licenceCategoryFee.licenceFeeId.toString();
                 modalElement.querySelector('#licenceCategoryFeeEdit--effectiveStartDateString').value = licenceCategoryFee.effectiveStartDateString;
@@ -490,38 +482,34 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     modalElement.querySelector('#licenceCategoryFeeEdit--replacementFee').value = licenceCategoryFee.replacementFee.toFixed(2);
                 }
                 if (!includeReplacementFee) {
-                    modalElement
-                        .querySelector('#licenceCategoryFeeEdit--replacementFee')
-                        .closest('.column')
-                        .classList.add('is-hidden');
+                    (_b = (_a = modalElement
+                        .querySelector('#licenceCategoryFeeEdit--replacementFee')) === null || _a === void 0 ? void 0 : _a.closest('.column')) === null || _b === void 0 ? void 0 : _b.classList.add('is-hidden');
                 }
             },
-            onshown: (modalElement, closeModalFunction) => {
+            onshown(modalElement, closeModalFunction) {
+                var _a, _b;
                 editLicenceCategoryFeeModalCloseFunction = closeModalFunction;
                 modalElement.querySelector('#licenceCategoryFeeEdit--effectiveStartDateString').focus();
-                modalElement
-                    .querySelector('#form--licenceCategoryFeeEdit')
-                    .addEventListener('submit', updateLicenceCategoryFeeSubmitFunction);
-                modalElement
-                    .querySelector('.is-delete-button')
-                    .addEventListener('click', confirmDeleteLicenceCategoryFeeFunction);
+                (_a = modalElement
+                    .querySelector('form')) === null || _a === void 0 ? void 0 : _a.addEventListener('submit', updateLicenceCategoryFeeSubmitFunction);
+                (_b = modalElement
+                    .querySelector('.is-delete-button')) === null || _b === void 0 ? void 0 : _b.addEventListener('click', confirmDeleteLicenceCategoryFeeFunction);
                 bulmaJS.init(modalElement);
             }
         });
     };
-    const openEditLicenceCategoryFeeModalByClick = (clickEvent) => {
+    function openEditLicenceCategoryFeeModalByClick(clickEvent) {
         clickEvent.preventDefault();
         const licenceFeeId = clickEvent.currentTarget.dataset
             .licenceFeeId;
         openEditLicenceCategoryFeeModal(Number.parseInt(licenceFeeId, 10));
-    };
-    const renderLicenceCategoryFees = () => {
+    }
+    function renderLicenceCategoryFees() {
         const feesContainerElement = editModalElement.querySelector('#container--licenceCategoryFees');
         if (licenceCategoryFees.length === 0) {
-            feesContainerElement.innerHTML =
-                '<div class="message is-warning">' +
-                    '<p class="message-body">There are no fees associated with this category.</p>' +
-                    '</div>';
+            feesContainerElement.innerHTML = `<div class="message is-warning">
+        <p class="message-body">There are no fees associated with this category.</p>
+        </div>`;
         }
         else {
             const feesPanelElement = document.createElement('div');
@@ -551,38 +539,32 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         isEffective = true;
                     }
                 }
-                panelBlockElement.innerHTML =
-                    '<div class="columns is-mobile">' +
-                        ('<div class="column">' +
-                            '<h4>' +
-                            effectiveHTML +
-                            '</h4>' +
-                            '<p class="is-size-7">' +
-                            '$' +
-                            categoryFee.licenceFee.toFixed(2) +
-                            ' fee' +
-                            '</p>' +
-                            '</div>') +
-                        (isEffective
-                            ? '<div class="column is-narrow">' +
-                                '<i class="fas fa-asterisk" aria-hidden="true"</i>' +
-                                '</div>'
-                            : '') +
-                        '</div>';
+                panelBlockElement.innerHTML = `<div class="columns is-mobile">
+          <div class="column">
+          <h4>${effectiveHTML}</h4>
+          <p class="is-size-7">
+            $${categoryFee.licenceFee.toFixed(2)} fee
+          </p>
+          </div>
+          ${isEffective
+                    ? '<div class="column is-narrow"><i class="fas fa-asterisk" aria-hidden="true"</i></div>'
+                    : ''}
+          </div>`;
                 panelBlockElement.addEventListener('click', openEditLicenceCategoryFeeModalByClick);
                 feesPanelElement.append(panelBlockElement);
             }
             feesContainerElement.innerHTML = '';
             feesContainerElement.append(feesPanelElement);
         }
-    };
+    }
     let licenceCategoryAdditionalFees;
-    const openEditLicenceCategoryAdditionalFeeModal = (licenceAdditionalFeeKey) => {
+    function openEditLicenceCategoryAdditionalFeeModal(licenceAdditionalFeeKey) {
         let editLicenceCategoryAdditionalFeeModalElement;
         let editLicenceCategoryAdditionalFeeModalCloseFunction;
-        const updateLicenceCategoryAdditionalFeeSubmitFunction = (formEvent) => {
+        function updateLicenceCategoryAdditionalFeeSubmitFunction(formEvent) {
             formEvent.preventDefault();
-            cityssm.postJSON(urlPrefix + '/admin/doUpdateLicenceCategoryAdditionalFee', formEvent.currentTarget, (responseJSON) => {
+            cityssm.postJSON(`${glm.urlPrefix}/admin/doUpdateLicenceCategoryAdditionalFee`, formEvent.currentTarget, (rawResponseJSON) => {
+                const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     licenceCategoryAdditionalFees =
                         responseJSON.licenceCategoryAdditionalFees;
@@ -591,11 +573,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     doRefreshOnClose = true;
                 }
             });
-        };
-        const deleteLicenceCategoryAdditionalFeeFunction = () => {
-            cityssm.postJSON(urlPrefix + '/admin/doDeleteLicenceCategoryAdditionalFee', {
+        }
+        function deleteLicenceCategoryAdditionalFeeFunction() {
+            cityssm.postJSON(`${glm.urlPrefix}/admin/doDeleteLicenceCategoryAdditionalFee`, {
                 licenceAdditionalFeeKey
-            }, (responseJSON) => {
+            }, (rawResponseJSON) => {
+                const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     licenceCategoryAdditionalFees =
                         responseJSON.licenceCategoryAdditionalFees;
@@ -604,8 +587,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     doRefreshOnClose = true;
                 }
             });
-        };
-        const confirmDeleteLicenceCategoryAdditionalFeeFunction = (clickEvent) => {
+        }
+        function confirmDeleteLicenceCategoryAdditionalFeeFunction(clickEvent) {
             clickEvent.preventDefault();
             bulmaJS.confirm({
                 title: 'Delete Additional Fee',
@@ -616,37 +599,41 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     callbackFunction: deleteLicenceCategoryAdditionalFeeFunction
                 }
             });
-        };
-        const updateAdditionalFeeTypeFields = () => {
+        }
+        function updateAdditionalFeeTypeFields() {
             const additionalFeeType = editLicenceCategoryAdditionalFeeModalElement.querySelector('#licenceCategoryAdditionalFeeEdit--additionalFeeType').value;
             const additionalFeeFlatIconElement = editLicenceCategoryAdditionalFeeModalElement.querySelector(".control[data-additional-fee-type='flat']");
             const additionalFeePercentIconElement = editLicenceCategoryAdditionalFeeModalElement.querySelector(".control[data-additional-fee-type='percent']");
             const additionalFeeFunctionElement = editLicenceCategoryAdditionalFeeModalElement.querySelector('#licenceCategoryAdditionalFeeEdit--additionalFeeFunction');
             switch (additionalFeeType) {
-                case 'percent':
+                case 'percent': {
                     additionalFeePercentIconElement.classList.remove('is-hidden');
                     additionalFeeFlatIconElement.classList.add('is-hidden');
                     break;
-                default:
+                }
+                default: {
                     additionalFeeFlatIconElement.classList.remove('is-hidden');
                     additionalFeePercentIconElement.classList.add('is-hidden');
+                }
             }
             switch (additionalFeeType) {
-                case 'function':
+                case 'function': {
                     additionalFeeFunctionElement.disabled = false;
                     break;
-                default:
+                }
+                default: {
                     additionalFeeFunctionElement.value = '';
                     additionalFeeFunctionElement.disabled = true;
                     break;
+                }
             }
-        };
+        }
         const licenceCategoryAdditionalFee = licenceCategoryAdditionalFees.find((possibleAdditionalFee) => {
             return (possibleAdditionalFee.licenceAdditionalFeeKey ===
                 licenceAdditionalFeeKey);
         });
         cityssm.openHtmlModal('licenceCategoryAdditionalFee-edit', {
-            onshow: (modalElement) => {
+            onshow(modalElement) {
                 glm.populateAliases(modalElement);
                 editLicenceCategoryAdditionalFeeModalElement = modalElement;
                 modalElement.querySelector('#licenceCategoryAdditionalFeeEdit--licenceAdditionalFeeKey').value = licenceAdditionalFeeKey;
@@ -660,35 +647,34 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     modalElement.querySelector('#licenceCategoryAdditionalFeeEdit--isRequired').checked = true;
                 }
             },
-            onshown: (modalElement, closeModalFunction) => {
+            onshown(modalElement, closeModalFunction) {
+                var _a, _b, _c;
                 editLicenceCategoryAdditionalFeeModalCloseFunction = closeModalFunction;
-                modalElement
-                    .querySelector('#licenceCategoryAdditionalFeeEdit--additionalFeeType')
-                    .addEventListener('change', updateAdditionalFeeTypeFields);
-                modalElement
-                    .querySelector('#form--licenceCategoryAdditionalFeeEdit')
-                    .addEventListener('submit', updateLicenceCategoryAdditionalFeeSubmitFunction);
-                modalElement
-                    .querySelector('.is-delete-button')
-                    .addEventListener('click', confirmDeleteLicenceCategoryAdditionalFeeFunction);
+                (_a = modalElement
+                    .querySelector('#licenceCategoryAdditionalFeeEdit--additionalFeeType')) === null || _a === void 0 ? void 0 : _a.addEventListener('change', updateAdditionalFeeTypeFields);
+                (_b = modalElement
+                    .querySelector('form')) === null || _b === void 0 ? void 0 : _b.addEventListener('submit', updateLicenceCategoryAdditionalFeeSubmitFunction);
+                (_c = modalElement
+                    .querySelector('.is-delete-button')) === null || _c === void 0 ? void 0 : _c.addEventListener('click', confirmDeleteLicenceCategoryAdditionalFeeFunction);
                 bulmaJS.init(modalElement);
             }
         });
-    };
-    const openEditLicenceCategoryAdditionalFeeModalByClick = (clickEvent) => {
+    }
+    function openEditLicenceCategoryAdditionalFeeModalByClick(clickEvent) {
+        var _a;
         clickEvent.preventDefault();
-        const licenceAdditionalFeeKey = clickEvent.currentTarget
-            .dataset.licenceAdditionalFeeKey;
+        const licenceAdditionalFeeKey = (_a = clickEvent.currentTarget.dataset
+            .licenceAdditionalFeeKey) !== null && _a !== void 0 ? _a : '';
         openEditLicenceCategoryAdditionalFeeModal(licenceAdditionalFeeKey);
-    };
+    }
     const licenceCategoryAdditionalFee_dragDataPrefix = 'licenceAdditionalFeeKey:';
-    const licenceCategoryAdditionalFee_dragstart = (dragEvent) => {
+    function licenceCategoryAdditionalFee_dragstart(dragEvent) {
         dragEvent.dataTransfer.dropEffect = 'move';
         const data = licenceCategoryAdditionalFee_dragDataPrefix +
             dragEvent.target.dataset.licenceAdditionalFeeKey;
         dragEvent.dataTransfer.setData('text/plain', data);
-    };
-    const licenceCategoryAdditionalFee_dragover = (dragEvent) => {
+    }
+    function licenceCategoryAdditionalFee_dragover(dragEvent) {
         if (dragEvent.dataTransfer
             .getData('text/plain')
             .startsWith(licenceCategoryAdditionalFee_dragDataPrefix)) {
@@ -703,35 +689,35 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 dropElement.style.borderTop = '20px solid #ededed';
             }
         }
-    };
-    const licenceCategoryAdditionalFee_dragleave = (dragEvent) => {
+    }
+    function licenceCategoryAdditionalFee_dragleave(dragEvent) {
         const dropElement = dragEvent.currentTarget;
         dropElement.style.borderTopWidth = '0px';
-    };
-    const licenceCategoryAdditionalFee_drop = (dragEvent) => {
+    }
+    function licenceCategoryAdditionalFee_drop(dragEvent) {
         dragEvent.preventDefault();
         const licenceAdditionalFeeKey_from = dragEvent.dataTransfer
             .getData('text/plain')
             .slice(licenceCategoryAdditionalFee_dragDataPrefix.length);
         const licenceAdditionalFeeKey_to = dragEvent.currentTarget
             .dataset.licenceAdditionalFeeKey;
-        cityssm.postJSON(urlPrefix + '/admin/doMoveLicenceCategoryAdditionalFee', {
+        cityssm.postJSON(`${glm.urlPrefix}/admin/doMoveLicenceCategoryAdditionalFee`, {
             licenceAdditionalFeeKey_from,
             licenceAdditionalFeeKey_to
-        }, (responseJSON) => {
+        }, (rawResponseJSON) => {
+            const responseJSON = rawResponseJSON;
             licenceCategoryAdditionalFees =
                 responseJSON.licenceCategoryAdditionalFees;
             renderLicenceCategoryAdditionalFees();
             doRefreshOnClose = true;
         });
-    };
-    const renderLicenceCategoryAdditionalFees = () => {
+    }
+    function renderLicenceCategoryAdditionalFees() {
         const additionalFeesContainerElement = editModalElement.querySelector('#container--licenceCategoryAdditionalFees');
         if (licenceCategoryAdditionalFees.length === 0) {
-            additionalFeesContainerElement.innerHTML =
-                '<div class="message is-info">' +
-                    '<p class="message-body">There are no additional fees associated with this category.</p>' +
-                    '</div>';
+            additionalFeesContainerElement.innerHTML = `<div class="message is-info">
+        <p class="message-body">There are no additional fees associated with this category.</p>
+        </div>`;
         }
         else {
             const additionalFeesPanelElement = document.createElement('div');
@@ -744,35 +730,32 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 panelBlockElement.setAttribute('role', 'button');
                 let additionalFeeDescriptionHTML = '';
                 switch (categoryAdditionalFee.additionalFeeType) {
-                    case 'flat':
+                    case 'flat': {
                         additionalFeeDescriptionHTML =
                             '$' + categoryAdditionalFee.additionalFeeNumber.toFixed(2);
                         break;
-                    case 'percent':
+                    }
+                    case 'percent': {
                         additionalFeeDescriptionHTML =
                             categoryAdditionalFee.additionalFeeNumber.toPrecision(2) + '%';
                         break;
-                    case 'function':
-                        additionalFeeDescriptionHTML =
-                            'Function: ' + categoryAdditionalFee.additionalFeeFunction;
+                    }
+                    case 'function': {
+                        additionalFeeDescriptionHTML = `Function: ${categoryAdditionalFee.additionalFeeFunction}`;
                         break;
+                    }
                 }
-                panelBlockElement.innerHTML =
-                    '<div class="columns is-mobile">' +
-                        ('<div class="column">' +
-                            '<h4>' +
-                            cityssm.escapeHTML(categoryAdditionalFee.additionalFee) +
-                            '</h4>' +
-                            '<p class="is-size-7">' +
-                            additionalFeeDescriptionHTML +
-                            '</p>' +
-                            '</div>') +
-                        (categoryAdditionalFee.isRequired
-                            ? '<div class="column is-narrow">' +
-                                '<i class="fas fa-asterisk" aria-hidden="true"</i>' +
-                                '</div>'
-                            : '') +
-                        '</div>';
+                panelBlockElement.innerHTML = `<div class="columns is-mobile">
+          <div class="column">
+            <h4>
+            ${cityssm.escapeHTML(categoryAdditionalFee.additionalFee)}
+            </h4>
+            <p class="is-size-7">${additionalFeeDescriptionHTML}</p>
+          </div>
+          ${categoryAdditionalFee.isRequired
+                    ? '<div class="column is-narrow"><i class="fas fa-asterisk" aria-hidden="true"</i></div>'
+                    : ''}
+          </div>`;
                 panelBlockElement.addEventListener('click', openEditLicenceCategoryAdditionalFeeModalByClick);
                 if (licenceCategoryAdditionalFees.length > 1) {
                     panelBlockElement.draggable = true;
@@ -786,13 +769,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
             additionalFeesContainerElement.innerHTML = '';
             additionalFeesContainerElement.append(additionalFeesPanelElement);
         }
-    };
-    const openEditLicenceCategoryModal = (licenceCategoryKey) => {
+    }
+    function openEditLicenceCategoryModal(licenceCategoryKey) {
         let categoryCloseModalFunction;
-        const deleteLicenceCategoryFunction = () => {
-            cityssm.postJSON(urlPrefix + '/admin/doDeleteLicenceCategory', {
+        function deleteLicenceCategoryFunction() {
+            cityssm.postJSON(`${glm.urlPrefix}/admin/doDeleteLicenceCategory`, {
                 licenceCategoryKey
-            }, (responseJSON) => {
+            }, (rawResponseJSON) => {
+                const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     doRefreshOnClose = false;
                     licenceCategories = responseJSON.licenceCategories;
@@ -800,8 +784,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     renderLicenceCategories();
                 }
             });
-        };
-        const deleteLicenceCategoryConfirmFunction = (clickEvent) => {
+        }
+        function deleteLicenceCategoryConfirmFunction(clickEvent) {
             clickEvent.preventDefault();
             bulmaJS.confirm({
                 title: 'Delete Category',
@@ -812,11 +796,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     callbackFunction: deleteLicenceCategoryFunction
                 }
             });
-        };
-        const updateLicenceCategorySubmitFunction = (formEvent) => {
+        }
+        function updateLicenceCategorySubmitFunction(formEvent) {
             formEvent.preventDefault();
             const formElement = formEvent.currentTarget;
-            cityssm.postJSON(urlPrefix + '/admin/doUpdateLicenceCategory', formElement, (responseJSON) => {
+            cityssm.postJSON(`${glm.urlPrefix}/admin/doUpdateLicenceCategory`, formElement, (rawResponseJSON) => {
+                var _a;
+                const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     bulmaJS.alert({
                         message: 'Category updated successfully.',
@@ -827,16 +813,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 else {
                     bulmaJS.alert({
                         title: 'Error Updating Category',
-                        message: responseJSON.errorMessage,
+                        message: (_a = responseJSON.errorMessage) !== null && _a !== void 0 ? _a : '',
                         contextualColorName: 'danger'
                     });
                 }
             });
-        };
-        const addLicenceCategoryFieldSubmitFunction = (formEvent) => {
+        }
+        function addLicenceCategoryFieldSubmitFunction(formEvent) {
             formEvent.preventDefault();
             const formElement = formEvent.currentTarget;
-            cityssm.postJSON(urlPrefix + '/admin/doAddLicenceCategoryField', formElement, (responseJSON) => {
+            cityssm.postJSON(`${glm.urlPrefix}/admin/doAddLicenceCategoryField`, formElement, (rawResponseJSON) => {
+                const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     doRefreshOnClose = true;
                     formElement.reset();
@@ -845,11 +832,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     openEditLicenceCategoryFieldModal(responseJSON.licenceFieldKey);
                 }
             });
-        };
-        const addLicenceCategoryApprovalSubmitFunction = (formEvent) => {
+        }
+        function addLicenceCategoryApprovalSubmitFunction(formEvent) {
             formEvent.preventDefault();
             const formElement = formEvent.currentTarget;
-            cityssm.postJSON(urlPrefix + '/admin/doAddLicenceCategoryApproval', formElement, (responseJSON) => {
+            cityssm.postJSON(`${glm.urlPrefix}/admin/doAddLicenceCategoryApproval`, formElement, (rawResponseJSON) => {
+                const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     doRefreshOnClose = true;
                     formElement.reset();
@@ -858,12 +846,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     openEditLicenceCategoryApprovalModal(responseJSON.licenceApprovalKey);
                 }
             });
-        };
-        const addLicenceCategoryFeeFunction = (clickEvent) => {
+        }
+        function addLicenceCategoryFeeFunction(clickEvent) {
             clickEvent.preventDefault();
-            cityssm.postJSON(urlPrefix + '/admin/doAddLicenceCategoryFee', {
+            cityssm.postJSON(`${glm.urlPrefix}/admin/doAddLicenceCategoryFee`, {
                 licenceCategoryKey
-            }, (responseJSON) => {
+            }, (rawResponseJSON) => {
+                const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     doRefreshOnClose = true;
                     licenceCategoryFees = responseJSON.licenceCategoryFees;
@@ -871,11 +860,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     openEditLicenceCategoryFeeModal(responseJSON.licenceFeeId);
                 }
             });
-        };
-        const addLicenceCategoryAdditionalFeeFunction = (formEvent) => {
+        }
+        function addLicenceCategoryAdditionalFeeFunction(formEvent) {
             formEvent.preventDefault();
             const formElement = formEvent.currentTarget;
-            cityssm.postJSON(urlPrefix + '/admin/doAddLicenceCategoryAdditionalFee', formElement, (responseJSON) => {
+            cityssm.postJSON(`${glm.urlPrefix}/admin/doAddLicenceCategoryAdditionalFee`, formElement, (rawResponseJSON) => {
+                const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     doRefreshOnClose = true;
                     formElement.reset();
@@ -885,8 +875,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     openEditLicenceCategoryAdditionalFeeModal(responseJSON.licenceAdditionalFeeKey);
                 }
             });
-        };
-        const renderEditLicenceCategory = (responseJSON) => {
+        }
+        function renderEditLicenceCategory(responseJSON) {
+            var _a, _b, _c, _d;
             if (!responseJSON.success) {
                 bulmaJS.alert({
                     message: 'Error Loading Category.',
@@ -918,19 +909,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
             editModalElement.querySelector('#licenceCategoryEdit--licenceLengthYears').value = licenceCategory.licenceLengthYears.toString();
             editModalElement.querySelector('#licenceCategoryEdit--licenceLengthMonths').value = licenceCategory.licenceLengthMonths.toString();
             editModalElement.querySelector('#licenceCategoryEdit--licenceLengthDays').value = licenceCategory.licenceLengthDays.toString();
-            licenceCategoryFields = licenceCategory.licenceCategoryFields;
+            licenceCategoryFields = (_a = licenceCategory.licenceCategoryFields) !== null && _a !== void 0 ? _a : [];
             renderLicenceCategoryFields();
-            licenceCategoryApprovals = licenceCategory.licenceCategoryApprovals;
+            licenceCategoryApprovals = (_b = licenceCategory.licenceCategoryApprovals) !== null && _b !== void 0 ? _b : [];
             renderLicenceCategoryApprovals();
-            licenceCategoryFees = licenceCategory.licenceCategoryFees;
+            licenceCategoryFees = (_c = licenceCategory.licenceCategoryFees) !== null && _c !== void 0 ? _c : [];
             renderLicenceCategoryFees();
             licenceCategoryAdditionalFees =
-                licenceCategory.licenceCategoryAdditionalFees;
+                (_d = licenceCategory.licenceCategoryAdditionalFees) !== null && _d !== void 0 ? _d : [];
             renderLicenceCategoryAdditionalFees();
-        };
+        }
         doRefreshOnClose = false;
         cityssm.openHtmlModal('licenceCategory-edit', {
-            onshow: (modalElement) => {
+            onshow(modalElement) {
                 editModalElement = modalElement;
                 glm.populateAliases(modalElement);
                 modalElement.querySelector('#licenceCategoryEdit--licenceCategoryKey').value = licenceCategoryKey;
@@ -951,55 +942,51 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     optionElement.textContent = licenceLengthFunctionName;
                     licenceLengthFunctionElement.append(optionElement);
                 }
-                cityssm.postJSON(urlPrefix + '/admin/doGetLicenceCategory', {
+                cityssm.postJSON(`${glm.urlPrefix}/admin/doGetLicenceCategory`, {
                     licenceCategoryKey
                 }, renderEditLicenceCategory);
             },
-            onshown: (modalElement, closeModalFunction) => {
+            onshown(modalElement, closeModalFunction) {
+                var _a, _b, _c, _d, _e, _f;
                 categoryCloseModalFunction = closeModalFunction;
                 modalElement.querySelector('#licenceCategoryEdit--licenceCategory').focus();
-                modalElement
-                    .querySelector('#form--licenceCategoryEdit')
-                    .addEventListener('submit', updateLicenceCategorySubmitFunction);
-                modalElement
-                    .querySelector('#form--licenceCategoryFieldAdd')
-                    .addEventListener('submit', addLicenceCategoryFieldSubmitFunction);
-                modalElement
-                    .querySelector('#form--licenceCategoryApprovalAdd')
-                    .addEventListener('submit', addLicenceCategoryApprovalSubmitFunction);
-                modalElement
-                    .querySelector('.is-add-fee-button')
-                    .addEventListener('click', addLicenceCategoryFeeFunction);
-                modalElement
-                    .querySelector('#form--licenceCategoryAdditionalFeeAdd')
-                    .addEventListener('submit', addLicenceCategoryAdditionalFeeFunction);
-                modalElement
-                    .querySelector('.is-delete-button')
-                    .addEventListener('click', deleteLicenceCategoryConfirmFunction);
+                (_a = modalElement
+                    .querySelector('#form--licenceCategoryEdit')) === null || _a === void 0 ? void 0 : _a.addEventListener('submit', updateLicenceCategorySubmitFunction);
+                (_b = modalElement
+                    .querySelector('#form--licenceCategoryFieldAdd')) === null || _b === void 0 ? void 0 : _b.addEventListener('submit', addLicenceCategoryFieldSubmitFunction);
+                (_c = modalElement
+                    .querySelector('#form--licenceCategoryApprovalAdd')) === null || _c === void 0 ? void 0 : _c.addEventListener('submit', addLicenceCategoryApprovalSubmitFunction);
+                (_d = modalElement
+                    .querySelector('.is-add-fee-button')) === null || _d === void 0 ? void 0 : _d.addEventListener('click', addLicenceCategoryFeeFunction);
+                (_e = modalElement
+                    .querySelector('#form--licenceCategoryAdditionalFeeAdd')) === null || _e === void 0 ? void 0 : _e.addEventListener('submit', addLicenceCategoryAdditionalFeeFunction);
+                (_f = modalElement
+                    .querySelector('.is-delete-button')) === null || _f === void 0 ? void 0 : _f.addEventListener('click', deleteLicenceCategoryConfirmFunction);
                 bulmaJS.toggleHtmlClipped();
                 bulmaJS.init();
             },
-            onhidden: () => {
+            onhidden() {
                 if (doRefreshOnClose) {
                     getLicenceCategories();
                 }
             },
-            onremoved: () => {
+            onremoved() {
                 bulmaJS.toggleHtmlClipped();
             }
         });
-    };
-    const openEditLicenceCategoryModalByClick = (clickEvent) => {
+    }
+    function openEditLicenceCategoryModalByClick(clickEvent) {
+        var _a;
         clickEvent.preventDefault();
-        const licenceCategoryKey = clickEvent.currentTarget.dataset
-            .licenceCategoryKey;
+        const licenceCategoryKey = (_a = clickEvent.currentTarget.dataset.licenceCategoryKey) !== null && _a !== void 0 ? _a : '';
         openEditLicenceCategoryModal(licenceCategoryKey);
-    };
-    const openAddLicenceCategoryModal = () => {
+    }
+    function openAddLicenceCategoryModal() {
         let addLicenceCategoryCloseModalFunction;
-        const addLicenceCategorySubmitFunction = (formEvent) => {
+        function addLicenceCategorySubmitFunction(formEvent) {
             formEvent.preventDefault();
-            cityssm.postJSON(urlPrefix + '/admin/doAddLicenceCategory', formEvent.currentTarget, (responseJSON) => {
+            cityssm.postJSON(`${glm.urlPrefix}/admin/doAddLicenceCategory`, formEvent.currentTarget, (rawResponseJSON) => {
+                const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     licenceCategories = responseJSON.licenceCategories;
                     renderLicenceCategories();
@@ -1007,30 +994,29 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     openEditLicenceCategoryModal(responseJSON.licenceCategoryKey);
                 }
             });
-        };
+        }
         cityssm.openHtmlModal('licenceCategory-add', {
-            onshow: (modalElement) => {
+            onshow(modalElement) {
                 glm.populateAliases(modalElement);
             },
-            onshown: (modalElement, closeModalFunction) => {
+            onshown(modalElement, closeModalFunction) {
+                var _a;
                 bulmaJS.toggleHtmlClipped();
                 addLicenceCategoryCloseModalFunction = closeModalFunction;
-                modalElement
-                    .querySelector('form')
-                    .addEventListener('submit', addLicenceCategorySubmitFunction);
+                (_a = modalElement
+                    .querySelector('form')) === null || _a === void 0 ? void 0 : _a.addEventListener('submit', addLicenceCategorySubmitFunction);
                 modalElement.querySelector('#licenceCategoryAdd--licenceCategory').focus();
             },
-            onhidden: () => {
+            onhidden() {
                 ;
                 document.querySelector('#button--addLicenceCategory').focus();
             },
-            onremoved: () => {
+            onremoved() {
                 bulmaJS.toggleHtmlClipped();
             }
         });
-    };
+    }
     renderLicenceCategories();
-    document
-        .querySelector('#button--addLicenceCategory')
-        .addEventListener('click', openAddLicenceCategoryModal);
+    (_a = document
+        .querySelector('#button--addLicenceCategory')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', openAddLicenceCategoryModal);
 })();

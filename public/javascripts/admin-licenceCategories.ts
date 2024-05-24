@@ -1,17 +1,15 @@
-/* eslint-disable unicorn/filename-case, unicorn/prefer-module */
+/* eslint-disable unicorn/filename-case, unicorn/prefer-module, eslint-comments/disable-enable-pair */
 
 import type { BulmaJS } from '@cityssm/bulma-js/types.js'
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
-import type { GLM } from '../types/globalTypes.js'
-import type * as recordTypes from '../types/recordTypes.js'
+import type { GLM } from '../../types/globalTypes.js'
+import type * as recordTypes from '../../types/recordTypes.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
 declare const glm: GLM
 ;(() => {
-  const urlPrefix = document.querySelector('main').dataset.urlPrefix
-
   const includeReplacementFee = exports.includeReplacementFee as boolean
 
   let licenceCategories: recordTypes.LicenceCategory[] =
@@ -25,12 +23,11 @@ declare const glm: GLM
     '#searchFilter--licenceCategory'
   ) as HTMLInputElement
 
-  const renderLicenceCategories = () => {
+  function renderLicenceCategories(): void {
     if (licenceCategories.length === 0) {
-      licenceCategoriesContainerElement.innerHTML =
-        '<div class="message is-warning">' +
-        '<p class="message-body">There are no categories available.</p>' +
-        '</div>'
+      licenceCategoriesContainerElement.innerHTML = `<div class="message is-warning">
+        <p class="message-body">There are no categories available.</p>
+        </div>`
 
       return
     }
@@ -70,27 +67,31 @@ declare const glm: GLM
         licenceCategory.licenceCategoryKey
       panelBlockElement.setAttribute('role', 'button')
 
-      panelBlockElement.innerHTML =
-        '<div class="columns is-multiline is-mobile">' +
-        ('<div class="column is-6-tablet is-12-mobile">' +
-          '<strong>' +
-          cityssm.escapeHTML(licenceCategory.licenceCategory) +
-          '</strong><br />' +
-          '<span class="is-size-7">' +
-          cityssm.escapeHTML(licenceCategory.bylawNumber) +
-          '</span>' +
-          '</div>') +
-        ('<div class="column is-6-mobile has-text-centered">' +
-          (licenceCategory.hasEffectiveFee
-            ? '<i class="fas fa-check has-text-success"></i><br /><span class="is-size-7">Effective Fee</span>'
-            : '<i class="fas fa-exclamation-triangle has-text-danger"></i><br /><span class="is-size-7">No Effective Fee</span>') +
-          '</div>') +
-        ('<div class="column is-6-mobile has-text-centered">' +
-          (licenceCategory.printEJS === ''
-            ? '<i class="fas fa-exclamation-triangle has-text-danger"></i><br /><span class="is-size-7">No Print Template</span>'
-            : '<i class="fas fa-check has-text-success"></i><br /><span class="is-size-7">Print Template</span>') +
-          '</div>') +
-        '</div>'
+      // eslint-disable-next-line no-unsanitized/property
+      panelBlockElement.innerHTML = `<div class="columns is-multiline is-mobile">
+          <div class="column is-6-tablet is-12-mobile">
+            <strong>
+              ${cityssm.escapeHTML(licenceCategory.licenceCategory)}
+            </strong><br />
+            <span class="is-size-7">
+              ${cityssm.escapeHTML(licenceCategory.bylawNumber)}
+            </span>
+          </div>
+          <div class="column is-6-mobile has-text-centered">
+            ${
+              licenceCategory.hasEffectiveFee
+                ? '<i class="fas fa-check has-text-success"></i><br /><span class="is-size-7">Effective Fee</span>'
+                : '<i class="fas fa-exclamation-triangle has-text-danger"></i><br /><span class="is-size-7">No Effective Fee</span>'
+            }
+          </div>
+          <div class="column is-6-mobile has-text-centered">
+            ${
+              licenceCategory.printEJS === ''
+                ? '<i class="fas fa-exclamation-triangle has-text-danger"></i><br /><span class="is-size-7">No Print Template</span>'
+                : '<i class="fas fa-check has-text-success"></i><br /><span class="is-size-7">Print Template</span>'
+            }
+          </div>
+        </div>`
 
       panelBlockElement.addEventListener(
         'click',
@@ -104,24 +105,25 @@ declare const glm: GLM
       licenceCategoriesContainerElement.innerHTML = ''
       licenceCategoriesContainerElement.append(panelElement)
     } else {
-      licenceCategoriesContainerElement.innerHTML =
-        '<div class="message is-info">' +
-        '<p class="message-body">There are no categories available that meet the search criteria.</p>' +
-        '</div>'
+      licenceCategoriesContainerElement.innerHTML = `<div class="message is-info">
+        <p class="message-body">There are no categories available that meet the search criteria.</p>
+        </div>`
     }
   }
 
-  const getLicenceCategories = () => {
-    licenceCategoriesContainerElement.innerHTML =
-      '<p class="has-text-centered has-text-grey-lighter">' +
-      '<i class="fas fa-3x fa-circle-notch fa-spin" aria-hidden="true"></i><br />' +
-      '<em>Loading categories...</em>' +
-      '</p>'
+  function getLicenceCategories(): void {
+    licenceCategoriesContainerElement.innerHTML = `<p class="has-text-centered has-text-grey-lighter">
+      <i class="fas fa-3x fa-circle-notch fa-spin" aria-hidden="true"></i><br />
+      <em>Loading categories...</em>
+      </p>`
 
     cityssm.postJSON(
-      urlPrefix + '/admin/doGetLicenceCategories',
+      `${glm.urlPrefix}/admin/doGetLicenceCategories`,
       {},
-      (responseJSON: { licenceCategories: recordTypes.LicenceCategory[] }) => {
+      (rawResponseJSON) => {
+        const responseJSON = rawResponseJSON as {
+          licenceCategories: recordTypes.LicenceCategory[]
+        }
         licenceCategories = responseJSON.licenceCategories
         renderLicenceCategories()
       }
@@ -144,21 +146,23 @@ declare const glm: GLM
 
   let licenceCategoryFields: recordTypes.LicenceCategoryField[]
 
-  const openEditLicenceCategoryFieldModal = (licenceFieldKey: string) => {
+  function openEditLicenceCategoryFieldModal(licenceFieldKey: string): void {
     let editLicenceCategoryFieldModalCloseFunction: () => void
 
-    const updateLicenceCategoryFieldSubmitFunction = (
+    function updateLicenceCategoryFieldSubmitFunction(
       formEvent: SubmitEvent
-    ) => {
+    ): void {
       formEvent.preventDefault()
 
       cityssm.postJSON(
-        urlPrefix + '/admin/doUpdateLicenceCategoryField',
+        `${glm.urlPrefix}/admin/doUpdateLicenceCategoryField`,
         formEvent.currentTarget,
-        (responseJSON: {
-          success: boolean
-          licenceCategoryFields: recordTypes.LicenceCategoryField[]
-        }) => {
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as {
+            success: boolean
+            licenceCategoryFields: recordTypes.LicenceCategoryField[]
+          }
+
           if (responseJSON.success) {
             licenceCategoryFields = responseJSON.licenceCategoryFields
             editLicenceCategoryFieldModalCloseFunction()
@@ -169,16 +173,18 @@ declare const glm: GLM
       )
     }
 
-    const deleteLicenceCategoryFieldFunction = () => {
+    function deleteLicenceCategoryFieldFunction(): void {
       cityssm.postJSON(
-        urlPrefix + '/admin/doDeleteLicenceCategoryField',
+        `${glm.urlPrefix}/admin/doDeleteLicenceCategoryField`,
         {
           licenceFieldKey
         },
-        (responseJSON: {
-          success: true
-          licenceCategoryFields: recordTypes.LicenceCategoryField[]
-        }) => {
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as {
+            success: true
+            licenceCategoryFields: recordTypes.LicenceCategoryField[]
+          }
+
           if (responseJSON.success) {
             licenceCategoryFields = responseJSON.licenceCategoryFields
             renderLicenceCategoryFields()
@@ -189,7 +195,9 @@ declare const glm: GLM
       )
     }
 
-    const confirmDeleteLicenceCategoryFieldFunction = (clickEvent: Event) => {
+    function confirmDeleteLicenceCategoryFieldFunction(
+      clickEvent: Event
+    ): void {
       clickEvent.preventDefault()
 
       bulmaJS.confirm({
@@ -205,10 +213,10 @@ declare const glm: GLM
 
     const licenceCategoryField = licenceCategoryFields.find((possibleField) => {
       return possibleField.licenceFieldKey === licenceFieldKey
-    })
+    }) as recordTypes.LicenceCategoryField
 
     cityssm.openHtmlModal('licenceCategoryField-edit', {
-      onshow: (modalElement) => {
+      onshow(modalElement) {
         ;(
           modalElement.querySelector(
             '#licenceCategoryFieldEdit--licenceFieldKey'
@@ -261,7 +269,7 @@ declare const glm: GLM
           ) as HTMLInputElement
         ).value = licenceCategoryField.printKey
       },
-      onshown: (modalElement, closeModalFunction) => {
+      onshown(modalElement, closeModalFunction) {
         editLicenceCategoryFieldModalCloseFunction = closeModalFunction
         ;(
           modalElement.querySelector(
@@ -270,16 +278,16 @@ declare const glm: GLM
         ).focus()
 
         modalElement
-          .querySelector('#form--licenceCategoryFieldEdit')
-          .addEventListener('submit', updateLicenceCategoryFieldSubmitFunction)
+          .querySelector('form')
+          ?.addEventListener('submit', updateLicenceCategoryFieldSubmitFunction)
 
         modalElement
           .querySelector('.is-delete-button')
-          .addEventListener('click', confirmDeleteLicenceCategoryFieldFunction)
+          ?.addEventListener('click', confirmDeleteLicenceCategoryFieldFunction)
 
         bulmaJS.init(modalElement)
       },
-      onhidden: () => {
+      onhidden() {
         ;(
           document.querySelector(
             "#form--licenceCategoryFieldAdd button[type='submit']"
@@ -289,17 +297,18 @@ declare const glm: GLM
     })
   }
 
-  const openEditLicenceCategoryFieldModalByClick = (clickEvent: Event) => {
+  function openEditLicenceCategoryFieldModalByClick(clickEvent: Event): void {
     clickEvent.preventDefault()
 
-    const licenceFieldKey = (clickEvent.currentTarget as HTMLElement).dataset
-      .licenceFieldKey
+    const licenceFieldKey =
+      (clickEvent.currentTarget as HTMLElement).dataset.licenceFieldKey ?? ''
+
     openEditLicenceCategoryFieldModal(licenceFieldKey)
   }
 
   const licenceCategoryField_dragDataPrefix = 'licenceFieldKey:'
 
-  const licenceCategoryField_dragstart = (dragEvent: DragEvent) => {
+  function licenceCategoryField_dragstart(dragEvent: DragEvent): void {
     dragEvent.dataTransfer.dropEffect = 'move'
     const data =
       licenceCategoryField_dragDataPrefix +
@@ -307,7 +316,7 @@ declare const glm: GLM
     dragEvent.dataTransfer.setData('text/plain', data)
   }
 
-  const licenceCategoryField_dragover = (dragEvent: DragEvent) => {
+  function licenceCategoryField_dragover(dragEvent: DragEvent): void {
     if (
       dragEvent.dataTransfer
         .getData('text/plain')
@@ -328,29 +337,32 @@ declare const glm: GLM
     }
   }
 
-  const licenceCategoryField_dragleave = (dragEvent: DragEvent) => {
+  function licenceCategoryField_dragleave(dragEvent: DragEvent): void {
     const dropElement = dragEvent.currentTarget as HTMLElement
     dropElement.style.borderTopWidth = '0px'
   }
 
-  const licenceCategoryField_drop = (dragEvent: DragEvent) => {
+  function licenceCategoryField_drop(dragEvent: DragEvent): void {
     dragEvent.preventDefault()
 
     const licenceFieldKey_from = dragEvent.dataTransfer
       .getData('text/plain')
       .slice(licenceCategoryField_dragDataPrefix.length)
+
     const licenceFieldKey_to = (dragEvent.currentTarget as HTMLElement).dataset
       .licenceFieldKey
 
     cityssm.postJSON(
-      urlPrefix + '/admin/doMoveLicenceCategoryField',
+      `${glm.urlPrefix}/admin/doMoveLicenceCategoryField`,
       {
         licenceFieldKey_from,
         licenceFieldKey_to
       },
-      (responseJSON: {
-        licenceCategoryFields: recordTypes.LicenceCategoryField[]
-      }) => {
+      (rawResponseJSON) => {
+        const responseJSON = rawResponseJSON as {
+          licenceCategoryFields: recordTypes.LicenceCategoryField[]
+        }
+
         licenceCategoryFields = responseJSON.licenceCategoryFields
         renderLicenceCategoryFields()
         doRefreshOnClose = true
@@ -358,16 +370,15 @@ declare const glm: GLM
     )
   }
 
-  const renderLicenceCategoryFields = () => {
+  function renderLicenceCategoryFields(): void {
     const fieldsContainerElement = editModalElement.querySelector(
       '#container--licenceCategoryFields'
     ) as HTMLElement
 
     if (licenceCategoryFields.length === 0) {
-      fieldsContainerElement.innerHTML =
-        '<div class="message is-info">' +
-        '<p class="message-body">There are no additional fields captured with this category.</p>' +
-        '</div>'
+      fieldsContainerElement.innerHTML = `<div class="message is-info">
+          <p class="message-body">There are no additional fields captured with this category.</p>
+          </div>`
     } else {
       const fieldsPanelElement = document.createElement('div')
       fieldsPanelElement.className = 'panel'
@@ -380,22 +391,19 @@ declare const glm: GLM
         panelBlockElement.style.transition = 'border-width 80ms'
         panelBlockElement.setAttribute('role', 'button')
 
-        panelBlockElement.innerHTML =
-          '<div class="columns is-mobile">' +
-          ('<div class="column">' +
-            '<h4>' +
-            cityssm.escapeHTML(categoryField.licenceField) +
-            '</h4>' +
-            '<p class="is-size-7">' +
-            cityssm.escapeHTML(categoryField.licenceFieldDescription) +
-            '</p>' +
-            '</div>') +
-          (categoryField.isRequired
-            ? '<div class="column is-narrow">' +
-              '<i class="fas fa-asterisk" aria-hidden="true"</i>' +
-              '</div>'
-            : '') +
-          '</div>'
+        // eslint-disable-next-line no-unsanitized/property
+        panelBlockElement.innerHTML = `<div class="columns is-mobile">
+            <div class="column">
+              <h4>${cityssm.escapeHTML(categoryField.licenceField)}</h4>
+              <p class="is-size-7">
+                ${cityssm.escapeHTML(categoryField.licenceFieldDescription)}
+              </p>
+              </div>
+              ${
+                categoryField.isRequired
+                  ? '<div class="column is-narrow"><i class="fas fa-asterisk" aria-hidden="true"</i></div>'
+                  : ''
+              }</div>`
 
         panelBlockElement.addEventListener(
           'click',
@@ -431,21 +439,25 @@ declare const glm: GLM
 
   let licenceCategoryApprovals: recordTypes.LicenceCategoryApproval[]
 
-  const openEditLicenceCategoryApprovalModal = (licenceApprovalKey: string) => {
+  function openEditLicenceCategoryApprovalModal(
+    licenceApprovalKey: string
+  ): void {
     let editLicenceCategoryApprovalModalCloseFunction: () => void
 
-    const updateLicenceCategoryApprovalSubmitFunction = (
+    function updateLicenceCategoryApprovalSubmitFunction(
       formEvent: SubmitEvent
-    ) => {
+    ): void {
       formEvent.preventDefault()
 
       cityssm.postJSON(
-        urlPrefix + '/admin/doUpdateLicenceCategoryApproval',
+        `${glm.urlPrefix}/admin/doUpdateLicenceCategoryApproval`,
         formEvent.currentTarget,
-        (responseJSON: {
-          success: boolean
-          licenceCategoryApprovals: recordTypes.LicenceCategoryApproval[]
-        }) => {
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as {
+            success: boolean
+            licenceCategoryApprovals: recordTypes.LicenceCategoryApproval[]
+          }
+
           if (responseJSON.success) {
             licenceCategoryApprovals = responseJSON.licenceCategoryApprovals
             editLicenceCategoryApprovalModalCloseFunction()
@@ -456,16 +468,18 @@ declare const glm: GLM
       )
     }
 
-    const deleteLicenceCategoryApprovalFunction = () => {
+    function deleteLicenceCategoryApprovalFunction(): void {
       cityssm.postJSON(
-        urlPrefix + '/admin/doDeleteLicenceCategoryApproval',
+        `${glm.urlPrefix}/admin/doDeleteLicenceCategoryApproval`,
         {
           licenceApprovalKey
         },
-        (responseJSON: {
-          success: true
-          licenceCategoryApprovals: recordTypes.LicenceCategoryApproval[]
-        }) => {
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as {
+            success: true
+            licenceCategoryApprovals: recordTypes.LicenceCategoryApproval[]
+          }
+
           if (responseJSON.success) {
             licenceCategoryApprovals = responseJSON.licenceCategoryApprovals
             renderLicenceCategoryApprovals()
@@ -476,9 +490,9 @@ declare const glm: GLM
       )
     }
 
-    const confirmDeleteLicenceCategoryApprovalFunction = (
+    function confirmDeleteLicenceCategoryApprovalFunction(
       clickEvent: Event
-    ) => {
+    ): void {
       clickEvent.preventDefault()
 
       bulmaJS.confirm({
@@ -499,7 +513,7 @@ declare const glm: GLM
     )
 
     cityssm.openHtmlModal('licenceCategoryApproval-edit', {
-      onshow: (modalElement) => {
+      onshow(modalElement) {
         glm.populateAliases(modalElement)
         ;(
           modalElement.querySelector(
@@ -539,19 +553,19 @@ declare const glm: GLM
           ) as HTMLTextAreaElement
         ).value = licenceCategoryApproval.printKey
       },
-      onshown: (modalElement, closeModalFunction) => {
+      onshown(modalElement, closeModalFunction) {
         editLicenceCategoryApprovalModalCloseFunction = closeModalFunction
 
         modalElement
-          .querySelector('#form--licenceCategoryApprovalEdit')
-          .addEventListener(
+          .querySelector('form')
+          ?.addEventListener(
             'submit',
             updateLicenceCategoryApprovalSubmitFunction
           )
 
         modalElement
           .querySelector('.is-delete-button')
-          .addEventListener(
+          ?.addEventListener(
             'click',
             confirmDeleteLicenceCategoryApprovalFunction
           )
@@ -561,7 +575,9 @@ declare const glm: GLM
     })
   }
 
-  const openEditLicenceCategoryApprovalModalByClick = (clickEvent: Event) => {
+  function openEditLicenceCategoryApprovalModalByClick(
+    clickEvent: Event
+  ): void {
     clickEvent.preventDefault()
 
     const licenceApprovalKey = (clickEvent.currentTarget as HTMLElement).dataset
@@ -571,7 +587,7 @@ declare const glm: GLM
 
   const licenceCategoryApproval_dragDataPrefix = 'licenceApprovalKey:'
 
-  const licenceCategoryApproval_dragstart = (dragEvent: DragEvent) => {
+  function licenceCategoryApproval_dragstart(dragEvent: DragEvent): void {
     dragEvent.dataTransfer.dropEffect = 'move'
     const data =
       licenceCategoryApproval_dragDataPrefix +
@@ -579,7 +595,7 @@ declare const glm: GLM
     dragEvent.dataTransfer.setData('text/plain', data)
   }
 
-  const licenceCategoryApproval_dragover = (dragEvent: DragEvent) => {
+  function licenceCategoryApproval_dragover(dragEvent: DragEvent): void {
     if (
       dragEvent.dataTransfer
         .getData('text/plain')
@@ -600,29 +616,32 @@ declare const glm: GLM
     }
   }
 
-  const licenceCategoryApproval_dragleave = (dragEvent: DragEvent) => {
+  function licenceCategoryApproval_dragleave(dragEvent: DragEvent): void {
     const dropElement = dragEvent.currentTarget as HTMLElement
     dropElement.style.borderTopWidth = '0px'
   }
 
-  const licenceCategoryApproval_drop = (dragEvent: DragEvent) => {
+  function licenceCategoryApproval_drop(dragEvent: DragEvent): void {
     dragEvent.preventDefault()
 
     const licenceApprovalKey_from = dragEvent.dataTransfer
       .getData('text/plain')
       .slice(licenceCategoryApproval_dragDataPrefix.length)
+
     const licenceApprovalKey_to = (dragEvent.currentTarget as HTMLElement)
       .dataset.licenceApprovalKey
 
     cityssm.postJSON(
-      urlPrefix + '/admin/doMoveLicenceCategoryApproval',
+      `${glm.urlPrefix}/admin/doMoveLicenceCategoryApproval`,
       {
         licenceApprovalKey_from,
         licenceApprovalKey_to
       },
-      (responseJSON: {
-        licenceCategoryApprovals: recordTypes.LicenceCategoryApproval[]
-      }) => {
+      (rawResponseJSON) => {
+        const responseJSON = rawResponseJSON as {
+          licenceCategoryApprovals: recordTypes.LicenceCategoryApproval[]
+        }
+
         licenceCategoryApprovals = responseJSON.licenceCategoryApprovals
         renderLicenceCategoryApprovals()
         doRefreshOnClose = true
@@ -630,16 +649,15 @@ declare const glm: GLM
     )
   }
 
-  const renderLicenceCategoryApprovals = () => {
+  function renderLicenceCategoryApprovals(): void {
     const approvalsContainerElement = editModalElement.querySelector(
       '#container--licenceCategoryApprovals'
     ) as HTMLElement
 
     if (licenceCategoryApprovals.length === 0) {
-      approvalsContainerElement.innerHTML =
-        '<div class="message is-info">' +
-        '<p class="message-body">There are no approvals associated with this category.</p>' +
-        '</div>'
+      approvalsContainerElement.innerHTML = `<div class="message is-info">
+        <p class="message-body">There are no approvals associated with this category.</p>
+        </div>`
     } else {
       const approvalsPanelElement = document.createElement('div')
       approvalsPanelElement.className = 'panel'
@@ -651,23 +669,22 @@ declare const glm: GLM
           categoryApproval.licenceApprovalKey
         panelBlockElement.setAttribute('role', 'button')
 
-        panelBlockElement.innerHTML =
-          '<div class="columns is-mobile">' +
-          ('<div class="column">' +
-            '<h4>' +
-            cityssm.escapeHTML(categoryApproval.licenceApproval) +
-            '</h4>' +
-            '<p class="is-size-7">' +
-            cityssm.escapeHTML(categoryApproval.licenceApprovalDescription) +
-            '</p>' +
-            '</div>') +
-          (categoryApproval.isRequiredForNew ||
-          categoryApproval.isRequiredForRenewal
-            ? '<div class="column is-narrow">' +
-              '<i class="fas fa-asterisk" aria-hidden="true"</i>' +
-              '</div>'
-            : '') +
-          '</div>'
+        // eslint-disable-next-line no-unsanitized/property
+        panelBlockElement.innerHTML = `<div class="columns is-mobile">
+          <div class="column">
+            <h4>
+              ${cityssm.escapeHTML(categoryApproval.licenceApproval)}
+            </h4>
+            <p class="is-size-7">
+              ${cityssm.escapeHTML(categoryApproval.licenceApprovalDescription)}
+            </p>
+          </div>
+          ${
+            categoryApproval.isRequiredForNew ||
+            categoryApproval.isRequiredForRenewal
+              ? '<div class="column is-narrow"><i class="fas fa-asterisk" aria-hidden="true"</i></div>'
+              : ''
+          }</div>`
 
         panelBlockElement.addEventListener(
           'click',
@@ -713,12 +730,14 @@ declare const glm: GLM
       formEvent.preventDefault()
 
       cityssm.postJSON(
-        urlPrefix + '/admin/doUpdateLicenceCategoryFee',
+        `${glm.urlPrefix}/admin/doUpdateLicenceCategoryFee`,
         formEvent.currentTarget,
-        (responseJSON: {
-          success: boolean
-          licenceCategoryFees?: recordTypes.LicenceCategoryFee[]
-        }) => {
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as {
+            success: boolean
+            licenceCategoryFees: recordTypes.LicenceCategoryFee[]
+          }
+
           if (responseJSON.success) {
             doRefreshOnClose = true
 
@@ -731,16 +750,18 @@ declare const glm: GLM
       )
     }
 
-    const deleteLicenceCategoryFeeFunction = () => {
+    function deleteLicenceCategoryFeeFunction(): void {
       cityssm.postJSON(
-        urlPrefix + '/admin/doDeleteLicenceCategoryFee',
+        `${glm.urlPrefix}/admin/doDeleteLicenceCategoryFee`,
         {
           licenceFeeId
         },
-        (responseJSON: {
-          success: boolean
-          licenceCategoryFees?: recordTypes.LicenceCategoryFee[]
-        }) => {
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as {
+            success: boolean
+            licenceCategoryFees: recordTypes.LicenceCategoryFee[]
+          }
+
           if (responseJSON.success) {
             licenceCategoryFees = responseJSON.licenceCategoryFees
             renderLicenceCategoryFees()
@@ -753,7 +774,7 @@ declare const glm: GLM
       )
     }
 
-    const confirmDeleteLicenceCategoryFeeFunction = (clickEvent: Event) => {
+    function confirmDeleteLicenceCategoryFeeFunction(clickEvent: Event): void {
       clickEvent.preventDefault()
 
       bulmaJS.confirm({
@@ -769,10 +790,10 @@ declare const glm: GLM
 
     const licenceCategoryFee = licenceCategoryFees.find((possibleField) => {
       return possibleField.licenceFeeId === licenceFeeId
-    })
+    }) as recordTypes.LicenceCategoryFee
 
     cityssm.openHtmlModal('licenceCategoryFee-edit', {
-      onshow: (modalElement) => {
+      onshow(modalElement) {
         glm.populateAliases(modalElement)
         ;(
           modalElement.querySelector(
@@ -814,11 +835,11 @@ declare const glm: GLM
         if (!includeReplacementFee) {
           modalElement
             .querySelector('#licenceCategoryFeeEdit--replacementFee')
-            .closest('.column')
-            .classList.add('is-hidden')
+            ?.closest('.column')
+            ?.classList.add('is-hidden')
         }
       },
-      onshown: (modalElement, closeModalFunction) => {
+      onshown(modalElement, closeModalFunction) {
         editLicenceCategoryFeeModalCloseFunction = closeModalFunction
         ;(
           modalElement.querySelector(
@@ -827,19 +848,19 @@ declare const glm: GLM
         ).focus()
 
         modalElement
-          .querySelector('#form--licenceCategoryFeeEdit')
-          .addEventListener('submit', updateLicenceCategoryFeeSubmitFunction)
+          .querySelector('form')
+          ?.addEventListener('submit', updateLicenceCategoryFeeSubmitFunction)
 
         modalElement
           .querySelector('.is-delete-button')
-          .addEventListener('click', confirmDeleteLicenceCategoryFeeFunction)
+          ?.addEventListener('click', confirmDeleteLicenceCategoryFeeFunction)
 
         bulmaJS.init(modalElement)
       }
     })
   }
 
-  const openEditLicenceCategoryFeeModalByClick = (clickEvent: Event) => {
+  function openEditLicenceCategoryFeeModalByClick(clickEvent: Event): void {
     clickEvent.preventDefault()
 
     const licenceFeeId = (clickEvent.currentTarget as HTMLElement).dataset
@@ -847,16 +868,15 @@ declare const glm: GLM
     openEditLicenceCategoryFeeModal(Number.parseInt(licenceFeeId, 10))
   }
 
-  const renderLicenceCategoryFees = () => {
+  function renderLicenceCategoryFees(): void {
     const feesContainerElement = editModalElement.querySelector(
       '#container--licenceCategoryFees'
     ) as HTMLElement
 
     if (licenceCategoryFees.length === 0) {
-      feesContainerElement.innerHTML =
-        '<div class="message is-warning">' +
-        '<p class="message-body">There are no fees associated with this category.</p>' +
-        '</div>'
+      feesContainerElement.innerHTML = `<div class="message is-warning">
+        <p class="message-body">There are no fees associated with this category.</p>
+        </div>`
     } else {
       const feesPanelElement = document.createElement('div')
       feesPanelElement.className = 'panel'
@@ -892,24 +912,20 @@ declare const glm: GLM
           }
         }
 
-        panelBlockElement.innerHTML =
-          '<div class="columns is-mobile">' +
-          ('<div class="column">' +
-            '<h4>' +
-            effectiveHTML +
-            '</h4>' +
-            '<p class="is-size-7">' +
-            '$' +
-            categoryFee.licenceFee.toFixed(2) +
-            ' fee' +
-            '</p>' +
-            '</div>') +
-          (isEffective
-            ? '<div class="column is-narrow">' +
-              '<i class="fas fa-asterisk" aria-hidden="true"</i>' +
-              '</div>'
-            : '') +
-          '</div>'
+        // eslint-disable-next-line no-unsanitized/property
+        panelBlockElement.innerHTML = `<div class="columns is-mobile">
+          <div class="column">
+          <h4>${effectiveHTML}</h4>
+          <p class="is-size-7">
+            $${categoryFee.licenceFee.toFixed(2)} fee
+          </p>
+          </div>
+          ${
+            isEffective
+              ? '<div class="column is-narrow"><i class="fas fa-asterisk" aria-hidden="true"</i></div>'
+              : ''
+          }
+          </div>`
 
         panelBlockElement.addEventListener(
           'click',
@@ -928,24 +944,26 @@ declare const glm: GLM
 
   let licenceCategoryAdditionalFees: recordTypes.LicenceCategoryAdditionalFee[]
 
-  const openEditLicenceCategoryAdditionalFeeModal = (
+  function openEditLicenceCategoryAdditionalFeeModal(
     licenceAdditionalFeeKey: string
-  ) => {
+  ): void {
     let editLicenceCategoryAdditionalFeeModalElement: HTMLElement
     let editLicenceCategoryAdditionalFeeModalCloseFunction: () => void
 
-    const updateLicenceCategoryAdditionalFeeSubmitFunction = (
+    function updateLicenceCategoryAdditionalFeeSubmitFunction(
       formEvent: SubmitEvent
-    ) => {
+    ): void {
       formEvent.preventDefault()
 
       cityssm.postJSON(
-        urlPrefix + '/admin/doUpdateLicenceCategoryAdditionalFee',
+        `${glm.urlPrefix}/admin/doUpdateLicenceCategoryAdditionalFee`,
         formEvent.currentTarget,
-        (responseJSON: {
-          success: boolean
-          licenceCategoryAdditionalFees: recordTypes.LicenceCategoryAdditionalFee[]
-        }) => {
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as {
+            success: boolean
+            licenceCategoryAdditionalFees: recordTypes.LicenceCategoryAdditionalFee[]
+          }
+
           if (responseJSON.success) {
             licenceCategoryAdditionalFees =
               responseJSON.licenceCategoryAdditionalFees
@@ -957,16 +975,18 @@ declare const glm: GLM
       )
     }
 
-    const deleteLicenceCategoryAdditionalFeeFunction = () => {
+    function deleteLicenceCategoryAdditionalFeeFunction(): void {
       cityssm.postJSON(
-        urlPrefix + '/admin/doDeleteLicenceCategoryAdditionalFee',
+        `${glm.urlPrefix}/admin/doDeleteLicenceCategoryAdditionalFee`,
         {
           licenceAdditionalFeeKey
         },
-        (responseJSON: {
-          success: true
-          licenceCategoryAdditionalFees: recordTypes.LicenceCategoryAdditionalFee[]
-        }) => {
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as {
+            success: true
+            licenceCategoryAdditionalFees: recordTypes.LicenceCategoryAdditionalFee[]
+          }
+
           if (responseJSON.success) {
             licenceCategoryAdditionalFees =
               responseJSON.licenceCategoryAdditionalFees
@@ -978,9 +998,9 @@ declare const glm: GLM
       )
     }
 
-    const confirmDeleteLicenceCategoryAdditionalFeeFunction = (
+    function confirmDeleteLicenceCategoryAdditionalFeeFunction(
       clickEvent: Event
-    ) => {
+    ): void {
       clickEvent.preventDefault()
 
       bulmaJS.confirm({
@@ -994,7 +1014,7 @@ declare const glm: GLM
       })
     }
 
-    const updateAdditionalFeeTypeFields = () => {
+    function updateAdditionalFeeTypeFields(): void {
       const additionalFeeType = (
         editLicenceCategoryAdditionalFeeModalElement.querySelector(
           '#licenceCategoryAdditionalFeeEdit--additionalFeeType'
@@ -1014,26 +1034,32 @@ declare const glm: GLM
           '#licenceCategoryAdditionalFeeEdit--additionalFeeFunction'
         ) as HTMLSelectElement
 
+      // eslint-disable-next-line sonarjs/no-small-switch
       switch (additionalFeeType) {
-        case 'percent':
+        case 'percent': {
           additionalFeePercentIconElement.classList.remove('is-hidden')
           additionalFeeFlatIconElement.classList.add('is-hidden')
           break
+        }
 
-        default:
+        default: {
           additionalFeeFlatIconElement.classList.remove('is-hidden')
           additionalFeePercentIconElement.classList.add('is-hidden')
+        }
       }
 
+      // eslint-disable-next-line sonarjs/no-small-switch
       switch (additionalFeeType) {
-        case 'function':
+        case 'function': {
           additionalFeeFunctionElement.disabled = false
           break
+        }
 
-        default:
+        default: {
           additionalFeeFunctionElement.value = ''
           additionalFeeFunctionElement.disabled = true
           break
+        }
       }
     }
 
@@ -1047,7 +1073,7 @@ declare const glm: GLM
     )
 
     cityssm.openHtmlModal('licenceCategoryAdditionalFee-edit', {
-      onshow: (modalElement) => {
+      onshow(modalElement) {
         glm.populateAliases(modalElement)
 
         editLicenceCategoryAdditionalFeeModalElement = modalElement
@@ -1087,23 +1113,23 @@ declare const glm: GLM
           ).checked = true
         }
       },
-      onshown: (modalElement, closeModalFunction) => {
+      onshown(modalElement, closeModalFunction) {
         editLicenceCategoryAdditionalFeeModalCloseFunction = closeModalFunction
 
         modalElement
           .querySelector('#licenceCategoryAdditionalFeeEdit--additionalFeeType')
-          .addEventListener('change', updateAdditionalFeeTypeFields)
+          ?.addEventListener('change', updateAdditionalFeeTypeFields)
 
         modalElement
-          .querySelector('#form--licenceCategoryAdditionalFeeEdit')
-          .addEventListener(
+          .querySelector('form')
+          ?.addEventListener(
             'submit',
             updateLicenceCategoryAdditionalFeeSubmitFunction
           )
 
         modalElement
           .querySelector('.is-delete-button')
-          .addEventListener(
+          ?.addEventListener(
             'click',
             confirmDeleteLicenceCategoryAdditionalFeeFunction
           )
@@ -1113,19 +1139,20 @@ declare const glm: GLM
     })
   }
 
-  const openEditLicenceCategoryAdditionalFeeModalByClick = (
+  function openEditLicenceCategoryAdditionalFeeModalByClick(
     clickEvent: Event
-  ) => {
+  ): void {
     clickEvent.preventDefault()
 
-    const licenceAdditionalFeeKey = (clickEvent.currentTarget as HTMLElement)
-      .dataset.licenceAdditionalFeeKey
+    const licenceAdditionalFeeKey =
+      (clickEvent.currentTarget as HTMLElement).dataset
+        .licenceAdditionalFeeKey ?? ''
     openEditLicenceCategoryAdditionalFeeModal(licenceAdditionalFeeKey)
   }
 
   const licenceCategoryAdditionalFee_dragDataPrefix = 'licenceAdditionalFeeKey:'
 
-  const licenceCategoryAdditionalFee_dragstart = (dragEvent: DragEvent) => {
+  function licenceCategoryAdditionalFee_dragstart(dragEvent: DragEvent): void {
     dragEvent.dataTransfer.dropEffect = 'move'
     const data =
       licenceCategoryAdditionalFee_dragDataPrefix +
@@ -1133,7 +1160,7 @@ declare const glm: GLM
     dragEvent.dataTransfer.setData('text/plain', data)
   }
 
-  const licenceCategoryAdditionalFee_dragover = (dragEvent: DragEvent) => {
+  function licenceCategoryAdditionalFee_dragover(dragEvent: DragEvent): void {
     if (
       dragEvent.dataTransfer
         .getData('text/plain')
@@ -1155,12 +1182,12 @@ declare const glm: GLM
     }
   }
 
-  const licenceCategoryAdditionalFee_dragleave = (dragEvent: DragEvent) => {
+  function licenceCategoryAdditionalFee_dragleave(dragEvent: DragEvent): void {
     const dropElement = dragEvent.currentTarget as HTMLElement
     dropElement.style.borderTopWidth = '0px'
   }
 
-  const licenceCategoryAdditionalFee_drop = (dragEvent: DragEvent) => {
+  function licenceCategoryAdditionalFee_drop(dragEvent: DragEvent): void {
     dragEvent.preventDefault()
 
     const licenceAdditionalFeeKey_from = dragEvent.dataTransfer
@@ -1170,14 +1197,16 @@ declare const glm: GLM
       .dataset.licenceAdditionalFeeKey
 
     cityssm.postJSON(
-      urlPrefix + '/admin/doMoveLicenceCategoryAdditionalFee',
+      `${glm.urlPrefix}/admin/doMoveLicenceCategoryAdditionalFee`,
       {
         licenceAdditionalFeeKey_from,
         licenceAdditionalFeeKey_to
       },
-      (responseJSON: {
-        licenceCategoryAdditionalFees: recordTypes.LicenceCategoryAdditionalFee[]
-      }) => {
+      (rawResponseJSON) => {
+        const responseJSON = rawResponseJSON as {
+          licenceCategoryAdditionalFees: recordTypes.LicenceCategoryAdditionalFee[]
+        }
+
         licenceCategoryAdditionalFees =
           responseJSON.licenceCategoryAdditionalFees
         renderLicenceCategoryAdditionalFees()
@@ -1186,16 +1215,15 @@ declare const glm: GLM
     )
   }
 
-  const renderLicenceCategoryAdditionalFees = () => {
+  function renderLicenceCategoryAdditionalFees(): void {
     const additionalFeesContainerElement = editModalElement.querySelector(
       '#container--licenceCategoryAdditionalFees'
     ) as HTMLElement
 
     if (licenceCategoryAdditionalFees.length === 0) {
-      additionalFeesContainerElement.innerHTML =
-        '<div class="message is-info">' +
-        '<p class="message-body">There are no additional fees associated with this category.</p>' +
-        '</div>'
+      additionalFeesContainerElement.innerHTML = `<div class="message is-info">
+        <p class="message-body">There are no additional fees associated with this category.</p>
+        </div>`
     } else {
       const additionalFeesPanelElement = document.createElement('div')
       additionalFeesPanelElement.className = 'panel'
@@ -1210,38 +1238,38 @@ declare const glm: GLM
         let additionalFeeDescriptionHTML = ''
 
         switch (categoryAdditionalFee.additionalFeeType) {
-          case 'flat':
+          case 'flat': {
             additionalFeeDescriptionHTML =
               '$' + categoryAdditionalFee.additionalFeeNumber.toFixed(2)
             break
+          }
 
-          case 'percent':
+          case 'percent': {
             additionalFeeDescriptionHTML =
               categoryAdditionalFee.additionalFeeNumber.toPrecision(2) + '%'
             break
+          }
 
-          case 'function':
-            additionalFeeDescriptionHTML =
-              'Function: ' + categoryAdditionalFee.additionalFeeFunction
+          case 'function': {
+            additionalFeeDescriptionHTML = `Function: ${categoryAdditionalFee.additionalFeeFunction}`
             break
+          }
         }
 
-        panelBlockElement.innerHTML =
-          '<div class="columns is-mobile">' +
-          ('<div class="column">' +
-            '<h4>' +
-            cityssm.escapeHTML(categoryAdditionalFee.additionalFee) +
-            '</h4>' +
-            '<p class="is-size-7">' +
-            additionalFeeDescriptionHTML +
-            '</p>' +
-            '</div>') +
-          (categoryAdditionalFee.isRequired
-            ? '<div class="column is-narrow">' +
-              '<i class="fas fa-asterisk" aria-hidden="true"</i>' +
-              '</div>'
-            : '') +
-          '</div>'
+        // eslint-disable-next-line no-unsanitized/property
+        panelBlockElement.innerHTML = `<div class="columns is-mobile">
+          <div class="column">
+            <h4>
+            ${cityssm.escapeHTML(categoryAdditionalFee.additionalFee)}
+            </h4>
+            <p class="is-size-7">${additionalFeeDescriptionHTML}</p>
+          </div>
+          ${
+            categoryAdditionalFee.isRequired
+              ? '<div class="column is-narrow"><i class="fas fa-asterisk" aria-hidden="true"</i></div>'
+              : ''
+          }
+          </div>`
 
         panelBlockElement.addEventListener(
           'click',
@@ -1278,19 +1306,21 @@ declare const glm: GLM
 
   // Main Details
 
-  const openEditLicenceCategoryModal = (licenceCategoryKey: string) => {
+  function openEditLicenceCategoryModal(licenceCategoryKey: string): void {
     let categoryCloseModalFunction: () => void
 
-    const deleteLicenceCategoryFunction = () => {
+    function deleteLicenceCategoryFunction(): void {
       cityssm.postJSON(
-        urlPrefix + '/admin/doDeleteLicenceCategory',
+        `${glm.urlPrefix}/admin/doDeleteLicenceCategory`,
         {
           licenceCategoryKey
         },
-        (responseJSON: {
-          success: boolean
-          licenceCategories: recordTypes.LicenceCategory[]
-        }) => {
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as {
+            success: boolean
+            licenceCategories: recordTypes.LicenceCategory[]
+          }
+
           if (responseJSON.success) {
             doRefreshOnClose = false
             licenceCategories = responseJSON.licenceCategories
@@ -1303,7 +1333,7 @@ declare const glm: GLM
       )
     }
 
-    const deleteLicenceCategoryConfirmFunction = (clickEvent: Event) => {
+    function deleteLicenceCategoryConfirmFunction(clickEvent: Event): void {
       clickEvent.preventDefault()
 
       bulmaJS.confirm({
@@ -1317,15 +1347,20 @@ declare const glm: GLM
       })
     }
 
-    const updateLicenceCategorySubmitFunction = (formEvent: SubmitEvent) => {
+    function updateLicenceCategorySubmitFunction(formEvent: SubmitEvent): void {
       formEvent.preventDefault()
 
       const formElement = formEvent.currentTarget
 
       cityssm.postJSON(
-        urlPrefix + '/admin/doUpdateLicenceCategory',
+        `${glm.urlPrefix}/admin/doUpdateLicenceCategory`,
         formElement,
-        (responseJSON: { success: boolean; errorMessage?: string }) => {
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as {
+            success: boolean
+            errorMessage?: string
+          }
+
           if (responseJSON.success) {
             bulmaJS.alert({
               message: 'Category updated successfully.',
@@ -1336,7 +1371,7 @@ declare const glm: GLM
           } else {
             bulmaJS.alert({
               title: 'Error Updating Category',
-              message: responseJSON.errorMessage,
+              message: responseJSON.errorMessage ?? '',
               contextualColorName: 'danger'
             })
           }
@@ -1344,20 +1379,24 @@ declare const glm: GLM
       )
     }
 
-    const addLicenceCategoryFieldSubmitFunction = (formEvent: SubmitEvent) => {
+    function addLicenceCategoryFieldSubmitFunction(
+      formEvent: SubmitEvent
+    ): void {
       formEvent.preventDefault()
 
       const formElement = formEvent.currentTarget as HTMLFormElement
 
       cityssm.postJSON(
-        urlPrefix + '/admin/doAddLicenceCategoryField',
+        `${glm.urlPrefix}/admin/doAddLicenceCategoryField`,
         formElement,
-        (responseJSON: {
-          success: boolean
-          errorMessage?: string
-          licenceFieldKey?: string
-          licenceCategoryFields?: recordTypes.LicenceCategoryField[]
-        }) => {
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as {
+            success: boolean
+            errorMessage: string
+            licenceFieldKey: string
+            licenceCategoryFields: recordTypes.LicenceCategoryField[]
+          }
+
           if (responseJSON.success) {
             doRefreshOnClose = true
 
@@ -1373,22 +1412,24 @@ declare const glm: GLM
       )
     }
 
-    const addLicenceCategoryApprovalSubmitFunction = (
+    function addLicenceCategoryApprovalSubmitFunction(
       formEvent: SubmitEvent
-    ) => {
+    ): void {
       formEvent.preventDefault()
 
       const formElement = formEvent.currentTarget as HTMLFormElement
 
       cityssm.postJSON(
-        urlPrefix + '/admin/doAddLicenceCategoryApproval',
+        `${glm.urlPrefix}/admin/doAddLicenceCategoryApproval`,
         formElement,
-        (responseJSON: {
-          success: boolean
-          errorMessage?: string
-          licenceApprovalKey?: string
-          licenceCategoryApprovals?: recordTypes.LicenceCategoryApproval[]
-        }) => {
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as {
+            success: boolean
+            errorMessage: string
+            licenceApprovalKey: string
+            licenceCategoryApprovals: recordTypes.LicenceCategoryApproval[]
+          }
+
           if (responseJSON.success) {
             doRefreshOnClose = true
 
@@ -1406,19 +1447,21 @@ declare const glm: GLM
       )
     }
 
-    const addLicenceCategoryFeeFunction = (clickEvent: Event) => {
+    function addLicenceCategoryFeeFunction(clickEvent: Event): void {
       clickEvent.preventDefault()
 
       cityssm.postJSON(
-        urlPrefix + '/admin/doAddLicenceCategoryFee',
+        `${glm.urlPrefix}/admin/doAddLicenceCategoryFee`,
         {
           licenceCategoryKey
         },
-        (responseJSON: {
-          success: boolean
-          licenceFeeId?: number
-          licenceCategoryFees?: recordTypes.LicenceCategoryFee[]
-        }) => {
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as {
+            success: boolean
+            licenceFeeId: number
+            licenceCategoryFees: recordTypes.LicenceCategoryFee[]
+          }
+
           if (responseJSON.success) {
             doRefreshOnClose = true
 
@@ -1431,21 +1474,23 @@ declare const glm: GLM
       )
     }
 
-    const addLicenceCategoryAdditionalFeeFunction = (
+    function addLicenceCategoryAdditionalFeeFunction(
       formEvent: SubmitEvent
-    ) => {
+    ): void {
       formEvent.preventDefault()
 
       const formElement = formEvent.currentTarget as HTMLFormElement
 
       cityssm.postJSON(
-        urlPrefix + '/admin/doAddLicenceCategoryAdditionalFee',
+        `${glm.urlPrefix}/admin/doAddLicenceCategoryAdditionalFee`,
         formElement,
-        (responseJSON: {
-          success: boolean
-          licenceAdditionalFeeKey?: string
-          licenceCategoryAdditionalFees?: recordTypes.LicenceCategoryAdditionalFee[]
-        }) => {
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as {
+            success: boolean
+            licenceAdditionalFeeKey: string
+            licenceCategoryAdditionalFees: recordTypes.LicenceCategoryAdditionalFee[]
+          }
+
           if (responseJSON.success) {
             doRefreshOnClose = true
 
@@ -1463,10 +1508,10 @@ declare const glm: GLM
       )
     }
 
-    const renderEditLicenceCategory = (responseJSON: {
+    function renderEditLicenceCategory(responseJSON: {
       success?: boolean
-      licenceCategory?: recordTypes.LicenceCategory
-    }) => {
+      licenceCategory: recordTypes.LicenceCategory
+    }): void {
       if (!responseJSON.success) {
         bulmaJS.alert({
           message: 'Error Loading Category.',
@@ -1479,7 +1524,6 @@ declare const glm: GLM
       }
 
       const licenceCategory = responseJSON.licenceCategory
-
       ;(
         editModalElement.querySelector(
           '#licenceCategoryEdit--licenceCategory'
@@ -1541,24 +1585,24 @@ declare const glm: GLM
         ) as HTMLInputElement
       ).value = licenceCategory.licenceLengthDays.toString()
 
-      licenceCategoryFields = licenceCategory.licenceCategoryFields
+      licenceCategoryFields = licenceCategory.licenceCategoryFields ?? []
       renderLicenceCategoryFields()
 
-      licenceCategoryApprovals = licenceCategory.licenceCategoryApprovals
+      licenceCategoryApprovals = licenceCategory.licenceCategoryApprovals ?? []
       renderLicenceCategoryApprovals()
 
-      licenceCategoryFees = licenceCategory.licenceCategoryFees
+      licenceCategoryFees = licenceCategory.licenceCategoryFees ?? []
       renderLicenceCategoryFees()
 
       licenceCategoryAdditionalFees =
-        licenceCategory.licenceCategoryAdditionalFees
+        licenceCategory.licenceCategoryAdditionalFees ?? []
       renderLicenceCategoryAdditionalFees()
     }
 
     doRefreshOnClose = false
 
     cityssm.openHtmlModal('licenceCategory-edit', {
-      onshow: (modalElement) => {
+      onshow(modalElement) {
         editModalElement = modalElement
 
         glm.populateAliases(modalElement)
@@ -1606,14 +1650,14 @@ declare const glm: GLM
         }
 
         cityssm.postJSON(
-          urlPrefix + '/admin/doGetLicenceCategory',
+          `${glm.urlPrefix}/admin/doGetLicenceCategory`,
           {
             licenceCategoryKey
           },
           renderEditLicenceCategory
         )
       },
-      onshown: (modalElement, closeModalFunction) => {
+      onshown(modalElement, closeModalFunction) {
         categoryCloseModalFunction = closeModalFunction
         ;(
           modalElement.querySelector(
@@ -1623,47 +1667,47 @@ declare const glm: GLM
 
         modalElement
           .querySelector('#form--licenceCategoryEdit')
-          .addEventListener('submit', updateLicenceCategorySubmitFunction)
+          ?.addEventListener('submit', updateLicenceCategorySubmitFunction)
 
         modalElement
           .querySelector('#form--licenceCategoryFieldAdd')
-          .addEventListener('submit', addLicenceCategoryFieldSubmitFunction)
+          ?.addEventListener('submit', addLicenceCategoryFieldSubmitFunction)
 
         modalElement
           .querySelector('#form--licenceCategoryApprovalAdd')
-          .addEventListener('submit', addLicenceCategoryApprovalSubmitFunction)
+          ?.addEventListener('submit', addLicenceCategoryApprovalSubmitFunction)
 
         modalElement
           .querySelector('.is-add-fee-button')
-          .addEventListener('click', addLicenceCategoryFeeFunction)
+          ?.addEventListener('click', addLicenceCategoryFeeFunction)
 
         modalElement
           .querySelector('#form--licenceCategoryAdditionalFeeAdd')
-          .addEventListener('submit', addLicenceCategoryAdditionalFeeFunction)
+          ?.addEventListener('submit', addLicenceCategoryAdditionalFeeFunction)
 
         modalElement
           .querySelector('.is-delete-button')
-          .addEventListener('click', deleteLicenceCategoryConfirmFunction)
+          ?.addEventListener('click', deleteLicenceCategoryConfirmFunction)
 
         bulmaJS.toggleHtmlClipped()
         bulmaJS.init()
       },
-      onhidden: () => {
+      onhidden() {
         if (doRefreshOnClose) {
           getLicenceCategories()
         }
       },
-      onremoved: () => {
+      onremoved() {
         bulmaJS.toggleHtmlClipped()
       }
     })
   }
 
-  const openEditLicenceCategoryModalByClick = (clickEvent: Event) => {
+  function openEditLicenceCategoryModalByClick(clickEvent: Event): void {
     clickEvent.preventDefault()
 
-    const licenceCategoryKey = (clickEvent.currentTarget as HTMLElement).dataset
-      .licenceCategoryKey
+    const licenceCategoryKey =
+      (clickEvent.currentTarget as HTMLElement).dataset.licenceCategoryKey ?? ''
     openEditLicenceCategoryModal(licenceCategoryKey)
   }
 
@@ -1671,20 +1715,22 @@ declare const glm: GLM
    * Add Licence Category
    */
 
-  const openAddLicenceCategoryModal = () => {
+  function openAddLicenceCategoryModal(): void {
     let addLicenceCategoryCloseModalFunction: () => void
 
-    const addLicenceCategorySubmitFunction = (formEvent: SubmitEvent) => {
+    function addLicenceCategorySubmitFunction(formEvent: SubmitEvent): void {
       formEvent.preventDefault()
 
       cityssm.postJSON(
-        urlPrefix + '/admin/doAddLicenceCategory',
+        `${glm.urlPrefix}/admin/doAddLicenceCategory`,
         formEvent.currentTarget,
-        (responseJSON: {
-          success: boolean
-          licenceCategories?: recordTypes.LicenceCategory[]
-          licenceCategoryKey?: string
-        }) => {
+        (rawResponseJSON) => {
+          const responseJSON = rawResponseJSON as {
+            success: boolean
+            licenceCategories: recordTypes.LicenceCategory[]
+            licenceCategoryKey: string
+          }
+
           if (responseJSON.success) {
             licenceCategories = responseJSON.licenceCategories
             renderLicenceCategories()
@@ -1698,27 +1744,27 @@ declare const glm: GLM
     }
 
     cityssm.openHtmlModal('licenceCategory-add', {
-      onshow: (modalElement) => {
+      onshow(modalElement) {
         glm.populateAliases(modalElement)
       },
-      onshown: (modalElement, closeModalFunction) => {
+      onshown(modalElement, closeModalFunction) {
         bulmaJS.toggleHtmlClipped()
         addLicenceCategoryCloseModalFunction = closeModalFunction
         modalElement
           .querySelector('form')
-          .addEventListener('submit', addLicenceCategorySubmitFunction)
+          ?.addEventListener('submit', addLicenceCategorySubmitFunction)
         ;(
           modalElement.querySelector(
             '#licenceCategoryAdd--licenceCategory'
           ) as HTMLInputElement
         ).focus()
       },
-      onhidden: () => {
+      onhidden() {
         ;(
           document.querySelector('#button--addLicenceCategory') as HTMLElement
         ).focus()
       },
-      onremoved: () => {
+      onremoved() {
         bulmaJS.toggleHtmlClipped()
       }
     })
@@ -1732,5 +1778,5 @@ declare const glm: GLM
 
   document
     .querySelector('#button--addLicenceCategory')
-    .addEventListener('click', openAddLicenceCategoryModal)
+    ?.addEventListener('click', openAddLicenceCategoryModal)
 })()

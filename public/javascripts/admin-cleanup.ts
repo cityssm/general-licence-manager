@@ -1,30 +1,35 @@
-/* eslint-disable unicorn/filename-case, unicorn/prefer-module */
+/* eslint-disable unicorn/filename-case, unicorn/prefer-module, eslint-comments/disable-enable-pair */
 
-import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types'
-import type { BulmaJS } from '@cityssm/bulma-js/types'
+import type { BulmaJS } from '@cityssm/bulma-js/types.js'
+import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
+
+import type { GLM } from '../../types/globalTypes.js'
 
 declare const cityssm: cityssmGlobal
 declare const bulmaJS: BulmaJS
-
+declare const glm: GLM
 ;(() => {
-  const urlPrefix = document.querySelector('main').dataset.urlPrefix
-
   document
     .querySelector('#cleanup--backupDatabase')
-    .addEventListener('click', (clickEvent) => {
+    ?.addEventListener('click', (clickEvent) => {
       clickEvent.preventDefault()
 
-      const doBackup = () => {
+      function doBackup(): void {
         cityssm.postJSON(
-          urlPrefix + '/admin/doBackupDatabase',
+          `${glm.urlPrefix}/admin/doBackupDatabase`,
           {},
-          (responseJSON: { success: boolean; fileName?: string }) => {
+          (rawResponseJSON) => {
+            const responseJSON = rawResponseJSON as {
+              success: boolean
+              fileName?: string
+            }
+
             if (responseJSON.success) {
               bulmaJS.alert({
                 title: 'Database Backed Up Successfully',
                 message:
                   'Database backed up as <strong>' +
-                  cityssm.escapeHTML(responseJSON.fileName) +
+                  cityssm.escapeHTML(responseJSON.fileName ?? '') +
                   '</strong>.',
                 messageIsHtml: true,
                 contextualColorName: 'success'
@@ -49,22 +54,25 @@ declare const bulmaJS: BulmaJS
 
   document
     .querySelector('#cleanup--cleanupDatabase')
-    .addEventListener('click', (clickEvent) => {
+    ?.addEventListener('click', (clickEvent) => {
       clickEvent.preventDefault()
 
-      const doCleanup = () => {
+      function doCleanup(): void {
         cityssm.postJSON(
-          urlPrefix + '/admin/doCleanupDatabase',
+          `${glm.urlPrefix}/admin/doCleanupDatabase`,
           {},
-          (responseJSON: { success: boolean; rowCount?: number }) => {
+          (rawResponseJSON) => {
+            const responseJSON = rawResponseJSON as {
+              success: boolean
+              rowCount?: number
+            }
+
             if (responseJSON.success) {
               bulmaJS.alert({
                 title: 'Database Cleaned Up Successfully',
-                message:
-                  responseJSON.rowCount +
-                  ' row' +
-                  (responseJSON.rowCount === 1 ? '' : 's') +
-                  ' deleted.',
+                message: `${responseJSON.rowCount} row${
+                  responseJSON.rowCount === 1 ? '' : 's'
+                } deleted.`,
                 contextualColorName: 'success'
               })
             }

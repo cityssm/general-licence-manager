@@ -547,7 +547,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
           </p>
           </div>
           ${isEffective
-                    ? '<div class="column is-narrow"><i class="fas fa-asterisk" aria-hidden="true"</i></div>'
+                    ? '<div class="column is-narrow"><i class="fas fa-asterisk" aria-hidden="true"></i></div>'
                     : ''}
           </div>`;
                 panelBlockElement.addEventListener('click', openEditLicenceCategoryFeeModalByClick);

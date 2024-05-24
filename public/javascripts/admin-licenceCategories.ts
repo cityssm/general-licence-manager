@@ -310,9 +310,11 @@ declare const glm: GLM
 
   function licenceCategoryField_dragstart(dragEvent: DragEvent): void {
     dragEvent.dataTransfer.dropEffect = 'move'
+
     const data =
       licenceCategoryField_dragDataPrefix +
       (dragEvent.target as HTMLElement).dataset.licenceFieldKey
+
     dragEvent.dataTransfer.setData('text/plain', data)
   }
 
@@ -922,7 +924,7 @@ declare const glm: GLM
           </div>
           ${
             isEffective
-              ? '<div class="column is-narrow"><i class="fas fa-asterisk" aria-hidden="true"</i></div>'
+              ? '<div class="column is-narrow"><i class="fas fa-asterisk" aria-hidden="true"></i></div>'
               : ''
           }
           </div>`

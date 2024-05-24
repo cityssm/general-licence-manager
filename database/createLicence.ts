@@ -113,7 +113,7 @@ export default function createLicence(
     saveLicenceApprovals(licenceId, licenceApprovalKeys, licenceForm, database)
   }
 
-  for (const licenceCategoryAdditionalFee of licenceCategory.licenceCategoryAdditionalFees) {
+  for (const licenceCategoryAdditionalFee of licenceCategory.licenceCategoryAdditionalFees ?? []) {
     if (!licenceCategoryAdditionalFee.isRequired) {
       continue
     }

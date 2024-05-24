@@ -1,4 +1,4 @@
-import type { LicenceLengthFunction } from '../types/configTypes'
+import type { LicenceLengthFunction } from '../types/configTypes.js'
 
 const endOfMonthNextYear = (
   startDate: Date,

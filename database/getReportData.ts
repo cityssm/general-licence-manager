@@ -96,7 +96,7 @@ function getLicencesByLicenceCategorySQL(licenceCategoryKey: string): {
 
 export default function getReportData(
   reportName: string,
-  reportParameters?: ReportParameters
+  reportParameters: ReportParameters = {}
 ): unknown[] | undefined {
   let sql: string
   let sqlParameters: Array<string | number> = []

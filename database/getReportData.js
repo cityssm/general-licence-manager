@@ -63,7 +63,7 @@ function getLicencesByLicenceCategorySQL(licenceCategoryKey) {
         sqlParameters
     };
 }
-export default function getReportData(reportName, reportParameters) {
+export default function getReportData(reportName, reportParameters = {}) {
     let sql;
     let sqlParameters = [];
     const customReport = getCustomReport(reportName);

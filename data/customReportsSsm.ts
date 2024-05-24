@@ -1,4 +1,4 @@
-import type { ReportDefinition } from '../types/configTypes'
+import type { ReportDefinition } from '../types/configTypes.js'
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export const customReports_general: ReportDefinition[] = [

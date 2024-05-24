@@ -42,7 +42,7 @@ export default function createLicence(licenceForm, sessionUser) {
         const licenceApprovalKeys = licenceForm.licenceApprovalKeys.split(',');
         saveLicenceApprovals(licenceId, licenceApprovalKeys, licenceForm, database);
     }
-    for (const licenceCategoryAdditionalFee of licenceCategory.licenceCategoryAdditionalFees) {
+    for (const licenceCategoryAdditionalFee of licenceCategory.licenceCategoryAdditionalFees ?? []) {
         if (!licenceCategoryAdditionalFee.isRequired) {
             continue;
         }

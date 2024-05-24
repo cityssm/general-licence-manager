@@ -13,7 +13,7 @@ export function getLicenceCategories() {
 }
 export function getLicenceCategory(licenceCategoryKey) {
     if (!licenceCategoriesMap.has(licenceCategoryKey)) {
-        debug('Cache miss: getLicenceCategory(' + licenceCategoryKey + ')');
+        debug(`Cache miss: getLicenceCategory(${licenceCategoryKey})`);
         licenceCategoriesMap.set(licenceCategoryKey, database_getLicenceCategory(licenceCategoryKey, {
             includeFields: true,
             includeFees: 'current',

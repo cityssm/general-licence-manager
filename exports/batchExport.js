@@ -9,7 +9,7 @@ export function getBatchExport(batchDate) {
         return undefined;
     }
     const batchExportConfig = getConfigProperty('exports.batches');
-    if (!batchExportConfig) {
+    if (batchExportConfig === undefined) {
         return undefined;
     }
     switch (batchExportConfig.exportType) {

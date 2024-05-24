@@ -1,7 +1,7 @@
 /* eslint-disable unicorn/filename-case, unicorn/prefer-module */
 
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types'
-import type * as recordTypes from '../types/recordTypes'
+import type * as recordTypes from '../../types/recordTypes.js'
 
 declare const cityssm: cityssmGlobal
 

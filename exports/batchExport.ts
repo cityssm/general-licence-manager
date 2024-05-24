@@ -23,7 +23,7 @@ export function getBatchExport(
 
   const batchExportConfig = getConfigProperty('exports.batches')
 
-  if (!batchExportConfig) {
+  if (batchExportConfig === undefined) {
     return undefined
   }
 

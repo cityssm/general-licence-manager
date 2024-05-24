@@ -1,4 +1,5 @@
 import fs from 'node:fs'
+import path from 'node:path'
 
 import {
   backupFolder,
@@ -6,11 +7,12 @@ import {
 } from '../data/databasePaths.js'
 
 export async function backupDatabase(): Promise<string> {
-  const databasePathSplit = databasePath.split(/[/\\]/g)
+  const databasePathSplit = databasePath.split(/[/\\]/)
 
-  const backupDatabasePath = `${backupFolder}/${databasePathSplit.at(
-    -1
-  )}.${Date.now().toString()}`
+  const backupDatabasePath = path.join(
+    backupFolder,
+    `${databasePathSplit.at(-1)}.${Date.now().toString()}`
+  )
 
   await fs.promises.copyFile(databasePath, backupDatabasePath)
 

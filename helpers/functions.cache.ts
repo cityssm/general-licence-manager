@@ -1,12 +1,11 @@
 import Debug from 'debug'
 
+import database_getLicenceCategories from '../database/getLicenceCategories.js'
+import database_getLicenceCategory from '../database/getLicenceCategory.js'
 import type {
   LicenceCategory,
   LicenceCategoryAdditionalFee
 } from '../types/recordTypes.js'
-
-import database_getLicenceCategories from '../database/getLicenceCategories.js'
-import database_getLicenceCategory from '../database/getLicenceCategory.js'
 
 const debug = Debug('general-licence-manager:cache')
 
@@ -23,7 +22,7 @@ export function getLicenceCategories(): LicenceCategory[] {
 
 export function getLicenceCategory(licenceCategoryKey: string): LicenceCategory | undefined {
   if (!licenceCategoriesMap.has(licenceCategoryKey)) {
-    debug('Cache miss: getLicenceCategory(' + licenceCategoryKey + ')')
+    debug(`Cache miss: getLicenceCategory(${licenceCategoryKey})`)
     licenceCategoriesMap.set(
       licenceCategoryKey,
       database_getLicenceCategory(licenceCategoryKey, {

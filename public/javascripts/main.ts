@@ -1,5 +1,3 @@
-/* eslint-disable unicorn/prefer-module */
-
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types.js'
 
 import type { GLM } from '../../types/globalTypes.js'
@@ -10,8 +8,6 @@ const glm: Partial<GLM> = {
 }
 
 ;(() => {
-  const urlPrefix = document.querySelector('main').dataset.urlPrefix
-
   const aliasSettingNames = [
     'licenceAlias',
     'licenceAliasPlural',
@@ -20,14 +16,15 @@ const glm: Partial<GLM> = {
     'renewalAlias'
   ]
 
-  const populateAliases = (
+  function populateAliases(
     containerElement: HTMLElement,
     settingName: string
-  ) => {
+  ): void {
+    // eslint-disable-next-line security/detect-object-injection, unicorn/prefer-module
     const alias = exports[settingName] as string
 
     const elements = containerElement.querySelectorAll(
-      "[data-setting='" + settingName + "']"
+      `[data-setting='${settingName}']`
     )
     for (const element of elements) {
       element.textContent = alias
@@ -56,12 +53,13 @@ const glm: Partial<GLM> = {
     callbackFunction
   ) => {
     cityssm.postJSON(
-      urlPrefix + '/licences/doGetBankName',
+      `${glm.urlPrefix}/licences/doGetBankName`,
       {
         bankInstitutionNumber,
         bankTransitNumber
       },
-      (responseJSON: { bankName: string }) => {
+      (rawResponseJSON) => {
+        const responseJSON = rawResponseJSON as { bankName: string }
         callbackFunction(responseJSON.bankName)
       }
     )

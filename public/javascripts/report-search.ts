@@ -1,15 +1,17 @@
-/* eslint-disable unicorn/filename-case */
+/* eslint-disable unicorn/filename-case, eslint-comments/disable-enable-pair */
 
 ;(() => {
-  const togglePanel = (clickEvent: Event) => {
+  function togglePanel(clickEvent: Event): void {
     clickEvent.preventDefault()
 
     const panelBlockElements = (clickEvent.currentTarget as HTMLElement)
       .closest('.panel')
-      .querySelectorAll('.panel-block')
+      ?.querySelectorAll('.panel-block')
 
-    for (const panelBlockElement of panelBlockElements) {
-      panelBlockElement.classList.toggle('is-hidden')
+    if (panelBlockElements !== undefined) {
+      for (const panelBlockElement of panelBlockElements) {
+        panelBlockElement.classList.toggle('is-hidden')
+      }
     }
   }
 

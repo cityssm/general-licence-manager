@@ -1,6 +1,6 @@
-import type * as recordTypes from '../types/recordTypes';
+import type { Licence, LicenceApproval, LicenceField } from '../types/recordTypes';
 export declare function getPrintEJSList(): Promise<string[]>;
-export declare function getLicenceFieldByPrintKey(licence: recordTypes.Licence, printKey: string): recordTypes.LicenceField | undefined;
-export declare function getLicenceFieldsByPrintKeyPiece(licence: recordTypes.Licence, printKeyPiece: string): recordTypes.LicenceField[];
-export declare function getLicenceApprovalByPrintKey(licence: recordTypes.Licence, printKey: string): recordTypes.LicenceApproval | undefined;
-export declare function getLicenceLengthEndDateString(licence: recordTypes.Licence): string;
+export declare function getLicenceFieldByPrintKey(licence: Licence, printKey: string): LicenceField | undefined;
+export declare function getLicenceFieldsByPrintKeyPiece(licence: Licence, printKeyPiece: string): LicenceField[];
+export declare function getLicenceApprovalByPrintKey(licence: Licence, printKey: string): LicenceApproval | undefined;
+export declare function getLicenceLengthEndDateString(licence: Licence): string;

@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js';
-import * as cacheFunctions from './functions.cache.js';
+import { getLicenceCategory } from './functions.cache.js';
 let printEJSList = [];
 export async function getPrintEJSList() {
     if (printEJSList.length === 0) {
@@ -35,13 +35,13 @@ export function getLicenceApprovalByPrintKey(licence, printKey) {
     });
 }
 export function getLicenceLengthEndDateString(licence) {
-    const licenceCategory = cacheFunctions.getLicenceCategory(licence.licenceCategoryKey);
+    const licenceCategory = getLicenceCategory(licence.licenceCategoryKey);
     let licenceLengthEndDateString = '';
     if (licenceCategory === undefined) {
         return licenceLengthEndDateString;
     }
     if ((licenceCategory?.licenceLengthFunction ?? '') !== '') {
-        return licence.endDateString;
+        return licence.endDateString ?? '';
     }
     const calculatedEndDate = dateTimeFunctions.dateIntegerToDate(licence.startDate);
     if (licenceCategory.licenceLengthYears > 0) {
@@ -62,7 +62,7 @@ export function getLicenceLengthEndDateString(licence) {
     }
     if (licenceLengthEndDateString === '' ||
         licence.endDate !== dateTimeFunctions.dateToInteger(calculatedEndDate)) {
-        return licence.endDateString;
+        return licence.endDateString ?? '';
     }
     return licenceLengthEndDateString;
 }

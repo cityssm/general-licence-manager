@@ -3,9 +3,13 @@ import path from 'node:path'
 
 import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js'
 
-import type * as recordTypes from '../types/recordTypes'
+import type {
+  Licence,
+  LicenceApproval,
+  LicenceField
+} from '../types/recordTypes'
 
-import * as cacheFunctions from './functions.cache.js'
+import { getLicenceCategory } from './functions.cache.js'
 
 let printEJSList: string[] = []
 
@@ -20,6 +24,7 @@ export async function getPrintEJSList(): Promise<string[]> {
     for (const fileName of allFiles) {
       const filePath = path.join(printPath, fileName)
 
+      // eslint-disable-next-line security/detect-non-literal-fs-filename
       const fileStats = await fs.stat(filePath)
 
       if (fileStats.isFile() && fileName.toLowerCase().endsWith('.ejs')) {
@@ -34,18 +39,18 @@ export async function getPrintEJSList(): Promise<string[]> {
 }
 
 export function getLicenceFieldByPrintKey(
-  licence: recordTypes.Licence,
+  licence: Licence,
   printKey: string
-): recordTypes.LicenceField | undefined {
+): LicenceField | undefined {
   return licence.licenceFields?.find((currentLicenceField) => {
     return currentLicenceField.printKey === printKey
   })
 }
 
 export function getLicenceFieldsByPrintKeyPiece(
-  licence: recordTypes.Licence,
+  licence: Licence,
   printKeyPiece: string
-): recordTypes.LicenceField[] {
+): LicenceField[] {
   return (
     licence.licenceFields?.filter((currentLicenceField) => {
       return (currentLicenceField.printKey ?? '').includes(printKeyPiece)
@@ -54,20 +59,16 @@ export function getLicenceFieldsByPrintKeyPiece(
 }
 
 export function getLicenceApprovalByPrintKey(
-  licence: recordTypes.Licence,
+  licence: Licence,
   printKey: string
-): recordTypes.LicenceApproval | undefined {
+): LicenceApproval | undefined {
   return licence.licenceApprovals?.find((currentLicenceApproval) => {
     return currentLicenceApproval.printKey === printKey
   })
 }
 
-export function getLicenceLengthEndDateString(
-  licence: recordTypes.Licence
-): string {
-  const licenceCategory = cacheFunctions.getLicenceCategory(
-    licence.licenceCategoryKey
-  )
+export function getLicenceLengthEndDateString(licence: Licence): string {
+  const licenceCategory = getLicenceCategory(licence.licenceCategoryKey)
 
   let licenceLengthEndDateString = ''
 
@@ -76,7 +77,7 @@ export function getLicenceLengthEndDateString(
   }
 
   if ((licenceCategory?.licenceLengthFunction ?? '') !== '') {
-    return licence.endDateString
+    return licence.endDateString ?? ''
   }
 
   const calculatedEndDate = dateTimeFunctions.dateIntegerToDate(
@@ -121,7 +122,7 @@ export function getLicenceLengthEndDateString(
     licenceLengthEndDateString === '' ||
     licence.endDate !== dateTimeFunctions.dateToInteger(calculatedEndDate)
   ) {
-    return licence.endDateString
+    return licence.endDateString ?? ''
   }
 
   return licenceLengthEndDateString

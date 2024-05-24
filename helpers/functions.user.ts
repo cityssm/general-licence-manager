@@ -1,21 +1,9 @@
 import type { Request } from 'express'
 
 export function userIsAdmin(request: Request): boolean {
-  const user = request.session?.user
-
-  if (user === undefined) {
-    return false
-  }
-
-  return user.isAdmin
+  return request.session.user?.isAdmin ?? false
 }
 
 export function userCanUpdate(request: Request): boolean {
-  const user = request.session?.user
-
-  if (user === undefined) {
-    return false
-  }
-
-  return user.canUpdate
+  return request.session.user?.canUpdate ?? false
 }

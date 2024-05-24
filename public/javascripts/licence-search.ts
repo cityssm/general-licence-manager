@@ -3,7 +3,7 @@
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types'
 
 import type { GLM } from '../../types/globalTypes.js'
-import type * as recordTypes from '../../types/recordTypes.js'
+import type { Licence } from '../../types/recordTypes.js'
 
 declare const cityssm: cityssmGlobal
 declare const glm: GLM
@@ -43,7 +43,7 @@ declare const glm: GLM
       (rawResponseJSON) => {
         const licenceResults = rawResponseJSON as {
           count: number
-          licences: recordTypes.Licence[]
+          licences: Licence[]
         }
 
         const licenceList = licenceResults.licences

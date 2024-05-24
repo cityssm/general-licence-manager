@@ -1,4 +1,8 @@
+/* eslint-disable unicorn/filename-case, eslint-comments/disable-enable-pair */
+
+// eslint-disable-next-line import/no-unresolved
 import { Service } from 'node-windows'
+
 import { serviceConfig } from './windowsService.js'
 
 // Create a new service object

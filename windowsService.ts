@@ -1,8 +1,8 @@
 import path from 'node:path'
 
-import { getConfigProperty } from './helpers/functions.config.js'
-
 import type { ServiceConfig } from 'node-windows'
+
+import { getConfigProperty } from './helpers/functions.config.js'
 
 const __dirname = '.'
 

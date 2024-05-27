@@ -1,3 +1,3 @@
-import eslintConfigCityssm from 'eslint-config-cityssm'
+import { configWebApp as eslintConfigCityssm } from 'eslint-config-cityssm'
 
-export default [...eslintConfigCityssm]
+export default eslintConfigCityssm

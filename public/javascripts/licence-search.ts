@@ -1,4 +1,4 @@
-/* eslint-disable unicorn/filename-case, unicorn/prefer-module, eslint-comments/disable-enable-pair */
+/* eslint-disable unicorn/filename-case, unicorn/prefer-module, @eslint-community/eslint-comments/disable-enable-pair */
 
 import type { cityssmGlobal } from '@cityssm/bulma-webapp-js/src/types'
 

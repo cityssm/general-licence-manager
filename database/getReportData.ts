@@ -1,4 +1,4 @@
-/* eslint-disable eslint-comments/disable-enable-pair */
+/* eslint-disable @eslint-community/eslint-comments/disable-enable-pair */
 /* eslint-disable no-case-declarations */
 
 import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js'

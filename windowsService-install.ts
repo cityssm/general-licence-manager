@@ -1,4 +1,4 @@
-/* eslint-disable unicorn/filename-case, eslint-comments/disable-enable-pair */
+/* eslint-disable unicorn/filename-case, @eslint-community/eslint-comments/disable-enable-pair */
 
 // eslint-disable-next-line import/no-unresolved
 import { Service } from 'node-windows'

@@ -1,4 +1,4 @@
-// eslint-disable-next-line eslint-comments/disable-enable-pair
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable unicorn/filename-case, promise/catch-or-return, promise/always-return */
 
 import { testAdmin } from '../../../test/_globals.js'

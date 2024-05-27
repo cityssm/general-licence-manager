@@ -1,4 +1,4 @@
-/* eslint-disable unicorn/filename-case, eslint-comments/disable-enable-pair */
+/* eslint-disable unicorn/filename-case, @eslint-community/eslint-comments/disable-enable-pair */
 
 import assert from 'node:assert'
 import { unlink } from 'node:fs'

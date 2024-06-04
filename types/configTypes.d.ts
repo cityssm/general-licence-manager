@@ -1,4 +1,4 @@
-import type { ADWebAuthConfig } from '@cityssm/ad-web-auth-connector/types';
+import type { ADWebAuthConfig } from '@cityssm/ad-web-auth-connector';
 export interface Config {
     application?: ConfigApplication;
     session?: ConfigSession;

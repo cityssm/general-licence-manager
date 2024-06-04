@@ -7,7 +7,7 @@ import type {
   Licence,
   LicenceApproval,
   LicenceField
-} from '../types/recordTypes'
+} from '../types/recordTypes.js'
 
 import { getLicenceCategory } from './functions.cache.js'
 

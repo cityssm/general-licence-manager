@@ -2,8 +2,8 @@ import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js'
 import sqlite from 'better-sqlite3'
 
 import { licencesDB as databasePath } from '../data/databasePaths.js'
-import type { LicenceTransaction } from '../types/recordTypes.js'
 import { getConfigProperty } from '../helpers/functions.config.js'
+import type { LicenceTransaction } from '../types/recordTypes.js'
 
 import getNextLicenceTransactionIndex from './getNextLicenceTransactionIndex.js'
 

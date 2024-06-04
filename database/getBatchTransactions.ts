@@ -1,5 +1,5 @@
 import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js'
-import { getCanadianBankName } from '@cityssm/get-canadian-bank-name'
+import getCanadianBankName from '@cityssm/get-canadian-bank-name'
 import sqlite from 'better-sqlite3'
 
 import { licencesDB as databasePath } from '../data/databasePaths.js'

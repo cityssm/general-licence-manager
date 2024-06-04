@@ -1,5 +1,5 @@
 import * as dateTimeFunctions from '@cityssm/expressjs-server-js/dateTimeFns.js';
-import { getCanadianBankName } from '@cityssm/get-canadian-bank-name';
+import getCanadianBankName from '@cityssm/get-canadian-bank-name';
 import getLicence from '../../database/getLicence.js';
 import { getLicenceCategories } from '../../helpers/functions.cache.js';
 import { getConfigProperty } from '../../helpers/functions.config.js';

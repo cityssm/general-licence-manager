@@ -1,4 +1,4 @@
-import { getCanadianBankName } from '@cityssm/get-canadian-bank-name'
+import getCanadianBankName from '@cityssm/get-canadian-bank-name'
 import type { Request, Response } from 'express'
 
 export default function handler(request: Request, response: Response): void {

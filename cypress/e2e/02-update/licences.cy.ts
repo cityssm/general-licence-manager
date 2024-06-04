@@ -1,6 +1,7 @@
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
 /* eslint-disable unicorn/filename-case, promise/catch-or-return, promise/always-return, promise/no-nesting */
 
-import { getCanadianBankName } from '@cityssm/get-canadian-bank-name'
+import getCanadianBankName from '@cityssm/get-canadian-bank-name'
 
 import { getConfigProperty } from '../../../helpers/functions.config.js'
 import { testUpdate } from '../../../test/_globals.js'

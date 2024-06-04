@@ -1,4 +1,4 @@
-import { getCanadianBankName } from '@cityssm/get-canadian-bank-name';
+import getCanadianBankName from '@cityssm/get-canadian-bank-name';
 import { getConfigProperty } from '../../../helpers/functions.config.js';
 import { testUpdate } from '../../../test/_globals.js';
 import { ajaxDelayMillis, login, logout } from '../../support/index.js';

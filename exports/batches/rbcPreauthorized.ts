@@ -3,7 +3,7 @@ import { toModernJulianDate } from '@cityssm/modern-julian-date'
 
 import { getConfigProperty } from '../../helpers/functions.config.js'
 import { type ConfigBatchExport_RBCPreauthorized } from '../../types/configTypes.js'
-import type * as recordTypes from '../../types/recordTypes'
+import type * as recordTypes from '../../types/recordTypes.js'
 import type { GetBatchExportReturn } from '../batchExport.js'
 
 import {

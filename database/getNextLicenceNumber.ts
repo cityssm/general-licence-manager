@@ -11,7 +11,7 @@ export function getCategorySlug(
   let categorySlug = slugify(licenceCategory.toUpperCase()).slice(
     0,
     Math.max(0, maxLength + 1)
-  )
+  ) as string
 
   if (categorySlug.length <= maxLength) {
     return categorySlug

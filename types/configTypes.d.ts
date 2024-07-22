@@ -83,6 +83,7 @@ export interface ConfigBatchExport_CPA005 {
         originatorId: string;
         originatorLongName: string;
         originatorShortName?: string;
+        dataCentre?: string;
         cpaCode: number;
     };
 }

@@ -29,7 +29,8 @@ export default function getBatchExport(
     fileCreationDate: batchDate,
     originatorId: batchExportConfig.config.originatorId,
     originatorLongName: batchExportConfig.config.originatorLongName,
-    originatorShortName: batchExportConfig.config.originatorShortName
+    originatorShortName: batchExportConfig.config.originatorShortName,
+    destinationDataCentre: batchExportConfig.config.dataCentre
   })
 
   for (const transaction of outstandingBatchTransactions) {

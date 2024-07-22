@@ -28,7 +28,7 @@ export default function handler(request, response) {
     const bankAccountNumber = getFirstPopulatedValue(request.query.bankAccountNumber, relatedLicence?.bankAccountNumber ?? '');
     let bankName = '';
     if (bankInstitutionNumber !== '') {
-        bankName = getCanadianBankName(bankInstitutionNumber, bankTransitNumber);
+        bankName = getCanadianBankName(bankInstitutionNumber, bankTransitNumber) ?? '';
     }
     const licenceCategories = getLicenceCategories();
     let startDateString = request.query.startDateString;

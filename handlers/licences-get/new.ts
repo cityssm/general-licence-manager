@@ -79,7 +79,7 @@ export default function handler(request: Request, response: Response): void {
   let bankName = ''
 
   if (bankInstitutionNumber !== '') {
-    bankName = getCanadianBankName(bankInstitutionNumber, bankTransitNumber)
+    bankName = getCanadianBankName(bankInstitutionNumber, bankTransitNumber) ?? ''
   }
 
   const licenceCategories = getLicenceCategories()

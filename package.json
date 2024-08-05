@@ -36,7 +36,7 @@
     "@cityssm/eft-generator": "^0.0.5",
     "@cityssm/expressjs-server-js": "^2.3.3",
     "@cityssm/get-canadian-bank-name": "^1.0.0",
-    "@cityssm/modern-julian-date": "^1.0.0",
+    "@cityssm/modern-julian-date": "^1.0.1",
     "@cityssm/pdf-puppeteer": "^4.2.1",
     "@fortawesome/fontawesome-free": "^5.15.4",
     "activedirectory2": "^2.2.0",

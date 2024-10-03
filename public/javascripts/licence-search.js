@@ -37,7 +37,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
           <th>${cityssm.escapeHTML(licenseeAlias)}</th>
           <th>Effective</th>
           <th>Fields</th>
-          <th aria-label="Issued Status"></th>
+          <th><span class="is-sr-only">Issued Status</span></th>
           </tr></thead>
           </table>`;
             const tbodyElement = document.createElement('tbody');

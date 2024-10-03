@@ -195,7 +195,9 @@ export default function getReportData(reportName, reportParameters = {}) {
     });
     database.function('userFn_dateIntegerToString', dateTimeFunctions.dateIntegerToString);
     database.function('userFn_timeIntegerToString', dateTimeFunctions.timeIntegerToString);
-    database.function('userFn_getCanadianBankName', getCanadianBankName);
+    database.function('userFn_getCanadianBankName', (institutionNumber, transitNumber) => {
+        return getCanadianBankName(institutionNumber, transitNumber);
+    });
     const rows = database.prepare(sql).all(sqlParameters);
     database.close();
     return rows;

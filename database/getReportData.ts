@@ -8,7 +8,10 @@ import camelCase from 'camelcase'
 
 import { licencesDB as databasePath } from '../data/databasePaths.js'
 import * as cacheFunctions from '../helpers/functions.cache.js'
-import { getConfigProperty, getCustomReport } from '../helpers/functions.config.js'
+import {
+  getConfigProperty,
+  getCustomReport
+} from '../helpers/functions.config.js'
 
 export type ReportParameters = Record<string, string | number>
 
@@ -276,7 +279,12 @@ export default function getReportData(
     'userFn_timeIntegerToString',
     dateTimeFunctions.timeIntegerToString
   )
-  database.function('userFn_getCanadianBankName', getCanadianBankName)
+  database.function(
+    'userFn_getCanadianBankName',
+    (institutionNumber: string, transitNumber?: string) => {
+      return getCanadianBankName(institutionNumber, transitNumber)
+    }
+  )
 
   const rows = database.prepare(sql).all(sqlParameters)
 

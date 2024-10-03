@@ -751,7 +751,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         '</td>');
             (_a = trElement
                 .querySelector('button')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', deleteLicenceTransaction);
-            tbodyElement.append(trElement);
+            tbodyElement === null || tbodyElement === void 0 ? void 0 : tbodyElement.append(trElement);
             transactionTotal += licenceTransaction.transactionAmount;
         }
         const tfootElement = licenceTransactionsTableElement.querySelector('tfoot');
@@ -761,7 +761,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 '<th id="transactions--total" class="has-text-right">$' +
                 transactionTotal.toFixed(2) +
                 '</th>' +
-                '<th></th>' +
+                '<td></td>' +
                 '</tr>';
         const outstandingBalance = getOutstandingBalance();
         if (outstandingBalance > 0) {
@@ -770,7 +770,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 '<th class="has-text-right">$' +
                 outstandingBalance.toFixed(2) +
                 '</th>' +
-                '<th></th>' +
+                '<td></td>' +
                 '</tr>');
         }
     };

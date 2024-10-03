@@ -1187,7 +1187,7 @@ declare const glm: GLM
         .querySelector('button')
         ?.addEventListener('click', deleteLicenceTransaction)
 
-      tbodyElement.append(trElement)
+      tbodyElement?.append(trElement)
 
       transactionTotal += licenceTransaction.transactionAmount
     }
@@ -1200,7 +1200,7 @@ declare const glm: GLM
       '<th id="transactions--total" class="has-text-right">$' +
       transactionTotal.toFixed(2) +
       '</th>' +
-      '<th></th>' +
+      '<td></td>' +
       '</tr>'
 
     const outstandingBalance = getOutstandingBalance()
@@ -1213,7 +1213,7 @@ declare const glm: GLM
           '<th class="has-text-right">$' +
           outstandingBalance.toFixed(2) +
           '</th>' +
-          '<th></th>' +
+          '<td></td>' +
           '</tr>'
       )
     }

@@ -765,7 +765,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 '</tr>';
         const outstandingBalance = getOutstandingBalance();
         if (outstandingBalance > 0) {
-            tfootElement.insertAdjacentHTML('beforeend', '<tr class="has-background-danger-light">' +
+            tfootElement === null || tfootElement === void 0 ? void 0 : tfootElement.insertAdjacentHTML('beforeend', '<tr class="has-background-danger-light">' +
                 '<th>Outstanding Balance</th>' +
                 '<th class="has-text-right">$' +
                 outstandingBalance.toFixed(2) +
@@ -804,6 +804,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         };
         cityssm.openHtmlModal('transaction-add', {
             onshow: (modalElement) => {
+                var _a, _b;
                 glm.populateAliases(modalElement);
                 modalElement.querySelector('#transactionAdd--licenceId').value = licenceId;
                 const licenceFeeString = document.querySelector('#licenceEdit--licenceFee').value;
@@ -813,10 +814,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     modalElement.querySelector('#transactionAdd--replacementFee').textContent = document.querySelector('#licenceEdit--replacementFee').value;
                 }
                 else {
-                    modalElement
-                        .querySelector('#transactionAdd--replacementFee')
-                        .closest('tr')
-                        .remove();
+                    (_b = (_a = modalElement
+                        .querySelector('#transactionAdd--replacementFee')) === null || _a === void 0 ? void 0 : _a.closest('tr')) === null || _b === void 0 ? void 0 : _b.remove();
                 }
                 const outstandingBalance = getOutstandingBalance();
                 modalElement.querySelector('#transactionAdd--outstandingBalance').textContent = outstandingBalance.toFixed(2);
@@ -826,6 +825,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         : document.querySelector('#licenceEdit--replacementFee').value;
             },
             onshown: (modalElement, closeModalFunction) => {
+                bulmaJS.toggleHtmlClipped();
                 addTransactionModalElement = modalElement;
                 addTransactionCloseModalFunction = closeModalFunction;
                 modalElement.querySelector('#transactionAdd--transactionAmount').focus();
@@ -868,6 +868,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 modalElement
                     .querySelector('#form--transactionAdd')
                     .addEventListener('submit', addTransactionSubmitFunction);
+            },
+            onremoved: () => {
+                bulmaJS.toggleHtmlClipped();
             }
         });
     };

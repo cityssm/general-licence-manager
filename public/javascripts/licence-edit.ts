@@ -1206,7 +1206,7 @@ declare const glm: GLM
     const outstandingBalance = getOutstandingBalance()
 
     if (outstandingBalance > 0) {
-      tfootElement.insertAdjacentHTML(
+      tfootElement?.insertAdjacentHTML(
         'beforeend',
         '<tr class="has-background-danger-light">' +
           '<th>Outstanding Balance</th>' +
@@ -1310,8 +1310,8 @@ declare const glm: GLM
         } else {
           modalElement
             .querySelector('#transactionAdd--replacementFee')
-            .closest('tr')
-            .remove()
+            ?.closest('tr')
+            ?.remove()
         }
 
         const outstandingBalance = getOutstandingBalance()
@@ -1333,6 +1333,8 @@ declare const glm: GLM
               ).value
       },
       onshown: (modalElement, closeModalFunction) => {
+        bulmaJS.toggleHtmlClipped()
+
         addTransactionModalElement = modalElement
         addTransactionCloseModalFunction = closeModalFunction
         ;(
@@ -1424,6 +1426,9 @@ declare const glm: GLM
         modalElement
           .querySelector('#form--transactionAdd')
           .addEventListener('submit', addTransactionSubmitFunction)
+      },
+      onremoved: () => {
+        bulmaJS.toggleHtmlClipped()
       }
     })
   }

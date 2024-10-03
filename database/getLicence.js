@@ -11,7 +11,9 @@ export default function getLicence(licenceId) {
     });
     database.function('userFn_dateIntegerToString', dateTimeFunctions.dateIntegerToString);
     database.function('userFn_timeIntegerToString', dateTimeFunctions.timeIntegerToString);
-    database.function('userFn_getCanadianBankName', getCanadianBankName);
+    database.function('userFn_getCanadianBankName', (institutionNumber, transitNumber) => {
+        return getCanadianBankName(institutionNumber, transitNumber);
+    });
     const licence = database
         .prepare(`select licenceId, licenceCategoryKey,
         licenceNumber,

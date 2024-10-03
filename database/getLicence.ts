@@ -24,7 +24,12 @@ export default function getLicence(
     'userFn_timeIntegerToString',
     dateTimeFunctions.timeIntegerToString
   )
-  database.function('userFn_getCanadianBankName', getCanadianBankName)
+  database.function(
+    'userFn_getCanadianBankName',
+    (institutionNumber: string, transitNumber?: string) => {
+      return getCanadianBankName(institutionNumber, transitNumber)
+    }
+  )
 
   const licence = database
     .prepare(

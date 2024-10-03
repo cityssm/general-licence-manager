@@ -451,7 +451,7 @@
               <tr>
                 <th colspan="2">Fee</th>
                 <th class="has-text-right">Amount</th>
-                <th><span class="is-sr-only">Options</span></th>
+                <th>Options</th>
               </tr>
             </thead>
             <tbody>
@@ -478,7 +478,7 @@
                   <td class="has-width-1"><i class="fas fa-plus" aria-label="Plus"></i></td>
                   <td><%= additionalFee.additionalFee %></td>
                   <td class="has-text-right">$<%= additionalFee.additionalFeeAmount.toFixed(2) %></td>
-                  <td class="has-width-1">
+                  <td class="has-width-1 has-text-centered">
                     <% if (!additionalFee.isRequired) { %>
                       <button class="button is-small is-danger is-inverted is-delete-additional-fee-button" data-tooltip="Delete Additional Fee" type="button" aria-label="Delete Additional Fee">
                         <i class="fas fa-trash" aria-hidden="true"></i>
@@ -549,7 +549,7 @@
                 <tr>
                   <th>Transaction</th>
                   <th class="has-text-right">Amount</th>
-                  <th class="has-width-1"><span class="is-sr-only">Options</span></th>
+                  <th>Options</th>
                 </tr>
               </thead>
               <tbody></tbody>

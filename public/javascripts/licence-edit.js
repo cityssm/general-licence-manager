@@ -702,6 +702,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     };
     const renderLicenceTransactions = () => {
+        var _a;
         const tbodyElement = licenceTransactionsTableElement.querySelector('tbody');
         tbodyElement.innerHTML = '';
         let transactionTotal = 0;
@@ -743,14 +744,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         '$' +
                         licenceTransaction.transactionAmount.toFixed(2) +
                         '</td>') +
-                    ('<td>' +
+                    ('<td class="has-text-centered">' +
                         '<button class="button is-small is-danger is-inverted" data-tooltip="Delete Transaction" type="button" aria-label="Delete Transaction">' +
                         '<i class="fas fa-trash" aria-hidden="true"></i>' +
                         '</button>' +
                         '</td>');
-            trElement
-                .querySelector('button')
-                .addEventListener('click', deleteLicenceTransaction);
+            (_a = trElement
+                .querySelector('button')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', deleteLicenceTransaction);
             tbodyElement.append(trElement);
             transactionTotal += licenceTransaction.transactionAmount;
         }

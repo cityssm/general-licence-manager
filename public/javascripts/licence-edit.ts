@@ -1177,7 +1177,7 @@ declare const glm: GLM
           '$' +
           licenceTransaction.transactionAmount.toFixed(2) +
           '</td>') +
-        ('<td>' +
+        ('<td class="has-text-centered">' +
           '<button class="button is-small is-danger is-inverted" data-tooltip="Delete Transaction" type="button" aria-label="Delete Transaction">' +
           '<i class="fas fa-trash" aria-hidden="true"></i>' +
           '</button>' +
@@ -1185,7 +1185,7 @@ declare const glm: GLM
 
       trElement
         .querySelector('button')
-        .addEventListener('click', deleteLicenceTransaction)
+        ?.addEventListener('click', deleteLicenceTransaction)
 
       tbodyElement.append(trElement)
 

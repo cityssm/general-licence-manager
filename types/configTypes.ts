@@ -95,6 +95,10 @@ export interface ConfigBatchExport_CPA005 {
     originatorShortName?: string
     dataCentre?: string
     cpaCode: number
+
+    returnInstitutionNumber?: string
+    returnTransitNumber?: string
+    returnAccountNumber?: string
   }
 }
 

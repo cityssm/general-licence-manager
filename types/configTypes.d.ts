@@ -85,6 +85,9 @@ export interface ConfigBatchExport_CPA005 {
         originatorShortName?: string;
         dataCentre?: string;
         cpaCode: number;
+        returnInstitutionNumber?: string;
+        returnTransitNumber?: string;
+        returnAccountNumber?: string;
     };
 }
 export type LicenceNumberFunction = 'year-fourDigits' | 'year-fiveDigits' | 'year-sixDigits' | 'category-fourDigits' | 'category-fiveDigits' | 'category-sixDigits' | 'category-distinctFourDigits' | 'category-distinctFiveDigits' | 'category-distinctSixDigits';

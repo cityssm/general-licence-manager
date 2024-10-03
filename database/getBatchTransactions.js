@@ -7,7 +7,9 @@ export const getBatchTransactions = (batchDate, includeOutstandingOnly = false) 
         readonly: true
     });
     database.function('userFn_dateIntegerToString', dateTimeFunctions.dateIntegerToString);
-    database.function('userFn_getCanadianBankName', getCanadianBankName);
+    database.function('userFn_getCanadianBankName', (institutionNumber, transitNumber) => {
+        return getCanadianBankName(institutionNumber, transitNumber);
+    });
     const rows = database
         .prepare(`select l.licenceId, l.licenceNumber,
         c.licenceCategory, l.licenseeName, l.licenseeBusinessName,

@@ -12,7 +12,10 @@ export default function getBatchExport(outstandingBatchTransactions) {
         originatorId: batchExportConfig.config.originatorId,
         originatorLongName: batchExportConfig.config.originatorLongName,
         originatorShortName: batchExportConfig.config.originatorShortName,
-        destinationDataCentre: batchExportConfig.config.dataCentre
+        destinationDataCentre: batchExportConfig.config.dataCentre,
+        returnInstitutionNumber: batchExportConfig.config.returnInstitutionNumber,
+        returnTransitNumber: batchExportConfig.config.returnTransitNumber,
+        returnAccountNumber: batchExportConfig.config.returnAccountNumber
     });
     for (const transaction of outstandingBatchTransactions) {
         eftGenerator.addDebitTransaction({

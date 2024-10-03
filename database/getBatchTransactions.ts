@@ -17,7 +17,12 @@ export const getBatchTransactions = (
     'userFn_dateIntegerToString',
     dateTimeFunctions.dateIntegerToString
   )
-  database.function('userFn_getCanadianBankName', getCanadianBankName)
+  database.function(
+    'userFn_getCanadianBankName',
+    (institutionNumber: string, transitNumber?: string) => {
+      return getCanadianBankName(institutionNumber, transitNumber)
+    }
+  )
 
   const rows = database
     .prepare(

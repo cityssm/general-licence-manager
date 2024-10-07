@@ -35,7 +35,7 @@
     "@cityssm/configurator": "^0.1.0",
     "@cityssm/eft-generator": "^0.1.0",
     "@cityssm/expressjs-server-js": "^2.3.3",
-    "@cityssm/get-canadian-bank-name": "^1.1.0",
+    "@cityssm/get-canadian-bank-name": "^1.1.1",
     "@cityssm/modern-julian-date": "^1.0.1",
     "@cityssm/pdf-puppeteer": "^4.3.1",
     "@fortawesome/fontawesome-free": "^5.15.4",

@@ -74,7 +74,7 @@
     "@types/gulp": "^4.0.17",
     "@types/gulp-sass": "^5.0.4",
     "@types/http-errors": "^2.0.4",
-    "@types/mocha": "^10.0.8",
+    "@types/mocha": "^10.0.9",
     "@types/node-windows": "^0.1.6",
     "@types/papaparse": "^5.3.14",
     "@types/session-file-store": "^1.2.5",

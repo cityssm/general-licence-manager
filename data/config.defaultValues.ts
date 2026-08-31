@@ -1,11 +1,10 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable @typescript-eslint/indent */
-
-import type { ADWebAuthConfig } from '@cityssm/ad-web-auth-connector'
+import type {
+  ActiveDirectoryAuthenticatorConfiguration,
+  ADWebAuthAuthenticatorConfiguration
+} from '@cityssm/authentication-helper'
 
 import type {
   AdditionalFeeFunction,
-  ConfigActiveDirectory,
   ConfigBatchExport,
   LicenceLengthFunction,
   LicenceNumberFunction,
@@ -13,8 +12,9 @@ import type {
 } from '../types/configTypes.js'
 
 export const configDefaultValues = {
-  activeDirectory: undefined as unknown as ConfigActiveDirectory | undefined,
-  adWebAuthConfig: undefined as unknown as ADWebAuthConfig | undefined,
+  activeDirectory: undefined as
+    ActiveDirectoryAuthenticatorConfiguration | undefined,
+  adWebAuthConfig: undefined as ADWebAuthAuthenticatorConfiguration | undefined,
 
   'application.applicationName': 'General Licence Manager',
   'application.logoURL': '/images/stamp.png',
@@ -27,7 +27,10 @@ export const configDefaultValues = {
   'reverseProxy.urlPrefix': '',
 
   'session.cookieName': 'general-licence-manager-user-sid',
+
+  // eslint-disable-next-line secure-coding/no-hardcoded-credentials
   'session.secret': 'cityssm/general-licence-manager',
+  
   'session.maxAgeMillis': 60 * 60 * 1000,
   'session.doKeepAlive': false,
 
@@ -56,6 +59,7 @@ export const configDefaultValues = {
     string,
     LicenceLengthFunction
   >,
+  
   additionalFeeFunctions: {} as unknown as Record<
     string,
     AdditionalFeeFunction

@@ -1,0 +1,16 @@
+{
+  "version": "0.2",
+  "ignorePaths": [],
+  "dictionaryDefinitions": [],
+  "dictionaries": [],
+  "words": [
+    "cityssm",
+    "configurator",
+    "expressjs",
+    "fontawesome",
+    "papaparse",
+    "Preauthorized"
+  ],
+  "ignoreWords": [],
+  "import": []
+}

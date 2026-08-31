@@ -1,20 +1,30 @@
 {
   "compilerOptions": {
-    "target": "ES2022",
-    "module": "Node16",
-    "moduleResolution": "Node16",
-    "isolatedModules": false,
-    "declaration": true,
-    "noImplicitAny": false,
+    "target": "es2024",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+
+    "incremental": true,
+    "tsBuildInfoFile": ".tsbuildinfo",
+
+    "isolatedModules": true,
+
+    "declaration": false,
     "removeComments": true,
+
     "allowUnreachableCode": false,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
-    "esModuleInterop": true,
     "skipLibCheck": true,
-    "strictNullChecks": true
+    "skipDefaultLibCheck": true,
+    "esModuleInterop": true,
+
+    "strictNullChecks": true,
+    "noImplicitAny": false,
+
+    "types": ["node"]
   },
   "compileOnSave": true,
   "buildOnSave": true,
-  "exclude": ["node_modules/*", "public/javascripts/*"]
+  "exclude": ["node_modules", "public/javascripts"]
 }

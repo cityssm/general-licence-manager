@@ -1,8 +1,5 @@
-"use strict";
-var _a;
-Object.defineProperty(exports, "__esModule", { value: true });
 const glm = {
-    urlPrefix: (_a = document.querySelector('main')) === null || _a === void 0 ? void 0 : _a.dataset.urlPrefix
+    urlPrefix: document.querySelector('main')?.dataset.urlPrefix
 };
 (() => {
     const aliasSettingNames = [

@@ -43,7 +43,7 @@ function getLicencesByLicenceCategorySQL(licenceCategoryKey: string): {
 
   const fieldColumnNames = new Set<string>()
 
-  for (const licenceField of licenceCategoryDefinition.licenceCategoryFields) {
+  for (const licenceField of (licenceCategoryDefinition?.licenceCategoryFields ?? [])) {
     let fieldColumnName = ''
 
     for (

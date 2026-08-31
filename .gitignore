@@ -1,8 +1,10 @@
 .nyc_output/
 coverage/
+
 cypress/downloads/
 cypress/screenshots/
 cypress/videos/
+
 data/sessions/
 node_modules/
 
@@ -23,3 +25,4 @@ routes/*.min.js
 *.pem
 
 public/_private/*
+.tsbuildinfo

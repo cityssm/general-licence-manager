@@ -1,18 +1,13 @@
-import { AdWebAuthConnector } from '@cityssm/ad-web-auth-connector';
-import ActiveDirectory from 'activedirectory2';
+import { ActiveDirectoryAuthenticator, ADWebAuthAuthenticator } from '@cityssm/authentication-helper';
 import { getConfigProperty } from './functions.config.js';
 const userDomain = getConfigProperty('application.userDomain');
 const activeDirectoryConfig = getConfigProperty('activeDirectory');
-async function authenticateViaActiveDirectory(userName, password) {
-    return await new Promise((resolve) => {
+async function authenticateViaActiveDirectory(username, password) {
+    return await new Promise(async (resolve) => {
         try {
-            const ad = new ActiveDirectory(activeDirectoryConfig);
-            ad.authenticate(`${userDomain}\\${userName}`, password, async (error, auth) => {
-                if (error) {
-                    resolve(false);
-                }
-                resolve(auth);
-            });
+            const ad = new ActiveDirectoryAuthenticator(activeDirectoryConfig);
+            const success = await ad.authenticate(`${userDomain}\\${username}`, password);
+            resolve(success);
         }
         catch {
             resolve(false);
@@ -22,17 +17,17 @@ async function authenticateViaActiveDirectory(userName, password) {
 const adWebAuthConfig = getConfigProperty('adWebAuthConfig');
 const adWebAuth = adWebAuthConfig === undefined
     ? undefined
-    : new AdWebAuthConnector(adWebAuthConfig);
-async function authenticateViaADWebAuth(userName, password) {
-    return ((await adWebAuth?.authenticate(`${userDomain}\\${userName}`, password)) ??
+    : new ADWebAuthAuthenticator(adWebAuthConfig);
+async function authenticateViaADWebAuth(username, password) {
+    return ((await adWebAuth?.authenticate(`${userDomain}\\${username}`, password)) ??
         false);
 }
 const authenticateFunction = activeDirectoryConfig === undefined
     ? authenticateViaADWebAuth
     : authenticateViaActiveDirectory;
-export const authenticate = async (userName, password) => {
-    if ((userName ?? '') === '' || (password ?? '') === '') {
+export const authenticate = async (username, password) => {
+    if (username === '' || password === '') {
         return false;
     }
-    return await authenticateFunction(userName, password);
+    return await authenticateFunction(username, password);
 };

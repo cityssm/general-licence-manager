@@ -1,19 +1,16 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
-    var _a, _b;
-    (_a = document
-        .querySelector('#cleanup--backupDatabase')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', (clickEvent) => {
+    document
+        .querySelector('#cleanup--backupDatabase')
+        ?.addEventListener('click', (clickEvent) => {
         clickEvent.preventDefault();
         function doBackup() {
             cityssm.postJSON(`${glm.urlPrefix}/admin/doBackupDatabase`, {}, (rawResponseJSON) => {
-                var _a;
                 const responseJSON = rawResponseJSON;
                 if (responseJSON.success) {
                     bulmaJS.alert({
                         title: 'Database Backed Up Successfully',
                         message: 'Database backed up as <strong>' +
-                            cityssm.escapeHTML((_a = responseJSON.fileName) !== null && _a !== void 0 ? _a : '') +
+                            cityssm.escapeHTML(responseJSON.fileName ?? '') +
                             '</strong>.',
                         messageIsHtml: true,
                         contextualColorName: 'success'
@@ -32,8 +29,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
             }
         });
     });
-    (_b = document
-        .querySelector('#cleanup--cleanupDatabase')) === null || _b === void 0 ? void 0 : _b.addEventListener('click', (clickEvent) => {
+    document
+        .querySelector('#cleanup--cleanupDatabase')
+        ?.addEventListener('click', (clickEvent) => {
         clickEvent.preventDefault();
         function doCleanup() {
             cityssm.postJSON(`${glm.urlPrefix}/admin/doCleanupDatabase`, {}, (rawResponseJSON) => {

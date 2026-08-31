@@ -15,18 +15,20 @@ import FileStore from 'session-file-store'
 
 import * as databaseInitializer from './helpers/databaseInitializer.js'
 import * as configFunctions from './helpers/functions.config.js'
+import packageJson from './package.json' with { type: 'json' }
 import routerAdmin from './routes/admin.js'
 import routerBatches from './routes/batches.js'
 import routerDashboard from './routes/dashboard.js'
 import routerLicences from './routes/licences.js'
 import routerLogin from './routes/login.js'
 import routerReports from './routes/reports.js'
-import { version } from './version.js'
+
+const version = packageJson.version
 
 const debugApp = debug('general-licence-manager:app')
 
 /*
- * INITALIZE THE DATABASE
+ * INITIALIZE THE DATABASE
  */
 
 databaseInitializer.initLicencesDB()
@@ -36,6 +38,8 @@ databaseInitializer.initLicencesDB()
  */
 
 export const app = express()
+
+app.disable('x-powered-by')
 
 if (!configFunctions.getConfigProperty('reverseProxy.disableEtag')) {
   app.set('etag', false)
@@ -71,7 +75,8 @@ app.use(csurf({ cookie: true }))
 
 const limiter = rateLimit({
   windowMs: 1000,
-  max: 25 * Math.max(3, configFunctions.getConfigProperty('users.canLogin').length)
+  max:
+    25 * Math.max(3, configFunctions.getConfigProperty('users.canLogin').length)
 })
 
 app.use(limiter)
@@ -83,23 +88,23 @@ app.use(limiter)
 const urlPrefix = configFunctions.getConfigProperty('reverseProxy.urlPrefix')
 
 if (urlPrefix !== '') {
-  debugApp('urlPrefix = ' + urlPrefix)
+  debugApp(`urlPrefix = ${urlPrefix}`)
 }
 
 app.use(urlPrefix, express.static(path.join('public')))
 
 app.use(
-  urlPrefix + '/lib/fa',
+  `${urlPrefix}/lib/fa`,
   express.static(path.join('node_modules', '@fortawesome', 'fontawesome-free'))
 )
 
 app.use(
-  urlPrefix + '/lib/cityssm-bulma-webapp-js',
+  `${urlPrefix}/lib/cityssm-bulma-webapp-js`,
   express.static(path.join('node_modules', '@cityssm', 'bulma-webapp-js'))
 )
 
 app.use(
-  urlPrefix + '/lib/cityssm-bulma-js',
+  `${urlPrefix}/lib/cityssm-bulma-js`,
   express.static(path.join('node_modules', '@cityssm', 'bulma-js', 'dist'))
 )
 

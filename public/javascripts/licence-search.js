@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const licenceAlias = exports.licenceAlias;
     const licenceAliasPlural = exports.licenceAliasPlural;
@@ -16,7 +14,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
       <em>Loading records...</em>
       </p>`;
         cityssm.postJSON(`${glm.urlPrefix}/licences/doSearch`, formElement, (rawResponseJSON) => {
-            var _a, _b, _c, _d, _e, _f, _g, _h;
             const licenceResults = rawResponseJSON;
             const licenceList = licenceResults.licences;
             if (licenceList.length === 0) {
@@ -50,9 +47,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
               <span class="is-size-7">${licenseeHTML}</span>`;
                 }
                 let fieldsHTML = '';
-                for (const licenceField of (_a = licenceObject.licenceFields) !== null && _a !== void 0 ? _a : []) {
-                    if (((_b = licenceField.licenceFieldValue) !== null && _b !== void 0 ? _b : '') !== '') {
-                        fieldsHTML += `${cityssm.escapeHTML((_c = licenceField.licenceField) !== null && _c !== void 0 ? _c : '')}: 
+                for (const licenceField of licenceObject.licenceFields ?? []) {
+                    if ((licenceField.licenceFieldValue ?? '') !== '') {
+                        fieldsHTML += `${cityssm.escapeHTML(licenceField.licenceField ?? '')}: 
                 ${cityssm.escapeHTML(licenceField.licenceFieldValue)}<br />`;
                     }
                 }
@@ -62,17 +59,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
             ${cityssm.escapeHTML(licenceObject.licenceNumber)}
             </a><br />
             </td><td>
-              ${cityssm.escapeHTML((_d = licenceObject.licenceCategory) !== null && _d !== void 0 ? _d : '')}
+              ${cityssm.escapeHTML(licenceObject.licenceCategory ?? '')}
             </td><td>
               ${licenseeHTML}
             </td><td>
               <span class="is-nowrap has-tooltip-right" data-tooltip="Start Date" aria-label="Start Date">
               <i class="fas fa-fw fa-play" aria-hidden="true"></i>
-              ${cityssm.escapeHTML((_e = licenceObject.startDateString) !== null && _e !== void 0 ? _e : '')}
+              ${cityssm.escapeHTML(licenceObject.startDateString ?? '')}
               </span><br />
               <span class="is-nowrap has-tooltip-right" data-tooltip="End Date" aria-label="End Date">
               <i class="fas fa-fw fa-stop" aria-hidden="true"></i>
-              ${cityssm.escapeHTML((_f = licenceObject.endDateString) !== null && _f !== void 0 ? _f : '')}
+              ${cityssm.escapeHTML(licenceObject.endDateString ?? '')}
               </span>
             </td><td>
               <span class="is-size-7">${fieldsHTML}</span>
@@ -88,7 +85,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
             </td>`;
                 tbodyElement.append(trElement);
             }
-            (_g = searchResultsElement.querySelector('table')) === null || _g === void 0 ? void 0 : _g.append(tbodyElement);
+            searchResultsElement.querySelector('table')?.append(tbodyElement);
             searchResultsElement.insertAdjacentHTML('beforeend', `<div class="level is-block-print">
             <div class="level-left has-text-weight-bold">
               Displaying
@@ -132,8 +129,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     });
                     paginationElement.append(nextElement);
                 }
-                (_h = searchResultsElement
-                    .querySelector('.level')) === null || _h === void 0 ? void 0 : _h.append(paginationElement);
+                searchResultsElement
+                    .querySelector('.level')
+                    ?.append(paginationElement);
             }
         });
     }

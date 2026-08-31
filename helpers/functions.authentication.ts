@@ -1,10 +1,8 @@
-/* eslint-disable @eslint-community/eslint-comments/disable-enable-pair */
-/* eslint-disable @typescript-eslint/no-misused-promises, @typescript-eslint/strict-boolean-expressions */
-
-import { AdWebAuthConnector } from '@cityssm/ad-web-auth-connector'
-import ActiveDirectory from 'activedirectory2'
-
-import type { ConfigActiveDirectory } from '../types/configTypes.js'
+import {
+  type ActiveDirectoryAuthenticatorConfiguration,
+  ActiveDirectoryAuthenticator,
+  ADWebAuthAuthenticator
+} from '@cityssm/authentication-helper'
 
 import { getConfigProperty } from './functions.config.js'
 
@@ -13,26 +11,22 @@ const userDomain = getConfigProperty('application.userDomain')
 const activeDirectoryConfig = getConfigProperty('activeDirectory')
 
 async function authenticateViaActiveDirectory(
-  userName: string,
+  username: string,
   password: string
 ): Promise<boolean> {
-  return await new Promise((resolve) => {
+  // eslint-disable-next-line promise/avoid-new, @typescript-eslint/no-misused-promises
+  return await new Promise<boolean>(async (resolve) => {
     try {
-      const ad = new ActiveDirectory(
-        activeDirectoryConfig as ConfigActiveDirectory
+      const ad = new ActiveDirectoryAuthenticator(
+        activeDirectoryConfig as ActiveDirectoryAuthenticatorConfiguration
       )
 
-      ad.authenticate(
-        `${userDomain}\\${userName}`,
-        password,
-        async (error, auth) => {
-          if (error) {
-            resolve(false)
-          }
-
-          resolve(auth)
-        }
+      const success = await ad.authenticate(
+        `${userDomain}\\${username}`,
+        password
       )
+
+      resolve(success)
     } catch {
       resolve(false)
     }
@@ -43,14 +37,14 @@ const adWebAuthConfig = getConfigProperty('adWebAuthConfig')
 const adWebAuth =
   adWebAuthConfig === undefined
     ? undefined
-    : new AdWebAuthConnector(adWebAuthConfig)
+    : new ADWebAuthAuthenticator(adWebAuthConfig)
 
 async function authenticateViaADWebAuth(
-  userName: string,
+  username: string,
   password: string
 ): Promise<boolean> {
   return (
-    (await adWebAuth?.authenticate(`${userDomain}\\${userName}`, password)) ??
+    (await adWebAuth?.authenticate(`${userDomain}\\${username}`, password)) ??
     false
   )
 }
@@ -61,12 +55,12 @@ const authenticateFunction =
     : authenticateViaActiveDirectory
 
 export const authenticate = async (
-  userName: string,
+  username: string,
   password: string
 ): Promise<boolean> => {
-  if ((userName ?? '') === '' || (password ?? '') === '') {
+  if (username === '' || password === '') {
     return false
   }
 
-  return await authenticateFunction(userName, password)
+  return await authenticateFunction(username, password)
 }

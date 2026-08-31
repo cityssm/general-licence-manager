@@ -1,5 +1,5 @@
 import path from 'node:path';
-import { convertHTMLToPDF } from '@cityssm/pdf-puppeteer';
+import PdfPuppeteer from '@cityssm/pdf-puppeteer';
 import * as ejs from 'ejs';
 import getLicence from '../../database/getLicence.js';
 import { getLicenceCategory } from '../../helpers/functions.cache.js';
@@ -15,8 +15,7 @@ export default async function handler(request, response, next) {
     const licenceCategory = getLicenceCategory(licence.licenceCategoryKey);
     if (licenceCategory === undefined ||
         (licenceCategory.printEJS ?? '') === '') {
-        next(configFunctions.getConfigProperty('settings.licenceAlias') +
-            ' does not have a print template set.');
+        next(`${configFunctions.getConfigProperty('settings.licenceAlias')} does not have a print template set.`);
         return;
     }
     const reportPath = path.join('.', 'print', `${licenceCategory.printEJS}.ejs`);
@@ -30,16 +29,23 @@ export default async function handler(request, response, next) {
             next(ejsError);
             return;
         }
-        const pdf = await convertHTMLToPDF(ejsData, {
-            format: 'letter',
-            printBackground: true,
-            preferCSSPageSize: true
-        });
-        const fileName = `${configFunctions
-            .getConfigProperty('settings.licenceAlias')
-            .toLowerCase()}-${licenceId}-${(licence.recordUpdate_timeMillis ?? 0).toString()}.pdf`;
-        response.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
-        response.setHeader('Content-Type', 'application/pdf');
-        response.send(pdf);
+        const pdfPuppeteer = new PdfPuppeteer();
+        try {
+            const pdf = await pdfPuppeteer.fromHtml(ejsData, {
+                format: 'letter',
+                printBackground: true,
+                preferCSSPageSize: true
+            });
+            const fileName = `${configFunctions
+                .getConfigProperty('settings.licenceAlias')
+                .toLowerCase()}-${licenceId}-${(licence.recordUpdate_timeMillis ?? 0).toString()}.pdf`;
+            response.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
+            response.setHeader('Content-Type', 'application/pdf');
+            response.send(pdf);
+        }
+        catch (pdfError) {
+            void pdfPuppeteer.closeBrowser();
+            next(pdfError);
+        }
     });
 }

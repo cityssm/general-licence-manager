@@ -1,6 +1,6 @@
 import path from 'node:path'
 
-import { convertHTMLToPDF } from '@cityssm/pdf-puppeteer'
+import PdfPuppeteer from '@cityssm/pdf-puppeteer'
 import * as ejs from 'ejs'
 import type { NextFunction, Request, Response } from 'express'
 
@@ -34,8 +34,9 @@ export default async function handler(
     (licenceCategory.printEJS ?? '') === ''
   ) {
     next(
-      configFunctions.getConfigProperty('settings.licenceAlias') +
-        ' does not have a print template set.'
+      `${configFunctions.getConfigProperty(
+        'settings.licenceAlias'
+      )} does not have a print template set.`
     )
     return
   }
@@ -57,26 +58,34 @@ export default async function handler(
         return
       }
 
-      const pdf = await convertHTMLToPDF(ejsData, {
-        format: 'letter',
-        printBackground: true,
-        preferCSSPageSize: true
-      })
+      const pdfPuppeteer = new PdfPuppeteer()
 
-      const fileName = `${configFunctions
-        .getConfigProperty('settings.licenceAlias')
-        .toLowerCase()}-${licenceId}-${(
-        licence.recordUpdate_timeMillis ?? 0
-      ).toString()}.pdf`
+      try {
+        const pdf = await pdfPuppeteer.fromHtml(ejsData, {
+          format: 'letter',
+          printBackground: true,
+          preferCSSPageSize: true
+        })
 
-      response.setHeader(
-        'Content-Disposition',
-        `attachment; filename=${fileName}`
-      )
+        const fileName = `${configFunctions
+          .getConfigProperty('settings.licenceAlias')
+          .toLowerCase()}-${licenceId}-${(
+          licence.recordUpdate_timeMillis ?? 0
+        ).toString()}.pdf`
 
-      response.setHeader('Content-Type', 'application/pdf')
+        response.setHeader(
+          'Content-Disposition',
+          `attachment; filename=${fileName}`
+        )
 
-      response.send(pdf)
+        response.setHeader('Content-Type', 'application/pdf')
+
+        response.send(pdf)
+      } catch (pdfError) {
+        void pdfPuppeteer.closeBrowser()
+
+        next(pdfError)
+      }
     }
   )
 }

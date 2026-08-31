@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const urlPrefix = document.querySelector('main').dataset.urlPrefix;
     const showProcessButtonElement = document.querySelector('#yearEnd--showProcess');

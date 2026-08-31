@@ -22,7 +22,7 @@ function getLicencesByLicenceCategorySQL(licenceCategoryKey) {
     const sqlParameters = [];
     let fieldsSql = '';
     const fieldColumnNames = new Set();
-    for (const licenceField of licenceCategoryDefinition.licenceCategoryFields) {
+    for (const licenceField of (licenceCategoryDefinition?.licenceCategoryFields ?? [])) {
         let fieldColumnName = '';
         for (let fieldColumnNameIndex = 0; fieldColumnNameIndex <= 100; fieldColumnNameIndex += 1) {
             fieldColumnName = `field_${camelCase(licenceField.licenceField)}${fieldColumnNameIndex === 0 ? '' : `_${fieldColumnNameIndex}`}`;

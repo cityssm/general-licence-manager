@@ -1,7 +1,6 @@
 # General Licence Manager
 
 [![DeepSource](https://app.deepsource.com/gh/cityssm/general-licence-manager.svg/?label=active+issues&show_trend=true&token=ORSrQ921SKObd83e2GbLdPu4)](https://app.deepsource.com/gh/cityssm/general-licence-manager/)
-[![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/cityssm/general-licence-manager)](https://codeclimate.com/github/cityssm/general-licence-manager)
 [![codecov](https://codecov.io/gh/cityssm/general-licence-manager/graph/badge.svg?token=S94ROYYRFC)](https://codecov.io/gh/cityssm/general-licence-manager)
 [![Coverage Testing](https://github.com/cityssm/general-licence-manager/actions/workflows/coverage.yml/badge.svg)](https://github.com/cityssm/general-licence-manager/actions/workflows/coverage.yml)
 [![general-licence-manager](https://img.shields.io/endpoint?url=https://dashboard.cypress.io/badge/simple/m93ucs&style=flat&logo=cypress)](https://dashboard.cypress.io/projects/m93ucs/runs)

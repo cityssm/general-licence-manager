@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "es2023",
+    "module": "preserve",
+    "moduleResolution": "bundler",
+
+    "incremental": true,
+    "tsBuildInfoFile": ".tsbuildinfo",
+
+    "isolatedModules": true,
+
+    "declaration": false,
+    "removeComments": true,
+
+    "allowUnreachableCode": false,
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "esModuleInterop": true,
+
+    "strictNullChecks": true,
+    "noImplicitAny": false
+  },
+  "compileOnSave": true,
+  "buildOnSave": true,
+  "include": ["./*"]
+}

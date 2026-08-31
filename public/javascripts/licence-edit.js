@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 (() => {
     const urlPrefix = document.querySelector('main').dataset.urlPrefix;
     const licenceAlias = exports.licenceAlias;
@@ -702,7 +700,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
         });
     };
     const renderLicenceTransactions = () => {
-        var _a;
         const tbodyElement = licenceTransactionsTableElement.querySelector('tbody');
         tbodyElement.innerHTML = '';
         let transactionTotal = 0;
@@ -749,9 +746,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
                         '<i class="fas fa-trash" aria-hidden="true"></i>' +
                         '</button>' +
                         '</td>');
-            (_a = trElement
-                .querySelector('button')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', deleteLicenceTransaction);
-            tbodyElement === null || tbodyElement === void 0 ? void 0 : tbodyElement.append(trElement);
+            trElement
+                .querySelector('button')
+                ?.addEventListener('click', deleteLicenceTransaction);
+            tbodyElement?.append(trElement);
             transactionTotal += licenceTransaction.transactionAmount;
         }
         const tfootElement = licenceTransactionsTableElement.querySelector('tfoot');
@@ -765,7 +763,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 '</tr>';
         const outstandingBalance = getOutstandingBalance();
         if (outstandingBalance > 0) {
-            tfootElement === null || tfootElement === void 0 ? void 0 : tfootElement.insertAdjacentHTML('beforeend', '<tr class="has-background-danger-light">' +
+            tfootElement?.insertAdjacentHTML('beforeend', '<tr class="has-background-danger-light">' +
                 '<th>Outstanding Balance</th>' +
                 '<th class="has-text-right">$' +
                 outstandingBalance.toFixed(2) +
@@ -804,7 +802,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
         };
         cityssm.openHtmlModal('transaction-add', {
             onshow: (modalElement) => {
-                var _a, _b;
                 glm.populateAliases(modalElement);
                 modalElement.querySelector('#transactionAdd--licenceId').value = licenceId;
                 const licenceFeeString = document.querySelector('#licenceEdit--licenceFee').value;
@@ -814,8 +811,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
                     modalElement.querySelector('#transactionAdd--replacementFee').textContent = document.querySelector('#licenceEdit--replacementFee').value;
                 }
                 else {
-                    (_b = (_a = modalElement
-                        .querySelector('#transactionAdd--replacementFee')) === null || _a === void 0 ? void 0 : _a.closest('tr')) === null || _b === void 0 ? void 0 : _b.remove();
+                    modalElement
+                        .querySelector('#transactionAdd--replacementFee')
+                        ?.closest('tr')
+                        ?.remove();
                 }
                 const outstandingBalance = getOutstandingBalance();
                 modalElement.querySelector('#transactionAdd--outstandingBalance').textContent = outstandingBalance.toFixed(2);

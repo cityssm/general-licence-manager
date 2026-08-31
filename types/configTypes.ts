@@ -1,22 +1,27 @@
-import type { ADWebAuthConfig } from '@cityssm/ad-web-auth-connector'
+import type { ActiveDirectoryAuthenticatorConfiguration, ADWebAuthAuthenticatorConfiguration } from '@cityssm/authentication-helper'
 
 export interface Config {
   application?: ConfigApplication
   session?: ConfigSession
+
   reverseProxy?: {
     disableCompression: boolean
     disableEtag: boolean
     urlPrefix: string
   }
-  activeDirectory?: ConfigActiveDirectory
-  adWebAuthConfig?: ADWebAuthConfig
+
+  activeDirectory?: ActiveDirectoryAuthenticatorConfiguration
+  adWebAuthConfig?: ADWebAuthAuthenticatorConfiguration
+
   users?: {
     testing?: string[]
     canLogin?: string[]
     canUpdate?: string[]
     isAdmin?: string[]
   }
+
   defaults?: ConfigDefaults
+
   settings?: {
     licenceAlias?: string
     licenceAliasPlural?: string
@@ -28,9 +33,11 @@ export interface Config {
     includeReplacementFee?: boolean
     includeYearEnd?: boolean
   }
+
   exports?: {
     batches?: ConfigBatchExport
   }
+
   licenceLengthFunctions?: Record<string, LicenceLengthFunction>
   additionalFeeFunctions?: Record<string, AdditionalFeeFunction>
   customReports?: ReportDefinition[]
@@ -49,13 +56,6 @@ interface ConfigSession {
   secret?: string
   maxAgeMillis?: number
   doKeepAlive?: boolean
-}
-
-export interface ConfigActiveDirectory {
-  url: string
-  baseDN: string
-  username: string
-  password: string
 }
 
 interface ConfigDefaults {
@@ -103,15 +103,15 @@ export interface ConfigBatchExport_CPA005 {
 }
 
 export type LicenceNumberFunction =
-  | 'year-fourDigits'
-  | 'year-fiveDigits'
-  | 'year-sixDigits'
-  | 'category-fourDigits'
-  | 'category-fiveDigits'
-  | 'category-sixDigits'
-  | 'category-distinctFourDigits'
   | 'category-distinctFiveDigits'
+  | 'category-distinctFourDigits'
   | 'category-distinctSixDigits'
+  | 'category-fiveDigits'
+  | 'category-fourDigits'
+  | 'category-sixDigits'
+  | 'year-fiveDigits'
+  | 'year-fourDigits'
+  | 'year-sixDigits'
 
 export type LicenceLengthFunction = (startDate: Date) => Date
 

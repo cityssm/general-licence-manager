@@ -24,7 +24,7 @@ describe('general-licence-manager', () => {
     });
     describe('Cypress tests', () => {
         it('should run Cypress tests', (done) => {
-            let cypressCommand = 'cypress run --config-file cypress.config.ts --browser chrome';
+            let cypressCommand = 'cypress run --config-file cypress.config.js --browser chrome';
             if ((process.env.CYPRESS_RECORD_KEY ?? '') !== '') {
                 cypressCommand += ' --record';
             }

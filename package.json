@@ -19,8 +19,8 @@
   },
   "scripts": {
     "coverage": "cross-env NODE_ENV=dev DEBUG=general-licence-manager:* TEST_DATABASES=true c8 --reporter=lcov --reporter=text --reporter=text-summary mocha --timeout 30000 --exit",
-    "cy:open": "cypress open --config-file cypress.config.ts",
-    "cy:run": "cypress run --config-file cypress.config.ts",
+    "cy:open": "cypress open --config-file cypress.config.js",
+    "cy:run": "cypress run --config-file cypress.config.js",
     "dev:live": "cross-env NODE_ENV=dev DEBUG=general-licence-manager:* nodemon ./bin/www",
     "dev:test": "cross-env NODE_ENV=dev DEBUG=general-licence-manager:*,pdf-puppeteer:*,puppeteer-launch TEST_DATABASES=true nodemon ./bin/www",
     "start": "cross-env NODE_ENV=production node ./bin/www",

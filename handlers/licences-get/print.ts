@@ -1,7 +1,7 @@
 import path from 'node:path'
 
 import PdfPuppeteer from '@cityssm/pdf-puppeteer'
-import * as ejs from 'ejs'
+import ejs from 'ejs'
 import type { NextFunction, Request, Response } from 'express'
 
 import getLicence from '../../database/getLicence.js'
@@ -43,49 +43,48 @@ export default async function handler(
 
   const reportPath = path.join('.', 'print', `${licenceCategory.printEJS}.ejs`)
 
-  await ejs.renderFile(
-    reportPath,
-    {
+  let renderedHtml: string
+
+  try {
+    renderedHtml = await ejs.renderFile(reportPath, {
       configFunctions,
       printFunctions,
       licence,
       licenceCategory
-    },
-    {},
-    async (ejsError, ejsData) => {
-      if (ejsError) {
-        next(ejsError)
-        return
-      }
+    })
+  } catch (error) {
+    throw new Error(
+      `Error rendering HTML: ${error instanceof Error ? error.message : String(error)}`,
+      { cause: error }
+    )
+  }
 
-      const pdfPuppeteer = new PdfPuppeteer()
+  const pdfPuppeteer = new PdfPuppeteer()
 
-      try {
-        const pdf = await pdfPuppeteer.fromHtml(ejsData, {
-          format: 'letter',
-          printBackground: true,
-          preferCSSPageSize: true
-        })
+  try {
+    const pdf = await pdfPuppeteer.fromHtml(renderedHtml, {
+      format: 'letter',
+      printBackground: true,
+      preferCSSPageSize: true
+    })
 
-        const fileName = `${configFunctions
-          .getConfigProperty('settings.licenceAlias')
-          .toLowerCase()}-${licenceId}-${(
-          licence.recordUpdate_timeMillis ?? 0
-        ).toString()}.pdf`
+    const fileName = `${configFunctions
+      .getConfigProperty('settings.licenceAlias')
+      .toLowerCase()}-${licenceId}-${(
+      licence.recordUpdate_timeMillis ?? 0
+    ).toString()}.pdf`
 
-        response.setHeader(
-          'Content-Disposition',
-          `attachment; filename=${fileName}`
-        )
+    response.setHeader(
+      'Content-Disposition',
+      `attachment; filename=${fileName}`
+    )
 
-        response.setHeader('Content-Type', 'application/pdf')
+    response.setHeader('Content-Type', 'application/pdf')
 
-        response.send(pdf)
-      } catch (pdfError) {
-        void pdfPuppeteer.closeBrowser()
+    response.send(pdf)
+  } catch (pdfError) {
+    void pdfPuppeteer.closeBrowser()
 
-        next(pdfError)
-      }
-    }
-  )
+    next(pdfError)
+  }
 }

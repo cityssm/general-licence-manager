@@ -1,6 +1,6 @@
 {
   "name": "general-licence-manager",
-  "version": "2.0.0-dev",
+  "version": "2.0.0-dev.1",
   "private": true,
   "description": "A tool for managing the licences issued by municipalities.",
   "homepage": "https://github.com/cityssm/general-licence-manager#readme",
@@ -83,6 +83,9 @@
     "nodemon": "^3.1.14",
     "prettier-config-cityssm": "^2.2.0",
     "sass": "^1.103.1"
+  },
+  "engines": {
+    "node": ">=22.12.0"
   },
   "allowScripts": {
     "@fortawesome/fontawesome-free@5.15.4": true,

@@ -35,7 +35,7 @@
     "@cityssm/expressjs-server-js": "^2.3.3",
     "@cityssm/get-canadian-bank-name": "^1.1.1",
     "@cityssm/modern-julian-date": "^1.0.3",
-    "@cityssm/pdf-puppeteer": "^6.4.2",
+    "@cityssm/pdf-puppeteer": "^6.5.1",
     "@fortawesome/fontawesome-free": "^5.15.4",
     "better-sqlite3": "^13.0.3",
     "camelcase": "^9.0.0",
